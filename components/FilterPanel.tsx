@@ -2,6 +2,10 @@
 
 import { useFilters } from "contexts/FilterContext";
 import { FilterOption } from "lib/types/filters";
+import { Product } from "lib/shopify/types";
+import { extractModelOptions, extractYearOptions } from "lib/utils/vehicle";
+import { useMemo } from "react";
+import { VehicleSelector } from "./VehicleSelector";
 import { Button } from "./ui/button";
 import { Checkbox } from "./ui/checkbox";
 import {
@@ -14,18 +18,45 @@ import {
 interface FilterPanelProps {
   vendorOptions: FilterOption[];
   categoryOptions: FilterOption[];
+  products: Product[];
   className?: string;
 }
 
 export function FilterPanel({
   vendorOptions,
   categoryOptions,
+  products,
   className = "",
 }: FilterPanelProps) {
-  const { filters, toggleVendor, toggleCategory, clearFilters } = useFilters();
+  const filterContext = useFilters();
+
+  // FilterPanel should always be inside FilterProvider, but be defensive
+  if (!filterContext) {
+    console.error("FilterPanel must be used within a FilterProvider");
+    return null;
+  }
+
+  const {
+    filters,
+    toggleVendor,
+    toggleCategory,
+    clearFilters,
+    setVehicle,
+    clearVehicle,
+  } = filterContext;
+
+  // Extract vehicle options from products
+  const modelOptions = useMemo(() => extractModelOptions(products), [products]);
+  const yearOptions = useMemo(() => extractYearOptions(products), [products]);
 
   const hasActiveFilters =
-    filters.vendors.length > 0 || filters.categories.length > 0;
+    filters.vendors.length > 0 ||
+    filters.categories.length > 0 ||
+    filters.vehicle !== null;
+
+  const handleVehicleSelect = (model: string, year: number) => {
+    setVehicle(model, year);
+  };
 
   return (
     <div className={`space-y-4 ${className}`}>
@@ -42,7 +73,29 @@ export function FilterPanel({
         </Button>
       )}
 
-      <Accordion type="multiple" defaultValue={["vendors", "categories"]}>
+      <Accordion
+        type="multiple"
+        defaultValue={["vehicle", "vendors", "categories"]}
+      >
+        {/* Vehicle Fitment Filter Section */}
+        <AccordionItem value="vehicle">
+          <AccordionTrigger className="text-sm font-medium">
+            Vehicle Fitment
+          </AccordionTrigger>
+          <AccordionContent>
+            <div className="pt-2">
+              <VehicleSelector
+                modelOptions={modelOptions}
+                yearOptions={yearOptions}
+                selectedModel={filters.vehicle?.model || null}
+                selectedYear={filters.vehicle?.year || null}
+                onSelect={handleVehicleSelect}
+                onClear={clearVehicle}
+              />
+            </div>
+          </AccordionContent>
+        </AccordionItem>
+
         {/* Vendor Filter Section */}
         {vendorOptions.length > 0 && (
           <AccordionItem value="vendors">

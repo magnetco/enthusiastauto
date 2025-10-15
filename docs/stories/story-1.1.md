@@ -246,7 +246,7 @@ Implementation completed successfully. All acceptance criteria met:
 - `lib/shopify/fragments/product.ts` - Added vendor field to GraphQL fragment
 - `lib/shopify/types.ts` - Added vendor: string to ShopifyProduct type
 - `lib/utils.ts` - Added utility functions (ensureStartsWith, createUrl, validateEnvironmentVariables, baseUrl)
-- `tsconfig.json` - Added paths configuration for @/* alias
+- `tsconfig.json` - Added paths configuration for @/\* alias
 - `app/globals.css` - Updated by ShadCN with CSS variables and theme support
 - `package.json` - Added ShadCN dependencies (class-variance-authority, lucide-react, tailwind-merge, tw-animate-css, @radix-ui/react-slot)
 

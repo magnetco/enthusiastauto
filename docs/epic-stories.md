@@ -164,7 +164,9 @@ This project consists of **2 epics** with **12 stories total** that will transfo
 - Image gallery component (ShadCN or custom)
 - Meta tags for SEO
 
-**Effort:** 5 points
+**REVISED (2025-10-15):** Template already provides product detail infrastructure (route, gallery, cart, related products). Story focuses on BMW-specific enhancements (fitment badges, vendor/stock display, breadcrumbs). See `docs/stories/story-1.5-implementation-analysis.md`.
+
+**Effort:** 3 points (revised from 5 - template provides 62% of functionality)
 
 ---
 
@@ -404,11 +406,13 @@ This project consists of **2 epics** with **12 stories total** that will transfo
 
 ## Total Story Points
 
-**Epic 1:** 44 points
+**Epic 1:** 42 points (revised 2025-10-15 - Story 5 reduced from 5 to 3 points)
 **Epic 2:** 39 points
-**Total:** 83 points
+**Total:** 81 points
 
 Estimated delivery: 4-5 sprints (assuming 2-week sprints, team velocity 15-20 points)
+
+**Revision Notes:** Story 5 (Product Detail Page) revised from 5 to 3 points after discovering template provides 62% of functionality.
 
 ---
 

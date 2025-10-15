@@ -5,8 +5,9 @@ import clsx from "clsx";
 import { addItem } from "components/cart/actions";
 import { useProduct } from "components/product/product-context";
 import { Product, ProductVariant } from "lib/shopify/types";
-import { useActionState } from "react";
+import { useActionState, useState } from "react";
 import { useCart } from "./cart-context";
+import { QuantitySelector } from "components/product/quantity-selector";
 
 function SubmitButton({
   availableForSale,
@@ -62,6 +63,7 @@ export function AddToCart({ product }: { product: Product }) {
   const { addCartItem } = useCart();
   const { state } = useProduct();
   const [message, formAction] = useActionState(addItem, null);
+  const [quantity, setQuantity] = useState(1);
 
   const variant = variants.find((variant: ProductVariant) =>
     variant.selectedOptions.every(
@@ -78,10 +80,14 @@ export function AddToCart({ product }: { product: Product }) {
   return (
     <form
       action={async () => {
-        addCartItem(finalVariant, product);
+        // Add items based on selected quantity
+        for (let i = 0; i < quantity; i++) {
+          addCartItem(finalVariant, product);
+        }
         addItemAction();
       }}
     >
+      <QuantitySelector onChange={setQuantity} />
       <SubmitButton
         availableForSale={availableForSale}
         selectedVariantId={selectedVariantId}

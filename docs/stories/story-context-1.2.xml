@@ -1,0 +1,350 @@
+<story-context id="bmad/bmm/workflows/4-implementation/story-context/template" v="1.0">
+  <metadata>
+    <epicId>1</epicId>
+    <storyId>1.2</storyId>
+    <title>Vehicle Fitment Filter (Year-Make-Model)</title>
+    <status>Ready</status>
+    <generatedAt>2025-10-15</generatedAt>
+    <generator>BMAD Story Context Workflow</generator>
+    <sourceStoryPath>docs/stories/story-1.2.md</sourceStoryPath>
+  </metadata>
+
+  <story>
+    <asA>a BMW owner</asA>
+    <iWant>to filter products by my specific vehicle's year, make, and model</iWant>
+    <soThat>I only see parts that are compatible with my BMW</soThat>
+    <tasks>
+      <task id="1" title="Define vehicle fitment data structure and parsing logic">
+        <subtasks>
+          <subtask id="1.1">Understand actual Shopify tag format: "BMW [Model] [Trim] [Year]"</subtask>
+          <subtask id="1.2">Create TypeScript types for vehicle data (VehicleSelection, ParsedFitmentTag)</subtask>
+          <subtask id="1.3">Build utility function to parse fitment tags: extract model and year</subtask>
+          <subtask id="1.4">Extract unique models from all product tags to populate model dropdown</subtask>
+          <subtask id="1.5">Handle tags with/without trim (ignore trim for filtering)</subtask>
+          <subtask id="1.6">Generate year range options dynamically from tags or hardcode 2008-2024</subtask>
+        </subtasks>
+      </task>
+      <task id="2" title="Build Vehicle Selector UI component">
+        <subtasks>
+          <subtask id="2.1">Create VehicleSelector component in components/VehicleSelector.tsx</subtask>
+          <subtask id="2.2">Add Model dropdown using ShadCN Select component</subtask>
+          <subtask id="2.3">Add Year dropdown using ShadCN Select</subtask>
+          <subtask id="2.4">Pre-select or hardcode BMW as make</subtask>
+          <subtask id="2.5">Add "Clear Selection" button within component</subtask>
+          <subtask id="2.6">Add accessibility attributes (ARIA labels, keyboard navigation)</subtask>
+          <subtask id="2.7">Style component to match UX spec (Section 4.2.3)</subtask>
+        </subtasks>
+      </task>
+      <task id="3" title="Integrate Vehicle Selector with FilterContext">
+        <subtasks>
+          <subtask id="3.1">Extend FilterState type to include vehicle: { model: string | null, year: string | null }</subtask>
+          <subtask id="3.2">Add setVehicle(model, year) function to FilterContext</subtask>
+          <subtask id="3.3">Add clearVehicle() function to FilterContext</subtask>
+          <subtask id="3.4">Persist vehicle selection to localStorage (key: "vehicle-selection")</subtask>
+          <subtask id="3.5">Load saved vehicle from localStorage on FilterContext mount</subtask>
+          <subtask id="3.6">Trigger product filtering when vehicle selection changes</subtask>
+        </subtasks>
+      </task>
+      <task id="4" title="Implement vehicle fitment filtering logic">
+        <subtasks>
+          <subtask id="4.1">Extend filterProducts() utility in lib/utils/filters.ts</subtask>
+          <subtask id="4.2">Parse product tags using regex to extract model and year</subtask>
+          <subtask id="4.3">Match selected vehicle (model + year) against parsed fitment tags</subtask>
+          <subtask id="4.4">Handle products without fitment tags: mark as "universal fit"</subtask>
+          <subtask id="4.5">Combine vehicle filter with existing vendor/category filters (AND logic)</subtask>
+          <subtask id="4.6">Update product count dynamically in real-time</subtask>
+        </subtasks>
+      </task>
+      <task id="5" title="Display vehicle selector in FilterPanel">
+        <subtasks>
+          <subtask id="5.1">Add "Vehicle Fitment" section at top of FilterPanel</subtask>
+          <subtask id="5.2">Integrate VehicleSelector component into FilterPanel</subtask>
+          <subtask id="5.3">Use ShadCN Accordion for collapsible section (default: expanded)</subtask>
+          <subtask id="5.4">Update FilterBadges component to show active vehicle selection badge</subtask>
+          <subtask id="5.5">Add X button to vehicle badge for individual removal</subtask>
+          <subtask id="5.6">Ensure "Clear All Filters" button also clears vehicle selection</subtask>
+        </subtasks>
+      </task>
+      <task id="6" title="Add vehicle fitment badges to product cards">
+        <subtasks>
+          <subtask id="6.1">Create FitmentBadge component with "compatible" and "universal" variants</subtask>
+          <subtask id="6.2">Display "✓ Fits Your [Model]" badge on compatible products (green)</subtask>
+          <subtask id="6.3">Display "Universal Fit" badge on products without fitment tags</subtask>
+          <subtask id="6.4">Position badge on product cards (top-left or below image)</subtask>
+          <subtask id="6.5">Update ProductCard component to conditionally show FitmentBadge</subtask>
+          <subtask id="6.6">Ensure badges follow UX spec color scheme (success-green for compatible)</subtask>
+        </subtasks>
+      </task>
+      <task id="7" title="Testing and edge cases">
+        <subtasks>
+          <subtask id="7.1">Test exact year matching (X4 2022 matches only 2022 tags)</subtask>
+          <subtask id="7.2">Test products without fitment tags display as "Universal Fit"</subtask>
+          <subtask id="7.3">Test localStorage persistence across page reloads</subtask>
+          <subtask id="7.4">Test keyboard navigation in vehicle selector dropdowns</subtask>
+          <subtask id="7.5">Test product count updates dynamically as vehicle is selected/cleared</subtask>
+          <subtask id="7.6">Test "Clear All Filters" clears vehicle selection</subtask>
+          <subtask id="7.7">Test combination of vehicle + vendor + category filters (AND logic)</subtask>
+          <subtask id="7.8">Verify screen reader announcements for vehicle selection changes</subtask>
+          <subtask id="7.9">Test model names with spaces (e.g., "1 Series M") parse correctly</subtask>
+          <subtask id="7.10">Test trim information is ignored during matching</subtask>
+        </subtasks>
+      </task>
+    </tasks>
+  </story>
+
+  <acceptanceCriteria>
+    <criterion id="AC1">Vehicle selector interface with Year dropdown (e.g., 2008-2024)</criterion>
+    <criterion id="AC2">Make is pre-set to "BMW" (can be hidden or displayed)</criterion>
+    <criterion id="AC3">Model dropdown populated dynamically from available product tags (X3, X4, 335i, 1 Series M, etc.)</criterion>
+    <criterion id="AC4">Filter applies immediately when selections are made</criterion>
+    <criterion id="AC5">Selected vehicle is saved to localStorage (persists across sessions)</criterion>
+    <criterion id="AC6">"Clear filters" option resets vehicle selection</criterion>
+    <criterion id="AC7">Product count updates dynamically as filters are applied</criterion>
+    <criterion id="AC8">Products without fitment tags are either hidden or marked as "universal fit"</criterion>
+  </acceptanceCriteria>
+
+  <artifacts>
+    <docs>
+      <doc>
+        <path>docs/PRD.md</path>
+        <title>Product Requirements Document</title>
+        <section>Functional Requirements</section>
+        <snippet>FR001: Users shall be able to filter products by vehicle fitment using year-make-model tags associated with each product. FR010: The system shall provide clear visual indicators when products are compatible with the user's selected BMW vehicle.</snippet>
+      </doc>
+      <doc>
+        <path>docs/PRD.md</path>
+        <title>Product Requirements Document</title>
+        <section>UX Design Principles</section>
+        <snippet>Fitment First - Vehicle compatibility should be immediately obvious at every touchpoint. Clarity Over Cleverness - Use straightforward, industry-standard e-commerce patterns.</snippet>
+      </doc>
+      <doc>
+        <path>docs/ux-specification.md</path>
+        <title>UX Specification</title>
+        <section>Section 4.2.3 - Vehicle Selector Component</section>
+        <snippet>Vehicle selector with Model and Year dropdowns. Desktop implementation uses dropdown in header or sidebar. localStorage persistence for vehicle selection across sessions. Clear visual feedback for fitment compatibility.</snippet>
+      </doc>
+      <doc>
+        <path>docs/ux-specification.md</path>
+        <title>UX Specification</title>
+        <section>Section 3.4 - User Flow 4: Vehicle Selection/Change</section>
+        <snippet>Modal on first visit to collect vehicle information. Header dropdown for subsequent vehicle changes. Persistent across sessions via localStorage.</snippet>
+      </doc>
+      <doc>
+        <path>docs/ux-specification.md</path>
+        <title>UX Specification</title>
+        <section>Section 4.2.1 - Product Card Component</section>
+        <snippet>Product cards display fitment badges when vehicle is selected. "✓ Fits Your [Model]" badge for compatible products. "Universal Fit" badge for products without fitment tags.</snippet>
+      </doc>
+      <doc>
+        <path>docs/ux-specification.md</path>
+        <title>UX Specification</title>
+        <section>Section 5.1 - Color Palette</section>
+        <snippet>Success-green (#22c55e) for compatible fitment badges. Neutral-gray for universal fit indicators.</snippet>
+      </doc>
+      <doc>
+        <path>docs/epic-stories.md</path>
+        <title>Epic Stories Breakdown</title>
+        <section>Story 1.2 - Vehicle Fitment Filter</section>
+        <snippet>Core differentiator for BMW parts marketplace. Filters products by selected year/model. Persists to localStorage. Displays fitment badges on product cards. Integrates with existing FilterContext from Story 1.3.</snippet>
+      </doc>
+      <doc>
+        <path>docs/stories/story-1.3.md</path>
+        <title>Story 1.3: Vendor &amp; Category Filters</title>
+        <section>Dev Notes - Architecture Context</section>
+        <snippet>FilterContext with React Context API for global state. SessionStorage persistence pattern. FilterPanel with ShadCN Accordion for collapsible sections. FilterBadges with brand-blue badges and X removal buttons. filterProducts() utility for client-side filtering with AND logic.</snippet>
+      </doc>
+    </docs>
+    <code>
+      <artifact>
+        <path>contexts/FilterContext.tsx</path>
+        <kind>context-provider</kind>
+        <symbol>FilterProvider, useFilters</symbol>
+        <lines>1-90</lines>
+        <reason>Existing filter context that needs to be extended with vehicle selection state (model, year) and localStorage persistence. Provides global filter state management pattern to follow.</reason>
+      </artifact>
+      <artifact>
+        <path>lib/types/filters.ts</path>
+        <kind>type-definitions</kind>
+        <symbol>FilterState, FilterOption, FilterContextType</symbol>
+        <lines>1-19</lines>
+        <reason>Filter type definitions that need to be extended with vehicle: { model: string | null, year: number | null } property. Current structure has vendors and categories arrays.</reason>
+      </artifact>
+      <artifact>
+        <path>lib/utils/filters.ts</path>
+        <kind>utility-functions</kind>
+        <symbol>extractVendorOptions, extractCategoryOptions, filterProducts, saveFiltersToSession, loadFiltersFromSession</symbol>
+        <lines>1-135</lines>
+        <reason>Filter utility functions to extend. Contains pattern for extracting options from products, client-side filtering logic with AND logic, and sessionStorage persistence. Need to add vehicle fitment parsing and matching logic.</reason>
+      </artifact>
+      <artifact>
+        <path>components/FilterPanel.tsx</path>
+        <kind>component</kind>
+        <symbol>FilterPanel</symbol>
+        <lines>1-118</lines>
+        <reason>Main filter panel component using ShadCN Accordion. Vehicle fitment section needs to be added at top with VehicleSelector component. Already has vendor/category sections and Clear All button.</reason>
+      </artifact>
+      <artifact>
+        <path>components/FilterBadges.tsx</path>
+        <kind>component</kind>
+        <symbol>FilterBadges</symbol>
+        <lines>unknown</lines>
+        <reason>Component that displays active filter badges. Needs to be extended to show vehicle selection badge (e.g., "Vehicle: X4 2022") with X removal button.</reason>
+      </artifact>
+      <artifact>
+        <path>components/product-card.tsx</path>
+        <kind>component</kind>
+        <symbol>ProductCard</symbol>
+        <lines>1-90</lines>
+        <reason>Product card component that displays product information. Has placeholder for compatibility indicator (lines 78-83). Needs to be updated to show FitmentBadge component when vehicle is selected.</reason>
+      </artifact>
+      <artifact>
+        <path>lib/shopify/types.ts</path>
+        <kind>type-definitions</kind>
+        <symbol>Product, ShopifyProduct</symbol>
+        <lines>71-138</lines>
+        <reason>Shopify product type definitions. Product type includes tags array (line 136) which contains vehicle fitment tags in format "BMW [Model] [Trim] [Year]". Used for parsing fitment data.</reason>
+      </artifact>
+      <artifact>
+        <path>components/ui/accordion.tsx</path>
+        <kind>shadcn-component</kind>
+        <symbol>Accordion, AccordionItem, AccordionTrigger, AccordionContent</symbol>
+        <lines>unknown</lines>
+        <reason>ShadCN Accordion component already installed and used in FilterPanel. Will be used for collapsible Vehicle Fitment section.</reason>
+      </artifact>
+      <artifact>
+        <path>components/ui/badge.tsx</path>
+        <kind>shadcn-component</kind>
+        <symbol>Badge</symbol>
+        <lines>unknown</lines>
+        <reason>ShadCN Badge component already installed. Used in ProductCard for stock status. Will be reused for FitmentBadge component with success-green variant for compatible products.</reason>
+      </artifact>
+    </code>
+    <dependencies>
+      <node>
+        <package name="next" version="15.3.0-canary.13" />
+        <package name="react" version="19.0.0" />
+        <package name="react-dom" version="19.0.0" />
+        <package name="typescript" version="5.8.2" />
+        <package name="@radix-ui/react-accordion" version="^1.2.12" note="Already installed for FilterPanel" />
+        <package name="@radix-ui/react-checkbox" version="^1.3.3" note="Already installed for FilterPanel" />
+        <package name="@radix-ui/react-select" version="TBD" note="NEEDS INSTALLATION for VehicleSelector dropdowns" />
+        <package name="lucide-react" version="^0.545.0" note="Icon library for X icons, checkmarks" />
+        <package name="tailwindcss" version="^4.0.14" />
+        <package name="clsx" version="^2.1.1" />
+        <package name="tailwind-merge" version="^3.3.1" />
+      </node>
+    </dependencies>
+  </artifacts>
+
+  <constraints>
+    <constraint type="architecture">Next.js 15 with Server Components by default. Client components must be marked with "use client" directive.</constraint>
+    <constraint type="architecture">React 19 with new features. Use modern React patterns.</constraint>
+    <constraint type="state-management">Use React Context API for global filter state (FilterContext pattern already established in Story 1.3).</constraint>
+    <constraint type="persistence">Vehicle selection must persist to localStorage (AC#5). Existing filters use sessionStorage - vehicle is different as it should persist across browser sessions.</constraint>
+    <constraint type="filtering-logic">All filters combine with AND logic. Product must match vehicle AND vendor AND category if all are selected.</constraint>
+    <constraint type="tag-format">Shopify product tags use format "BMW [Model] [Trim] [Year]" (e.g., "BMW X4 xDrive30i 2022"). Individual years per tag, not ranges. Full model names (X3, X4, 335i) not chassis codes.</constraint>
+    <constraint type="parsing">Trim information in tags must be ignored during fitment matching. Match only on model + year combination.</constraint>
+    <constraint type="ui-components">Use ShadCN components for consistency. Select component for dropdowns, Accordion for collapsible sections, Badge for fitment indicators.</constraint>
+    <constraint type="accessibility">All interactive elements must have ARIA labels. Keyboard navigation support required. Screen reader announcements for filter changes.</constraint>
+    <constraint type="styling">Tailwind CSS for all styling. Dark mode support required. Use brand colors: brand-blue (#529BCA) for badges, success-green (#22c55e) for compatible fitment.</constraint>
+    <constraint type="responsive">Mobile-first design. All components must work on screens from 320px to 2560px width.</constraint>
+    <constraint type="performance">Client-side filtering for performance with Shopify product sets. Use useMemo for filtered products to avoid unnecessary recalculations.</constraint>
+    <constraint type="integration">Must integrate seamlessly with existing Story 1.3 filter infrastructure (FilterContext, FilterPanel, FilterBadges, filterProducts utility).</constraint>
+    <constraint type="empty-state">Products without fitment tags are "universal fit" and should always be shown with appropriate badge (AC#8).</constraint>
+  </constraints>
+
+  <interfaces>
+    <interface>
+      <name>VehicleSelection</name>
+      <kind>TypeScript Type</kind>
+      <signature>type VehicleSelection = { model: string; year: number; }</signature>
+      <path>lib/types/filters.ts (to be added)</path>
+    </interface>
+    <interface>
+      <name>ParsedFitmentTag</name>
+      <kind>TypeScript Type</kind>
+      <signature>type ParsedFitmentTag = { make: string; model: string; trim: string; year: number; }</signature>
+      <path>lib/utils/vehicle.ts (to be created)</path>
+    </interface>
+    <interface>
+      <name>FilterState (extended)</name>
+      <kind>TypeScript Type</kind>
+      <signature>type FilterState = { vendors: string[]; categories: string[]; vehicle: VehicleSelection | null; }</signature>
+      <path>lib/types/filters.ts (to be modified)</path>
+    </interface>
+    <interface>
+      <name>parseFitmentTag</name>
+      <kind>Function Signature</kind>
+      <signature>function parseFitmentTag(tag: string): ParsedFitmentTag | null</signature>
+      <path>lib/utils/vehicle.ts (to be created)</path>
+    </interface>
+    <interface>
+      <name>extractModelOptions</name>
+      <kind>Function Signature</kind>
+      <signature>function extractModelOptions(products: Product[]): string[]</signature>
+      <path>lib/utils/vehicle.ts (to be created)</path>
+    </interface>
+    <interface>
+      <name>extractYearOptions</name>
+      <kind>Function Signature</kind>
+      <signature>function extractYearOptions(products: Product[]): number[]</signature>
+      <path>lib/utils/vehicle.ts (to be created)</path>
+    </interface>
+    <interface>
+      <name>matchVehicle</name>
+      <kind>Function Signature</kind>
+      <signature>function matchVehicle(product: Product, vehicle: VehicleSelection | null): 'compatible' | 'universal' | 'incompatible'</signature>
+      <path>lib/utils/vehicle.ts (to be created)</path>
+    </interface>
+    <interface>
+      <name>FilterContext (extended)</name>
+      <kind>React Context API</kind>
+      <signature>FilterContextType = { filters: FilterState; updateFilters: ...; clearFilters: ...; toggleVendor: ...; toggleCategory: ...; setVehicle: (model: string, year: number) => void; clearVehicle: () => void; }</signature>
+      <path>contexts/FilterContext.tsx (to be modified)</path>
+    </interface>
+    <interface>
+      <name>VehicleSelector Component Props</name>
+      <kind>React Component Interface</kind>
+      <signature>interface VehicleSelectorProps { modelOptions: string[]; yearOptions: number[]; selectedModel: string | null; selectedYear: number | null; onSelect: (model: string, year: number) => void; onClear: () => void; }</signature>
+      <path>components/VehicleSelector.tsx (to be created)</path>
+    </interface>
+    <interface>
+      <name>FitmentBadge Component Props</name>
+      <kind>React Component Interface</kind>
+      <signature>interface FitmentBadgeProps { variant: 'compatible' | 'universal'; modelName?: string; }</signature>
+      <path>components/FitmentBadge.tsx (to be created)</path>
+    </interface>
+    <interface>
+      <name>localStorage API</name>
+      <kind>Browser API</kind>
+      <signature>localStorage.setItem(key: string, value: string); localStorage.getItem(key: string): string | null; localStorage.removeItem(key: string)</signature>
+      <path>Browser native API (key: "vehicle-selection")</path>
+    </interface>
+  </interfaces>
+
+  <tests>
+    <standards>
+      No formal test framework exists in the project yet (per Story 1.3 context). Manual testing required for acceptance criteria validation. Build with TypeScript type checking and Prettier formatting. Use npm run build to verify no compilation errors.
+    </standards>
+    <locations>
+      No test directories exist yet. Future tests would likely be in __tests__ or adjacent to components with .test.tsx extension following Next.js conventions.
+    </locations>
+    <ideas>
+      <idea ac="AC1" priority="high">Test Year dropdown renders with correct range (2008-2024 or dynamically extracted from tags). Verify dropdown is populated and selectable.</idea>
+      <idea ac="AC2" priority="medium">Verify BMW make is pre-set or hardcoded. Since all products are BMW parts, make field can be hidden in UI but included in data model.</idea>
+      <idea ac="AC3" priority="high">Test Model dropdown is populated dynamically from product tags. Parse all tags, extract unique models (X3, X4, 335i, 1 Series M), verify sorted alphabetically. Test with products that have no fitment tags (should still work).</idea>
+      <idea ac="AC4" priority="high">Test filter applies immediately on selection. When user selects X4 + 2022, product grid should update without requiring "Apply" button. Verify useMemo triggers on FilterState change.</idea>
+      <idea ac="AC5" priority="critical">Test localStorage persistence. Select vehicle (X4 2022), reload page, verify vehicle is still selected. Test across browser sessions. Verify localStorage key "vehicle-selection" exists with correct JSON structure.</idea>
+      <idea ac="AC6" priority="high">Test "Clear All Filters" button clears vehicle selection along with vendor/category filters. Also test individual vehicle badge removal. Verify localStorage is cleared on reset.</idea>
+      <idea ac="AC7" priority="high">Test product count updates dynamically. Display "Showing X of Y products" text. Verify count changes when vehicle is selected, changed, or cleared. Test with various filter combinations.</idea>
+      <idea ac="AC8" priority="critical">Test products without fitment tags display "Universal Fit" badge and are always shown. Verify they don't disappear when vehicle is selected. Test with mix of tagged and untagged products.</idea>
+      <idea ac="ALL" priority="high">Test exact year matching. Product tagged "BMW X4 xDrive30i 2022" should only match vehicle X4 + 2022, not 2021 or 2023. No year range matching.</idea>
+      <idea ac="ALL" priority="high">Test trim is ignored. Product with "BMW X4 xDrive30i 2022" should match vehicle X4 + 2022 even though user didn't select "xDrive30i" trim. Only model + year matching.</idea>
+      <idea ac="ALL" priority="medium">Test model names with spaces parse correctly. "1 Series M" should be extracted and matched properly, not split into separate tokens.</idea>
+      <idea ac="ALL" priority="high">Test AND logic with multiple filters. Select vehicle (X4 2022) + vendor (Akrapovic) + category (Exhaust). Product must match ALL three to be shown.</idea>
+      <idea ac="ALL" priority="medium">Test keyboard navigation. Tab through Model and Year dropdowns. Use Arrow keys to navigate options. Press Enter to select. Verify focus management and ARIA announcements.</idea>
+      <idea ac="ALL" priority="medium">Test screen reader support. Verify announcements when vehicle is selected ("Filtering by BMW X4 2022"). Verify badge labels are read correctly ("Fits Your X4").</idea>
+      <idea ac="ALL" priority="low">Test edge cases: empty product list, all products filtered out, single product remaining, no fitment tags in entire catalog. Verify appropriate empty states and messages.</idea>
+    </ideas>
+  </tests>
+</story-context>

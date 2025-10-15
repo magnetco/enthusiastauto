@@ -1,5 +1,6 @@
 import { Product } from "lib/shopify/types";
 import { FilterOption, FilterState } from "lib/types/filters";
+import { matchVehicle } from "./vehicle";
 
 /**
  * Extract unique vendors from products and count occurrences
@@ -66,6 +67,19 @@ export function filterProducts(
   filters: FilterState,
 ): Product[] {
   return products.filter((product) => {
+    // Search filter: product must match search term (minimum 2 characters)
+    if (filters.searchTerm && filters.searchTerm.length >= 2) {
+      const searchLower = filters.searchTerm.toLowerCase();
+      const matchesTitle = product.title.toLowerCase().includes(searchLower);
+      const matchesDescription = product.description
+        .toLowerCase()
+        .includes(searchLower);
+
+      if (!matchesTitle && !matchesDescription) {
+        return false;
+      }
+    }
+
     // Vendor filter: product must match one of selected vendors
     if (filters.vendors.length > 0) {
       if (!product.vendor || !filters.vendors.includes(product.vendor)) {
@@ -86,14 +100,28 @@ export function filterProducts(
       }
     }
 
+    // Vehicle fitment filter: if vehicle is selected, product must be compatible or universal
+    if (filters.vehicle) {
+      const fitmentStatus = matchVehicle(product, filters.vehicle);
+      // Only show compatible and universal fit products when vehicle is selected
+      // Hide incompatible products (those with fitment tags that don't match)
+      if (fitmentStatus === "incompatible") {
+        return false;
+      }
+    }
+
     return true;
   });
 }
 
 /**
- * Save filter state to sessionStorage
+ * Save filter state to sessionStorage (only vendors and categories)
+ * Note: Vehicle selection is persisted to localStorage separately
  */
-export function saveFiltersToSession(filters: FilterState): void {
+export function saveFiltersToSession(filters: {
+  vendors: string[];
+  categories: string[];
+}): void {
   if (typeof window !== "undefined") {
     try {
       sessionStorage.setItem("productFilters", JSON.stringify(filters));
@@ -104,9 +132,13 @@ export function saveFiltersToSession(filters: FilterState): void {
 }
 
 /**
- * Load filter state from sessionStorage
+ * Load filter state from sessionStorage (only vendors and categories)
+ * Note: Vehicle selection is loaded from localStorage separately
  */
-export function loadFiltersFromSession(): FilterState | null {
+export function loadFiltersFromSession(): {
+  vendors: string[];
+  categories: string[];
+} | null {
   if (typeof window !== "undefined") {
     try {
       const saved = sessionStorage.getItem("productFilters");

@@ -77,16 +77,14 @@ export default function MobileMenu({ menu }: { menu: Menu[] }) {
                   </Suspense>
                 </div>
                 {menu.length ? (
-                  <ul className="flex w-full flex-col">
+                  <ul className="flex w-full flex-col gap-2">
                     {menu.map((item: Menu) => (
-                      <li
-                        className="py-2 text-xl text-black transition-colors hover:text-neutral-500 dark:text-white"
-                        key={item.title}
-                      >
+                      <li key={item.title}>
                         <Link
                           href={item.path}
                           prefetch={true}
                           onClick={closeMobileMenu}
+                          className="block py-3 text-xl text-black transition-colors hover:text-neutral-500 dark:text-white min-h-[44px] flex items-center"
                         >
                           {item.title}
                         </Link>

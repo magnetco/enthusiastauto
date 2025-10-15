@@ -1,19 +1,62 @@
+"use client";
+
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Product } from "@/lib/shopify/types";
+import { FitmentBadge } from "@/components/FitmentBadge";
+import { useFilters } from "@/contexts/FilterContext";
+import { matchVehicle } from "@/lib/utils/vehicle";
+import { useCart } from "@/components/cart/cart-context";
+import { addItem } from "@/components/cart/actions";
 import Image from "next/image";
 import Link from "next/link";
 import Price from "@/components/price";
+import { ShoppingCartIcon } from "@heroicons/react/24/outline";
+import { toast } from "sonner";
+import { startTransition } from "react";
 
 interface ProductCardProps {
   product: Product;
 }
 
 export function ProductCard({ product }: ProductCardProps) {
+  const filterContext = useFilters();
+  const filters = filterContext?.filters || { vehicle: null };
+  const { addCartItem } = useCart();
+
   const isInStock = product.availableForSale;
   const imageUrl = product.images[0]?.url || product.featuredImage?.url;
   const imageAlt =
     product.images[0]?.altText || `${product.title} by ${product.vendor}`;
+
+  // Determine fitment status when vehicle is selected
+  const fitmentStatus = matchVehicle(product, filters.vehicle);
+  const showFitmentBadge = filters.vehicle !== null;
+
+  // Get default variant (first available variant)
+  const defaultVariant = product.variants[0];
+
+  // Handle Add to Cart
+  const handleAddToCart = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault(); // Prevent link navigation
+    e.stopPropagation();
+
+    if (!defaultVariant || !isInStock) return;
+
+    // Optimistic update wrapped in transition
+    startTransition(() => {
+      addCartItem(defaultVariant, product);
+    });
+
+    // Server action for Shopify persistence
+    await addItem(null, defaultVariant.id);
+
+    // Show success toast
+    toast.success("Added to cart!", {
+      description: product.title,
+      duration: 3000,
+    });
+  };
 
   return (
     <article className="group">
@@ -74,16 +117,37 @@ export function ProductCard({ product }: ProductCardProps) {
               />
             </div>
 
-            {/* Compatibility indicator placeholder */}
-            <div className="flex items-center gap-1 pt-1">
-              <div className="h-4 w-4 rounded-full bg-neutral-200 dark:bg-neutral-700" />
-              <span className="text-xs text-neutral-500 dark:text-neutral-400">
-                Compatibility check coming soon
-              </span>
-            </div>
+            {/* Fitment badge */}
+            {showFitmentBadge && (
+              <div className="pt-1">
+                {fitmentStatus === "compatible" && (
+                  <FitmentBadge
+                    variant="compatible"
+                    modelName={filters.vehicle?.model}
+                    year={filters.vehicle?.year}
+                  />
+                )}
+                {fitmentStatus === "universal" && (
+                  <FitmentBadge variant="check-fitment" />
+                )}
+              </div>
+            )}
           </CardContent>
         </Card>
       </Link>
+
+      {/* Add to Cart Button - Outside the Link to prevent navigation */}
+      <div className="mt-3">
+        <button
+          onClick={handleAddToCart}
+          disabled={!isInStock}
+          aria-label={`Add ${product.title} to cart`}
+          className="w-full rounded-full bg-blue-600 py-3 px-4 text-sm font-medium text-white transition-all duration-200 hover:bg-blue-700 disabled:cursor-not-allowed disabled:bg-neutral-400 disabled:opacity-60 dark:disabled:bg-neutral-700 flex items-center justify-center gap-2 min-h-[44px]"
+        >
+          <ShoppingCartIcon className="h-5 w-5" aria-hidden="true" />
+          {isInStock ? "Add to Cart" : "Out of Stock"}
+        </button>
+      </div>
     </article>
   );
 }

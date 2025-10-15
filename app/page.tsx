@@ -2,7 +2,6 @@ import { Suspense } from "react";
 import { ProductGridLoading } from "@/components/product-grid";
 import { ProductGridError } from "@/components/product-grid-error";
 import { ProductGridWithFilters } from "@/components/ProductGridWithFilters";
-import { FilterProvider } from "@/contexts/FilterContext";
 import { getProducts } from "@/lib/shopify";
 import Footer from "components/layout/footer";
 
@@ -18,11 +17,7 @@ export const metadata = {
 async function ProductListing() {
   try {
     const products = await getProducts({});
-    return (
-      <FilterProvider>
-        <ProductGridWithFilters products={products} />
-      </FilterProvider>
-    );
+    return <ProductGridWithFilters products={products} />;
   } catch (error) {
     console.error("Failed to fetch products:", error);
     throw error;

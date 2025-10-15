@@ -1,9 +1,10 @@
 import { CartProvider } from "components/cart/cart-context";
+import { FilterProvider } from "contexts/FilterContext";
 import { Navbar } from "components/layout/navbar";
 import { WelcomeToast } from "components/welcome-toast";
 import { GeistSans } from "geist/font/sans";
 import { getCart } from "lib/shopify";
-import { ReactNode } from "react";
+import { ReactNode, Suspense } from "react";
 import { Toaster } from "sonner";
 import "./globals.css";
 import { baseUrl } from "lib/utils";
@@ -22,6 +23,13 @@ export const metadata = {
   },
 };
 
+export const viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 5,
+  userScalable: true,
+};
+
 export default async function RootLayout({
   children,
 }: {
@@ -34,12 +42,16 @@ export default async function RootLayout({
     <html lang="en" className={GeistSans.variable}>
       <body className="bg-neutral-50 text-black selection:bg-teal-300 dark:bg-neutral-900 dark:text-white dark:selection:bg-pink-500 dark:selection:text-white">
         <CartProvider cartPromise={cart}>
-          <Navbar />
-          <main>
-            {children}
-            <Toaster closeButton />
-            <WelcomeToast />
-          </main>
+          <Suspense fallback={null}>
+            <FilterProvider>
+              <Navbar />
+              <main>
+                {children}
+                <Toaster closeButton />
+                <WelcomeToast />
+              </main>
+            </FilterProvider>
+          </Suspense>
         </CartProvider>
       </body>
     </html>

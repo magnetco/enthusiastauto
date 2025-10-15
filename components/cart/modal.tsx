@@ -16,6 +16,8 @@ import { useCart } from "./cart-context";
 import { DeleteItemButton } from "./delete-item-button";
 import { EditItemQuantityButton } from "./edit-item-quantity-button";
 import OpenCart from "./open-cart";
+import { parseFitmentTag } from "@/lib/utils/vehicle";
+import { Badge } from "@/components/ui/badge";
 
 type MerchandiseSearchParams = {
   [key: string]: string;
@@ -83,11 +85,22 @@ export default function CartModal() {
               </div>
 
               {!cart || cart.lines.length === 0 ? (
-                <div className="mt-20 flex w-full flex-col items-center justify-center overflow-hidden">
-                  <ShoppingCartIcon className="h-16" />
+                <div className="mt-20 flex w-full flex-col items-center justify-center overflow-hidden px-4">
+                  <ShoppingCartIcon className="h-16 text-neutral-400" />
                   <p className="mt-6 text-center text-2xl font-bold">
-                    Your cart is empty.
+                    Your cart is empty
                   </p>
+                  <p className="mt-2 text-center text-sm text-neutral-500 dark:text-neutral-400">
+                    Add some premium BMW parts to get started
+                  </p>
+                  <Link href="/">
+                    <button
+                      onClick={closeCart}
+                      className="mt-6 rounded-full bg-blue-600 px-6 py-3 text-sm font-medium text-white transition-all duration-200 hover:bg-blue-700"
+                    >
+                      Browse Products
+                    </button>
+                  </Link>
                 </div>
               ) : (
                 <div className="flex h-full flex-col justify-between overflow-hidden p-1">
@@ -159,6 +172,50 @@ export default function CartModal() {
                                         {item.merchandise.title}
                                       </p>
                                     ) : null}
+                                    {/* Fitment badge for BMW parts */}
+                                    {(() => {
+                                      const tags =
+                                        item.merchandise.product.tags;
+                                      const bmwTags = tags?.filter((tag) =>
+                                        tag.startsWith("BMW"),
+                                      );
+                                      const fitmentTag = bmwTags?.[0];
+                                      const parsedFitment = fitmentTag
+                                        ? parseFitmentTag(fitmentTag)
+                                        : null;
+
+                                      if (parsedFitment) {
+                                        return (
+                                          <div className="mt-1">
+                                            <Badge
+                                              variant="secondary"
+                                              className="text-xs bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-100"
+                                            >
+                                              Fits: {parsedFitment.model}{" "}
+                                              {parsedFitment.year}
+                                            </Badge>
+                                          </div>
+                                        );
+                                      } else if (
+                                        tags?.some((tag) =>
+                                          tag
+                                            .toLowerCase()
+                                            .includes("universal"),
+                                        )
+                                      ) {
+                                        return (
+                                          <div className="mt-1">
+                                            <Badge
+                                              variant="secondary"
+                                              className="text-xs"
+                                            >
+                                              Universal Fit
+                                            </Badge>
+                                          </div>
+                                        );
+                                      }
+                                      return null;
+                                    })()}
                                   </div>
                                 </Link>
                               </div>
