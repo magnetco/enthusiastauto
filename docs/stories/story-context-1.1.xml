@@ -1,0 +1,208 @@
+<story-context id="bmad/bmm/workflows/4-implementation/story-context/template" v="1.0">
+  <metadata>
+    <epicId>1</epicId>
+    <storyId>1.1</storyId>
+    <title>Product Listing Page with Shopify Integration</title>
+    <status>Ready</status>
+    <generatedAt>2025-10-14</generatedAt>
+    <generator>BMAD Story Context Workflow</generator>
+    <sourceStoryPath>docs/stories/story-1.1.md</sourceStoryPath>
+  </metadata>
+
+  <story>
+    <asA>BMW enthusiast</asA>
+    <iWant>view a grid of available BMW parts from the Shopify inventory</iWant>
+    <soThat>I can browse the curated product catalog</soThat>
+    <tasks>
+      - Task 1: Set up Shopify Storefront API integration
+      - Task 2: Implement responsive product grid layout
+      - Task 3: Build Product Card component
+      - Task 4: Implement loading states
+      - Task 5: Add error handling and empty states
+      - Task 6: Testing and accessibility
+    </tasks>
+  </story>
+
+  <acceptanceCriteria>
+    1. Product listing page displays products in responsive grid layout
+    2. Each product card shows: image, title, price, vendor, compatibility indicator placeholder
+    3. Products are fetched in real-time from Shopify Storefront API
+    4. Accurate inventory status is displayed (in stock / out of stock)
+    5. Loading states are shown during data fetch (skeleton loaders)
+    6. Error handling for API failures with user-friendly messages
+    7. Products display correctly on mobile (1 column), tablet (2-3 columns), and desktop (3-4 columns) viewports
+  </acceptanceCriteria>
+
+  <artifacts>
+    <docs>
+      <doc>
+        <path>docs/PRD.md</path>
+        <title>Product Requirements Document</title>
+        <section>Functional Requirements</section>
+        <snippet>FR001: Users shall be able to filter products by vehicle fitment using year-make-model tags. FR007: The system shall integrate with Shopify inventory in real-time to display accurate product availability and pricing.</snippet>
+      </doc>
+      <doc>
+        <path>docs/PRD.md</path>
+        <title>Product Requirements Document</title>
+        <section>Non-Functional Requirements</section>
+        <snippet>NFR001 Performance: Product listing pages shall load within 2 seconds on standard broadband connections. NFR002 Mobile Responsiveness: All features shall be accessible and usable on devices with screen widths from 320px to 2560px. NFR003 Usability: ShadCN components shall be used to ensure consistent, accessible UI patterns.</snippet>
+      </doc>
+      <doc>
+        <path>docs/ux-specification.md</path>
+        <title>UX/UI Specification</title>
+        <section>4.2.1 Product Card Component</section>
+        <snippet>Product Card displays in responsive grid with image (1:1 aspect ratio), title (truncate 2 lines), price, vendor, and compatibility indicator. States include hover (shadow elevation, image zoom), loading (skeleton), and out-of-stock overlay. Accessibility requires semantic HTML (article), alt text, and ARIA labels.</snippet>
+      </doc>
+      <doc>
+        <path>docs/ux-specification.md</path>
+        <title>UX/UI Specification</title>
+        <section>5. Visual Design Foundation</section>
+        <snippet>Colors: Brand blue (#529BCA), neutral grays, success green for stock status. Typography: Inter for body, Outfit for product titles. Spacing: space-4 to space-6 for card padding, gap-6 for grid. Border radius: radius-lg for cards, radius-md for buttons.</snippet>
+      </doc>
+      <doc>
+        <path>docs/ux-specification.md</path>
+        <title>UX/UI Specification</title>
+        <section>6. Responsive Design</section>
+        <snippet>Mobile (320px): 1 column, full-width cards. Tablet (640-768px): 2-3 columns. Desktop (1024px+): 3-4 columns with gap-6 to gap-8. Touch targets minimum 44px on mobile.</snippet>
+      </doc>
+      <doc>
+        <path>docs/ux-specification.md</path>
+        <title>UX/UI Specification</title>
+        <section>7. Accessibility (WCAG 2.1 AA)</section>
+        <snippet>Semantic HTML (article, main), proper heading hierarchy (H1 page, H3 products), alt text for images, ARIA labels for icon buttons, keyboard navigable, focus indicators (2px solid brand-blue), color contrast 4.5:1 minimum for text, 3:1 for UI components.</snippet>
+      </doc>
+      <doc>
+        <path>docs/data-models.md</path>
+        <title>Data Models Documentation</title>
+        <section>Product Type</section>
+        <snippet>Product type includes id, handle, title, description, availableForSale, priceRange (min/max), variants array, images array, tags, seo. Raw ShopifyProduct uses Connection&lt;T&gt; for GraphQL pagination. Transform with reshapeProduct() to flatten arrays and add alt text.</snippet>
+      </doc>
+      <doc>
+        <path>docs/epic-stories.md</path>
+        <title>Epic Stories</title>
+        <section>Story 1</section>
+        <snippet>Story sequencing: Sprint 1 includes Story 1 (Product Listing), Story 3 (Vendor/Category Filters), and Story 7 (Responsive Grid). Effort: 5 points. Technical notes emphasize pagination/infinite scroll, cache strategy, and Shopify Storefront API integration.</snippet>
+      </doc>
+    </docs>
+
+    <code>
+      <artifact>
+        <path>lib/shopify/index.ts</path>
+        <kind>service</kind>
+        <symbol>getProducts</symbol>
+        <lines>438-461</lines>
+        <reason>Primary function to fetch products from Shopify Storefront API. Accepts query, reverse, sortKey parameters. Returns Product[] array. Uses caching with 'use cache' directive and TAGS.products.</reason>
+      </artifact>
+      <artifact>
+        <path>lib/shopify/index.ts</path>
+        <kind>service</kind>
+        <symbol>reshapeProducts</symbol>
+        <lines>200-214</lines>
+        <reason>Transforms ShopifyProduct[] to Product[] by flattening GraphQL Connection types and filtering hidden products. Essential for data transformation layer.</reason>
+      </artifact>
+      <artifact>
+        <path>lib/shopify/index.ts</path>
+        <kind>service</kind>
+        <symbol>shopifyFetch</symbol>
+        <lines>71-119</lines>
+        <reason>Core GraphQL fetch utility with error handling. Includes Shopify Storefront Access Token authentication and error transformation.</reason>
+      </artifact>
+      <artifact>
+        <path>lib/shopify/queries/product.ts</path>
+        <kind>query</kind>
+        <symbol>getProductsQuery</symbol>
+        <lines>12-23</lines>
+        <reason>GraphQL query definition for fetching products list. Accepts sortKey, reverse, query parameters and returns first 100 products with productFragment fields.</reason>
+      </artifact>
+      <artifact>
+        <path>lib/shopify/types.ts</path>
+        <kind>types</kind>
+        <symbol>Product</symbol>
+        <lines>N/A</lines>
+        <reason>TypeScript type definition for transformed Product. Already exists in types.ts per data-models.md documentation.</reason>
+      </artifact>
+      <artifact>
+        <path>lib/shopify/fragments/product.ts</path>
+        <kind>query</kind>
+        <symbol>productFragment</symbol>
+        <lines>N/A</lines>
+        <reason>GraphQL fragment defining which product fields to fetch. Reused across all product queries.</reason>
+      </artifact>
+    </code>
+
+    <dependencies>
+      <node>
+        <package name="next" version="15.3.0-canary.13" />
+        <package name="react" version="19.0.0" />
+        <package name="react-dom" version="19.0.0" />
+        <package name="@headlessui/react" version="^2.2.0" />
+        <package name="@heroicons/react" version="^2.2.0" />
+        <package name="clsx" version="^2.1.1" />
+        <package name="sonner" version="^2.0.1" note="Toast notifications" />
+        <package name="tailwindcss" version="^4.0.14" />
+        <package name="typescript" version="5.8.2" />
+      </node>
+    </dependencies>
+  </artifacts>
+
+  <constraints>
+    - Use Next.js App Router with TypeScript (project standard)
+    - Server components by default; client components only for interactivity
+    - Shopify Storefront API for all product data (no local database)
+    - GraphQL queries in lib/shopify/queries/ directory
+    - Transform raw Shopify data using reshapeProduct() helper before use
+    - Implement 'use cache' directive with cacheTag(TAGS.products) and cacheLife('days') for performance
+    - Handle Connection&lt;T&gt; GraphQL pagination structure with removeEdgesAndNodes()
+    - Filter products with HIDDEN_PRODUCT_TAG from lib/constants
+    - Image lazy loading with Next.js Image component
+    - ShadCN UI components required (not yet installed - needs: npx shadcn-ui@latest add card badge skeleton)
+    - Tailwind CSS with custom design tokens from ux-specification.md Section 5
+    - Responsive breakpoints: 320px (mobile 1 col), 640px (2 col), 768px (3 col), 1024px (4 col)
+    - WCAG 2.1 AA compliance: semantic HTML, ARIA labels, keyboard navigation, 4.5:1 contrast
+    - Performance target: page load &lt; 2 seconds (PRD NFR001)
+    - Shopify API rate limit: max 50 requests per second
+  </constraints>
+
+  <interfaces>
+    <interface>
+      <name>getProducts</name>
+      <kind>function signature</kind>
+      <signature>async function getProducts({ query, reverse, sortKey }: { query?: string; reverse?: boolean; sortKey?: string; }): Promise&lt;Product[]&gt;</signature>
+      <path>lib/shopify/index.ts:438-461</path>
+    </interface>
+    <interface>
+      <name>Product Type</name>
+      <kind>TypeScript interface</kind>
+      <signature>type Product = { id: string; handle: string; title: string; description: string; availableForSale: boolean; priceRange: { minVariantPrice: Money; maxVariantPrice: Money; }; variants: ProductVariant[]; images: Image[]; tags: string[]; seo: SEO; }</signature>
+      <path>lib/shopify/types.ts</path>
+    </interface>
+    <interface>
+      <name>Shopify Storefront GraphQL API</name>
+      <kind>REST endpoint</kind>
+      <signature>POST https://{SHOPIFY_STORE_DOMAIN}/api/2024-01/graphql.json with X-Shopify-Storefront-Access-Token header</signature>
+      <path>lib/shopify/index.ts:64</path>
+    </interface>
+  </interfaces>
+
+  <tests>
+    <standards>
+      Testing framework not yet identified in codebase. Recommend Jest + React Testing Library for component tests and Playwright for E2E. Test locations should follow Next.js convention: __tests__/ or *.test.tsx co-located with components. Accessibility testing with @axe-core/react or jest-axe. Performance testing with Lighthouse CI.
+    </standards>
+
+    <locations>
+      - __tests__/components/ProductGrid.test.tsx (unit tests)
+      - __tests__/components/ProductCard.test.tsx (unit tests)
+      - e2e/product-listing.spec.ts (Playwright E2E)
+    </locations>
+
+    <ideas>
+      <idea ac="1">Test responsive grid renders correct columns at breakpoints: 1 col (mobile), 2-3 cols (tablet), 4 cols (desktop)</idea>
+      <idea ac="2">Test ProductCard displays all required fields: image, title, price, vendor, availability badge</idea>
+      <idea ac="3">Test getProducts() API call with mock Shopify response, verify data transformation</idea>
+      <idea ac="4">Test availableForSale=true shows "In Stock", availableForSale=false shows "Out of Stock"</idea>
+      <idea ac="5">Test loading skeleton appears during fetch, disappears when data loads</idea>
+      <idea ac="6">Test error handling: API failure displays user-friendly error message with retry option</idea>
+      <idea ac="7">Test accessibility: Lighthouse score 90+, keyboard navigation, screen reader labels, WCAG AA contrast</idea>
+    </ideas>
+  </tests>
+</story-context>

@@ -1,0 +1,239 @@
+<story-context id="bmad/bmm/workflows/4-implementation/story-context/template" v="1.0">
+  <metadata>
+    <epicId>1</epicId>
+    <storyId>1.3</storyId>
+    <title>Vendor & Category Filters</title>
+    <status>Ready</status>
+    <generatedAt>2025-10-14</generatedAt>
+    <generator>BMAD Story Context Workflow</generator>
+    <sourceStoryPath>docs/stories/story-1.3.md</sourceStoryPath>
+  </metadata>
+
+  <story>
+    <asA>user browsing parts</asA>
+    <iWant>to filter products by vendor (brand) and category</iWant>
+    <soThat>I can narrow down my search to specific manufacturers or part types</soThat>
+    <tasks>7 tasks with 31 subtasks covering: Shopify API data extraction (vendors/categories), FilterPanel component with ShadCN Accordion/Checkbox, FilterContext state management with sessionStorage persistence, FilterBadge component for active filters, filterProducts() utility for client-side filtering, ProductGrid integration with loading/empty states, and comprehensive testing (multi-filter combinations, accessibility, performance)</tasks>
+  </story>
+
+  <acceptanceCriteria>
+    <criterion id="1">Vendor filter displays all available vendors from Shopify product data</criterion>
+    <criterion id="2">Category filter displays Shopify categories (Exhaust, Suspension, Interior, etc.)</criterion>
+    <criterion id="3">Multiple filters can be applied simultaneously (e.g., vendor + category + fitment)</criterion>
+    <criterion id="4">Active filters are clearly indicated with visual badges</criterion>
+    <criterion id="5">Filter selections persist during session</criterion>
+    <criterion id="6">Product count updates dynamically with each filter applied</criterion>
+    <criterion id="7">"Clear all filters" option resets all selections</criterion>
+  </acceptanceCriteria>
+
+  <artifacts>
+    <docs>
+      <doc>
+        <path>docs/PRD.md</path>
+        <title>Product Requirements Document</title>
+        <section>Functional Requirements (FR002, FR003, FR006)</section>
+        <snippet>FR002: Users shall be able to filter products by vendor (Shopify product vendor field). FR003: Users shall be able to filter products by category (Shopify categories). FR006: Users shall be able to apply multiple filters simultaneously with real-time product list updates.</snippet>
+      </doc>
+      <doc>
+        <path>docs/ux-specification.md</path>
+        <title>UX Specification</title>
+        <section>Section 4.2.4 - Filter Panel Component</section>
+        <snippet>FilterPanel with collapsible sections (Accordion). Desktop: fixed sidebar (240-280px), sticky on scroll. Mobile: slide-out drawer from left (300px) or bottom. Vendor and Category filters use checkboxes with product counts. Active filters shown as badges with remove capability.</snippet>
+      </doc>
+      <doc>
+        <path>docs/ux-specification.md</path>
+        <title>UX Specification</title>
+        <section>Section 5.1 - Color Palette for Filter Badges</section>
+        <snippet>Active filter badges use brand-blue (#529BCA) for emphasis. Badge component with close button (X icon). Success green (#22c55e) for compatible filters, neutral gray for informational badges.</snippet>
+      </doc>
+      <doc>
+        <path>docs/ux-specification.md</path>
+        <title>UX Specification</title>
+        <section>Section 3.1 - User Flow: Finding and Purchasing Compatible Parts</section>
+        <snippet>Filter interaction flow: User applies filters → Visual feedback within 100ms → Product count updates → Grid re-renders with filtered products → Active filter badges displayed above grid with individual remove buttons.</snippet>
+      </doc>
+      <doc>
+        <path>docs/architecture.md</path>
+        <title>Architecture Documentation</title>
+        <section>Component Architecture</section>
+        <snippet>Component organization: components/layout/search/filter/ contains existing filter UI (index.tsx, item.tsx, dropdown.tsx). Filter panel patterns already implemented. Extend existing structure rather than rebuild from scratch.</snippet>
+      </doc>
+      <doc>
+        <path>docs/data-models.md</path>
+        <title>Data Models Documentation</title>
+        <section>Product Type Definition</section>
+        <snippet>Product type includes vendor field (string). Collections represent categories. GraphQL queries fetch product.vendor and product.collections for filter options. Vendor added in Story 1.1.</snippet>
+      </doc>
+      <doc>
+        <path>docs/epic-stories.md</path>
+        <title>Epic Stories Breakdown</title>
+        <section>Story 3: Vendor & Category Filters</section>
+        <snippet>Technical notes: Use Shopify vendor field and category taxonomy. Checkbox or dropdown UI pattern. Efficient filtering algorithm for multiple criteria. Filter state persists via sessionStorage. Product count updates dynamically.</snippet>
+      </doc>
+      <doc>
+        <path>docs/component-inventory.md</path>
+        <title>Component Inventory</title>
+        <section>Existing Filter Components</section>
+        <snippet>Existing components/layout/search/filter/ directory: FilterDropdown for mobile, FilterList container, FilterItem checkbox pattern. These components provide foundation for vendor/category filter implementation.</snippet>
+      </doc>
+    </docs>
+    <code>
+      <artifact>
+        <path>components/layout/search/filter/index.tsx</path>
+        <kind>component</kind>
+        <symbol>FilterList</symbol>
+        <lines>1-47</lines>
+        <reason>Existing filter container component. Provides foundation for extending with vendor/category filters. Shows pattern for desktop/mobile filter UI separation.</reason>
+      </artifact>
+      <artifact>
+        <path>components/layout/search/filter/item.tsx</path>
+        <kind>component</kind>
+        <symbol>FilterItem</symbol>
+        <lines>N/A</lines>
+        <reason>Individual filter item component. Can be adapted for checkbox-based vendor/category filters.</reason>
+      </artifact>
+      <artifact>
+        <path>components/layout/search/filter/dropdown.tsx</path>
+        <kind>component</kind>
+        <symbol>FilterItemDropdown</symbol>
+        <lines>N/A</lines>
+        <reason>Mobile filter dropdown implementation. Reference for mobile drawer pattern.</reason>
+      </artifact>
+      <artifact>
+        <path>lib/shopify/types.ts</path>
+        <kind>types</kind>
+        <symbol>ShopifyProduct</symbol>
+        <lines>118-137</lines>
+        <reason>Product type includes vendor field (line 125). Essential for vendor filter implementation. Collections also defined for category filtering.</reason>
+      </artifact>
+      <artifact>
+        <path>lib/shopify/types.ts</path>
+        <kind>types</kind>
+        <symbol>ShopifyCollection</symbol>
+        <lines>110-116</lines>
+        <reason>Collection type represents categories. Used for category filter options.</reason>
+      </artifact>
+      <artifact>
+        <path>lib/shopify/queries/collection.ts</path>
+        <kind>query</kind>
+        <symbol>getCollectionsQuery</symbol>
+        <lines>26-37</lines>
+        <reason>GraphQL query to fetch all collections. Use this to populate category filter options.</reason>
+      </artifact>
+      <artifact>
+        <path>lib/shopify/queries/product.ts</path>
+        <kind>query</kind>
+        <symbol>getProductsQuery</symbol>
+        <lines>N/A</lines>
+        <reason>Product query includes vendor field. Extend to ensure vendor is fetched for filter options.</reason>
+      </artifact>
+      <artifact>
+        <path>components/product-grid.tsx</path>
+        <kind>component</kind>
+        <symbol>ProductGrid</symbol>
+        <lines>N/A</lines>
+        <reason>Existing product grid from Story 1.1. Must accept filtered products and display count.</reason>
+      </artifact>
+      <artifact>
+        <path>components/product-card.tsx</path>
+        <kind>component</kind>
+        <symbol>ProductCard</symbol>
+        <lines>N/A</lines>
+        <reason>Individual product card from Story 1.1. Displays vendor information that feeds filter options.</reason>
+      </artifact>
+    </code>
+    <dependencies>
+      <node>
+        <package name="next" version="15.3.0-canary.13" usage="React framework with App Router, Server Components" />
+        <package name="react" version="19.0.0" usage="UI library with Server Components support" />
+        <package name="typescript" version="5.8.2" usage="Type-safe development" />
+        <package name="tailwindcss" version="4.0.14" usage="Utility-first CSS framework" />
+        <package name="@radix-ui/react-slot" version="1.2.3" usage="ShadCN primitive - required for ShadCN Checkbox and Accordion" />
+        <package name="class-variance-authority" version="0.7.1" usage="ShadCN styling utility" />
+        <package name="clsx" version="2.1.1" usage="Conditional className utility" />
+        <package name="tailwind-merge" version="3.3.1" usage="Merge Tailwind classes without conflicts" />
+        <package name="lucide-react" version="0.545.0" usage="Icon library for filter UI (X icon for badge remove)" />
+        <package name="sonner" version="2.0.1" usage="Toast notifications for filter feedback" />
+      </node>
+      <shadcn_needed>
+        <component name="accordion" install="npx shadcn-ui@latest add accordion" usage="Collapsible filter sections" />
+        <component name="checkbox" install="npx shadcn-ui@latest add checkbox" usage="Vendor and category checkboxes" />
+        <component name="badge" status="already installed in Story 1.1" usage="Active filter badges" />
+      </shadcn_needed>
+    </dependencies>
+  </artifacts>
+
+  <constraints>
+    <constraint>Use React Server Components by default; mark interactive components with 'use client' directive</constraint>
+    <constraint>Extend existing filter components in components/layout/search/filter/ rather than rebuild from scratch</constraint>
+    <constraint>Filter state must persist to sessionStorage for session persistence (AC#5)</constraint>
+    <constraint>Multi-filter support: filters combine with AND logic (product must match ALL active filters) per AC#3</constraint>
+    <constraint>Filter panel must be responsive: desktop sidebar (240-280px fixed, sticky scroll), mobile drawer (slide-out from left or bottom) per UX spec 4.2.4</constraint>
+    <constraint>Accessibility required: ARIA labels, keyboard navigation (Tab, Enter, Space), screen reader announcements per AC and UX spec 7.2</constraint>
+    <constraint>Visual feedback within 100ms for filter interactions per NFR001</constraint>
+    <constraint>Product count must update dynamically as filters change per AC#6</constraint>
+    <constraint>Use ShadCN Checkbox and Accordion components for consistency with design system</constraint>
+    <constraint>Badge colors: brand-blue (#529BCA) for active filters, neutral-gray for info, success-green for compatible filters per UX spec 5.1</constraint>
+  </constraints>
+  <interfaces>
+    <interface>
+      <name>FilterState</name>
+      <kind>TypeScript type</kind>
+      <signature>type FilterState = { vendors: string[]; categories: string[]; }</signature>
+      <path>NEW: contexts/FilterContext.tsx or lib/types/filters.ts</path>
+    </interface>
+    <interface>
+      <name>FilterOption</name>
+      <kind>TypeScript type</kind>
+      <signature>type FilterOption = { value: string; label: string; count: number; }</signature>
+      <path>NEW: contexts/FilterContext.tsx or lib/types/filters.ts</path>
+    </interface>
+    <interface>
+      <name>getCollectionsQuery</name>
+      <kind>GraphQL query</kind>
+      <signature>query getCollections { collections(first: 100, sortKey: TITLE) { edges { node { handle, title, description } } } }</signature>
+      <path>lib/shopify/queries/collection.ts (lines 26-37)</path>
+    </interface>
+    <interface>
+      <name>ShopifyProduct.vendor</name>
+      <kind>GraphQL field</kind>
+      <signature>vendor: string - Product vendor field from Shopify</signature>
+      <path>lib/shopify/types.ts (line 125)</path>
+    </interface>
+    <interface>
+      <name>FilterContext</name>
+      <kind>React Context</kind>
+      <signature>createContext({ state: FilterState, updateFilters: (filters: Partial&lt;FilterState&gt;) =&gt; void, clearFilters: () =&gt; void })</signature>
+      <path>NEW: contexts/FilterContext.tsx</path>
+    </interface>
+    <interface>
+      <name>filterProducts</name>
+      <kind>Utility function</kind>
+      <signature>function filterProducts(products: Product[], filters: FilterState): Product[]</signature>
+      <path>NEW: lib/utils/filters.ts</path>
+    </interface>
+    <interface>
+      <name>sessionStorage</name>
+      <kind>Browser API</kind>
+      <signature>sessionStorage.setItem(key: string, value: string), sessionStorage.getItem(key: string): string | null</signature>
+      <path>Built-in browser API for filter persistence</path>
+    </interface>
+  </interfaces>
+  <tests>
+    <standards>Testing uses Prettier for code formatting validation (pnpm prettier:check). No formal test framework yet implemented (Jest/Vitest or Playwright E2E pending). Manual testing required for MVP. Focus on cross-browser compatibility (Chrome, Safari, Firefox, Edge), responsive behavior (320px-2560px), and accessibility compliance (WCAG 2.1 AA per UX spec 7.1).</standards>
+    <locations>No test directory exists yet. When implemented, suggest: __tests__/components/ for component tests, __tests__/utils/ for utility tests, e2e/ for Playwright tests.</locations>
+    <ideas>
+      <test id="1" maps_to_ac="1">Test vendor filter displays all unique vendors from fetched products. Verify deduplication and alphabetical sorting.</test>
+      <test id="2" maps_to_ac="2">Test category filter displays all collections from Shopify. Verify collection titles and handles are correctly mapped.</test>
+      <test id="3" maps_to_ac="3">Test multi-filter combinations: vendor + category, multiple vendors, multiple categories, all filters together. Verify AND logic (products must match ALL active filters).</test>
+      <test id="4" maps_to_ac="4">Test active filter badges display correctly above grid. Verify badge text, close button (X icon), and individual removal functionality.</test>
+      <test id="5" maps_to_ac="5">Test filter persistence: apply filters, reload page, verify filters restored from sessionStorage. Test "Clear All" clears sessionStorage.</test>
+      <test id="6" maps_to_ac="6">Test product count updates dynamically. Apply/remove filters, verify "Showing X of Y products" updates immediately (within 100ms).</test>
+      <test id="7" maps_to_ac="7">Test "Clear All Filters" button resets all vendor/category selections, clears sessionStorage, and restores full product list.</test>
+      <test id="8" maps_to_ac="accessibility">Test keyboard navigation: Tab through filter checkboxes, Space/Enter to toggle, Esc to close mobile drawer. Verify focus indicators visible.</test>
+      <test id="9" maps_to_ac="accessibility">Test screen reader announcements: filter count updates, active filters, product count changes. Use VoiceOver (Mac) or NVDA (Windows).</test>
+      <test id="10" maps_to_ac="responsive">Test mobile drawer: open/close animation smooth, filters accessible, backdrop overlay works, swipe-to-close (if implemented).</test>
+      <test id="11" maps_to_ac="performance">Test performance with 500+ products: filter application should complete within 200ms, no jank during scroll, debounce filter updates if needed.</test>
+    </ideas>
+  </tests>
+</story-context>
