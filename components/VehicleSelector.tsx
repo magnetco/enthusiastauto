@@ -85,7 +85,7 @@ export function VehicleSelector({
             >
               <SelectValue placeholder="Select model" />
             </SelectTrigger>
-            <SelectContent>
+            <SelectContent position="popper" sideOffset={4}>
               {modelOptions.length > 0 ? (
                 modelOptions.map((model) => (
                   <SelectItem key={model} value={model}>
@@ -120,7 +120,7 @@ export function VehicleSelector({
             >
               <SelectValue placeholder="Select year" />
             </SelectTrigger>
-            <SelectContent>
+            <SelectContent position="popper" sideOffset={4}>
               {yearOptions.length > 0 ? (
                 yearOptions.map((year) => (
                   <SelectItem key={year} value={year.toString()}>

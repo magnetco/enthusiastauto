@@ -2,6 +2,7 @@
 
 import { MagnifyingGlassIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { useFilters } from "contexts/FilterContext";
+import { Input } from "@/components/ui/input";
 import Form from "next/form";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
@@ -93,7 +94,7 @@ export default function Search() {
         className="w-max-[550px] relative w-full lg:w-80 xl:w-full"
         onSubmit={handleSubmit}
       >
-        <input
+        <Input
           ref={inputRef}
           type="text"
           name="q"
@@ -101,7 +102,9 @@ export default function Search() {
           autoComplete="off"
           value={searchValue}
           onChange={handleChange}
-          className="text-md w-full rounded-lg border bg-white px-4 py-2 pr-20 text-black placeholder:text-neutral-500 md:text-sm dark:border-neutral-800 dark:bg-transparent dark:text-white dark:placeholder:text-neutral-400"
+          aria-invalid={!!validationError}
+          aria-describedby={validationError ? "search-error" : undefined}
+          className="pr-20"
         />
         <div className="absolute right-0 top-0 mr-3 flex h-full items-center gap-2">
           {searchValue && (
@@ -124,7 +127,11 @@ export default function Search() {
         </div>
       </Form>
       {validationError && (
-        <div className="absolute left-0 top-full mt-1 text-xs text-red-500 dark:text-red-400">
+        <div
+          id="search-error"
+          className="absolute left-0 top-full mt-1 text-xs text-[var(--color-error-500)] dark:text-[var(--color-error-500)]"
+          role="alert"
+        >
           {validationError}
         </div>
       )}

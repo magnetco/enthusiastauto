@@ -9,7 +9,7 @@
 
 ## Epic Overview
 
-This project consists of **2 epics** with **12 stories total** that will transform the commerce template into a production-ready BMW parts marketplace with intelligent vehicle fitment filtering and cross-site integration.
+This project consists of **2 epics** with **11 stories total** that will transform the commerce template into a production-ready BMW parts marketplace with intelligent vehicle fitment filtering and cross-site integration.
 
 **Epic 1: Core E-commerce Foundation & Vehicle Fitment** (8 stories)
 
@@ -17,11 +17,11 @@ This project consists of **2 epics** with **12 stories total** that will transfo
 - Implements intelligent vehicle fitment filtering system
 - Delivers core product discovery and purchase capabilities
 
-**Epic 2: Enhanced UX & Cross-Site Integration** (4 stories)
+**Epic 2: Enhanced UX & Cross-Site Integration** (3 stories)
 
 - Delivers superior user experience with modern design system
 - Integrates with main enthusiastauto.com site
-- Provides advanced comparison and persistent cart features
+- Provides persistent cart features
 
 ---
 
@@ -261,34 +261,6 @@ This project consists of **2 epics** with **12 stories total** that will transfo
 
 ---
 
-### Story 9: Product Comparison Feature
-
-**As a** shopper evaluating multiple options
-**I want to** compare products side-by-side
-**So that** I can make the best purchase decision
-
-**Acceptance Criteria:**
-
-- "Add to Compare" button on product cards and detail pages
-- Compare icon in header shows count of products being compared (max 3-4)
-- Comparison view displays products in columns with key specs in rows
-- Specs include: image, title, price, vendor, key features, fitment
-- Products can be removed from comparison
-- "Add to Cart" button available for each product in comparison view
-- Comparison persists during session
-- Clear comparison accessible from any page
-- Responsive layout for mobile (scroll or card stack)
-
-**Technical Notes:**
-
-- State management for comparison list
-- Consider modal or dedicated comparison page
-- Identify key spec fields from Shopify data
-
-**Effort:** 5 points
-
----
-
 ### Story 10: ShadCN Component Integration & Design System
 
 **As a** user interacting with the site
@@ -395,7 +367,6 @@ This project consists of **2 epics** with **12 stories total** that will transfo
 **Sprint 4:**
 
 - Story 10: ShadCN Component Integration & Design System
-- Story 9: Product Comparison Feature
 
 **Sprint 5 (Can be deferred):**
 
@@ -407,12 +378,15 @@ This project consists of **2 epics** with **12 stories total** that will transfo
 ## Total Story Points
 
 **Epic 1:** 42 points (revised 2025-10-15 - Story 5 reduced from 5 to 3 points)
-**Epic 2:** 39 points
-**Total:** 81 points
+**Epic 2:** 34 points (revised 2025-10-16 - Story 9 removed via course correct)
+**Total:** 76 points
 
 Estimated delivery: 4-5 sprints (assuming 2-week sprints, team velocity 15-20 points)
 
-**Revision Notes:** Story 5 (Product Detail Page) revised from 5 to 3 points after discovering template provides 62% of functionality.
+**Revision Notes:**
+
+- Story 5 (Product Detail Page) revised from 5 to 3 points after discovering template provides 62% of functionality (2025-10-15).
+- Story 9 (Product Comparison Feature) removed from scope via course correct workflow (2025-10-16).
 
 ---
 
@@ -429,7 +403,6 @@ After Epic 2 completion:
 - Design quality exceeds main enthusiastauto.com site
 - Cross-site navigation is seamless
 - Cart persists between sites
-- Product comparison aids decision-making
 
 ---
 

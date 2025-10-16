@@ -2,15 +2,15 @@
 
 **Project:** Enthusiast Auto Ecommerce Site
 **Created:** 2025-10-14
-**Last Updated:** 2025-10-15 (story-approved: Story 1.7 - Marked Done)
+**Last Updated:** 2025-10-16 (Story 1.9 removed via course correct workflow)
 
 ---
 
 ## Current Status
 
 **Current Phase:** 4-Implementation
-**Current Workflow:** story-approved (Story 1.7) - Complete
-**Overall Progress:** 100%
+**Current Workflow:** Course Correct - Story 1.9 removed from backlog
+**Overall Progress:** In Progress
 
 **Project Level:** 2 (Medium project - multiple features/epics)
 **Project Type:** Web Application
@@ -101,26 +101,38 @@
 
 **Status:** In Progress
 
-**Backlog:** 3 stories remaining (39 points)
+**Backlog:** 1 story remaining (26 points)
 
 #### TODO (Needs Drafting)
 
-- **Story ID:** 1.10
-- **Story Title:** ShadCN Component Integration & Design System
-- **Story File:** `docs/stories/story-1.10.md`
-- **Status:** Not created
-- **Action:** SM should run `create-story` workflow to draft this story
+(No more stories to draft - all stories are drafted or complete)
 
 #### IN PROGRESS (Approved for Development)
 
-- **Story ID:** 1.9
-- **Story Title:** Product Comparison Feature
-- **Story File:** `docs/stories/story-1.9.md`
-- **Story Status:** Draft (needs creation first)
-- **Context File:** Not yet generated
-- **Action:** SM should run `create-story` workflow to draft this story first
+- **Story ID:** 1.11
+- **Story Title:** Webflow Devlink Integration (Nav/Footer)
+- **Story File:** `docs/stories/story-1.11.md`
+- **Story Status:** Draft (needs review)
+- **Context File:** Context not yet generated
+- **Action:** SM should run `story-ready` workflow to review and approve, then run `story-context` to generate context before DEV implements
 
 #### DONE
+
+**Story 1.10: ShadCN Component Integration & Design System**
+
+- File: `docs/stories/story-1.10.md`
+- Epic: 2 (Enhanced User Experience)
+- Points: 8
+- Status: Done (approved and completed 2025-10-16)
+- Context File: `docs/stories/story-context-1.10.xml`
+- Implementation: All 10 tasks (67 subtasks) completed
+- Components: Comprehensive design system with ShadCN components (Dialog, Input, Dropdown Menu), design tokens system, Button with brand variants, enhanced Input component
+- All 8 acceptance criteria met
+- Features: Complete design token system in app/globals.css (brand colors, typography Inter/Outfit, spacing, shadows, animation timing, reduced motion), Button with brand variants (primary red, secondary blue), loading states, 44px touch targets, Input with brand styling, dark mode foundation with CSS variables, accessibility WCAG 2.1 AA compliance
+- Build passed with no TypeScript errors
+- Modified files: app/globals.css (design tokens), components/ui/button.tsx (brand variants), components/ui/input.tsx (brand styling), components/layout/navbar/search.tsx (ShadCN Input migration)
+- New files: components/ui/dialog.tsx, components/ui/input.tsx, components/ui/dropdown-menu.tsx, docs/design-system.md, docs/component-library.md
+- Known Issue: Horizontal layout shift when opening Model/Year dropdowns (Radix focus guards) - user decided to proceed
 
 **Story 1.7: Responsive Grid Layout Implementation**
 
@@ -224,26 +236,26 @@
 - Components: ProductCard, ProductGrid, ShadCN UI integration
 - All 7 acceptance criteria met
 
-**Total completed:** 9 stories (42 points)
+**Total completed:** 10 stories (50 points)
 
 ---
 
 ## What to do next
 
-**Next Action:** Draft Story 1.9 (Product Comparison Feature)
+**Next Action:** Review and approve Story 1.11 (Webflow Devlink Integration)
 
-**Command to run:** `/bmad:bmm:workflows:create-story 1.9`
+**Command to run:** Load SM agent and run `story-ready` workflow to review the drafted story
 
-**Agent to load:** SM (Scrum Master)
+**Agent to load:** SM (Scrum Master Agent)
 
 **Why this step?**
-Story 1.7 (Responsive Grid Layout Implementation) has been approved and marked done. Story 1.9 (Product Comparison Feature) is now in IN PROGRESS but needs to be drafted first. This is the first story of Epic 2 (Enhanced UX & Cross-Site Integration). SM agent should create the story file with detailed acceptance criteria, tasks/subtasks, and development notes based on the epic breakdown in `docs/epic-stories.md`. Story 1.9 focuses on side-by-side product comparison with "Add to Compare" buttons, comparison view with max 3-4 products, key specs display (image, title, price, vendor, features, fitment), and mobile-responsive layout. After drafting, story needs review (story-ready) and context generation (story-context) before implementation.
+Story 1.11 (Webflow Devlink Integration) has been drafted and moved to IN PROGRESS. The story needs review and approval before generating context and implementation. This is the final story in the project backlog (26 points). Once approved, SM will generate context, then DEV will implement.
 
 **Progress Summary:**
 
-- **Stories Completed:** 9 / 12 (75%)
-- **Points Completed:** 42 / 81 (52%)
-- **Stories in Backlog:** 3 stories (39 points remaining)
+- **Stories Completed:** 10 / 11 (91%)
+- **Points Completed:** 50 / 76 (66%)
+- **Stories in Backlog:** 1 story (26 points remaining)
 
 **Alternative Actions:**
 
@@ -255,7 +267,19 @@ Story 1.7 (Responsive Grid Layout Implementation) has been approved and marked d
 
 ## Decisions Log
 
-**2025-10-15**: Story 1.7 (Responsive Grid Layout Implementation) approved and marked done by DEV agent. Moved from IN PROGRESS → DONE. Story 1.9 (Product Comparison Feature) moved from TODO → IN PROGRESS. Story 1.10 (ShadCN Component Integration & Design System) moved from BACKLOG → TODO. All 7 tasks (48 subtasks) completed successfully. All 8 acceptance criteria met. Responsive design validated across entire application with mobile filter drawer, touch-friendly UI (44px WCAG AA compliance), viewport configuration, overflow prevention. Build passed with zero TypeScript errors. Total completed: 9 stories (42 points). Remaining: 3 stories (39 points). Next: SM agent should draft Story 1.9 (Product Comparison Feature). Progress: Implementation phase continues.
+**2025-10-16**: Story 1.10 (ShadCN Component Integration & Design System) approved and marked done by DEV agent. Moved from IN PROGRESS → DONE. Story 1.11 (Webflow Devlink Integration) moved from TODO → IN PROGRESS. All 10 tasks (67 subtasks) completed successfully. All 8 acceptance criteria met. Comprehensive design system implementation with: complete design token system in app/globals.css (brand colors, typography Inter/Outfit, spacing, shadows, animation timing, reduced motion support), enhanced Button component with brand variants (primary=red, secondary=blue), loading states, 44px touch targets, enhanced Input component with brand styling integrated into search bar, all other components verified (Card, Badge, Skeleton, Tooltip, Accordion, Checkbox), documentation created (docs/design-system.md, docs/component-library.md). Known Issue: Horizontal layout shift when opening Model/Year dropdown filters (Radix focus guards) - user decided to proceed. Build passed with no TypeScript errors. Total completed: 10 stories (50 points). Remaining: 1 story (26 points). Next: SM agent should review Story 1.11 with story-ready workflow. Progress: 91% stories complete, 66% points complete.
+
+**2025-10-16**: Completed dev-story for Story 1.10 (ShadCN Component Integration & Design System). All 10 tasks (67 subtasks) completed successfully. Comprehensive design system implementation with: (1) ShadCN components installed (dialog, input, dropdown-menu via CLI), (2) Complete design token system in app/globals.css (brand colors, typography Inter/Outfit, spacing, shadows, animation timing, reduced motion support), (3) Enhanced Button component with brand variants (primary=red, secondary=blue), loading states, 44px touch targets, (4) Enhanced Input component with brand styling integrated into search bar, (5) All other components verified (Card, Badge, Skeleton, Tooltip, Accordion, Checkbox), (6) Documentation created (docs/design-system.md, docs/component-library.md). **Known Issue:** Horizontal layout shift when opening Model/Year dropdown filters - Radix UI Select adds focus guard elements causing horizontal shift despite multiple attempted fixes (dropdown positioning, width constraints, scrollbar management, body padding prevention, focus guard visual hiding). User decided to move forward despite unresolved bug. Build passed with no TypeScript errors. Story status: Ready for Review. Next: User reviews implementation and runs story-approved when satisfied. Progress: Implementation phase continues.
+
+**2025-10-16**: Completed story-context for Story 1.10 (ShadCN Component Integration & Design System). Context file: story-context-1.10.xml. Context includes: 8 documentation references (PRD NFR003/NFR004, epic-stories, UX spec sections 4/5/7/8 covering component library, visual design, accessibility, interaction patterns, architecture technology stack, Story 1.1 reference implementation), 14 code artifacts (existing ShadCN components Button/Card/Badge/Skeleton to enhance, FilterPanel/VehicleSelector/Search to migrate, cart modal to verify, ProductCard/ProductGrid, tailwind.config.ts for design tokens, app/globals.css for theme variables, components.json, app/layout.tsx), dependency manifest (Next.js 15, React 19, Tailwind 4, TypeScript 5.8, Radix UI primitives for all ShadCN components, lucide-react icons, class-variance-authority, Sonner toasts), 10 API interfaces (Button/Input/Select/Checkbox/Dialog/Tooltip/Accordion component APIs, Tailwind design tokens, dark mode theme provider, CSS variables for themes), 20 development constraints (Next.js App Router Server Components, ShadCN copy-paste pattern, TypeScript strict mode, Tailwind 4 utilities, brand colors FIXED, WCAG 2.1 AA compliance MANDATORY, dark mode foundation required, Lighthouse 95+ target, responsive testing 320px-1280px, Prettier and TypeScript build validation, documentation REQUIRED), and 30+ test ideas mapped to all 8 acceptance criteria and 10 tasks. **IMPLEMENTATION SCOPE:** Complete ShadCN UI design system integration: (1) Audit and install missing components (Dialog, Select, Input, Checkbox, Tooltip, Dropdown Menu, Accordion), (2) Configure comprehensive design tokens in tailwind.config.js (brand colors, typography Inter/Outfit, spacing, shadows, transitions), (3) Standardize Button component with brand variants (primary brand-red, secondary brand-blue) and enhanced states, (4) Migrate form inputs to ShadCN (search bar Input, VehicleSelector Select, FilterPanel Checkbox), (5) Enhance modals/overlays with proper accessibility, (6) Expand loading states with Skeleton loaders site-wide, (7) Implement dark mode foundation (CSS variables, Tailwind dark: classes, theme toggle, localStorage), (8) Visual polish for consistency (spacing, typography, hover effects, transitions 150-300ms), (9) Accessibility testing (Lighthouse 95+, axe DevTools, keyboard navigation, screen reader, color contrast, 44px touch targets), (10) Create comprehensive documentation (docs/design-system.md, docs/component-library.md). Next: DEV agent should run dev-story to implement. Progress: Implementation phase continues.
+
+**2025-10-16**: Story 1.10 (ShadCN Component Integration & Design System) marked ready for development by SM agent. Story file status updated from Draft → Ready. Story 1.11 (Webflow Devlink Integration) moved from BACKLOG → TODO (next story to draft). Story already in IN PROGRESS section (no queue advancement needed). Story 1.10 includes 8 acceptance criteria and 10 tasks (67 subtasks total) covering: ShadCN component integration across all interactive UI elements, comprehensive design token system, button and form input standardization, modal/overlay enhancements, loading states, dark mode foundation, visual polish, accessibility testing, and documentation. Next: Generate implementation context with story-context workflow (recommended) or proceed directly to dev-story. Progress: Implementation phase continues.
+
+**2025-10-16**: Completed create-story for Story 1.10 (ShadCN Component Integration & Design System). Story file: story-1.10.md. Status: Draft (needs review via story-ready). Story includes 8 acceptance criteria covering ShadCN component usage, design system documentation, accessibility standards (WCAG 2.1 AA), loading states, form inputs, dark mode foundation, and visual design quality. 10 tasks (67 subtasks) defined: Task 1 (audit existing components), Task 2 (design token system), Task 3 (standardize buttons), Task 4 (form inputs), Task 5 (modals/overlays), Task 6 (loading states), Task 7 (dark mode), Task 8 (visual polish), Task 9 (accessibility testing), Task 10 (documentation). **Technical approach:** Complete ShadCN UI integration across all interactive elements (Dialog, Select, Input, Checkbox, Tooltip, Dropdown Menu, Accordion). Configure comprehensive design tokens in tailwind.config.js (brand colors #D12026/#292664/#529BCA/#141C27, typography scale with Inter/Outfit fonts, spacing/shadow/radius tokens). Standardize Button component with brand variants (primary brand-red, secondary brand-blue). Implement dark mode foundation with CSS variables. Focus on accessibility (Lighthouse 95+ score, keyboard navigation, screen reader support, WCAG AA color contrast). **Effort:** 8 points. Next: Review and approve story with story-ready workflow. Progress: Implementation phase continues.
+
+**2025-10-16**: Course correct workflow executed - Story 1.9 (Product Comparison Feature) removed from project scope. Rationale: Product comparison feature deemed unnecessary for MVP launch. Story 1.9 file deleted. Epic 2 revised from 39 to 34 points (5-point reduction). Total project revised from 81 to 76 points. Story 1.10 (ShadCN Component Integration & Design System) moved from TODO to IN PROGRESS. Backlog now contains 2 stories: Story 1.10 (8 points) and Stories 1.11-1.12 (26 points). Updated progress: 9/11 stories completed (82%), 42/76 points (55%). Next: SM agent should draft Story 1.10. Progress: Implementation phase continues.
+
+**2025-10-15**: Story 1.7 (Responsive Grid Layout Implementation) approved and marked done by DEV agent. Moved from IN PROGRESS → DONE. Story 1.9 (Product Comparison Feature) moved from TODO → IN PROGRESS (later removed via course correct). Story 1.10 (ShadCN Component Integration & Design System) moved from BACKLOG → TODO. All 7 tasks (48 subtasks) completed successfully. All 8 acceptance criteria met. Responsive design validated across entire application with mobile filter drawer, touch-friendly UI (44px WCAG AA compliance), viewport configuration, overflow prevention. Build passed with zero TypeScript errors. Total completed: 9 stories (42 points). Remaining: 3 stories (39 points, later revised to 2 stories/34 points). Progress: Implementation phase continues.
 
 **2025-10-15**: Completed story-context for Story 1.7 (Responsive Grid Layout Implementation). Context file: story-context-1.7.xml. Context includes: 9 documentation references (PRD NFR002/NFR004, epic-stories, UX spec sections 6/6.1/6.2/7.2.5, architecture technology stack and component architecture), 11 code artifacts (product-grid.tsx PRIMARY component, navbar, FilterPanel, product-card, cart modal, VehicleSelector, pages app/page.tsx and app/search/page.tsx and app/product/[handle]/page.tsx, tailwind.config.ts, app/layout.tsx), dependency manifest (Next.js 15.3.0, React 19.0.0, Tailwind 4.0.14, HeadlessUI 2.2.0, TypeScript 5.8.2), 4 API interfaces (Tailwind responsive utilities sm:/md:/lg:/xl:/2xl:, Tailwind grid utilities, Next.js Image component, HeadlessUI Dialog), 15 development constraints (Next.js App Router with Server Components default, mobile-first approach starting 320px, WCAG 2.1 AA compliance 44x44px touch targets with 8px spacing, Server Components for static content with 'use client' for mobile menu/drawer, Tailwind CSS Grid with responsive columns, HeadlessUI Dialog pattern, Next.js Image optimization, container max-widths, no horizontal scrolling with overflow-x hidden, typography scale 16px base with Tailwind utilities, breakpoint testing matrix iPhone SE 320px to iMac 1920px+, performance targets Lighthouse mobile 85+ desktop 90+, TypeScript strict mode, Prettier formatting, template enhancement not rebuild), and 30 test ideas mapped to all 8 acceptance criteria and 7 tasks. **IMPLEMENTATION STATUS:** Commerce template already has some responsive design. Story focuses on AUDIT and ENHANCE existing patterns: (1) Configure responsive grid columns 1/2-3/3-4 with Tailwind, (2) Ensure 44px touch targets on all interactive elements, (3) Add hamburger menu for mobile with HeadlessUI Dialog, (4) Create mobile filter drawer with HeadlessUI, (5) Optimize typography scale, (6) Comprehensive device testing 320px-2560px, (7) Performance optimization and build validation. Next: DEV agent should run dev-story to implement. Progress: Implementation phase continues.
 

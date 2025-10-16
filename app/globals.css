@@ -35,10 +35,81 @@ button {
 }
 
 @theme inline {
-  --radius-sm: calc(var(--radius) - 4px);
-  --radius-md: calc(var(--radius) - 2px);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) + 4px);
+  /* ===== Border Radius Tokens ===== */
+  --radius-sm: 0.125rem; /* 2px - inputs */
+  --radius-md: 0.375rem; /* 6px - buttons, cards */
+  --radius-lg: 0.5rem; /* 8px - modals, large cards */
+  --radius-xl: 0.75rem; /* 12px - product images */
+  --radius-full: 9999px; /* pills, badges */
+  --radius: var(--radius-md); /* default */
+
+  /* ===== Brand Colors ===== */
+  --color-brand-red: #d12026; /* Primary CTAs */
+  --color-brand-navy: #292664; /* Dark accent, headings */
+  --color-brand-blue: #529bca; /* Links, active states */
+  --color-brand-dark: #141c27; /* Darkest - text, high contrast */
+
+  /* ===== Primary Blue Scale ===== */
+  --color-primary-50: #f0f9ff;
+  --color-primary-100: #e0f2fe;
+  --color-primary-200: #b8e5fd;
+  --color-primary-300: #7dd3fc;
+  --color-primary-400: #52a9cc;
+  --color-primary-500: #529bca; /* Brand blue */
+  --color-primary-600: #3f7fa8; /* Hover states */
+  --color-primary-700: #2d5f7e; /* Pressed states */
+  --color-primary-800: #1e4154;
+  --color-primary-900: #0f2a3a;
+
+  /* ===== Semantic Colors ===== */
+  --color-success-50: #f0fdf4;
+  --color-success-500: #22c55e; /* Compatible/In Stock badges */
+  --color-success-700: #15803d;
+
+  --color-warning-50: #fffbeb;
+  --color-warning-500: #f59e0b; /* Check fitment warnings */
+  --color-warning-700: #b45309;
+
+  --color-error-50: #fef2f2;
+  --color-error-500: #ef4444; /* Out of stock, errors */
+  --color-error-700: #b91c1c;
+
+  /* ===== Shadow Elevations ===== */
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05); /* product cards idle */
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1); /* product cards hover */
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1); /* dropdowns */
+  --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1); /* modals */
+  --shadow-2xl: 0 25px 50px -12px rgb(0 0 0 / 0.25); /* cart panel */
+
+  /* ===== Animation Timing ===== */
+  --duration-fast: 150ms; /* buttons, hovers */
+  --duration-base: 200ms; /* cards, UI elements */
+  --duration-slow: 300ms; /* modals, drawers */
+  --ease-default: cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* ===== Typography Scale ===== */
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Outfit", ui-sans-serif, system-ui, sans-serif;
+
+  --font-size-xs: 0.75rem; /* 12px */
+  --font-size-sm: 0.875rem; /* 14px */
+  --font-size-base: 1rem; /* 16px */
+  --font-size-lg: 1.125rem; /* 18px */
+  --font-size-xl: 1.25rem; /* 20px */
+  --font-size-2xl: 1.5rem; /* 24px */
+  --font-size-3xl: 1.875rem; /* 30px */
+  --font-size-4xl: 2.25rem; /* 36px */
+  --font-size-5xl: 3rem; /* 48px */
+
+  --line-height-tight: 1.25; /* headings */
+  --line-height-normal: 1.5; /* body */
+  --line-height-relaxed: 1.75; /* emphasis */
+
+  /* ===== Spacing Scale (Tailwind default) ===== */
+  /* Using Tailwind's built-in spacing scale (4px base unit) */
+  /* Common: space-4 (16px), space-6 (24px), space-8 (32px), space-12 (48px) */
+
+  /* ===== ShadCN Theme Variables ===== */
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
@@ -148,11 +219,51 @@ button {
   html {
     /* Prevent horizontal scrolling on all viewports */
     @apply overflow-x-hidden;
+    /* Prevent layout shift from scrollbar */
+    overflow-y: scroll;
   }
   body {
     @apply bg-background text-foreground overflow-x-hidden;
     /* Ensure minimum 16px base font size for accessibility */
     font-size: 16px;
     line-height: 1.5;
+    /* Use Inter as default body font */
+    font-family: var(--font-sans);
+  }
+  /* Use Outfit for headings */
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: var(--font-display);
+  }
+
+  /* Prevent Radix Portal from adding body padding during dropdown open */
+  body[style*="padding-right"] {
+    padding-right: 0 !important;
+  }
+
+  /* Prevent Radix focus guards from causing layout shift */
+  [data-radix-focus-guard] {
+    position: fixed !important;
+    width: 1px !important;
+    height: 1px !important;
+    padding: 0 !important;
+    margin: -1px !important;
+    overflow: hidden !important;
+    clip: rect(0, 0, 0, 0) !important;
+    white-space: nowrap !important;
+    border-width: 0 !important;
+  }
+}
+
+/* ===== Reduced Motion Support (WCAG 2.1 AA) ===== */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
   }
 }
