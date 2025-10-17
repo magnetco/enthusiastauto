@@ -84,13 +84,13 @@ export default async function ProductPage(props: {
           __html: JSON.stringify(productJsonLd),
         }}
       />
-      <div className="mx-auto max-w-(--breakpoint-2xl) px-4">
+      <div className="mx-auto max-w-(--breakpoint-2xl) px-4 py-6 lg:py-8">
         <Breadcrumb product={product} />
-        <div className="flex flex-col rounded-lg border border-neutral-200 bg-white p-8 md:p-12 lg:flex-row lg:gap-8 dark:border-neutral-800 dark:bg-black">
+        <div className="flex flex-col rounded-2xl border border-border/50 bg-card p-6 shadow-lg md:p-10 lg:flex-row lg:gap-10 lg:p-12">
           <div className="h-full w-full basis-full lg:basis-4/6">
             <Suspense
               fallback={
-                <div className="relative aspect-square h-full max-h-[550px] w-full overflow-hidden" />
+                <div className="relative aspect-square h-full max-h-[600px] w-full overflow-hidden rounded-xl bg-muted animate-pulse" />
               }
             >
               <Gallery
@@ -102,7 +102,7 @@ export default async function ProductPage(props: {
             </Suspense>
           </div>
 
-          <div className="basis-full lg:basis-2/6">
+          <div className="basis-full pt-6 lg:basis-2/6 lg:pt-0">
             <Suspense fallback={null}>
               <ProductDescription product={product} />
             </Suspense>
@@ -122,16 +122,16 @@ async function RelatedProducts({ id }: { id: string }) {
   if (!relatedProducts.length) return null;
 
   return (
-    <div className="py-8">
-      <h2 className="mb-4 text-2xl font-bold">Related Products</h2>
-      <ul className="flex w-full gap-4 overflow-x-auto pt-1">
+    <div className="py-10 lg:py-12">
+      <h2 className="mb-6 text-3xl font-bold tracking-tight">Related Products</h2>
+      <ul className="flex w-full gap-4 overflow-x-auto pb-2 pt-1 lg:gap-6">
         {relatedProducts.map((product) => (
           <li
             key={product.handle}
             className="aspect-square w-full flex-none min-[475px]:w-1/2 sm:w-1/3 md:w-1/4 lg:w-1/5"
           >
             <Link
-              className="relative h-full w-full"
+              className="group relative block h-full w-full overflow-hidden rounded-xl transition-transform duration-300 hover:scale-[1.02]"
               href={`/product/${product.handle}`}
               prefetch={true}
             >

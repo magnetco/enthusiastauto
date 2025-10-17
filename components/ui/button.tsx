@@ -6,33 +6,33 @@ import { Loader2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-all duration-[var(--duration-fast)] disabled:pointer-events-none disabled:opacity-50 active:scale-[0.98] [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-brand-blue)] focus-visible:ring-offset-2 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive",
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-lg text-sm transition-all disabled:pointer-events-none disabled:opacity-50 active:scale-[0.98] [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:ring-2 focus-visible:ring-[#5e6ad2] focus-visible:ring-offset-2 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive",
   {
     variants: {
       variant: {
-        // Primary variant with brand-red (Add to Cart, Checkout)
+        // Primary variant with Linear's indigo (Add to Cart, Checkout)
         default:
-          "bg-[var(--color-brand-red)] text-white hover:bg-[#b91c21] hover:shadow-md dark:bg-[var(--color-brand-red)] dark:hover:bg-[#b91c21]",
-        // Secondary variant with brand-blue (View Details, Compare)
+          "bg-primary text-primary-foreground shadow-[var(--shadow-low)] hover:bg-accent hover:shadow-[var(--shadow-medium)] transition-all duration-100 font-medium",
+        // Secondary variant with muted background
         secondary:
-          "bg-[var(--color-brand-blue)] text-white hover:bg-[var(--color-primary-600)] hover:shadow-md dark:bg-[var(--color-brand-blue)] dark:hover:bg-[var(--color-primary-600)]",
+          "bg-secondary text-secondary-foreground shadow-[var(--shadow-tiny)] hover:bg-accent hover:text-accent-foreground transition-all duration-100 font-medium",
         // Destructive for dangerous actions
         destructive:
-          "bg-[var(--color-error-500)] text-white hover:bg-[var(--color-error-700)] hover:shadow-md focus-visible:ring-[var(--color-error-500)]",
-        // Outline for Cancel, Clear Filters
+          "bg-destructive text-white shadow-[var(--shadow-low)] hover:opacity-90 transition-all duration-100 focus-visible:ring-destructive font-medium",
+        // Outline for Cancel, Clear Filters (Linear style)
         outline:
-          "border border-input bg-background shadow-sm hover:bg-accent hover:text-accent-foreground hover:shadow-md dark:bg-input/30 dark:border-input dark:hover:bg-input/50",
+          "border border-border bg-transparent hover:bg-muted hover:border-border/80 shadow-[var(--shadow-tiny)] hover:shadow-[var(--shadow-low)] transition-all duration-100 font-medium",
         // Ghost for icon buttons, tertiary actions
         ghost:
-          "hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent/50",
-        // Link style
-        link: "text-[var(--color-brand-blue)] underline-offset-4 hover:underline",
+          "hover:bg-muted hover:text-foreground transition-all duration-100 font-medium",
+        // Link style with Linear's accent
+        link: "text-accent underline-offset-4 hover:underline hover:text-accent/80 transition-colors duration-100 font-medium",
       },
       size: {
         default:
-          "h-11 px-4 py-2 has-[>svg]:px-3" /* 44px min height for WCAG AA */,
-        sm: "h-9 rounded-md gap-1.5 px-3 has-[>svg]:px-2.5",
-        lg: "h-12 rounded-md px-6 has-[>svg]:px-4" /* 48px for better mobile UX */,
+          "h-11 px-6 py-2.5 has-[>svg]:px-5" /* More generous Linear padding */,
+        sm: "h-9 rounded-md gap-1.5 px-4 has-[>svg]:px-3 text-xs",
+        lg: "h-12 rounded-lg px-8 py-3 has-[>svg]:px-6 text-base" /* Generous padding */,
         icon: "size-11" /* 44px min for touch targets */,
         "icon-sm": "size-9",
         "icon-lg": "size-12" /* 48px for mobile */,

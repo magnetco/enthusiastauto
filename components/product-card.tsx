@@ -39,7 +39,7 @@ export function ProductCard({ product }: ProductCardProps) {
   // Handle Add to Cart
   const handleAddToCart = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault(); // Prevent link navigation
-    e.stopPropagation();
+    e.stopPropagation(); // Prevent bubbling to parent link
 
     if (!defaultVariant || !isInStock) return;
 
@@ -59,67 +59,77 @@ export function ProductCard({ product }: ProductCardProps) {
   };
 
   return (
-    <article className="group">
+    <article className="group h-full">
       <Link
         href={`/product/${product.handle}`}
-        className="block"
+        className="block h-full"
         aria-label={`View ${product.title}`}
       >
-        <Card className="h-full overflow-hidden transition-all duration-300 hover:shadow-lg">
-          <div className="relative aspect-square overflow-hidden bg-neutral-100 dark:bg-neutral-800">
+        <Card className="h-full overflow-hidden border border-border bg-card">
+          <div className="relative aspect-square overflow-hidden bg-muted/20">
             {imageUrl ? (
               <Image
                 src={imageUrl}
                 alt={imageAlt}
                 fill
                 sizes="(min-width: 1024px) 25vw, (min-width: 768px) 33vw, (min-width: 640px) 50vw, 100vw"
-                className="object-cover transition-transform duration-300 group-hover:scale-105"
+                className="object-cover transition-all duration-300 group-hover:scale-105"
                 loading="lazy"
               />
             ) : (
-              <div className="flex h-full w-full items-center justify-center text-neutral-400">
+              <div className="flex h-full w-full items-center justify-center text-muted-foreground">
                 No image
               </div>
             )}
 
-            {/* Stock status badge */}
-            <div className="absolute right-2 top-2">
-              <Badge
-                variant={isInStock ? "default" : "secondary"}
-                className={
-                  isInStock
-                    ? "bg-green-600 text-white hover:bg-green-700"
-                    : "bg-neutral-500 text-white"
-                }
+            {/* Stock status badge - Only show if out of stock */}
+            {!isInStock && (
+              <div className="absolute right-3 top-3">
+                <Badge
+                  variant="secondary"
+                  className="bg-muted text-muted-foreground shadow-lg"
+                >
+                  Out of Stock
+                </Badge>
+              </div>
+            )}
+
+            {/* Add to Cart Button - Overlaid at bottom, shown on hover */}
+            {isInStock && (
+              <button
+                onClick={handleAddToCart}
+                aria-label={`Add ${product.title} to cart`}
+                className="absolute bottom-3 left-3 right-3 rounded-lg bg-accent/95 backdrop-blur-sm py-2.5 px-4 text-xs font-medium text-white opacity-0 transition-all duration-100 group-hover:opacity-100 hover:bg-accent shadow-[var(--shadow-medium)] flex items-center justify-center gap-2"
               >
-                {isInStock ? "In Stock" : "Out of Stock"}
-              </Badge>
-            </div>
+                <ShoppingCartIcon className="h-4 w-4" aria-hidden="true" />
+                Add to Cart
+              </button>
+            )}
           </div>
 
-          <CardContent className="space-y-2 p-4">
+          <CardContent className="space-y-2.5 p-4">
             {/* Product title - truncate to 2 lines */}
-            <h3 className="line-clamp-2 font-outfit text-base font-semibold leading-tight text-neutral-900 dark:text-neutral-100">
+            <h3 className="line-clamp-2 text-sm font-semibold leading-tight tracking-[-0.011em] text-foreground">
               {product.title}
             </h3>
 
             {/* Vendor */}
-            <p className="text-sm text-neutral-600 dark:text-neutral-400">
+            <p className="text-xs font-medium text-muted-foreground">
               {product.vendor}
             </p>
 
             {/* Price */}
-            <div className="pt-1">
+            <div>
               <Price
                 amount={product.priceRange.minVariantPrice.amount}
                 currencyCode={product.priceRange.minVariantPrice.currencyCode}
-                className="text-lg font-semibold text-neutral-900 dark:text-neutral-100"
+                className="text-base font-semibold text-foreground"
               />
             </div>
 
             {/* Fitment badge */}
             {showFitmentBadge && (
-              <div className="pt-1">
+              <div className="pt-0.5">
                 {fitmentStatus === "compatible" && (
                   <FitmentBadge
                     variant="compatible"
@@ -135,19 +145,6 @@ export function ProductCard({ product }: ProductCardProps) {
           </CardContent>
         </Card>
       </Link>
-
-      {/* Add to Cart Button - Outside the Link to prevent navigation */}
-      <div className="mt-3">
-        <button
-          onClick={handleAddToCart}
-          disabled={!isInStock}
-          aria-label={`Add ${product.title} to cart`}
-          className="w-full rounded-full bg-blue-600 py-3 px-4 text-sm font-medium text-white transition-all duration-200 hover:bg-blue-700 disabled:cursor-not-allowed disabled:bg-neutral-400 disabled:opacity-60 dark:disabled:bg-neutral-700 flex items-center justify-center gap-2 min-h-[44px]"
-        >
-          <ShoppingCartIcon className="h-5 w-5" aria-hidden="true" />
-          {isInStock ? "Add to Cart" : "Out of Stock"}
-        </button>
-      </div>
     </article>
   );
 }

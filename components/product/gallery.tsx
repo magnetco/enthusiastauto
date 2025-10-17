@@ -19,14 +19,14 @@ export function Gallery({
     imageIndex === 0 ? images.length - 1 : imageIndex - 1;
 
   const buttonClassName =
-    "h-full px-6 transition-all ease-in-out hover:scale-110 hover:text-black dark:hover:text-white flex items-center justify-center";
+    "h-full px-6 transition-all duration-200 ease-in-out hover:scale-110 hover:text-foreground flex items-center justify-center";
 
   return (
     <form>
-      <div className="relative aspect-square h-full max-h-[550px] w-full overflow-hidden">
+      <div className="relative aspect-square h-full max-h-[600px] w-full overflow-hidden rounded-xl bg-muted/30">
         {images[imageIndex] && (
           <Image
-            className="h-full w-full object-contain"
+            className="h-full w-full object-contain transition-opacity duration-300"
             fill
             sizes="(min-width: 1024px) 66vw, 100vw"
             alt={images[imageIndex]?.altText as string}
@@ -36,8 +36,8 @@ export function Gallery({
         )}
 
         {images.length > 1 ? (
-          <div className="absolute bottom-[15%] flex w-full justify-center">
-            <div className="mx-auto flex h-11 items-center rounded-full border border-white bg-neutral-50/80 text-neutral-500 backdrop-blur-sm dark:border-black dark:bg-neutral-900/80">
+          <div className="absolute bottom-6 flex w-full justify-center">
+            <div className="mx-auto flex h-12 items-center rounded-full border border-border/50 bg-background/90 text-muted-foreground shadow-lg backdrop-blur-md">
               <button
                 formAction={() => {
                   const newState = updateImage(previousImageIndex.toString());
@@ -48,7 +48,7 @@ export function Gallery({
               >
                 <ArrowLeftIcon className="h-5" />
               </button>
-              <div className="mx-1 h-6 w-px bg-neutral-500"></div>
+              <div className="mx-1 h-6 w-px bg-border"></div>
               <button
                 formAction={() => {
                   const newState = updateImage(nextImageIndex.toString());
@@ -65,7 +65,7 @@ export function Gallery({
       </div>
 
       {images.length > 1 ? (
-        <ul className="my-12 flex items-center flex-wrap justify-center gap-2 overflow-auto py-1 lg:mb-0">
+        <ul className="my-8 flex items-center flex-wrap justify-center gap-3 overflow-auto py-1 lg:mb-0 lg:mt-6">
           {images.map((image, index) => {
             const isActive = index === imageIndex;
 
@@ -77,15 +77,17 @@ export function Gallery({
                     updateURL(newState);
                   }}
                   aria-label="Select product image"
-                  className="h-full w-full"
+                  className="group h-full w-full"
                 >
-                  <GridTileImage
-                    alt={image.altText}
-                    src={image.src}
-                    width={80}
-                    height={80}
-                    active={isActive}
-                  />
+                  <div className={`overflow-hidden rounded-lg ring-2 transition-all duration-200 ${isActive ? 'ring-primary' : 'ring-transparent hover:ring-muted-foreground/30'}`}>
+                    <GridTileImage
+                      alt={image.altText}
+                      src={image.src}
+                      width={80}
+                      height={80}
+                      active={isActive}
+                    />
+                  </div>
                 </button>
               </li>
             );

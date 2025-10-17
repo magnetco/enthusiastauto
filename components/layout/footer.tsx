@@ -16,15 +16,15 @@ export default async function Footer() {
   const copyrightName = COMPANY_NAME || SITE_NAME || "";
 
   return (
-    <footer className="text-sm text-neutral-500 dark:text-neutral-400">
-      <div className="mx-auto flex w-full max-w-7xl flex-col gap-6 border-t border-neutral-200 px-6 py-12 text-sm md:flex-row md:gap-12 md:px-4 min-[1320px]:px-0 dark:border-neutral-700">
+    <footer className="text-sm text-muted-foreground">
+      <div className="mx-auto flex w-full max-w-7xl flex-col gap-8 border-t border-border/50 px-6 py-16 text-sm md:flex-row md:gap-12 md:px-4 min-[1320px]:px-0">
         <div>
           <Link
-            className="flex items-center gap-2 text-black md:pt-1 dark:text-white"
+            className="flex items-center gap-2 font-bold text-foreground transition-opacity duration-200 hover:opacity-80 md:pt-1"
             href="/"
           >
             <LogoSquare size="sm" />
-            <span className="uppercase">{SITE_NAME}</span>
+            <span className="uppercase tracking-wide">{SITE_NAME}</span>
           </Link>
         </div>
         <Suspense
@@ -43,18 +43,18 @@ export default async function Footer() {
         </Suspense>
         <div className="md:ml-auto">
           <a
-            className="flex h-8 w-max flex-none items-center justify-center rounded-md border border-neutral-200 bg-white text-xs text-black dark:border-neutral-700 dark:bg-black dark:text-white"
+            className="flex h-10 w-max flex-none items-center justify-center rounded-lg border border-border/50 bg-card text-xs font-medium text-foreground shadow-sm transition-all duration-200 hover:bg-accent hover:shadow-md"
             aria-label="Deploy on Vercel"
             href="https://vercel.com/templates/next.js/nextjs-commerce"
           >
-            <span className="px-3">▲</span>
-            <hr className="h-full border-r border-neutral-200 dark:border-neutral-700" />
-            <span className="px-3">Deploy</span>
+            <span className="px-4">▲</span>
+            <hr className="h-full border-r border-border/50" />
+            <span className="px-4">Deploy</span>
           </a>
         </div>
       </div>
-      <div className="border-t border-neutral-200 py-6 text-sm dark:border-neutral-700">
-        <div className="mx-auto flex w-full max-w-7xl flex-col items-center gap-1 px-4 md:flex-row md:gap-0 md:px-4 min-[1320px]:px-0">
+      <div className="border-t border-border/50 py-8 text-sm">
+        <div className="mx-auto flex w-full max-w-7xl flex-col items-center gap-2 px-4 md:flex-row md:gap-0 md:px-4 min-[1320px]:px-0">
           <p>
             &copy; {copyrightDate} {copyrightName}
             {copyrightName.length && !copyrightName.endsWith(".")
@@ -62,12 +62,12 @@ export default async function Footer() {
               : ""}{" "}
             All rights reserved.
           </p>
-          <hr className="mx-4 hidden h-4 w-[1px] border-l border-neutral-400 md:inline-block" />
+          <hr className="mx-4 hidden h-4 w-[1px] border-l border-border md:inline-block" />
           <p>
-            <a href="https://github.com/vercel/commerce">View the source</a>
+            <a href="https://github.com/vercel/commerce" className="transition-colors duration-200 hover:text-foreground">View the source</a>
           </p>
           <p className="md:ml-auto">
-            <a href="https://vercel.com" className="text-black dark:text-white">
+            <a href="https://vercel.com" className="font-medium text-foreground transition-opacity duration-200 hover:opacity-80">
               Created by ▲ Vercel
             </a>
           </p>
