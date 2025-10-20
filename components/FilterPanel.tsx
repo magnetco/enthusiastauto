@@ -6,7 +6,6 @@ import { Product } from "lib/shopify/types";
 import { extractModelOptions, extractYearOptions } from "lib/utils/vehicle";
 import { useMemo } from "react";
 import { VehicleSelector } from "./VehicleSelector";
-import { Button } from "./ui/button";
 import { Checkbox } from "./ui/checkbox";
 import {
   Accordion,
@@ -40,7 +39,6 @@ export function FilterPanel({
     filters,
     toggleVendor,
     toggleCategory,
-    clearFilters,
     setVehicle,
     clearVehicle,
   } = filterContext;
@@ -49,41 +47,24 @@ export function FilterPanel({
   const modelOptions = useMemo(() => extractModelOptions(products), [products]);
   const yearOptions = useMemo(() => extractYearOptions(products), [products]);
 
-  const hasActiveFilters =
-    filters.vendors.length > 0 ||
-    filters.categories.length > 0 ||
-    filters.vehicle !== null;
-
   const handleVehicleSelect = (model: string, year: number) => {
     setVehicle(model, year);
   };
 
   return (
-    <div className={`space-y-4 ${className}`}>
-      {/* Clear All Filters Button */}
-      {hasActiveFilters && (
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={clearFilters}
-          className="w-full"
-          aria-label="Clear all filters"
-        >
-          Clear All Filters
-        </Button>
-      )}
-
+    <div className={`${className}`}>
       <Accordion
         type="multiple"
         defaultValue={["vehicle", "vendors", "categories"]}
+        className="space-y-0"
       >
         {/* Vehicle Fitment Filter Section */}
         <AccordionItem value="vehicle">
-          <AccordionTrigger className="text-sm font-medium">
+          <AccordionTrigger className="text-xs font-semibold">
             Vehicle Fitment
           </AccordionTrigger>
           <AccordionContent>
-            <div className="pt-2">
+            <div className="pt-1.5">
               <VehicleSelector
                 modelOptions={modelOptions}
                 yearOptions={yearOptions}
@@ -99,11 +80,11 @@ export function FilterPanel({
         {/* Vendor Filter Section */}
         {vendorOptions.length > 0 && (
           <AccordionItem value="vendors">
-            <AccordionTrigger className="text-sm font-medium">
+            <AccordionTrigger className="text-xs font-semibold">
               Vendor
             </AccordionTrigger>
             <AccordionContent>
-              <div className="space-y-3 pt-2">
+              <div className="space-y-2 pt-1.5">
                 {vendorOptions.map((option) => (
                   <div
                     key={option.value}
@@ -117,10 +98,10 @@ export function FilterPanel({
                     />
                     <label
                       htmlFor={`vendor-${option.value}`}
-                      className="flex flex-1 cursor-pointer items-center justify-between text-sm"
+                      className="flex flex-1 cursor-pointer items-center justify-between text-xs"
                     >
                       <span>{option.label}</span>
-                      <span className="text-xs text-neutral-500">
+                      <span className="text-[11px] text-muted-foreground">
                         ({option.count})
                       </span>
                     </label>
@@ -134,11 +115,11 @@ export function FilterPanel({
         {/* Category Filter Section */}
         {categoryOptions.length > 0 && (
           <AccordionItem value="categories">
-            <AccordionTrigger className="text-sm font-medium">
+            <AccordionTrigger className="text-xs font-semibold">
               Category
             </AccordionTrigger>
             <AccordionContent>
-              <div className="space-y-3 pt-2">
+              <div className="space-y-2 pt-1.5">
                 {categoryOptions.map((option) => (
                   <div
                     key={option.value}
@@ -152,10 +133,10 @@ export function FilterPanel({
                     />
                     <label
                       htmlFor={`category-${option.value}`}
-                      className="flex flex-1 cursor-pointer items-center justify-between text-sm"
+                      className="flex flex-1 cursor-pointer items-center justify-between text-xs"
                     >
                       <span>{option.label}</span>
-                      <span className="text-xs text-neutral-500">
+                      <span className="text-[11px] text-muted-foreground">
                         ({option.count})
                       </span>
                     </label>

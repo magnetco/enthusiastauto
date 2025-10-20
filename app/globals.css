@@ -56,30 +56,30 @@ button {
   --color-orange: #fc7840;
   --color-yellow: #f2c94c;
 
-  /* Brand Colors (Linear's indigo/purple) */
-  --color-brand-primary: #5e6ad2; /* Primary brand color */
-  --color-brand-accent: #7170ff; /* Accent/hover */
-  --color-brand-accent-hover: #828fff; /* Bright accent */
+  /* Brand Colors (Enthusiast Auto blue) */
+  --color-brand-primary: #3b82f6; /* Primary brand blue */
+  --color-brand-accent: #2563eb; /* Darker blue */
+  --color-brand-accent-hover: #60a5fa; /* Lighter blue hover */
 
   /* Text Hierarchy (4-tier system) */
-  --color-text-primary: #f7f8f8; /* Highest emphasis */
-  --color-text-secondary: #d0d6e0; /* Medium emphasis */
-  --color-text-tertiary: #8a8f98; /* Lower emphasis */
-  --color-text-quaternary: #62666d; /* Lowest emphasis */
+  --color-text-primary: #ffffff; /* Pure white - highest emphasis */
+  --color-text-secondary: #e5e7eb; /* Light gray - medium emphasis */
+  --color-text-tertiary: #a8adb7; /* Medium gray - lower emphasis */
+  --color-text-quaternary: #6b7280; /* Darker gray - lowest emphasis */
 
   /* Backgrounds (5-level system) */
-  --color-bg-primary: #08090a; /* Darkest background */
-  --color-bg-secondary: #1c1c1f; /* Cards, elevated surfaces */
-  --color-bg-tertiary: #232326; /* Subtle elevation */
-  --color-bg-quaternary: #28282c; /* Higher elevation */
-  --color-bg-quinary: #282828; /* Highest elevation */
-  --color-bg-translucent: rgba(255, 255, 255, 0.02); /* Subtle overlay */
+  --color-bg-primary: #141721; /* Darkest navy background */
+  --color-bg-secondary: #1f2233; /* Lighter navy - cards, elevated surfaces */
+  --color-bg-tertiary: #1a1d29; /* Medium navy - subtle elevation */
+  --color-bg-quaternary: #252936; /* Higher elevation */
+  --color-bg-quinary: #2a2f3f; /* Highest elevation */
+  --color-bg-translucent: rgba(255, 255, 255, 0.03); /* Subtle overlay */
 
   /* Borders (3-tier system) */
-  --color-border-primary: #23252a; /* Subtle borders */
-  --color-border-secondary: #34343a; /* Medium borders */
-  --color-border-tertiary: #3e3e44; /* Prominent borders */
-  --color-border-translucent: rgba(255, 255, 255, 0.05); /* Overlay borders */
+  --color-border-primary: #2a2f3f; /* Subtle borders */
+  --color-border-secondary: #374151; /* Medium borders */
+  --color-border-tertiary: #4b5563; /* Prominent borders */
+  --color-border-translucent: rgba(255, 255, 255, 0.06); /* Overlay borders */
 
   /* Semantic Colors (preserve for e-commerce) */
   --color-success: #4cb782;
@@ -108,41 +108,84 @@ button {
   --ease-default: cubic-bezier(0.4, 0, 0.2, 1);
 
   /* ===== Typography Scale (Linear-inspired) ===== */
-  --font-sans: var(--font-inter), "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-sans: var(--font-figtree), "Figtree", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   --font-mono: ui-monospace, "SF Mono", "Menlo", "Consolas", monospace;
 
-  /* Font Weights (Linear's custom precision weights) */
+  /* Font Weights (Linear weights) */
   --font-weight-light: 300;
   --font-weight-normal: 400;
-  --font-weight-medium: 510; /* Linear custom */
-  --font-weight-semibold: 590; /* Linear custom */
-  --font-weight-bold: 680; /* Linear custom */
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
 
-  /* Font Sizes (Linear's scale, 15px base) */
+  /* Font Sizes with paired line-height/letter-spacing (Linear system) */
+  /* Micro - Labels, metadata */
   --font-size-micro: 0.6875rem; /* 11px */
+  --line-height-micro: 1.45; /* 16px */
+  --letter-spacing-micro: 0.01em;
+
+  /* Mini - Secondary labels */
   --font-size-mini: 0.75rem; /* 12px */
+  --line-height-mini: 1.5; /* 18px */
+  --letter-spacing-mini: 0;
+
+  /* Small - Body secondary, captions */
   --font-size-small: 0.8125rem; /* 13px */
-  --font-size-base: 0.9375rem; /* 15px - Linear's base */
+  --line-height-small: 1.54; /* 20px */
+  --letter-spacing-small: -0.003em;
+
+  /* Base - Primary body text */
+  --font-size-base: 0.875rem; /* 14px - Linear's base */
+  --line-height-base: 1.57; /* 22px */
+  --letter-spacing-base: -0.006em;
+
+  /* Regular - Emphasized body */
   --font-size-regular: 0.9375rem; /* 15px */
-  --font-size-large: 1.125rem; /* 18px */
+  --line-height-regular: 1.6; /* 24px */
+  --letter-spacing-regular: -0.009em;
+
+  /* Large - Subheadings */
+  --font-size-large: 1rem; /* 16px */
+  --line-height-large: 1.5; /* 24px */
+  --letter-spacing-large: -0.011em;
+
+  /* XL - Small titles */
+  --font-size-xl: 1.125rem; /* 18px */
+  --line-height-xl: 1.44; /* 26px */
+  --letter-spacing-xl: -0.014em;
+
+  /* Title 3 - Section headings */
   --font-size-title-3: 1.25rem; /* 20px */
+  --line-height-title-3: 1.4; /* 28px */
+  --letter-spacing-title-3: -0.017em;
+
+  /* Title 2 - Page headings */
   --font-size-title-2: 1.5rem; /* 24px */
-  --font-size-title-1: 2.25rem; /* 36px */
+  --line-height-title-2: 1.33; /* 32px */
+  --letter-spacing-title-2: -0.019em;
 
-  /* Line Heights */
-  --line-height-tight: 1.25;
-  --line-height-snug: 1.33;
-  --line-height-normal: 1.4;
-  --line-height-relaxed: 1.5;
+  /* Title 1 - Hero headings */
+  --font-size-title-1: 2rem; /* 32px */
+  --line-height-title-1: 1.25; /* 40px */
+  --letter-spacing-title-1: -0.022em;
 
-  /* Letter Spacing (Linear's tight headings) */
-  --letter-spacing-tight: -0.014em;
-  --letter-spacing-normal: -0.012em;
-  --letter-spacing-wide: 0;
+  /* Hero - Large display */
+  --font-size-hero: 3rem; /* 48px */
+  --line-height-hero: 1.17; /* 56px */
+  --letter-spacing-hero: -0.028em;
 
-  /* ===== Spacing Scale (4px base unit) ===== */
-  /* Using Tailwind's built-in spacing scale (4px base unit) */
-  /* Common: space-4 (16px), space-6 (24px), space-8 (32px), space-12 (48px) */
+  /* ===== Spacing Scale (Linear-inspired 4px grid) ===== */
+  /* Linear uses tight, consistent spacing - prefer smaller values */
+  /* Micro spacing: 4px, 8px, 12px (space-1, space-2, space-3) */
+  /* Standard spacing: 16px, 20px, 24px (space-4, space-5, space-6) */
+  /* Large spacing: 32px, 40px, 48px (space-8, space-10, space-12) */
+  /* Section spacing: 64px, 80px, 96px (space-16, space-20, space-24) */
+
+  /* Common Linear patterns: */
+  /* - Card padding: 16px (space-4) or 20px (space-5) */
+  /* - Section gaps: 12px (space-3), 16px (space-4) */
+  /* - Element spacing: 8px (space-2), 12px (space-3) */
+  /* - Tight spacing: 4px (space-1), 6px (space-1.5) */
 
   /* ===== Tailwind Neutral Scale Override (Linear colors) ===== */
   --color-neutral-50: #f7f8f8;
@@ -228,38 +271,38 @@ button {
 }
 
 .dark {
-  /* Dark mode - Linear's exact color system */
-  --background: #08090a; /* Linear's darkest background */
-  --foreground: #f7f8f8; /* Linear's primary text */
-  --card: #1c1c1f; /* Linear's secondary background */
-  --card-foreground: #f7f8f8;
-  --popover: #232326; /* Linear's tertiary background */
-  --popover-foreground: #f7f8f8;
-  --primary: #5e6ad2; /* Linear's brand indigo */
+  /* Dark mode - Enthusiast Auto navy/charcoal theme */
+  --background: #141721; /* Dark navy background */
+  --foreground: #ffffff; /* Pure white text */
+  --card: #1f2233; /* Lighter navy for cards */
+  --card-foreground: #ffffff;
+  --popover: #1f2233; /* Match card background */
+  --popover-foreground: #ffffff;
+  --primary: #3b82f6; /* Blue accent */
   --primary-foreground: #ffffff;
-  --secondary: #232326; /* Linear's tertiary background */
-  --secondary-foreground: #d0d6e0; /* Linear's secondary text */
-  --muted: #28282c; /* Linear's quaternary background */
-  --muted-foreground: #8a8f98; /* Linear's tertiary text */
-  --accent: #7170ff; /* Linear's brand accent purple */
+  --secondary: #1a1d29; /* Slightly different navy */
+  --secondary-foreground: #e5e7eb; /* Light gray text */
+  --muted: #1a1d29; /* Muted navy background */
+  --muted-foreground: #a8adb7; /* Medium gray text */
+  --accent: #2563eb; /* Darker blue accent */
   --accent-foreground: #ffffff;
-  --destructive: #eb5757; /* Linear's red */
-  --border: #23252a; /* Linear's primary border */
-  --input: #34343a; /* Linear's secondary border */
-  --ring: #5e6ad2; /* Linear's focus ring */
-  --chart-1: #5e6ad2;
-  --chart-2: #7170ff;
-  --chart-3: #4ea7fc;
-  --chart-4: #4cb782;
-  --chart-5: #f2c94c;
-  --sidebar: #1c1c1f;
-  --sidebar-foreground: #f7f8f8;
-  --sidebar-primary: #5e6ad2;
+  --destructive: #ef4444; /* Red for destructive actions */
+  --border: #2a2f3f; /* Subtle gray border */
+  --input: #2a2f3f; /* Match border for inputs */
+  --ring: #3b82f6; /* Blue focus ring */
+  --chart-1: #3b82f6;
+  --chart-2: #2563eb;
+  --chart-3: #60a5fa;
+  --chart-4: #34d399;
+  --chart-5: #fbbf24;
+  --sidebar: #1f2233;
+  --sidebar-foreground: #ffffff;
+  --sidebar-primary: #3b82f6;
   --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #232326;
-  --sidebar-accent-foreground: #d0d6e0;
-  --sidebar-border: #23252a;
-  --sidebar-ring: #5e6ad2;
+  --sidebar-accent: #1a1d29;
+  --sidebar-accent-foreground: #e5e7eb;
+  --sidebar-border: #2a2f3f;
+  --sidebar-ring: #3b82f6;
 }
 
 @layer base {
@@ -274,14 +317,14 @@ button {
   }
   body {
     @apply bg-background text-foreground overflow-x-hidden;
-    /* Linear's 15px base font size */
-    font-size: 15px;
-    line-height: 1.5;
-    /* Use Inter Variable as default font (Linear style) */
+    /* Linear base: 14px with tight line-height for better density */
+    font-size: var(--font-size-base); /* 14px */
+    line-height: var(--line-height-base); /* 1.57 = 22px */
+    letter-spacing: var(--letter-spacing-base); /* -0.006em */
     font-family: var(--font-sans);
-    font-weight: 400;
+    font-weight: var(--font-weight-normal);
   }
-  /* Linear uses same font for headings, just bolder weights */
+  /* Linear-inspired headings with paired typography values */
   h1,
   h2,
   h3,
@@ -289,19 +332,46 @@ button {
   h5,
   h6 {
     font-family: var(--font-sans);
-    font-weight: 590; /* Linear's semibold */
-    letter-spacing: var(--letter-spacing-normal);
-    line-height: var(--line-height-snug);
+    text-transform: uppercase;
   }
   h1 {
-    font-size: var(--font-size-title-1);
-    letter-spacing: var(--letter-spacing-tight);
+    font-size: var(--font-size-title-1); /* 32px */
+    line-height: var(--line-height-title-1); /* 1.25 */
+    letter-spacing: var(--letter-spacing-title-1); /* -0.022em */
+    font-weight: var(--font-weight-medium); /* 500 */
   }
   h2 {
-    font-size: var(--font-size-title-2);
+    font-size: var(--font-size-title-2); /* 24px */
+    line-height: var(--line-height-title-2); /* 1.33 */
+    letter-spacing: var(--letter-spacing-title-2); /* -0.019em */
+    font-weight: var(--font-weight-semibold); /* 600 */
   }
   h3 {
-    font-size: var(--font-size-title-3);
+    font-size: var(--font-size-title-3); /* 20px */
+    line-height: var(--line-height-title-3); /* 1.4 */
+    letter-spacing: var(--letter-spacing-title-3); /* -0.017em */
+    font-weight: var(--font-weight-semibold); /* 600 */
+  }
+  h4 {
+    font-size: var(--font-size-large); /* 16px */
+    line-height: var(--line-height-large); /* 1.5 */
+    letter-spacing: var(--letter-spacing-large); /* -0.011em */
+    font-weight: var(--font-weight-semibold); /* 600 */
+  }
+  h5,
+  h6 {
+    font-size: var(--font-size-base); /* 14px */
+    line-height: var(--line-height-base); /* 1.57 */
+    letter-spacing: var(--letter-spacing-base); /* -0.006em */
+    font-weight: var(--font-weight-semibold); /* 600 */
+  }
+
+  @media (min-width: 640px) {
+    h1 {
+      font-size: var(--font-size-hero); /* 48px on larger screens */
+      line-height: var(--line-height-hero); /* 1.17 */
+      letter-spacing: var(--letter-spacing-hero); /* -0.028em */
+    }
   }
 
   /* Prevent Radix Portal from adding body padding during dropdown open */

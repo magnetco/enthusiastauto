@@ -75,13 +75,13 @@ export function ProductGridWithFilters({
     (filters.searchTerm && filters.searchTerm.length >= 2 ? 1 : 0);
 
   return (
-    <div className="flex flex-col gap-4 md:flex-row md:gap-6">
+    <div className="flex flex-col gap-3 md:flex-row md:gap-5">
       {/* Filter Panel - Desktop Sidebar (hidden on mobile) */}
       {showFilters &&
         (vendorOptions.length > 0 || categoryOptions.length > 0) && (
-          <aside className="hidden w-[280px] flex-none md:block">
-            <div className="sticky top-4">
-              <h2 className="mb-4 text-lg font-semibold">Filters</h2>
+          <aside className="hidden w-[260px] flex-none md:block">
+            <div className="sticky top-3">
+              <h2 className="mb-3 text-xs font-semibold uppercase tracking-wide normal-case text-muted-foreground">Filters</h2>
               <FilterPanel
                 vendorOptions={vendorOptions}
                 categoryOptions={categoryOptions}
@@ -93,38 +93,45 @@ export function ProductGridWithFilters({
 
       {/* Main Content */}
       <div className="flex-1 min-w-0">
-        {/* Mobile Filter Button & Active Filter Badges Row */}
-        <div className="mb-4 flex flex-wrap items-center gap-3">
-          {/* Mobile Filter Drawer Button */}
+        {/* Top Row - Product Count aligned with FILTERS */}
+        <div className="mb-3 flex items-center justify-between">
+          <div className="text-xs text-muted-foreground" role="status" aria-live="polite" aria-atomic="true">
+            {hasActiveFilters ? (
+              <p>
+                Showing {filteredCount} of {totalProducts}{" "}
+                {totalProducts === 1 ? "product" : "products"}
+              </p>
+            ) : (
+              <p>
+                {totalProducts} {totalProducts === 1 ? "product" : "products"}
+              </p>
+            )}
+          </div>
+
+          {/* Mobile Filter Drawer Button - Top Right */}
           {showFilters &&
             (vendorOptions.length > 0 || categoryOptions.length > 0) && (
-              <FilterDrawer
-                vendorOptions={vendorOptions}
-                categoryOptions={categoryOptions}
-                products={products}
-              />
+              <div className="md:hidden">
+                <FilterDrawer
+                  vendorOptions={vendorOptions}
+                  categoryOptions={categoryOptions}
+                  products={products}
+                />
+              </div>
             )}
-
-          {/* Active Filter Badges */}
-          <div className="flex-1 min-w-0">
-            <FilterBadges />
-          </div>
         </div>
 
-        {/* Product Count */}
-        <div className="mb-4 flex items-center gap-2 text-sm text-neutral-600 dark:text-neutral-400">
-          {hasActiveFilters ? (
-            <p>
-              Showing {filteredCount} of {totalProducts}{" "}
-              {totalProducts === 1 ? "product" : "products"}
-            </p>
-          ) : (
-            <p>
-              {totalProducts} {totalProducts === 1 ? "product" : "products"}
-            </p>
-          )}
-          {isSearchDebouncing && (
-            <span className="inline-flex items-center gap-1 text-xs text-neutral-500 dark:text-neutral-400">
+        {/* Second Row - Active Filter Badges (only if there are active filters) */}
+        {hasActiveFilters && (
+          <div className="mb-3">
+            <FilterBadges />
+          </div>
+        )}
+
+        {/* Search Debouncing Indicator */}
+        {isSearchDebouncing && (
+          <div className="mb-3 flex items-center gap-2">
+            <span className="inline-flex items-center gap-1.5 text-xs text-muted-foreground/70">
               <svg
                 className="h-3 w-3 animate-spin"
                 xmlns="http://www.w3.org/2000/svg"
@@ -147,8 +154,8 @@ export function ProductGridWithFilters({
               </svg>
               Searching...
             </span>
-          )}
-        </div>
+          </div>
+        )}
 
         {/* Product Grid */}
         {filteredProducts.length > 0 ? (
@@ -191,9 +198,9 @@ function EmptyState({
   };
 
   return (
-    <div className="flex min-h-[400px] flex-col items-center justify-center rounded-lg border border-dashed border-neutral-300 dark:border-neutral-700">
+    <div className="flex min-h-[340px] flex-col items-center justify-center rounded-lg border border-dashed border-border/50 bg-muted/5">
       <svg
-        className="mb-4 h-12 w-12 text-neutral-400"
+        className="mb-3 h-10 w-10 text-muted-foreground/40"
         fill="none"
         stroke="currentColor"
         viewBox="0 0 24 24"
@@ -202,20 +209,20 @@ function EmptyState({
         <path
           strokeLinecap="round"
           strokeLinejoin="round"
-          strokeWidth={2}
+          strokeWidth={1.5}
           d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
         />
       </svg>
-      <h3 className="mb-2 text-lg font-semibold text-neutral-900 dark:text-neutral-100">
+      <h3 className="mb-1.5 text-sm font-medium text-foreground">
         No products found
       </h3>
-      <p className="mb-4 text-center text-sm text-neutral-600 dark:text-neutral-400">
+      <p className="mb-4 text-center text-xs text-muted-foreground">
         {getMessage()}
       </p>
 
       {/* Helpful suggestions */}
-      <div className="flex flex-col items-center gap-2 text-sm">
-        <p className="text-neutral-600 dark:text-neutral-400">
+      <div className="flex flex-col items-center gap-2 text-xs">
+        <p className="text-muted-foreground/70">
           {activeFilterCount > 0 &&
             `${activeFilterCount} active filter${activeFilterCount > 1 ? "s" : ""}`}
         </p>

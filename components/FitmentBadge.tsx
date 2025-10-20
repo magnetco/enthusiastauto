@@ -19,8 +19,10 @@ export function FitmentBadge({ variant, modelName, year }: FitmentBadgeProps) {
       <Badge
         variant="default"
         className="gap-1 bg-green-600 text-white hover:bg-green-700 dark:bg-green-600 dark:hover:bg-green-700"
+        role="status"
+        aria-label={`This product fits your ${modelName}${year ? ` ${year}` : ''}`}
       >
-        <Check className="h-3 w-3" />
+        <Check className="h-3 w-3" aria-hidden="true" />
         <span>Fits Your {modelName}</span>
       </Badge>
     );
@@ -52,12 +54,14 @@ export function FitmentBadge({ variant, modelName, year }: FitmentBadgeProps) {
             <Badge
               variant="secondary"
               className="gap-1 bg-yellow-100 text-yellow-800 hover:bg-yellow-200 dark:bg-yellow-900/30 dark:text-yellow-500 dark:hover:bg-yellow-900/40"
+              role="status"
+              aria-label="Check fitment - No fitment data available"
             >
-              <AlertCircle className="h-3 w-3" />
+              <AlertCircle className="h-3 w-3" aria-hidden="true" />
               <span>Check Fitment</span>
             </Badge>
           </TooltipTrigger>
-          <TooltipContent>
+          <TooltipContent role="tooltip">
             <p>
               No fitment data available. Please verify compatibility before
               purchasing.
@@ -73,6 +77,8 @@ export function FitmentBadge({ variant, modelName, year }: FitmentBadgeProps) {
     <Badge
       variant="secondary"
       className="bg-neutral-500 text-white hover:bg-neutral-600 dark:bg-neutral-600 dark:hover:bg-neutral-700"
+      role="status"
+      aria-label="Universal fit - Compatible with all vehicles"
     >
       Universal Fit
     </Badge>

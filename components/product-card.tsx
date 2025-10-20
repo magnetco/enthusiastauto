@@ -1,6 +1,5 @@
 "use client";
 
-import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Product } from "@/lib/shopify/types";
 import { FitmentBadge } from "@/components/FitmentBadge";
@@ -59,14 +58,14 @@ export function ProductCard({ product }: ProductCardProps) {
   };
 
   return (
-    <article className="group h-full">
+    <article className="group h-full" role="article" aria-labelledby={`product-title-${product.id}`}>
       <Link
         href={`/product/${product.handle}`}
         className="block h-full"
-        aria-label={`View ${product.title}`}
+        aria-label={`View details for ${product.title}`}
       >
-        <Card className="h-full overflow-hidden border border-border bg-card">
-          <div className="relative aspect-square overflow-hidden bg-muted/20">
+        <div className="h-full overflow-hidden">
+          <div className="relative aspect-square overflow-hidden bg-muted/10">
             {imageUrl ? (
               <Image
                 src={imageUrl}
@@ -84,10 +83,10 @@ export function ProductCard({ product }: ProductCardProps) {
 
             {/* Stock status badge - Only show if out of stock */}
             {!isInStock && (
-              <div className="absolute right-3 top-3">
+              <div className="absolute right-2.5 top-2.5">
                 <Badge
                   variant="secondary"
-                  className="bg-muted text-muted-foreground shadow-lg"
+                  className="bg-muted text-muted-foreground shadow-md text-xs px-2 py-0.5"
                 >
                   Out of Stock
                 </Badge>
@@ -99,17 +98,17 @@ export function ProductCard({ product }: ProductCardProps) {
               <button
                 onClick={handleAddToCart}
                 aria-label={`Add ${product.title} to cart`}
-                className="absolute bottom-3 left-3 right-3 rounded-lg bg-accent/95 backdrop-blur-sm py-2.5 px-4 text-xs font-medium text-white opacity-0 transition-all duration-100 group-hover:opacity-100 hover:bg-accent shadow-[var(--shadow-medium)] flex items-center justify-center gap-2"
+                className="absolute bottom-2.5 left-2.5 right-2.5 rounded-md bg-accent/95 backdrop-blur-sm py-2 px-3.5 text-xs font-medium text-white opacity-0 transition-all duration-100 group-hover:opacity-100 hover:bg-accent shadow-[var(--shadow-medium)] flex items-center justify-center gap-1.5"
               >
-                <ShoppingCartIcon className="h-4 w-4" aria-hidden="true" />
+                <ShoppingCartIcon className="h-3.5 w-3.5" aria-hidden="true" />
                 Add to Cart
               </button>
             )}
           </div>
 
-          <CardContent className="space-y-2.5 p-4">
+          <div className="space-y-1.5 pt-2.5">
             {/* Product title - truncate to 2 lines */}
-            <h3 className="line-clamp-2 text-sm font-semibold leading-tight tracking-[-0.011em] text-foreground">
+            <h3 id={`product-title-${product.id}`} className="line-clamp-2 text-sm font-medium leading-tight tracking-[-0.006em] text-foreground normal-case">
               {product.title}
             </h3>
 
@@ -123,13 +122,13 @@ export function ProductCard({ product }: ProductCardProps) {
               <Price
                 amount={product.priceRange.minVariantPrice.amount}
                 currencyCode={product.priceRange.minVariantPrice.currencyCode}
-                className="text-base font-semibold text-foreground"
+                className="text-sm font-semibold text-foreground"
               />
             </div>
 
             {/* Fitment badge */}
             {showFitmentBadge && (
-              <div className="pt-0.5">
+              <div className="pt-0">
                 {fitmentStatus === "compatible" && (
                   <FitmentBadge
                     variant="compatible"
@@ -142,8 +141,8 @@ export function ProductCard({ product }: ProductCardProps) {
                 )}
               </div>
             )}
-          </CardContent>
-        </Card>
+          </div>
+        </div>
       </Link>
     </article>
   );

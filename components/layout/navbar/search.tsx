@@ -93,8 +93,14 @@ export default function Search() {
         action="/search"
         className="w-max-[550px] relative w-full lg:w-80 xl:w-full"
         onSubmit={handleSubmit}
+        role="search"
+        aria-label="Search products"
       >
+        <label htmlFor="search-input" className="sr-only">
+          Search for products
+        </label>
         <Input
+          id="search-input"
           ref={inputRef}
           type="text"
           name="q"

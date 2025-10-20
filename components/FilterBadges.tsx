@@ -30,8 +30,8 @@ export function FilterBadges() {
   }
 
   return (
-    <div className="mb-4 flex flex-wrap items-center gap-2">
-      <span className="text-sm font-medium text-neutral-700 dark:text-neutral-300">
+    <div className="flex flex-wrap items-center gap-1.5">
+      <span className="text-xs font-medium text-muted-foreground">
         Active Filters:
       </span>
 
@@ -40,12 +40,12 @@ export function FilterBadges() {
         <Badge
           key="search-badge"
           variant="default"
-          className="group cursor-pointer gap-1 bg-[#529BCA] pr-1 hover:bg-[#4189B8] dark:bg-[#529BCA] dark:hover:bg-[#4189B8] min-h-[36px] flex items-center"
+          className="group cursor-pointer gap-1 bg-[#529BCA] pr-1 hover:bg-[#4189B8] dark:bg-[#529BCA] dark:hover:bg-[#4189B8] h-7 flex items-center text-xs px-2"
           onClick={clearSearchTerm}
         >
           <span>Search: {filters.searchTerm}</span>
           <button
-            className="ml-1 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 min-h-[24px] min-w-[24px] flex items-center justify-center"
+            className="ml-0.5 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 h-5 w-5 flex items-center justify-center"
             aria-label="Clear search term"
           >
             <X className="h-3 w-3" />
@@ -58,14 +58,14 @@ export function FilterBadges() {
         <Badge
           key="vehicle-badge"
           variant="default"
-          className="group cursor-pointer gap-1 bg-[#529BCA] pr-1 hover:bg-[#4189B8] dark:bg-[#529BCA] dark:hover:bg-[#4189B8] min-h-[36px] flex items-center"
+          className="group cursor-pointer gap-1 bg-[#529BCA] pr-1 hover:bg-[#4189B8] dark:bg-[#529BCA] dark:hover:bg-[#4189B8] h-7 flex items-center text-xs px-2"
           onClick={clearVehicle}
         >
           <span>
             Vehicle: {filters.vehicle.model} {filters.vehicle.year}
           </span>
           <button
-            className="ml-1 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 min-h-[24px] min-w-[24px] flex items-center justify-center"
+            className="ml-0.5 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 h-5 w-5 flex items-center justify-center"
             aria-label="Remove vehicle filter"
           >
             <X className="h-3 w-3" />
@@ -78,12 +78,12 @@ export function FilterBadges() {
         <Badge
           key={`vendor-${vendor}`}
           variant="default"
-          className="group cursor-pointer gap-1 bg-[#529BCA] pr-1 hover:bg-[#4189B8] dark:bg-[#529BCA] dark:hover:bg-[#4189B8] min-h-[36px] flex items-center"
+          className="group cursor-pointer gap-1 bg-[#529BCA] pr-1 hover:bg-[#4189B8] dark:bg-[#529BCA] dark:hover:bg-[#4189B8] h-7 flex items-center text-xs px-2"
           onClick={() => toggleVendor(vendor)}
         >
           <span>Vendor: {vendor}</span>
           <button
-            className="ml-1 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 min-h-[24px] min-w-[24px] flex items-center justify-center"
+            className="ml-0.5 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 h-5 w-5 flex items-center justify-center"
             aria-label={`Remove ${vendor} filter`}
           >
             <X className="h-3 w-3" />
@@ -96,14 +96,14 @@ export function FilterBadges() {
         <Badge
           key={`category-${category}`}
           variant="default"
-          className="group cursor-pointer gap-1 bg-[#529BCA] pr-1 hover:bg-[#4189B8] dark:bg-[#529BCA] dark:hover:bg-[#4189B8] min-h-[36px] flex items-center"
+          className="group cursor-pointer gap-1 bg-[#529BCA] pr-1 hover:bg-[#4189B8] dark:bg-[#529BCA] dark:hover:bg-[#4189B8] h-7 flex items-center text-xs px-2"
           onClick={() => toggleCategory(category)}
         >
           <span>
             Category: {category.charAt(0).toUpperCase() + category.slice(1)}
           </span>
           <button
-            className="ml-1 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 min-h-[24px] min-w-[24px] flex items-center justify-center"
+            className="ml-0.5 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 h-5 w-5 flex items-center justify-center"
             aria-label={`Remove ${category} filter`}
           >
             <X className="h-3 w-3" />
@@ -119,7 +119,7 @@ export function FilterBadges() {
         (filters.vendors.length > 0 && filters.categories.length > 0)) && (
         <button
           onClick={clearFilters}
-          className="ml-2 text-sm font-medium text-[#529BCA] hover:underline dark:text-[#529BCA] min-h-[36px] px-2"
+          className="ml-1 text-xs font-medium text-[#529BCA] hover:underline dark:text-[#529BCA] h-7 px-1.5"
           aria-label="Clear all filters"
         >
           Clear All
