@@ -1,6 +1,5 @@
 import { Suspense } from "react";
 import { ProductGridLoading } from "@/components/product-grid";
-import { ProductGridError } from "@/components/product-grid-error";
 import { ProductGridWithFilters } from "@/components/ProductGridWithFilters";
 import { getProducts } from "@/lib/shopify";
 import Footer from "components/layout/footer";
@@ -20,7 +19,16 @@ async function ProductListing() {
     return <ProductGridWithFilters products={products} />;
   } catch (error) {
     console.error("Failed to fetch products:", error);
-    throw error;
+    return (
+      <div className="flex min-h-[400px] flex-col items-center justify-center rounded-lg border border-border bg-muted p-8">
+        <h3 className="mb-2 text-lg font-semibold">
+          Unable to load products
+        </h3>
+        <p className="text-center text-sm text-muted-foreground">
+          Products are currently unavailable. Please check back later.
+        </p>
+      </div>
+    );
   }
 }
 

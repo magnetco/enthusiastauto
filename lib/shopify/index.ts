@@ -62,7 +62,7 @@ const domain = process.env.SHOPIFY_STORE_DOMAIN
   ? ensureStartsWith(process.env.SHOPIFY_STORE_DOMAIN, "https://")
   : "";
 const endpoint = `${domain}${SHOPIFY_GRAPHQL_API_ENDPOINT}`;
-const key = process.env.SHOPIFY_STOREFRONT_ACCESS_TOKEN!;
+const key = process.env.SHOPIFY_STOREFRONT_ACCESS_TOKEN || "";
 
 type ExtractVariables<T> = T extends { variables: object }
   ? T["variables"]
@@ -78,6 +78,12 @@ export async function shopifyFetch<T>({
   variables?: ExtractVariables<T>;
 }): Promise<{ status: number; body: T } | never> {
   try {
+    if (!endpoint || !key) {
+      throw new Error(
+        `Shopify configuration missing: ${!endpoint ? "SHOPIFY_STORE_DOMAIN" : ""} ${!key ? "SHOPIFY_STOREFRONT_ACCESS_TOKEN" : ""}`.trim()
+      );
+    }
+
     const result = await fetch(endpoint, {
       method: "POST",
       headers: {
@@ -103,18 +109,17 @@ export async function shopifyFetch<T>({
     };
   } catch (e) {
     if (isShopifyError(e)) {
-      throw {
+      const errorMessage = e.message instanceof Error ? e.message.message : String(e.message);
+      console.error("Shopify API Error:", {
+        message: errorMessage,
         cause: e.cause?.toString() || "unknown",
         status: e.status || 500,
-        message: e.message,
-        query,
-      };
+      });
+      throw new Error(errorMessage);
     }
 
-    throw {
-      error: e,
-      query,
-    };
+    console.error("Shopify Fetch Error:", e);
+    throw e instanceof Error ? e : new Error(String(e));
   }
 }
 
