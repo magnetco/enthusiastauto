@@ -76,6 +76,60 @@ export function extractYearFromTitle(title: string): number | undefined {
 }
 
 /**
+ * Extract model designation from listingTitle
+ * E.g., "2013 BMW E92 M3 ZCP" → "M3"
+ * Looks for common BMW model patterns after the chassis code
+ */
+export function extractModelFromTitle(title: string): string | undefined {
+  // Match common BMW models: M3, M5, 335i, 540i, etc.
+  const modelMatch = title.match(
+    /\b(M\d|[1-7]\d{2}[A-Za-z]{0,2}|X[1-7]|Z\d)\b/i,
+  );
+  return modelMatch?.[1]?.toUpperCase();
+}
+
+/**
+ * Generate compatibility tags for a vehicle based on CMS fields
+ * These tags will be used to search Shopify products
+ *
+ * Example for "2013 BMW E92 M3":
+ * Returns: ["E92", "M3", "BMW E92", "BMW M3", "E92 M3", "BMW", "2013 BMW"]
+ */
+export function generateVehicleCompatibilityTags(
+  vehicle: VehicleDetail,
+): string[] {
+  const tags: string[] = [];
+  const chassis = vehicle.chassis.toUpperCase();
+  const year = extractYearFromTitle(vehicle.listingTitle);
+  const model = extractModelFromTitle(vehicle.listingTitle);
+
+  // Core tags - highest priority
+  tags.push(chassis); // "E92"
+
+  if (model) {
+    tags.push(model); // "M3"
+    tags.push(`${chassis} ${model}`); // "E92 M3"
+    tags.push(`BMW ${model}`); // "BMW M3"
+  }
+
+  tags.push(`BMW ${chassis}`); // "BMW E92"
+
+  // Year-specific tags
+  if (year) {
+    tags.push(`${year} ${chassis}`); // "2013 E92"
+    tags.push(`${year} BMW`); // "2013 BMW"
+    if (model) {
+      tags.push(`${year} ${model}`); // "2013 M3"
+    }
+  }
+
+  // Generic BMW tag for universal parts
+  tags.push("BMW");
+
+  return tags;
+}
+
+/**
  * Extract unique models from product tags array
  * Returns array of chassis codes (e.g., ["E46", "E90"])
  */
@@ -93,55 +147,11 @@ export function extractModelsFromTags(tags: string[]): string[] {
 }
 
 /**
- * Rank product relevance for a given vehicle
- * Higher score = better match
- */
-function rankProductForVehicle(
-  product: Product,
-  vehicle: VehicleDetail,
-): number {
-  const vehicleYear = extractYearFromTitle(vehicle.listingTitle);
-  const vehicleChassis = vehicle.chassis.toUpperCase();
-
-  let score = 0;
-
-  product.tags.forEach((tag) => {
-    const fitment = parseFitmentTag(tag);
-
-    // Universal fit products get base score
-    if (fitment.isUniversal) {
-      score = Math.max(score, 1);
-      return;
-    }
-
-    // Model match
-    if (fitment.model && fitment.model === vehicleChassis) {
-      // Exact year match
-      if (
-        vehicleYear &&
-        fitment.yearMin &&
-        fitment.yearMax &&
-        vehicleYear >= fitment.yearMin &&
-        vehicleYear <= fitment.yearMax
-      ) {
-        score = Math.max(score, 10); // Exact model + year range match
-      } else if (vehicleYear && fitment.yearMin === vehicleYear) {
-        score = Math.max(score, 10); // Exact model + specific year match
-      } else {
-        score = Math.max(score, 5); // Model-only match
-      }
-    }
-  });
-
-  return score;
-}
-
-/**
  * Shopify GraphQL query for products by tags
  */
 const productsQuery = `
   query getProducts($query: String!) {
-    products(first: 20, query: $query) {
+    products(first: 30, query: $query) {
       edges {
         node {
           id
@@ -178,8 +188,16 @@ const productsQuery = `
 
 /**
  * Get compatible parts recommendations for a vehicle
- * Queries Shopify for products matching vehicle chassis and year
- * Returns max 6 products ranked by fitment relevance
+ *
+ * Simple tag-based matching:
+ * 1. Generates compatibility tags from vehicle CMS fields (chassis, model, year)
+ * 2. Searches Shopify for products with ANY of these exact tags
+ * 3. Returns matching products (max 6)
+ *
+ * Example: For "2013 BMW E92 M3", searches for products tagged with:
+ * "E92", "M3", "BMW E92", "BMW M3", "E92 M3", etc.
+ *
+ * Users can tag Shopify products with simple tags like "E92" or "M3" and they'll match!
  * Uses 5-minute in-memory cache to reduce API calls
  */
 export async function getCompatibleParts(
@@ -193,11 +211,28 @@ export async function getCompatibleParts(
   }
 
   try {
-    const vehicleChassis = vehicle.chassis.toUpperCase();
+    // Generate compatibility tags from vehicle data
+    const compatibilityTags = generateVehicleCompatibilityTags(vehicle);
 
-    // Build Shopify query to search products with chassis tag
-    // Query format: "tag:BMW E46" OR "tag:BMW Universal"
-    const searchQuery = `tag:BMW ${vehicleChassis} OR tag:BMW Universal`;
+    // Log for debugging
+    console.log(
+      `[Recommendations] Searching for ${vehicle.listingTitle}`,
+      `\nGenerated tags:`,
+      compatibilityTags,
+    );
+
+    // Build Shopify search query: search for products with ANY of these tags
+    // Format: tag:E92 OR tag:M3 OR tag:"BMW E92" OR tag:"BMW M3" ...
+    const tagQueries = compatibilityTags
+      .map((tag) => {
+        // Quote tags with spaces, leave single-word tags unquoted
+        const quotedTag = tag.includes(" ") ? `"${tag}"` : tag;
+        return `tag:${quotedTag}`;
+      })
+      .join(" OR ");
+
+    const searchQuery = tagQueries;
+    console.log(`[Recommendations] Shopify query:`, searchQuery);
 
     type ProductsQueryType = {
       data: {
@@ -241,57 +276,52 @@ export async function getCompatibleParts(
       res.body.data?.products?.edges?.map((edge) => edge.node) || [];
 
     // Transform to Product type with images array
-    const products: Product[] = rawProducts.map((p) => ({
-      id: p.id,
-      handle: p.handle,
-      availableForSale: p.availableForSale,
-      title: p.title,
-      description: p.description,
-      descriptionHtml: p.descriptionHtml,
-      vendor: p.vendor,
-      productType: p.productType,
-      options: [], // Not needed for recommendations
-      priceRange: p.priceRange,
-      variants: [], // Not needed for recommendations
-      featuredImage: {
-        url: p.featuredImage.url,
-        altText: p.featuredImage.altText,
-        width: p.featuredImage.width,
-        height: p.featuredImage.height,
-      },
-      images: p.featuredImage
-        ? [
-            {
-              url: p.featuredImage.url,
-              altText: p.featuredImage.altText,
-              width: p.featuredImage.width,
-              height: p.featuredImage.height,
-            },
-          ]
-        : [],
-      seo: {
+    const products: Product[] = rawProducts
+      .map((p) => ({
+        id: p.id,
+        handle: p.handle,
+        availableForSale: p.availableForSale,
         title: p.title,
         description: p.description,
-      },
-      tags: p.tags,
-      updatedAt: p.updatedAt,
-    }));
-
-    // Rank products by relevance
-    const rankedProducts = products
-      .map((product) => ({
-        product,
-        score: rankProductForVehicle(product, vehicle),
+        descriptionHtml: p.descriptionHtml,
+        vendor: p.vendor,
+        productType: p.productType,
+        options: [], // Not needed for recommendations
+        priceRange: p.priceRange,
+        variants: [], // Not needed for recommendations
+        featuredImage: {
+          url: p.featuredImage.url,
+          altText: p.featuredImage.altText,
+          width: p.featuredImage.width,
+          height: p.featuredImage.height,
+        },
+        images: p.featuredImage
+          ? [
+              {
+                url: p.featuredImage.url,
+                altText: p.featuredImage.altText,
+                width: p.featuredImage.width,
+                height: p.featuredImage.height,
+              },
+            ]
+          : [],
+        seo: {
+          title: p.title,
+          description: p.description,
+        },
+        tags: p.tags,
+        updatedAt: p.updatedAt,
       }))
-      .filter((item) => item.score > 0) // Only include matches
-      .sort((a, b) => b.score - a.score) // Sort by score descending
-      .slice(0, 6) // Limit to 6 products
-      .map((item) => item.product);
+      .slice(0, 6); // Limit to 6 products (already matched by tags)
+
+    console.log(
+      `[Recommendations] Found ${products.length} compatible products`,
+    );
 
     // Cache the results for 5 minutes
-    memoryCache.set(cacheKey, rankedProducts, 300000);
+    memoryCache.set(cacheKey, products, 300000);
 
-    return rankedProducts;
+    return products;
   } catch (error) {
     console.error("Error fetching compatible parts:", error);
     return [];

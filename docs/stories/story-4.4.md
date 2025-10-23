@@ -1,6 +1,6 @@
 # Story 4.4: Cross-Content Linking Components
 
-Status: In Progress
+Status: Ready for Review
 
 ## Story
 

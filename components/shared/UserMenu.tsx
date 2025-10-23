@@ -14,6 +14,17 @@ import {
 import { toast } from "sonner";
 
 /**
+ * Generate a Gravatar URL from an email address
+ */
+function getGravatarUrl(email: string, size: number = 80): string {
+  const hash = require("crypto")
+    .createHash("md5")
+    .update(email.toLowerCase().trim())
+    .digest("hex");
+  return `https://www.gravatar.com/avatar/${hash}?s=${size}&d=identicon`;
+}
+
+/**
  * User account menu component
  * Shows "Sign In" link for unauthenticated users
  * Shows profile dropdown with logout for authenticated users
@@ -45,11 +56,14 @@ export default function UserMenu() {
           className="flex h-8 w-8 items-center justify-center rounded-full bg-muted text-muted-foreground transition-colors hover:bg-muted/80 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
           aria-label="User menu"
         >
-          {session.user.image ? (
+          {session.user.image || session.user.email ? (
             <img
-              src={session.user.image}
+              src={
+                session.user.image ||
+                getGravatarUrl(session.user.email || "", 80)
+              }
               alt={session.user.name || "User"}
-              className="h-8 w-8 rounded-full"
+              className="h-8 w-8 rounded-full object-cover"
             />
           ) : (
             <UserIcon className="h-5 w-5" />
