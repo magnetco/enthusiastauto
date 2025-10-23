@@ -17,7 +17,6 @@
 ## Infrastructure as Code (IaC)
 
 2. **IaC platform (if applicable):**
-
    - Terraform
    - Pulumi
    - CloudFormation (AWS)
@@ -30,7 +29,6 @@
    - Not applicable
 
 3. **IaC language:**
-
    - HCL (Terraform)
    - TypeScript (Pulumi, CDK)
    - Python (Pulumi, CDK)
@@ -41,7 +39,6 @@
    - Other: **\_\_\_**
 
 4. **Terraform specifics (if applicable):**
-
    - Terraform module (reusable component)
    - Terraform provider (new resource types)
    - Terraform backend (state storage)
@@ -59,7 +56,6 @@
 ## Kubernetes Operator (if applicable)
 
 6. **Operator framework:**
-
    - Operator SDK (Go)
    - Kubebuilder (Go)
    - KUDO
@@ -70,7 +66,6 @@
    - Not applicable
 
 7. **Operator type:**
-
    - Application operator (manage app lifecycle)
    - Infrastructure operator (manage resources)
    - Data operator (databases, queues)
@@ -78,13 +73,11 @@
    - Other: **\_\_\_**
 
 8. **Custom Resource Definitions (CRDs):**
-
    - Define new CRDs
    - Use existing CRDs
    - Multiple CRDs
 
 9. **Operator scope:**
-
    - Namespace-scoped
    - Cluster-scoped
    - Both
@@ -97,7 +90,6 @@
 ## CI/CD Integration
 
 11. **CI/CD platform (if plugin/action):**
-
     - GitHub Actions
     - GitLab CI
     - Jenkins
@@ -110,7 +102,6 @@
     - Not applicable
 
 12. **Plugin type (if CI/CD plugin):**
-
     - Build step
     - Test step
     - Deployment step
@@ -136,7 +127,6 @@
 - Multiple methods
 
 15. **State management:**
-
     - Stateless (idempotent operations)
     - Local state file
     - Remote state (S3, Consul, Terraform Cloud)
@@ -159,7 +149,6 @@
 ## Execution Model
 
 17. **Execution pattern:**
-
     - CLI tool (run locally or in CI)
     - Kubernetes controller (runs in cluster)
     - Daemon/agent (runs on nodes/VMs)
@@ -168,7 +157,6 @@
     - Event-driven (webhook, queue)
 
 18. **Deployment model:**
-
     - Single binary (Go, Rust)
     - Container image
     - Script (Python, Bash)
@@ -186,7 +174,6 @@
 ## Resource Management
 
 20. **Resources managed:**
-
     - Compute (VMs, containers, functions)
     - Networking (VPC, load balancers, DNS)
     - Storage (disks, buckets, databases)
@@ -196,7 +183,6 @@
     - Multiple resource types
 
 21. **Resource lifecycle:**
-
     - Create/provision
     - Update/modify
     - Delete/destroy
@@ -212,7 +198,6 @@
 ## Language and Framework
 
 23. **Implementation language:**
-
     - Go (common for K8s, CLI tools)
     - Python (scripting, automation)
     - TypeScript/JavaScript (Pulumi, CDK)
@@ -235,7 +220,6 @@
 ## API and Integration
 
 25. **API exposure:**
-
     - REST API
     - gRPC API
     - CLI only (no API)
@@ -254,18 +238,15 @@
 ## Idempotency and Safety
 
 27. **Idempotency:**
-
     - Fully idempotent (safe to run multiple times)
     - Conditionally idempotent (with flags)
     - Not idempotent (manual cleanup needed)
 
 28. **Dry-run/Plan mode:**
-
     - Yes (preview changes before applying)
     - No (immediate execution)
 
 29. **Rollback capability:**
-
     - Automatic rollback on failure
     - Manual rollback (previous state)
     - No rollback (manual cleanup)
@@ -278,14 +259,12 @@
 ## Observability
 
 31. **Logging:**
-
     - Structured logging (JSON)
     - Plain text logs
     - Library: (logrus, zap, winston, etc.)
     - Multiple log levels (debug, info, warn, error)
 
 32. **Metrics:**
-
     - Prometheus metrics
     - CloudWatch metrics
     - Datadog metrics
@@ -293,7 +272,6 @@
     - None
 
 33. **Tracing:**
-
     - OpenTelemetry
     - Jaeger
     - Not applicable
@@ -306,7 +284,6 @@
 ## Testing
 
 35. **Testing approach:**
-
     - Unit tests (mock external APIs)
     - Integration tests (real cloud resources)
     - E2E tests (full workflow)
@@ -315,14 +292,12 @@
     - All of the above
 
 36. **Test environment:**
-
     - Local (mocked)
     - Dev/staging cloud account
     - Kind/minikube (for K8s)
     - Multiple environments
 
 37. **Terraform testing (if applicable):**
-
     - Terratest (Go-based testing)
     - terraform validate
     - terraform plan (in CI)
@@ -337,7 +312,6 @@
 ## Documentation
 
 39. **Documentation format:**
-
     - README (basic)
     - Detailed docs (Markdown files)
     - Generated docs (godoc, Sphinx, etc.)
@@ -355,7 +329,6 @@
 ## Distribution
 
 41. **Distribution method:**
-
     - GitHub Releases (binaries)
     - Package manager (homebrew, apt, yum)
     - Container registry (Docker Hub, ghcr.io)
@@ -365,7 +338,6 @@
     - Multiple methods
 
 42. **Installation:**
-
     - Download binary
     - Package manager install
     - Helm install (for K8s)
@@ -381,7 +353,6 @@
 ## Updates and Lifecycle
 
 44. **Update mechanism:**
-
     - Manual download/install
     - Package manager update
     - Auto-update (self-update command)
@@ -389,7 +360,6 @@
     - Not applicable
 
 45. **Backward compatibility:**
-
     - Fully backward compatible
     - Breaking changes documented
     - Migration guides provided
@@ -402,7 +372,6 @@
 ## Security
 
 47. **Credentials handling:**
-
     - Environment variables
     - Config file (encrypted)
     - Cloud provider IAM (instance roles, IRSA)
@@ -411,13 +380,11 @@
     - Multiple methods
 
 48. **Least privilege:**
-
     - Minimal permissions documented
     - Permission templates provided (IAM policies)
     - No specific guidance
 
 49. **Code signing:**
-
     - Signed binaries
     - Container image signing (cosign)
     - Not signed
@@ -431,7 +398,6 @@
 ## Compliance and Governance
 
 51. **Compliance focus:**
-
     - Policy enforcement (OPA, Kyverno)
     - Audit logging
     - Cost tagging
@@ -439,7 +405,6 @@
     - Not applicable
 
 52. **Policy as Code:**
-
     - OPA (Open Policy Agent)
     - Sentinel (Terraform)
     - Kyverno (Kubernetes)
@@ -455,14 +420,12 @@
 ## Performance and Scale
 
 54. **Performance requirements:**
-
     - Fast execution (seconds)
     - Moderate (minutes)
     - Long-running (hours acceptable)
     - Background reconciliation (continuous)
 
 55. **Scale considerations:**
-
     - Small scale (< 10 resources)
     - Medium (10-100 resources)
     - Large (100-1000 resources)
@@ -476,7 +439,6 @@
 ## CI/CD and Automation
 
 57. **CI/CD for the tool itself:**
-
     - GitHub Actions
     - GitLab CI
     - CircleCI
@@ -484,7 +446,6 @@
     - Manual builds
 
 58. **Release automation:**
-
     - Automated releases (tags trigger build)
     - Manual releases
     - GoReleaser (for Go projects)
@@ -499,13 +460,11 @@
 ## Community and Ecosystem
 
 60. **Open source:**
-
     - Fully open source
     - Proprietary
     - Open core (free + paid features)
 
 61. **License:**
-
     - MIT
     - Apache 2.0
     - GPL
@@ -513,7 +472,6 @@
     - Other: **\_\_\_**
 
 62. **Community support:**
-
     - GitHub issues
     - Slack/Discord community
     - Forum

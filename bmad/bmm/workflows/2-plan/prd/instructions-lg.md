@@ -216,13 +216,11 @@ Since this is a Level {{project_level}} project, you need architecture before st
 ### Phase 2: Detailed Planning
 
 - [ ] **Generate detailed user stories**
-
   - Command: `workflow generate-stories`
   - Input: epics.md + solution-architecture.md
   - Output: user-stories.md with full acceptance criteria
 
 - [ ] **Create technical design documents**
-
   - Database schema
   - API specifications
   - Integration points
@@ -235,13 +233,11 @@ Since this is a Level {{project_level}} project, you need architecture before st
 ### Phase 3: Development Preparation
 
 - [ ] **Set up development environment**
-
   - Repository structure
   - CI/CD pipeline
   - Development tools
 
 - [ ] **Create sprint plan**
-
   - Story prioritization
   - Sprint boundaries
   - Resource allocation

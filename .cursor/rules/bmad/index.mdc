@@ -57,6 +57,15 @@ BMAD rules have been installed to: `.cursor/rules/bmad/`
 - @bmad/cis/agents/innovation-strategist - innovation-strategist
 - @bmad/cis/agents/storyteller - storyteller
 
+### VDE
+
+**Agents:**
+- @bmad/vde/agents/capture-specialist - capture-specialist
+- @bmad/vde/agents/director - director
+- @bmad/vde/agents/foundation-specialist - foundation-specialist
+- @bmad/vde/agents/implementation-specialist - implementation-specialist
+- @bmad/vde/agents/visual-analyst - visual-analyst
+
 
 ## Quick Reference
 

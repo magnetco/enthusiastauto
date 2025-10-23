@@ -137,20 +137,20 @@ Tasks should be used for:
 ### Required: install-module-config.yaml
 
 ```yaml
-module_name: "Module Name"
-module_code: "module-code"
+module_name: 'Module Name'
+module_code: 'module-code'
 
 install_steps:
-  - name: "Create directories"
-    action: "mkdir"
+  - name: 'Create directories'
+    action: 'mkdir'
     paths: [...]
 
-  - name: "Copy files"
-    action: "copy"
+  - name: 'Copy files'
+    action: 'copy'
     mappings: [...]
 
-  - name: "Register module"
-    action: "register"
+  - name: 'Register module'
+    action: 'register'
 ```
 
 ### Optional: installer.js
@@ -176,25 +176,21 @@ Files that get copied outside the module:
 ### Development Phases
 
 1. **Planning Phase**
-
    - Define scope and purpose
    - Identify components
    - Design architecture
 
 2. **Scaffolding Phase**
-
    - Create directory structure
    - Generate configurations
    - Setup installer
 
 3. **Building Phase**
-
    - Create agents incrementally
    - Build workflows progressively
    - Add tasks as needed
 
 4. **Testing Phase**
-
    - Test individual components
    - Verify integration
    - Validate installation

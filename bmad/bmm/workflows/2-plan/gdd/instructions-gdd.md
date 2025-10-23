@@ -446,7 +446,6 @@ Since this is a Level {{project_level}} game project, you need solutioning for p
 ### Phase 2: Prototype and Playtesting
 
 - [ ] **Create core mechanic prototype**
-
   - Validate game feel
   - Test control responsiveness
   - Iterate on game pillars
@@ -459,7 +458,6 @@ Since this is a Level {{project_level}} game project, you need solutioning for p
 ### Phase 3: Asset Production
 
 - [ ] **Create asset pipeline**
-
   - Art style guides
   - Technical constraints
   - Asset naming conventions
@@ -472,7 +470,6 @@ Since this is a Level {{project_level}} game project, you need solutioning for p
 ### Phase 4: Development
 
 - [ ] **Generate detailed user stories**
-
   - Command: `workflow generate-stories`
   - Input: GDD.md + solution-architecture.md
 

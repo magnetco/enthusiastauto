@@ -145,7 +145,6 @@ If BACKLOG had 1 story and is now empty:
 **Next Steps:**
 
 1. **Recommended:** Run `story-context` workflow to generate implementation context
-
    - This creates a comprehensive context XML for the DEV agent
    - Includes relevant architecture, dependencies, and existing code
 

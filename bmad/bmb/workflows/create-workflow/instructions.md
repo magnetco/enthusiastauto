@@ -134,14 +134,12 @@ Load and use the template at: {template_instructions}
 Generate the instructions.md file following the workflow creation guide:
 
 1. ALWAYS include critical headers:
-
    - Workflow engine reference: {project_root}/bmad/core/tasks/workflow.xml
    - workflow.yaml reference: must be loaded and processed
 
 2. Structure with <workflow> tags containing all steps
 
 3. For each step from design phase, follow guide conventions:
-
    - Step attributes: n="X" goal="clear goal statement"
    - Optional steps: optional="true"
    - Repeating: repeat="3" or repeat="for-each-X" or repeat="until-approved"
@@ -149,7 +147,6 @@ Generate the instructions.md file following the workflow creation guide:
    - Sub-steps: Use 3a, 3b notation
 
 4. Use proper XML tags from guide:
-
    - Execution: <action>, <check>, <ask>, <goto>, <invoke-workflow>
    - Output: <template-output>, <invoke-task halt="true">{project-root}/bmad/core/tasks/adv-elicit.xml</invoke-task>, <critical>, <example>
    - Flow: <loop>, <break>, <continue>
@@ -206,13 +203,11 @@ Create checklist.md following guide best practices:
    ✅ "- [ ] Each function has JSDoc comments with parameters and return types"
 
 2. Group checks logically:
-
    - Structure: All sections present, no placeholders, proper formatting
    - Content Quality: Clear and specific, technically accurate, consistent terminology
    - Completeness: Ready for next phase, dependencies documented, action items defined
 
 3. Include workflow-specific validations based on type:
-
    - Document workflows: Template variables mapped, sections complete
    - Action workflows: Actions clearly defined, error handling specified
    - Interactive: User prompts clear, decision points documented
@@ -263,13 +258,11 @@ If yes:
 
 1. Copy core workflow metadata (name, description, author)
 2. Convert all file paths to bmad/-relative paths:
-
    - Remove {project-root}/ prefix
    - Remove {config_source} references (use hardcoded values)
    - Example: "{project-root}/bmad/bmm/workflows/x" → "bmad/bmm/workflows/x"
 
 3. List ALL referenced files:
-
    - Scan instructions.md for any file paths
    - Scan template.md for any includes or references
    - Include all data files (CSV, JSON, etc.)
@@ -282,21 +275,21 @@ Example:
 
 ```yaml
 web_bundle:
-  name: "{workflow_name}"
-  description: "{workflow_description}"
-  author: "{author}"
-  instructions: "bmad/{module}/workflows/{workflow}/instructions.md"
-  validation: "bmad/{module}/workflows/{workflow}/checklist.md"
-  template: "bmad/{module}/workflows/{workflow}/template.md"
+  name: '{workflow_name}'
+  description: '{workflow_description}'
+  author: '{author}'
+  instructions: 'bmad/{module}/workflows/{workflow}/instructions.md'
+  validation: 'bmad/{module}/workflows/{workflow}/checklist.md'
+  template: 'bmad/{module}/workflows/{workflow}/template.md'
 
   # Any data files (no config_source)
-  data_file: "bmad/{module}/workflows/{workflow}/data.csv"
+  data_file: 'bmad/{module}/workflows/{workflow}/data.csv'
 
   web_bundle_files:
-    - "bmad/{module}/workflows/{workflow}/instructions.md"
-    - "bmad/{module}/workflows/{workflow}/checklist.md"
-    - "bmad/{module}/workflows/{workflow}/template.md"
-    - "bmad/{module}/workflows/{workflow}/data.csv"
+    - 'bmad/{module}/workflows/{workflow}/instructions.md'
+    - 'bmad/{module}/workflows/{workflow}/checklist.md'
+    - 'bmad/{module}/workflows/{workflow}/template.md'
+    - 'bmad/{module}/workflows/{workflow}/data.csv'
     # Add every single file referenced anywhere
 ```
 

@@ -1,0 +1,794 @@
+<story-context id="bmad/bmm/workflows/4-implementation/story-context/template" v="1.0">
+  <metadata>
+    <epicId>3</epicId>
+    <storyId>3.3</storyId>
+    <title>Vehicle Listing Page</title>
+    <status>Ready</status>
+    <generatedAt>2025-10-22</generatedAt>
+    <generator>BMAD Story Context Workflow</generator>
+    <sourceStoryPath>docs/stories/story-3.3.md</sourceStoryPath>
+  </metadata>
+
+  <story>
+    <asA>BMW enthusiast</asA>
+    <iWant>to browse all available vehicles in a visually appealing grid</iWant>
+    <soThat>I can discover vehicles for sale</soThat>
+    <tasks>
+      Task 1: Create Vehicle Listing Page Route (AC: 1) - 4 subtasks
+      Task 2: Implement Sanity GROQ Queries (AC: 4, 5, 8) - 5 subtasks
+      Task 3: Create VehicleCard Component (AC: 3, 7) - 10 subtasks
+      Task 4: Implement Responsive Grid Layout (AC: 2) - 5 subtasks
+      Task 5: Create Vehicle Filter System (AC: 4) - 10 subtasks
+      Task 6: Implement Sorting Controls (AC: 5) - 5 subtasks
+      Task 7: Create Loading and Empty States (AC: 6) - 6 subtasks
+      Task 8: Testing and Validation (AC: All) - 10 subtasks
+
+      Total: 8 tasks, 55 subtasks (estimated based on story)
+    </tasks>
+  </story>
+
+  <acceptanceCriteria>
+    <criterion id="1">
+      <title>Route and Page Structure</title>
+      <description>Vehicle listing page accessible at /vehicles route with ISR (60-second revalidation) and SEO optimization</description>
+      <details>
+        - Vehicle listing page accessible at `/vehicles` route
+        - Page renders using Next.js 15 App Router with ISR (60-second revalidation)
+        - SEO optimization with proper meta tags (title, description, Open Graph)
+      </details>
+    </criterion>
+    <criterion id="2">
+      <title>Responsive Grid Layout</title>
+      <description>Responsive grid displays vehicles in 1-column (mobile), 2-column (tablet), 3-column (desktop) layout</description>
+      <details>
+        - Vehicles display in responsive grid: 1-column (mobile), 2-column (tablet), 3-column (desktop)
+        - Grid uses CSS Grid with Tailwind utilities for consistent spacing
+        - Layout works correctly across all viewports (320px - 2560px)
+      </details>
+    </criterion>
+    <criterion id="3">
+      <title>Vehicle Card Display</title>
+      <description>Vehicle cards display hero image, year/make/model, price, mileage, and status badge using ShadCN Card component</description>
+      <details>
+        - Hero image (signatureShot or soldShot based on status)
+        - Year, make, model (e.g., "2005 BMW E46 M3")
+        - Listing price (formatted with commas, or "Call for Price" if showCallForPrice is true)
+        - Mileage (formatted with commas, e.g., "45,000 miles")
+        - Status badge (Current Inventory / Sold)
+        - Cards use ShadCN Card component for consistent styling
+        - Images optimized with Next.js Image component (eager loading for first 6, lazy for rest)
+      </details>
+    </criterion>
+    <criterion id="4">
+      <title>Filtering System</title>
+      <description>Comprehensive filtering by chassis/model, year range, price range, and inventory status with mobile drawer</description>
+      <details>
+        - Filter by chassis/model (E39, E46, E90, F30, X3, X4, X5, etc.) - dropdown or checkbox
+        - Filter by year range (min/max year inputs or slider)
+        - Filter by price range (min/max price inputs or slider)
+        - Filter by inventory status (Current Inventory / Sold / Both)
+        - Multiple filters apply with AND logic
+        - Filter UI accessible on mobile (drawer) and desktop (sidebar)
+        - Active filters displayed as removable badges
+        - "Clear All Filters" button resets all selections
+      </details>
+    </criterion>
+    <criterion id="5">
+      <title>Sorting Options</title>
+      <description>Sort vehicles by price, year, mileage, or recently added with dropdown control</description>
+      <details>
+        - Sort by: Price (Low to High, High to Low)
+        - Sort by: Year (Newest First, Oldest First)
+        - Sort by: Mileage (Lowest First, Highest First)
+        - Sort by: Recently Added (newest listings first, based on _createdAt)
+        - Sorting dropdown accessible in header area
+        - Selected sort persists during filter changes
+      </details>
+    </criterion>
+    <criterion id="6">
+      <title>Loading and Empty States</title>
+      <description>Loading skeleton and contextual empty state messages for no results</description>
+      <details>
+        - Loading skeleton shown while data fetches (6-9 skeleton cards matching grid layout)
+        - Empty state when no vehicles match filters with clear message and suggestions
+        - Empty state when no vehicles exist at all (different message for admins)
+      </details>
+    </criterion>
+    <criterion id="7">
+      <title>Status Visualization</title>
+      <description>"SOLD" vehicles visually distinguished with overlay and reduced opacity</description>
+      <details>
+        - "SOLD" overlay/badge on vehicle card image
+        - Slightly muted appearance (reduced opacity 0.7 or grayscale filter)
+        - Optional: Different border color or card background
+        - "Current Inventory" vehicles display normally with green/blue status badge
+      </details>
+    </criterion>
+    <criterion id="8">
+      <title>Performance and Data Fetching</title>
+      <description>ISR with 60s revalidation, Sanity GROQ queries, pagination, lazy loading, <2s page load</description>
+      <details>
+        - Page uses ISR with 60-second revalidation (per NFR006)
+        - Sanity GROQ queries for filtering and sorting (server-side)
+        - First 20-30 vehicles fetched initially, pagination or "Load More" for additional vehicles
+        - Images lazy-loaded after first 6 for performance
+        - Page load time less than 2 seconds on standard broadband (per NFR001)
+      </details>
+    </criterion>
+  </acceptanceCriteria>
+
+  <artifacts>
+    <docs>
+      <doc>
+        <path>docs/PRD.md</path>
+        <title>Product Requirements Document</title>
+        <section>Functional Requirements - FR013</section>
+        <snippet>Users shall be able to browse a searchable, filterable inventory of vehicles for sale with high-quality photo galleries and detailed specifications</snippet>
+      </doc>
+      <doc>
+        <path>docs/PRD.md</path>
+        <title>Product Requirements Document</title>
+        <section>Non-Functional Requirements - NFR006</section>
+        <snippet>Vehicle content updates in Sanity shall reflect on the frontend within 60 seconds (ISR/webhook revalidation). Image uploads shall support batch operations and provide real-time upload progress.</snippet>
+      </doc>
+      <doc>
+        <path>docs/PRD.md</path>
+        <title>Product Requirements Document</title>
+        <section>Non-Functional Requirements - NFR001</section>
+        <snippet>Performance - Product listing pages shall load within 2 seconds on standard broadband connections. Product detail pages shall load within 1.5 seconds. Filter interactions shall provide visual feedback within 100ms.</snippet>
+      </doc>
+      <doc>
+        <path>docs/epic-stories.md</path>
+        <title>Epic Stories Breakdown</title>
+        <section>Story 3.3: Vehicle Listing Page (lines 447-476)</section>
+        <snippet>As a BMW enthusiast, I want to browse all available vehicles in a visually appealing grid, so that I can discover vehicles for sale. Acceptance Criteria: Vehicle listing page at /vehicles, responsive grid, vehicle cards, filtering, sorting, loading states, sold visualization, ISR performance.</snippet>
+      </doc>
+      <doc>
+        <path>docs/epic-stories.md</path>
+        <title>Epic Stories Breakdown</title>
+        <section>Epic 3 Overview: Vehicle Inventory Integration (lines 376-569)</section>
+        <snippet>Goal: Integrate Sanity CMS for vehicle content management and create browsable vehicle inventory with rich media galleries. Priority: Must Have - Foundation for unified platform. 6 stories covering Sanity setup, vehicle schema, listing page, detail page, status management, editor workflows.</snippet>
+      </doc>
+      <doc>
+        <path>docs/solution-architecture.md</path>
+        <title>Solution Architecture Document</title>
+        <section>Server-Side Rendering Strategy - ISR Implementation (lines 129-208)</section>
+        <snippet>Vehicle Listing uses ISR with 60s revalidation. Pre-render 50 most popular vehicles at build time. Sanity webhook triggers on-demand revalidation when content changes. Performance benefits: Instant page loads with pre-rendered HTML from Vercel Edge, fresh content with 60s revalidation + webhook, reduced API calls with cached responses.</snippet>
+      </doc>
+      <doc>
+        <path>docs/solution-architecture.md</path>
+        <title>Solution Architecture Document</title>
+        <section>Data Fetching Approach - Sanity GROQ Queries (lines 286-322)</section>
+        <snippet>Sanity CMS data fetching pattern: createClient with useCdn:false (ISR handles caching at Next.js level per 60s revalidation strategy). GROQ queries with filtering parameters for vehicles. Example: *[_type == "vehicle" && status == $status] | order(createdAt desc) with images, status, slug fields.</snippet>
+      </doc>
+      <doc>
+        <path>docs/solution-architecture.md</path>
+        <title>Solution Architecture Document</title>
+        <section>Caching Strategy (lines 373-401)</section>
+        <snippet>Sanity vehicles: Next.js fetch cache + ISR, 60s TTL, webhook invalidation on content change. Images from Sanity CDN: Vercel Edge + browser cache, 1 year TTL, version in URL for cache busting.</snippet>
+      </doc>
+      <doc>
+        <path>docs/stories/story-3.1.md</path>
+        <title>Story 3.1: Sanity CMS Setup & Configuration</title>
+        <section>Complete Story</section>
+        <snippet>Story 3.1 establishes Sanity v4.11.0 integration with Next.js 15, embedded Studio at /studio route, dual client pattern (read-only + authenticated), environment variables configured, CORS setup documented. Prerequisite for Story 3.3.</snippet>
+      </doc>
+      <doc>
+        <path>docs/stories/story-3.2.md</path>
+        <title>Story 3.2: Vehicle Schema & Data Models</title>
+        <section>Complete Story</section>
+        <snippet>Story 3.2 defines comprehensive Sanity vehicle schema matching Webflow CMS structure with 40+ fields across 9 categories: basic info (listingTitle, slug, chassis, mileage, VIN), colors/pricing, status/visibility, engine/transmission, separated image galleries (signatureShot, soldShot, galleryExterior/Interior arrays), content fields. Schema provides foundation for Story 3.3 data fetching.</snippet>
+      </doc>
+      <doc>
+        <path>docs/stories/story-1.3.md</path>
+        <title>Story 1.3: Vendor & Category Filters</title>
+        <section>Filter Pattern Reference</section>
+        <snippet>Story 1.3 implements client-side filtering with FilterContext, FilterPanel (ShadCN Accordion/Checkbox), FilterBadges, ProductGridWithFilters. Pattern includes sessionStorage persistence, multi-filter AND logic, active filter badges, Clear All functionality. Reference for filter UI patterns (Note: Vehicle filtering uses server-side GROQ queries vs client-side FilterContext due to smaller dataset).</snippet>
+      </doc>
+    </docs>
+    <code>
+      <artifact>
+        <path>lib/sanity/client.ts</path>
+        <kind>service</kind>
+        <symbol>sanity (Sanity client)</symbol>
+        <lines>1-30</lines>
+        <reason>Existing Sanity client from Story 3.1. Use this client for GROQ queries in getVehicles() function. Configured with useCdn:false for ISR caching strategy.</reason>
+      </artifact>
+      <artifact>
+        <path>sanity/schemas/vehicle.ts</path>
+        <kind>schema</kind>
+        <symbol>vehicle schema</symbol>
+        <lines>1-650</lines>
+        <reason>Vehicle schema from Story 3.2 defines all available fields for GROQ queries. Key fields for listing: listingTitle, slug, chassis, year (extracted from listingTitle), mileage, listingPrice, showCallForPrice, inventoryStatus, signatureShot, soldShot, _createdAt. Use for TypeScript types.</reason>
+      </artifact>
+      <artifact>
+        <path>app/products/page.tsx</path>
+        <kind>page</kind>
+        <symbol>ProductListing page</symbol>
+        <lines>REFERENCE</lines>
+        <reason>Reference for existing product listing page structure. Follow similar patterns for vehicle listing: Server Component with data fetching, grid layout, responsive design. Note: Products use client-side filtering (FilterContext), vehicles use server-side GROQ queries.</reason>
+      </artifact>
+      <artifact>
+        <path>components/product/product-card.tsx</path>
+        <kind>component</kind>
+        <symbol>ProductCard component</symbol>
+        <lines>REFERENCE</lines>
+        <reason>Reference for card component structure. VehicleCard should follow similar pattern: Next.js Image, ShadCN Card, hover effects, clickable link. Add vehicle-specific elements: status badge, sold overlay, mileage display.</reason>
+      </artifact>
+      <artifact>
+        <path>components/product/product-grid.tsx</path>
+        <kind>component</kind>
+        <symbol>ProductGrid component</symbol>
+        <lines>REFERENCE</lines>
+        <reason>Reference for grid layout implementation. VehicleGrid should use same responsive grid pattern: grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 with consistent gap spacing.</reason>
+      </artifact>
+      <artifact>
+        <path>components/filter/filter-panel.tsx</path>
+        <kind>component</kind>
+        <symbol>FilterPanel component</symbol>
+        <lines>REFERENCE</lines>
+        <reason>Reference for filter UI patterns (ShadCN Accordion, Checkbox). VehicleFilters should follow similar structure but implement server-side filtering with URL search params instead of client-side FilterContext.</reason>
+      </artifact>
+      <artifact>
+        <path>components/filter/filter-badges.tsx</path>
+        <kind>component</kind>
+        <symbol>FilterBadges component</symbol>
+        <lines>REFERENCE</lines>
+        <reason>Reference for active filter badge display. Vehicle FilterBadges should follow same pattern: removable badges with X icon, Clear All button, consistent styling.</reason>
+      </artifact>
+      <artifact>
+        <path>components/ui/card.tsx</path>
+        <kind>component</kind>
+        <symbol>ShadCN Card component</symbol>
+        <lines>REFERENCE</lines>
+        <reason>ShadCN Card component to use for VehicleCard. Already installed, provides Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter primitives.</reason>
+      </artifact>
+      <artifact>
+        <path>components/ui/badge.tsx</path>
+        <kind>component</kind>
+        <symbol>ShadCN Badge component</symbol>
+        <lines>REFERENCE</lines>
+        <reason>ShadCN Badge component for status badges. Already installed, supports variants (default, secondary, destructive, outline). Use for Current Inventory (success/green) and Sold (gray) badges.</reason>
+      </artifact>
+      <artifact>
+        <path>components/ui/select.tsx</path>
+        <kind>component</kind>
+        <symbol>ShadCN Select component</symbol>
+        <lines>REFERENCE</lines>
+        <reason>ShadCN Select component for sort dropdown and chassis filter dropdown. Already installed via @radix-ui/react-select, provides Select, SelectTrigger, SelectContent, SelectItem primitives.</reason>
+      </artifact>
+      <artifact>
+        <path>components/layout/filter-drawer.tsx</path>
+        <kind>component</kind>
+        <symbol>FilterDrawer component</symbol>
+        <lines>REFERENCE</lines>
+        <reason>Mobile filter drawer from Story 1.7 using HeadlessUI Dialog. Reference for vehicle mobile filter drawer pattern: slide-out from side, backdrop overlay, close button.</reason>
+      </artifact>
+      <artifact>
+        <path>components/ui/skeleton.tsx</path>
+        <kind>component</kind>
+        <symbol>ShadCN Skeleton component</symbol>
+        <lines>CREATE IF MISSING</lines>
+        <reason>ShadCN Skeleton component for loading states. If not installed, create VehicleCardSkeleton with basic animated skeleton matching vehicle card layout (image placeholder, text lines).</reason>
+      </artifact>
+      <artifact>
+        <path>lib/sanity/queries/vehicles.ts</path>
+        <kind>NEW FILE</kind>
+        <symbol>getVehicles() function</symbol>
+        <lines>CREATE NEW</lines>
+        <reason>Create new file for vehicle-specific GROQ queries. Define getVehicles() function accepting filter params (chassis[], yearMin, yearMax, priceMin, priceMax, status) and sort option, returning VehicleListItem[] type.</reason>
+      </artifact>
+      <artifact>
+        <path>lib/utils/format.ts</path>
+        <kind>NEW FILE</kind>
+        <symbol>formatCurrency(), formatMileage() utilities</symbol>
+        <lines>CREATE NEW</lines>
+        <reason>Create utility functions for formatting: formatCurrency(price, showCallForPrice) returns "$45,000" or "Call for Price", formatMileage(mileage) returns "45,000 miles" with commas.</reason>
+      </artifact>
+      <artifact>
+        <path>app/vehicles/page.tsx</path>
+        <kind>NEW FILE</kind>
+        <symbol>VehiclesPage Server Component</symbol>
+        <lines>CREATE NEW</lines>
+        <reason>Main vehicle listing page route. Server Component with ISR (export const revalidate = 60), reads URL search params for filters/sort, fetches vehicles with getVehicles(), renders VehicleGrid with data.</reason>
+      </artifact>
+      <artifact>
+        <path>components/vehicles/VehicleCard.tsx</path>
+        <kind>NEW FILE</kind>
+        <symbol>VehicleCard component</symbol>
+        <lines>CREATE NEW</lines>
+        <reason>Vehicle card component displaying hero image, title, price, mileage, status badge, sold overlay. Clickable link to /vehicles/[slug]. ShadCN Card with Next.js Image, hover effects.</reason>
+      </artifact>
+      <artifact>
+        <path>components/vehicles/VehicleGrid.tsx</path>
+        <kind>NEW FILE</kind>
+        <symbol>VehicleGrid component</symbol>
+        <lines>CREATE NEW</lines>
+        <reason>Grid wrapper component. Responsive CSS Grid (grid-cols-1 sm:grid-cols-2 lg:grid-cols-3), consistent gap spacing, renders VehicleCard components or VehicleCardSkeleton during loading.</reason>
+      </artifact>
+      <artifact>
+        <path>components/vehicles/VehicleFilters.tsx</path>
+        <kind>NEW FILE</kind>
+        <symbol>VehicleFilters component</symbol>
+        <lines>CREATE NEW</lines>
+        <reason>Filter UI component with chassis/model, year range, price range, inventory status filters. Updates URL search params on change. Desktop sidebar layout, mobile drawer with HeadlessUI Dialog.</reason>
+      </artifact>
+      <artifact>
+        <path>components/vehicles/SortDropdown.tsx</path>
+        <kind>NEW FILE</kind>
+        <symbol>SortDropdown component</symbol>
+        <lines>CREATE NEW</lines>
+        <reason>Sort control component with dropdown (ShadCN Select) for price/year/mileage/recently added options. Updates URL search param 'sort' on selection.</reason>
+      </artifact>
+      <artifact>
+        <path>components/vehicles/VehicleCardSkeleton.tsx</path>
+        <kind>NEW FILE</kind>
+        <symbol>VehicleCardSkeleton component</symbol>
+        <lines>CREATE NEW</lines>
+        <reason>Loading skeleton component matching VehicleCard layout. Animated skeleton for image, title, price, mileage lines. Render 6-9 skeletons in grid during data fetch.</reason>
+      </artifact>
+    </code>
+    <dependencies>
+      <dependency ecosystem="node">
+        <package name="next" version="15.3.0-canary.13" />
+        <package name="react" version="19.0.0" />
+        <package name="react-dom" version="19.0.0" />
+        <package name="typescript" version="5.8.2" />
+        <package name="@sanity/client" version="^7.12.0" />
+        <package name="@sanity/image-url" version="^1.2.0" />
+        <package name="next-sanity" version="11" />
+        <package name="sanity" version="4" />
+        <package name="@radix-ui/react-select" version="^2.2.6" />
+        <package name="@radix-ui/react-dialog" version="^1.1.15" />
+        <package name="@radix-ui/react-checkbox" version="^1.3.3" />
+        <package name="@radix-ui/react-accordion" version="^1.2.12" />
+        <package name="@headlessui/react" version="^2.2.0" />
+        <package name="lucide-react" version="^0.545.0" />
+        <package name="class-variance-authority" version="^0.7.1" />
+        <package name="clsx" version="^2.1.1" />
+        <package name="tailwind-merge" version="^3.3.1" />
+        <package name="tailwindcss" version="^4.0.14" />
+      </dependency>
+    </dependencies>
+  </artifacts>
+
+  <interfaces>
+    <interface>
+      <name>getVehicles()</name>
+      <kind>Function Signature</kind>
+      <signature>
+async function getVehicles(filters?: {
+  chassis?: string[];
+  yearMin?: number;
+  yearMax?: number;
+  priceMin?: number;
+  priceMax?: number;
+  status?: 'current' | 'sold' | 'all';
+}, sort?: 'price-asc' | 'price-desc' | 'year-asc' | 'year-desc' | 'mileage-asc' | 'mileage-desc' | 'recent'): Promise&lt;VehicleListItem[]&gt;
+      </signature>
+      <path>lib/sanity/queries/vehicles.ts</path>
+      <description>Main vehicle query function. Constructs GROQ query with filtering and sorting logic. Returns array of VehicleListItem with essential fields for listing display.</description>
+    </interface>
+    <interface>
+      <name>VehicleListItem Type</name>
+      <kind>TypeScript Interface</kind>
+      <signature>
+interface VehicleListItem {
+  _id: string;
+  listingTitle: string;
+  slug: { current: string };
+  chassis: string;
+  year: number; // Extracted from listingTitle or separate field
+  mileage: number;
+  listingPrice?: number;
+  showCallForPrice: boolean;
+  inventoryStatus: 'Current Inventory' | 'Sold';
+  signatureShot?: { asset: { _ref: string; url: string } };
+  soldShot?: { asset: { _ref: string; url: string } };
+  _createdAt: string;
+}
+      </signature>
+      <path>lib/sanity/queries/vehicles.ts</path>
+      <description>TypeScript type for vehicle list items. Subset of full Vehicle schema from Story 3.2, containing only fields needed for listing page display.</description>
+    </interface>
+    <interface>
+      <name>Sanity GROQ Query Pattern</name>
+      <kind>GROQ Query</kind>
+      <signature>
+const vehicleListQuery = `
+  *[_type == "vehicle"
+    ${chassis ? `&& chassis in $chassis` : ''}
+    ${yearMin ? `&& year >= $yearMin` : ''}
+    ${yearMax ? `&& year <= $yearMax` : ''}
+    ${priceMin ? `&& listingPrice >= $priceMin` : ''}
+    ${priceMax ? `&& listingPrice <= $priceMax` : ''}
+    ${status !== 'all' ? `&& inventoryStatus == $status` : ''}
+  ] | order(${sortField} ${sortDirection}) {
+    _id,
+    listingTitle,
+    "slug": slug.current,
+    chassis,
+    mileage,
+    listingPrice,
+    showCallForPrice,
+    inventoryStatus,
+    "signatureShot": signatureShot.asset->{url, metadata},
+    "soldShot": soldShot.asset->{url, metadata},
+    _createdAt
+  }
+`;
+      </signature>
+      <path>lib/sanity/queries/vehicles.ts</path>
+      <description>GROQ query pattern for filtering and sorting vehicles. Uses parameterized queries for security. Conditionally includes filter clauses based on provided params. Orders by specified sort field and direction.</description>
+    </interface>
+    <interface>
+      <name>formatCurrency()</name>
+      <kind>Function Signature</kind>
+      <signature>
+function formatCurrency(price?: number, showCallForPrice?: boolean): string
+// Returns: "$45,000" or "Call for Price"
+// Example: formatCurrency(45000, false) => "$45,000"
+// Example: formatCurrency(null, true) => "Call for Price"
+      </signature>
+      <path>lib/utils/format.ts</path>
+      <description>Utility function to format vehicle prices. Handles showCallForPrice toggle, adds commas for thousands separator, includes $ symbol.</description>
+    </interface>
+    <interface>
+      <name>formatMileage()</name>
+      <kind>Function Signature</kind>
+      <signature>
+function formatMileage(mileage: number): string
+// Returns: "45,000 miles"
+// Example: formatMileage(45000) => "45,000 miles"
+      </signature>
+      <path>lib/utils/format.ts</path>
+      <description>Utility function to format vehicle mileage. Adds commas for thousands separator, appends " miles" suffix.</description>
+    </interface>
+    <interface>
+      <name>Next.js Image Component</name>
+      <kind>React Component</kind>
+      <signature>
+import Image from 'next/image';
+&lt;Image
+  src={imageUrl}
+  alt={altText}
+  width={600}
+  height={400}
+  loading="eager" // or "lazy"
+  className="..."
+/&gt;
+      </signature>
+      <path>next/image (built-in)</path>
+      <description>Next.js Image component for optimized image delivery. Use eager loading for first 6 vehicle cards, lazy for rest. Sanity CDN URLs work directly with Next.js Image.</description>
+    </interface>
+    <interface>
+      <name>URL Search Params (Next.js App Router)</name>
+      <kind>Next.js API</kind>
+      <signature>
+// Server Component (page.tsx)
+type SearchParams = { [key: string]: string | string[] | undefined };
+export default async function VehiclesPage({ searchParams }: { searchParams: SearchParams }) {
+  const chassis = searchParams.chassis as string[] | undefined;
+  const sort = searchParams.sort as string | undefined;
+  // ... use params for filtering
+}
+
+// Client Component (filters)
+'use client'
+import { useSearchParams, useRouter } from 'next/navigation';
+const searchParams = useSearchParams();
+const router = useRouter();
+const params = new URLSearchParams(searchParams);
+params.set('chassis', 'E46');
+router.push(`/vehicles?${params.toString()}`);
+      </signature>
+      <path>next/navigation (built-in)</path>
+      <description>URL search params pattern for server-side filtering in Next.js 15 App Router. Server Component reads searchParams prop, Client Component uses useSearchParams + useRouter to update URL.</description>
+    </interface>
+    <interface>
+      <name>ShadCN Card Component API</name>
+      <kind>React Component</kind>
+      <signature>
+import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
+&lt;Card className="..."&gt;
+  &lt;CardHeader&gt;
+    &lt;CardTitle&gt;Title&lt;/CardTitle&gt;
+  &lt;/CardHeader&gt;
+  &lt;CardContent&gt;
+    Content
+  &lt;/CardContent&gt;
+&lt;/Card&gt;
+      </signature>
+      <path>components/ui/card.tsx</path>
+      <description>ShadCN Card component primitives. Use for VehicleCard structure. Already installed, supports className for custom styling.</description>
+    </interface>
+    <interface>
+      <name>ShadCN Badge Component API</name>
+      <kind>React Component</kind>
+      <signature>
+import { Badge } from '@/components/ui/badge';
+&lt;Badge variant="default | secondary | destructive | outline"&gt;
+  Text
+&lt;/Badge&gt;
+// Use variant="default" or custom success variant for "Current Inventory"
+// Use variant="secondary" or gray for "Sold"
+      </signature>
+      <path>components/ui/badge.tsx</path>
+      <description>ShadCN Badge component for status badges. Supports variants for different status types. May need custom success/green variant for Current Inventory.</description>
+    </interface>
+    <interface>
+      <name>HeadlessUI Dialog API</name>
+      <kind>React Component</kind>
+      <signature>
+import { Dialog } from '@headlessui/react';
+&lt;Dialog open={isOpen} onClose={() => setIsOpen(false)}&gt;
+  &lt;Dialog.Panel&gt;
+    Content
+  &lt;/Dialog.Panel&gt;
+&lt;/Dialog&gt;
+      </signature>
+      <path>@headlessui/react (installed)</path>
+      <description>HeadlessUI Dialog for mobile filter drawer. Reference FilterDrawer component from Story 1.7 for implementation pattern. Provides backdrop, panel, close on outside click.</description>
+    </interface>
+  </interfaces>
+
+  <constraints>
+    <constraint>Next.js 15 App Router with Server Components - Vehicle listing page MUST be Server Component to leverage ISR. Use 'use client' directive only for interactive filter/sort components.</constraint>
+    <constraint>ISR Configuration - Page MUST export `export const revalidate = 60` for 60-second ISR revalidation per NFR006. Webhook-driven on-demand revalidation is optional enhancement.</constraint>
+    <constraint>Server-Side Filtering - Vehicle filtering MUST use URL search params with server-side GROQ queries (NOT client-side FilterContext). This differs from parts catalog due to smaller vehicle dataset (~20-50 vehicles) best served with SSR/ISR.</constraint>
+    <constraint>Sanity Client Usage - MUST use existing `sanity` client from lib/sanity/client.ts configured with useCdn:false. Do NOT create new client instances.</constraint>
+    <constraint>Vehicle Schema Fields - MUST use exact field names from Story 3.2 vehicle schema: listingTitle, slug, chassis, mileage, listingPrice, showCallForPrice, inventoryStatus, signatureShot, soldShot, _createdAt. Do NOT invent new fields.</constraint>
+    <constraint>Image Strategy - Hero image selection logic: if inventoryStatus === 'Sold' use soldShot, else use signatureShot. Both fields are optional, provide fallback placeholder if missing.</constraint>
+    <constraint>ShadCN Component Usage - MUST use ShadCN components for consistency: Card for vehicle cards, Badge for status badges, Select for dropdowns. Already installed via @radix-ui packages.</constraint>
+    <constraint>Tailwind CSS Grid - MUST use Tailwind CSS Grid for responsive layout: `grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6`. Match existing product grid pattern.</constraint>
+    <constraint>Next.js Image Component - MUST use Next.js Image component for all vehicle images. Set loading="eager" for first 6 cards, loading="lazy" for rest per AC3.</constraint>
+    <constraint>TypeScript Strict Mode - All code MUST pass TypeScript strict mode validation. Define types for GROQ query results, component props, function signatures.</constraint>
+    <constraint>Responsive Design - MUST work across all viewports (320px - 2560px). Test breakpoints: 320px (mobile), 768px (tablet), 1024px (desktop), 1440px (large desktop).</constraint>
+    <constraint>Accessibility - WCAG 2.1 AA compliance MANDATORY. Keyboard navigation, screen reader support, proper ARIA labels, color contrast ratios. Minimum 44px touch targets on mobile.</constraint>
+    <constraint>Performance Target - Page load time MUST be <2 seconds on standard broadband (per NFR001). Lighthouse score target: 85+ mobile, 90+ desktop.</constraint>
+    <constraint>SEO Optimization - Page MUST include proper meta tags: title, description, Open Graph tags. Use Next.js 15 Metadata API for dynamic metadata.</constraint>
+    <constraint>Filter AND Logic - Multiple active filters MUST use AND logic (e.g., chassis=E46 AND year>=2000 AND status=current). All matching conditions must be true.</constraint>
+    <constraint>URL State Management - Filter and sort selections MUST be stored in URL search params for shareability. Users can bookmark filtered/sorted views.</constraint>
+    <constraint>Sold Vehicle Visual Distinction - "SOLD" overlay MUST be semi-transparent (opacity 0.3-0.5), positioned absolute over image. Card opacity reduced to 0.7 for muted appearance per AC7.</constraint>
+    <constraint>Empty State Messaging - Contextual empty state messages required: "No vehicles found matching your criteria" when filters active, "No vehicles in inventory" when no vehicles at all. Include actionable suggestions.</constraint>
+    <constraint>Loading States - Skeleton loading MUST match vehicle card layout (image placeholder, text lines). Render 6-9 skeletons in grid during fetch. No generic spinners.</constraint>
+    <constraint>Code Organization - Follow established patterns: components/vehicles/* for vehicle components, lib/sanity/queries/* for GROQ queries, lib/utils/* for utilities. Consistent with parts catalog structure.</constraint>
+    <constraint>No Placeholder Data - Do NOT generate fake/mock vehicle data. Story depends on Story 3.2 vehicle schema and will use real data from Sanity Studio. Tests should create test vehicles in Sanity.</constraint>
+    <constraint>Prettier Formatting - All code MUST be formatted with Prettier. Run `pnpm prettier` before committing. CI/CD will fail on formatting errors.</constraint>
+    <constraint>Build Validation - Code MUST pass `pnpm build` without errors. No TypeScript errors, no ESLint errors, no build failures.</constraint>
+  </constraints>
+
+  <tests>
+    <standards>
+      Testing standards for this project:
+      - Unit tests using Vitest for utilities (formatCurrency, formatMileage) and GROQ query logic
+      - Integration tests for filter/sort combinations and ISR revalidation behavior
+      - E2E tests using Playwright for complete user journeys (view vehicles, apply filters, sort, click card)
+      - Accessibility testing with Lighthouse and axe DevTools for WCAG AA compliance
+      - Performance testing with Lighthouse (target: 85+ mobile, 90+ desktop, <2s page load)
+      - Responsive design testing across viewports (320px, 768px, 1024px, 1440px)
+      - Manual testing in Sanity Studio for content editor workflows
+      - TypeScript validation with `pnpm build` ensures type safety
+      - Prettier formatting validation with `pnpm prettier:check`
+
+      Test locations:
+      - Unit tests: __tests__/lib/utils/ (formatCurrency, formatMileage)
+      - Integration tests: __tests__/lib/sanity/queries/ (getVehicles query)
+      - E2E tests: tests/e2e/vehicles/ (listing page, filters, sorting)
+      - Component tests: __tests__/components/vehicles/ (VehicleCard, VehicleGrid)
+    </standards>
+    <locations>
+      - __tests__/lib/utils/
+      - __tests__/lib/sanity/queries/
+      - __tests__/components/vehicles/
+      - tests/e2e/vehicles/
+    </locations>
+    <ideas>
+      <testIdea ac="1">
+        <description>Test vehicle listing page route is accessible at /vehicles</description>
+        <type>E2E</type>
+        <steps>Navigate to /vehicles, verify page loads, check URL is correct</steps>
+      </testIdea>
+      <testIdea ac="1">
+        <description>Test ISR revalidation with 60-second cache</description>
+        <type>Integration</type>
+        <steps>Fetch page, check response headers for cache-control: s-maxage=60, verify revalidation after 60s</steps>
+      </testIdea>
+      <testIdea ac="1">
+        <description>Test SEO meta tags are present</description>
+        <type>E2E</type>
+        <steps>Load /vehicles, check HTML head for title, description, og:title, og:description tags</steps>
+      </testIdea>
+      <testIdea ac="2">
+        <description>Test responsive grid adapts to viewport sizes</description>
+        <type>E2E</type>
+        <steps>Load page at 320px (1-col), 768px (2-col), 1024px (3-col), verify grid columns change correctly</steps>
+      </testIdea>
+      <testIdea ac="2">
+        <description>Test consistent gap spacing across breakpoints</description>
+        <type>Visual</type>
+        <steps>Load page at different viewports, measure gap between cards, verify gap-4 (16px) on mobile, gap-6 (24px) on desktop</steps>
+      </testIdea>
+      <testIdea ac="3">
+        <description>Test vehicle card displays all required fields</description>
+        <type>Component</type>
+        <steps>Render VehicleCard with mock data, verify hero image, title, price, mileage, status badge are all present</steps>
+      </testIdea>
+      <testIdea ac="3">
+        <description>Test price formatting with formatCurrency()</description>
+        <type>Unit</type>
+        <steps>Test formatCurrency(45000, false) => "$45,000", formatCurrency(null, true) => "Call for Price"</steps>
+      </testIdea>
+      <testIdea ac="3">
+        <description>Test mileage formatting with formatMileage()</description>
+        <type>Unit</type>
+        <steps>Test formatMileage(45000) => "45,000 miles", formatMileage(123456) => "123,456 miles"</steps>
+      </testIdea>
+      <testIdea ac="3">
+        <description>Test hero image selection based on inventoryStatus</description>
+        <type>Component</type>
+        <steps>Render VehicleCard with status='Sold', verify soldShot is used. Render with status='Current', verify signatureShot is used</steps>
+      </testIdea>
+      <testIdea ac="3">
+        <description>Test Next.js Image eager/lazy loading strategy</description>
+        <type>E2E</type>
+        <steps>Load page, verify first 6 vehicle cards have loading="eager", 7th+ cards have loading="lazy"</steps>
+      </testIdea>
+      <testIdea ac="4">
+        <description>Test chassis/model filter with single selection</description>
+        <type>E2E</type>
+        <steps>Select "E46" in chassis filter, verify URL updates to ?chassis=E46, verify only E46 vehicles displayed</steps>
+      </testIdea>
+      <testIdea ac="4">
+        <description>Test multiple chassis filter with AND logic</description>
+        <type>E2E</type>
+        <steps>Select "E46" and "E90", verify URL updates to ?chassis=E46,E90, verify vehicles matching E46 OR E90 displayed</steps>
+      </testIdea>
+      <testIdea ac="4">
+        <description>Test year range filter</description>
+        <type>E2E</type>
+        <steps>Set yearMin=2000, yearMax=2010, verify URL updates to ?yearMin=2000&yearMax=2010, verify only vehicles in range displayed</steps>
+      </testIdea>
+      <testIdea ac="4">
+        <description>Test price range filter</description>
+        <type>E2E</type>
+        <steps>Set priceMin=20000, priceMax=50000, verify URL updates, verify only vehicles in price range displayed</steps>
+      </testIdea>
+      <testIdea ac="4">
+        <description>Test inventory status filter (Current/Sold/Both)</description>
+        <type>E2E</type>
+        <steps>Select "Current Inventory", verify ?status=current, verify only current vehicles shown. Select "Sold", verify only sold vehicles shown. Select "Both", verify all vehicles shown.</steps>
+      </testIdea>
+      <testIdea ac="4">
+        <description>Test filter combination with AND logic</description>
+        <type>E2E</type>
+        <steps>Apply chassis=E46 AND yearMin=2000 AND status=current, verify only vehicles matching ALL conditions displayed</steps>
+      </testIdea>
+      <testIdea ac="4">
+        <description>Test active filter badges display</description>
+        <type>E2E</type>
+        <steps>Apply filters, verify badges appear for each active filter, verify badge text matches filter value</steps>
+      </testIdea>
+      <testIdea ac="4">
+        <description>Test filter badge removal</description>
+        <type>E2E</type>
+        <steps>Click X on filter badge, verify filter removed from URL, verify vehicles update to reflect removed filter</steps>
+      </testIdea>
+      <testIdea ac="4">
+        <description>Test "Clear All Filters" button</description>
+        <type>E2E</type>
+        <steps>Apply multiple filters, click "Clear All", verify URL params cleared, verify all vehicles displayed, verify badges disappear</steps>
+      </testIdea>
+      <testIdea ac="4">
+        <description>Test mobile filter drawer opens/closes</description>
+        <type>E2E</type>
+        <steps>Load page on mobile viewport, click filter button, verify drawer slides in, apply filter, click backdrop or close button, verify drawer closes</steps>
+      </testIdea>
+      <testIdea ac="5">
+        <description>Test sort by price (low to high)</description>
+        <type>E2E</type>
+        <steps>Select "Price: Low to High", verify ?sort=price-asc, verify vehicles ordered by ascending price</steps>
+      </testIdea>
+      <testIdea ac="5">
+        <description>Test sort by price (high to low)</description>
+        <type>E2E</type>
+        <steps>Select "Price: High to Low", verify ?sort=price-desc, verify vehicles ordered by descending price</steps>
+      </testIdea>
+      <testIdea ac="5">
+        <description>Test sort by year (newest first)</description>
+        <type>E2E</type>
+        <steps>Select "Year: Newest First", verify ?sort=year-desc, verify vehicles ordered by descending year</steps>
+      </testIdea>
+      <testIdea ac="5">
+        <description>Test sort by mileage (lowest first)</description>
+        <type>E2E</type>
+        <steps>Select "Mileage: Lowest First", verify ?sort=mileage-asc, verify vehicles ordered by ascending mileage</steps>
+      </testIdea>
+      <testIdea ac="5">
+        <description>Test sort by recently added</description>
+        <type>E2E</type>
+        <steps>Select "Recently Added", verify ?sort=recent, verify vehicles ordered by descending _createdAt timestamp</steps>
+      </testIdea>
+      <testIdea ac="5">
+        <description>Test sort persists when filters change</description>
+        <type>E2E</type>
+        <steps>Set sort=price-asc, then apply chassis filter, verify ?sort=price-asc remains in URL, verify vehicles still sorted by price</steps>
+      </testIdea>
+      <testIdea ac="6">
+        <description>Test loading skeleton displays during fetch</description>
+        <type>E2E</type>
+        <steps>Load page with network throttling, verify 6-9 skeleton cards appear in grid layout before data loads</steps>
+      </testIdea>
+      <testIdea ac="6">
+        <description>Test empty state with active filters</description>
+        <type>E2E</type>
+        <steps>Apply filters that match no vehicles, verify empty state message "No vehicles found matching your criteria", verify "Clear filters" button present</steps>
+      </testIdea>
+      <testIdea ac="6">
+        <description>Test empty state with no vehicles in inventory</description>
+        <type>E2E</type>
+        <steps>Load page when Sanity has zero vehicles, verify different empty state message "No vehicles in inventory"</steps>
+      </testIdea>
+      <testIdea ac="7">
+        <description>Test "SOLD" overlay on sold vehicles</description>
+        <type>E2E</type>
+        <steps>Load page with sold vehicles, verify sold cards have semi-transparent "SOLD" overlay on image</steps>
+      </testIdea>
+      <testIdea ac="7">
+        <description>Test reduced opacity on sold vehicle cards</description>
+        <type>Visual</type>
+        <steps>Load page, inspect sold vehicle cards, verify opacity is 0.7 or grayscale filter applied</steps>
+      </testIdea>
+      <testIdea ac="7">
+        <description>Test status badge color for current vs sold</description>
+        <type>Component</type>
+        <steps>Render VehicleCard with status='Current Inventory', verify green/success badge. Render with status='Sold', verify gray/secondary badge</steps>
+      </testIdea>
+      <testIdea ac="8">
+        <description>Test GROQ query with filter parameters</description>
+        <type>Integration</type>
+        <steps>Call getVehicles({chassis: ['E46'], yearMin: 2000}), verify GROQ query includes chassis and year filters, verify results match criteria</steps>
+      </testIdea>
+      <testIdea ac="8">
+        <description>Test GROQ query with sort parameter</description>
+        <type>Integration</type>
+        <steps>Call getVehicles({}, 'price-asc'), verify GROQ query includes "| order(listingPrice asc)", verify results sorted by price</steps>
+      </testIdea>
+      <testIdea ac="8">
+        <description>Test pagination or load more functionality</description>
+        <type>E2E</type>
+        <steps>If implemented: Load page with 30+ vehicles, verify first 20-30 displayed, click "Load More", verify next batch loaded</steps>
+      </testIdea>
+      <testIdea ac="8">
+        <description>Test page load performance with Lighthouse</description>
+        <type>Performance</type>
+        <steps>Run Lighthouse on /vehicles, verify Performance score 85+ (mobile), 90+ (desktop), verify page load <2s</steps>
+      </testIdea>
+      <testIdea ac="ALL">
+        <description>Test keyboard navigation accessibility</description>
+        <type>Accessibility</type>
+        <steps>Navigate page with Tab key, verify all interactive elements focusable, verify focus indicators visible, verify Enter/Space activates buttons</steps>
+      </testIdea>
+      <testIdea ac="ALL">
+        <description>Test screen reader compatibility</description>
+        <type>Accessibility</type>
+        <steps>Enable screen reader (VoiceOver/NVDA), navigate page, verify all content announced correctly, verify ARIA labels present</steps>
+      </testIdea>
+      <testIdea ac="ALL">
+        <description>Test color contrast ratios</description>
+        <type>Accessibility</type>
+        <steps>Run axe DevTools, verify all text meets WCAG AA contrast ratio requirements (4.5:1 for normal text, 3:1 for large text)</steps>
+      </testIdea>
+      <testIdea ac="ALL">
+        <description>Test TypeScript build validation</description>
+        <type>Build</type>
+        <steps>Run `pnpm build`, verify no TypeScript errors, verify all types correctly inferred, verify build succeeds</steps>
+      </testIdea>
+      <testIdea ac="ALL">
+        <description>Test with real Sanity data</description>
+        <type>Manual</type>
+        <steps>Create 5-10 test vehicles in Sanity Studio with varying chassis, years, prices, statuses. Load /vehicles, verify all vehicles display correctly with proper formatting</steps>
+      </testIdea>
+    </ideas>
+  </tests>
+</story-context>

@@ -84,7 +84,6 @@
    - Any supporting data files
 
 2. Synthesize understanding:
-
    - Core purpose and use case
    - Input requirements
    - Output produced
@@ -92,7 +91,6 @@
    - Key steps or special features
 
 3. Generate/update README.md:
-
    - Add frontmatter: `---\nlast-redoc-date: {{date}}\n---\n`
    - Write 2-4 paragraph technical description
    - Include "Usage" section with invocation command
@@ -109,7 +107,6 @@
 <action>For each individual agent file in execution plan (PROCESS ONE AT A TIME):
 
 1. Read agent definition file completely:
-
    - XML structure and metadata
    - Commands and their purposes
    - Activation patterns
@@ -117,14 +114,12 @@
    - Critical actions and workflows invoked
 
 2. Synthesize understanding:
-
    - Agent purpose and role
    - Available commands
    - When to use this agent
    - Unique capabilities
 
 3. Generate/update README.md (or agent-name-README.md if in shared folder):
-
    - Add frontmatter: `---\nlast-redoc-date: {{date}}\n---\n`
    - Write 1-3 paragraph technical description
    - Include "Commands" section listing available commands
@@ -147,13 +142,11 @@
    - Interactive workflows
 
 3. If massive folder detected:
-
    - Create WORKFLOWS-CATALOG.md with categorized listings
    - Each entry: workflow name, 1-sentence description, link to folder
    - Add frontmatter with last-redoc-date
 
 4. Generate/update /workflows/README.md:
-
    - Add frontmatter: `---\nlast-redoc-date: {{date}}\n---\n`
    - High-level summary of workflow collection
    - If catalog exists: reference it
@@ -168,20 +161,17 @@
 
 1. Read ALL agent README.md files
 2. Categorize agents by type if massive folder (>10 agents):
-
    - Task agents
    - Meta agents
    - Specialized agents
    - Utility agents
 
 3. If massive folder detected:
-
    - Create AGENTS-CATALOG.md with categorized listings
    - Each entry: agent name, 1-sentence description, link
    - Add frontmatter with last-redoc-date
 
 4. Generate/update /agents/README.md:
-
    - Add frontmatter: `---\nlast-redoc-date: {{date}}\n---\n`
    - High-level summary of agent collection
    - If catalog exists: reference it
@@ -200,27 +190,22 @@
 3. Identify module's unique purpose within BMAD ecosystem
 
 4. Generate/update module README.md:
-
    - Add frontmatter: `---\nlast-redoc-date: {{date}}\n---\n`
 
    Structure:
-
    - # Module Name
    - **Purpose**: 2-3 sentence high-level module purpose
    - **Overview**: 1-2 paragraphs describing what this module provides
 
    - ## Workflows
-
      - Link to /workflows/README.md with 1-sentence summary
      - Mention count and highlight 2-3 key workflows
 
    - ## Agents
-
      - Link to /agents/README.md with 1-sentence summary
      - Mention count and highlight 2-3 key agents
 
    - ## Configuration
-
      - Notable config.yaml settings if unique/important
      - Reference paths and conventions
 
@@ -229,7 +214,6 @@
      - Prerequisites if any
 
    Focus on UNIQUE aspects using BMAD convention knowledge:
-
    - Don't explain standard BMAD patterns
    - Highlight what makes THIS module distinctive
    - Use proper BMAD terminology

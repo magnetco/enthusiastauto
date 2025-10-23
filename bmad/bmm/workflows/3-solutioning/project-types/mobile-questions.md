@@ -3,13 +3,11 @@
 ## Platform
 
 1. **Target platforms:**
-
    - iOS only
    - Android only
    - Both iOS + Android
 
 2. **Framework choice:**
-
    - React Native (JavaScript/TypeScript, large ecosystem)
    - Flutter (Dart, high performance, beautiful UI)
    - Native (Swift for iOS, Kotlin for Android)
@@ -23,7 +21,6 @@
 ## Backend and Data
 
 4. **Backend approach:**
-
    - Firebase (BaaS, real-time, easy)
    - Supabase (BaaS, PostgreSQL, open-source)
    - Custom API (REST/GraphQL)
@@ -31,7 +28,6 @@
    - Other BaaS: **\_\_\_**
 
 5. **Local data persistence:**
-
    - AsyncStorage (simple key-value)
    - SQLite (relational, offline-first)
    - Realm (NoSQL, sync)
@@ -84,14 +80,12 @@
 ## Additional
 
 11. **Maps integration:** (if needed)
-
     - Google Maps
     - Apple Maps
     - Mapbox
     - None needed
 
 12. **Analytics:**
-
     - Firebase Analytics
     - Amplitude
     - Mixpanel
@@ -99,14 +93,12 @@
     - None needed
 
 13. **Crash reporting:**
-
     - Sentry
     - Firebase Crashlytics
     - Bugsnag
     - None needed
 
 14. **Offline-first requirement:**
-
     - Yes (sync when online)
     - No (online-only)
     - Partial (some features offline)

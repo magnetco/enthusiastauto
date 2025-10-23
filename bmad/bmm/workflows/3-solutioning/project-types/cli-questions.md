@@ -3,7 +3,6 @@
 ## Language and Runtime
 
 1. **Primary language:**
-
    - Go (compiled, single binary, great for CLIs)
    - Rust (compiled, safe, performant)
    - Python (interpreted, easy distribution via pip)
@@ -15,7 +14,6 @@
    - Other: **\_\_\_**
 
 2. **Target platforms:**
-
    - Linux only
    - macOS only
    - Windows only
@@ -34,14 +32,12 @@
 ## CLI Architecture
 
 4. **Command structure:**
-
    - Single command (e.g., `grep pattern file`)
    - Subcommands (e.g., `git commit`, `docker run`)
    - Hybrid (main command + subcommands)
    - Interactive shell (REPL)
 
 5. **Argument parsing library:**
-
    - Go: cobra, cli, flag
    - Rust: clap, structopt
    - Python: argparse, click, typer
@@ -50,7 +46,6 @@
    - Other: **\_\_\_**
 
 6. **Interactive mode:**
-
    - Non-interactive only (runs and exits)
    - Interactive prompts (inquirer, survey, etc.)
    - REPL/shell mode
@@ -65,7 +60,6 @@
 ## Input/Output
 
 8. **Input sources:**
-
    - Command-line arguments
    - Flags/options
    - Environment variables
@@ -75,7 +69,6 @@
    - Multiple sources
 
 9. **Output format:**
-
    - Plain text (human-readable)
    - JSON
    - YAML
@@ -86,7 +79,6 @@
    - Multiple formats
 
 10. **Output destination:**
-
     - Stdout (standard output)
     - Stderr (errors only)
     - File output
@@ -94,7 +86,6 @@
     - Quiet mode (no output)
 
 11. **Colored output:**
-
     - ANSI color codes
     - Auto-detect TTY (color when terminal, plain when piped)
     - User-configurable (--color flag)
@@ -111,14 +102,12 @@
 ## Configuration
 
 13. **Configuration file:**
-
     - Required (must exist)
     - Optional (defaults if missing)
     - Not needed
     - Generated on first run
 
 14. **Config file format:**
-
     - JSON
     - YAML
     - TOML
@@ -127,7 +116,6 @@
     - Multiple formats supported
 
 15. **Config file location:**
-
     - Current directory (project-specific)
     - User home directory (~/.config, ~/.myapp)
     - System-wide (/etc/)
@@ -143,14 +131,12 @@
 ## Data and Storage
 
 17. **Persistent data:**
-
     - Cache (temporary, can be deleted)
     - State (must persist)
     - User data (important)
     - No persistent data needed
 
 18. **Data storage location:**
-
     - Standard OS locations (XDG Base Directory, AppData, etc.)
     - Current directory
     - User-specified
@@ -167,7 +153,6 @@
 ## Execution Model
 
 20. **Execution pattern:**
-
     - Run once and exit
     - Watch mode (monitor changes)
     - Server/daemon mode
@@ -175,7 +160,6 @@
     - Pipeline component (part of Unix pipeline)
 
 21. **Concurrency:**
-
     - Single-threaded (sequential)
     - Multi-threaded (parallel operations)
     - Async I/O
@@ -189,7 +173,6 @@
 ## Networking (if applicable)
 
 23. **Network operations:**
-
     - HTTP client (REST API calls)
     - WebSocket client
     - SSH client
@@ -207,7 +190,6 @@
 ## Error Handling
 
 25. **Error reporting:**
-
     - Stderr with error messages
     - Exit codes (0 = success, non-zero = error)
     - Detailed error messages
@@ -215,7 +197,6 @@
     - Simple messages (user-friendly)
 
 26. **Exit codes:**
-
     - Standard (0 = success, 1 = error)
     - Multiple exit codes (different error types)
     - Documented exit codes
@@ -230,13 +211,11 @@
 ## Piping and Integration
 
 28. **Stdin support:**
-
     - Reads from stdin (pipe input)
     - Optional stdin (file or stdin)
     - No stdin support
 
 29. **Pipeline behavior:**
-
     - Filter (reads stdin, writes stdout)
     - Generator (no input, outputs data)
     - Consumer (reads input, no stdout)
@@ -253,7 +232,6 @@
 ## Distribution and Installation
 
 31. **Package managers:**
-
     - Homebrew (macOS/Linux)
     - apt (Debian/Ubuntu)
     - yum/dnf (RHEL/Fedora)
@@ -265,7 +243,6 @@
     - Manual install only
 
 32. **Installation method:**
-
     - Download binary (GitHub Releases)
     - Install script (curl | bash)
     - Package manager
@@ -274,7 +251,6 @@
     - Multiple methods
 
 33. **Binary distribution:**
-
     - Single binary (statically linked)
     - Multiple binaries (per platform)
     - With dependencies (bundled)
@@ -286,7 +262,6 @@
 ## Updates
 
 35. **Update mechanism:**
-
     - Self-update command
     - Package manager update
     - Manual download
@@ -300,7 +275,6 @@
 ## Documentation
 
 37. **Help documentation:**
-
     - --help flag (inline help)
     - Man page
     - Online docs
@@ -316,7 +290,6 @@
 ## Testing
 
 39. **Testing approach:**
-
     - Unit tests
     - Integration tests (full CLI execution)
     - Snapshot testing (output comparison)
@@ -333,7 +306,6 @@
 ## Performance
 
 41. **Performance requirements:**
-
     - Must be fast (< 100ms)
     - Moderate (< 1s)
     - Can be slow (long-running tasks)
@@ -346,18 +318,15 @@
 ## Special Features
 
 43. **Watch mode:**
-
     - Monitor files/directories for changes
     - Auto-reload/re-run
     - Not needed
 
 44. **Dry-run mode:**
-
     - Preview changes without applying
     - Not applicable
 
 45. **Verbose/Debug mode:**
-
     - --verbose flag (detailed output)
     - --debug flag (even more detail)
     - Not needed

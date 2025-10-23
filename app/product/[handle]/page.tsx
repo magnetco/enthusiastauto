@@ -13,6 +13,8 @@ import { getProduct, getProductRecommendations } from "lib/shopify";
 import { Image } from "lib/shopify/types";
 import Link from "next/link";
 import { Suspense } from "react";
+import { RecommendationCarousel } from "@/components/shared/RecommendationCarousel";
+import { getVehiclesWithPart } from "@/lib/shared/recommendations";
 
 export async function generateMetadata(props: {
   params: Promise<{ handle: string }>;
@@ -25,9 +27,17 @@ export async function generateMetadata(props: {
   const { url, width, height, altText: alt } = product.featuredImage || {};
   const indexable = !product.tags.includes(HIDDEN_PRODUCT_TAG);
 
+  // Canonical URL
+  const baseUrl =
+    process.env.NEXT_PUBLIC_SITE_URL || "https://shop.enthusiastauto.com";
+  const canonicalUrl = `${baseUrl}/product/${params.handle}`;
+
   return {
     title: product.seo.title || product.title,
     description: product.seo.description || product.description,
+    alternates: {
+      canonical: canonicalUrl,
+    },
     robots: {
       index: indexable,
       follow: indexable,
@@ -38,6 +48,7 @@ export async function generateMetadata(props: {
     },
     openGraph: url
       ? {
+          url: canonicalUrl,
           images: [
             {
               url,
@@ -59,6 +70,12 @@ export default async function ProductPage(props: {
 
   if (!product) return notFound();
 
+  // Fetch vehicles that are compatible with this product
+  const compatibleVehicles = await getVehiclesWithPart(
+    product.handle,
+    product.tags,
+  );
+
   const productJsonLd = {
     "@context": "https://schema.org",
     "@type": "Product",
@@ -77,42 +94,53 @@ export default async function ProductPage(props: {
   };
 
   return (
-    <ProductProvider>
+    <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
           __html: JSON.stringify(productJsonLd),
         }}
       />
-      <div className="mx-auto max-w-(--breakpoint-2xl) px-4 py-6 lg:py-8">
-        <Breadcrumb product={product} />
-        <div className="flex flex-col rounded-2xl border border-border/50 bg-card p-6 shadow-lg md:p-10 lg:flex-row lg:gap-10 lg:p-12">
-          <div className="h-full w-full basis-full lg:basis-4/6">
-            <Suspense
-              fallback={
-                <div className="relative aspect-square h-full max-h-[600px] w-full overflow-hidden rounded-xl bg-muted animate-pulse" />
-              }
-            >
-              <Gallery
-                images={product.images.slice(0, 5).map((image: Image) => ({
-                  src: image.url,
-                  altText: image.altText,
-                }))}
-              />
-            </Suspense>
+      <ProductProvider>
+        <div className="mx-auto max-w-(--breakpoint-2xl) px-4 py-6 lg:py-8">
+          <Breadcrumb product={product} />
+          <div className="flex flex-col rounded-2xl border border-border/50 bg-card p-6 shadow-lg md:p-10 lg:flex-row lg:gap-10 lg:p-12">
+            <div className="h-full w-full basis-full lg:basis-4/6">
+              <Suspense
+                fallback={
+                  <div className="relative aspect-square h-full max-h-[600px] w-full overflow-hidden rounded-xl bg-muted animate-pulse" />
+                }
+              >
+                <Gallery
+                  images={product.images.slice(0, 5).map((image: Image) => ({
+                    src: image.url,
+                    altText: image.altText,
+                  }))}
+                />
+              </Suspense>
+            </div>
+
+            <div className="basis-full pt-6 lg:basis-2/6 lg:pt-0">
+              <Suspense fallback={null}>
+                <ProductDescription product={product} />
+              </Suspense>
+            </div>
           </div>
 
-          <div className="basis-full pt-6 lg:basis-2/6 lg:pt-0">
-            <Suspense fallback={null}>
-              <ProductDescription product={product} />
-            </Suspense>
-          </div>
+          {/* Vehicles in Stock Section */}
+          <RecommendationCarousel
+            items={compatibleVehicles}
+            type="vehicle"
+            title="Vehicles in Stock with This Part"
+            hideIfEmpty={false}
+          />
+
+          <RelatedProducts id={product.id} />
         </div>
-        <RelatedProducts id={product.id} />
-      </div>
-      <StickyAddToCart product={product} />
-      <Footer />
-    </ProductProvider>
+        <StickyAddToCart product={product} />
+        <Footer />
+      </ProductProvider>
+    </>
   );
 }
 
@@ -123,7 +151,9 @@ async function RelatedProducts({ id }: { id: string }) {
 
   return (
     <div className="py-10 lg:py-12">
-      <h2 className="mb-6 text-3xl font-bold tracking-tight">Related Products</h2>
+      <h2 className="mb-6 text-3xl font-bold tracking-tight">
+        Related Products
+      </h2>
       <ul className="flex w-full gap-4 overflow-x-auto pb-2 pt-1 lg:gap-6">
         {relatedProducts.map((product) => (
           <li

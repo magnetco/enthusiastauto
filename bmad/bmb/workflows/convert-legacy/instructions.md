@@ -117,7 +117,6 @@ For Modules:
 <action>Transform v4 YAML agent to v5 YAML format:</action>
 
 1. Convert agent metadata structure:
-
    - v4 `agent.name` → v5 `agent.metadata.name`
    - v4 `agent.id` → v5 `agent.metadata.id`
    - v4 `agent.title` → v5 `agent.metadata.title`
@@ -125,14 +124,12 @@ For Modules:
    - Add v5 `agent.metadata.module` field
 
 2. Transform persona structure:
-
    - v4 `persona.role` → v5 `agent.persona.role` (keep as YAML string)
    - v4 `persona.style` → v5 `agent.persona.communication_style`
    - v4 `persona.identity` → v5 `agent.persona.identity`
    - v4 `persona.core_principles` → v5 `agent.persona.principles` (as array)
 
 3. Convert commands to menu:
-
    - v4 `commands:` list → v5 `agent.menu:` array
    - Each command becomes menu item with:
      - `trigger:` (without \* prefix - added at build)
@@ -142,7 +139,6 @@ For Modules:
    - Map template references to workflow invocations
 
 4. Add v5-specific sections (in YAML):
-
    - `agent.prompts:` array for inline prompts (if using action: "#id")
    - `agent.critical_actions:` array for startup requirements
    - `agent.activation_rules:` for universal agent rules
@@ -188,13 +184,11 @@ For Modules:
 <action>Convert v4 Template (YAML) to v5 Workflow:</action>
 
 1. Extract template metadata:
-
    - Template id, name, version → workflow.yaml name/description
    - Output settings → default_output_file
    - Workflow mode (interactive/yolo) → workflow settings
 
 2. Convert template sections to instructions.md:
-
    - Each YAML section → workflow step
    - `elicit: true` → `<invoke-task halt="true">{project-root}/bmad/core/tasks/adv-elicit.xml</invoke-task>` tag
    - Conditional sections → `if="condition"` attribute
@@ -202,7 +196,6 @@ For Modules:
    - Section instructions → step content
 
 3. Extract template structure to template.md:
-
    - Section content fields → template structure
    - {{variables}} → preserve as-is
    - Nested sections → hierarchical markdown
@@ -242,14 +235,12 @@ For Modules:
 <action>Convert v4 Task (Markdown) to v5 Workflow:</action>
 
 1. Analyze task purpose and output:
-
    - Does it generate documents? → Create template.md
    - Does it process data? → Action workflow
    - Does it guide user interaction? → Interactive workflow
    - Check for file outputs, templates, or document generation
 
 2. Extract task components:
-
    - Execution notices and critical rules → workflow.yaml metadata
    - Step-by-step instructions → instructions.md steps
    - Decision trees and branching → flow control tags
@@ -257,13 +248,11 @@ For Modules:
 
 3. Based on confirmed workflow type:
    <check>If Document workflow:</check>
-
    - Create template.md from output patterns
    - Map generation steps to instructions
    - Add <template-output> tags for sections
 
    <check>If Action workflow:</check>
-
    - Set template: false in workflow.yaml
    - Focus on action sequences in instructions
    - Preserve execution logic

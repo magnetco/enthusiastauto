@@ -3,7 +3,6 @@
 ## Engine and Platform
 
 1. **Game engine:**
-
    - Unity (C#, versatile, large ecosystem)
    - Unreal Engine (C++, AAA graphics)
    - Godot (GDScript/C#, open-source)
@@ -11,7 +10,6 @@
    - Other: **\_\_\_**
 
 2. **Target platforms:**
-
    - PC (Windows, Mac, Linux)
    - Mobile (iOS, Android)
    - Console (Xbox, PlayStation, Switch)
@@ -26,7 +24,6 @@
 ## Architecture Pattern
 
 4. **Core architecture:**
-
    - ECS (Entity Component System) - Unity DOTS, Bevy
    - OOP (Object-Oriented) - Unity MonoBehaviours, Unreal Actors
    - Data-Oriented Design
@@ -40,14 +37,12 @@
 ## Multiplayer (if applicable)
 
 6. **Multiplayer type:**
-
    - Single-player only
    - Local multiplayer (same device/splitscreen)
    - Online multiplayer
    - Both local + online
 
 7. **If online multiplayer - networking:**
-
    - Photon (popular, managed)
    - Mirror (Unity, open-source)
    - Netcode for GameObjects (Unity, official)
@@ -56,7 +51,6 @@
    - Other: **\_\_\_**
 
 8. **Multiplayer architecture:**
-
    - Client-Server (authoritative server)
    - Peer-to-Peer
    - Dedicated servers
@@ -80,7 +74,6 @@
 ## Monetization (if applicable)
 
 11. **Monetization model:**
-
     - Paid (one-time purchase)
     - Free-to-play + IAP
     - Free-to-play + Ads
@@ -88,7 +81,6 @@
     - None (hobby/portfolio)
 
 12. **If IAP - platform:**
-
     - Unity IAP (cross-platform)
     - Steam microtransactions
     - Mobile stores (App Store, Google Play)
@@ -103,7 +95,6 @@
 ## Assets
 
 14. **Asset pipeline:**
-
     - Unity Asset Bundles
     - Unreal Pak files
     - Addressables (Unity)
@@ -121,7 +112,6 @@
 ## Analytics and LiveOps
 
 16. **Analytics:**
-
     - Unity Analytics
     - GameAnalytics
     - Firebase Analytics

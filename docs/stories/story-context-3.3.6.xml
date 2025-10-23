@@ -1,0 +1,220 @@
+<story-context id="bmad/bmm/workflows/4-implementation/story-context/template" v="1.0">
+  <metadata>
+    <epicId>3</epicId>
+    <storyId>3.6</storyId>
+    <title>Sanity Studio Workflow &amp; Editor Training</title>
+    <status>Ready</status>
+    <generatedAt>2025-10-22</generatedAt>
+    <generator>BMAD Story Context Workflow</generator>
+    <sourceStoryPath>docs/stories/story-3.6.md</sourceStoryPath>
+  </metadata>
+
+  <story>
+    <asA>non-technical staff member</asA>
+    <iWant>an intuitive CMS interface with clear workflows</iWant>
+    <soThat>I can manage vehicle inventory without developer assistance</soThat>
+    <tasks>
+      <task id="1" ac="1">Customize Sanity Studio desk structure
+        <subtask>Configure custom desk structure in sanity.config.ts</subtask>
+        <subtask>Group vehicle documents logically (Current Inventory, Sold Vehicles, Drafts)</subtask>
+        <subtask>Add custom branding (Enthusiast Auto logo, colors)</subtask>
+        <subtask>Configure default document ordering (newest first)</subtask>
+      </task>
+      <task id="2" ac="2">Create document templates for new vehicles
+        <subtask>Create initial value templates for common vehicle types (sedan, coupe, SUV)</subtask>
+        <subtask>Pre-populate common fields (make: "BMW", status: "Current")</subtask>
+        <subtask>Add template selector in Studio interface</subtask>
+        <subtask>Test template creation workflow</subtask>
+      </task>
+      <task id="3" ac="3">Optimize bulk image upload workflow
+        <subtask>Configure Sanity image asset source</subtask>
+        <subtask>Test batch upload of 10-30 images</subtask>
+        <subtask>Verify image processing and CDN delivery</subtask>
+        <subtask>Add upload progress indicators</subtask>
+        <subtask>Document optimal image formats and sizes</subtask>
+      </task>
+      <task id="4" ac="4">Add editor help text and field descriptions
+        <subtask>Add description text to all vehicle schema fields</subtask>
+        <subtask>Create help text for complex fields (portable text, arrays)</subtask>
+        <subtask>Add inline examples for common fields</subtask>
+        <subtask>Include SEO guidance for title/description fields</subtask>
+        <subtask>Add fitment tag formatting instructions</subtask>
+      </task>
+      <task id="5" ac="5">Implement field validation rules
+        <subtask>Mark required fields in schema (title, year, model, price, status)</subtask>
+        <subtask>Add validation rules for data types (year range, price > 0)</subtask>
+        <subtask>Configure validation for slug uniqueness</subtask>
+        <subtask>Test validation prevents publishing incomplete documents</subtask>
+        <subtask>Add clear error messages for validation failures</subtask>
+      </task>
+      <task id="6" ac="6">Configure draft/published workflow with preview
+        <subtask>Enable draft mode in Sanity Studio</subtask>
+        <subtask>Configure preview URLs for draft vehicles</subtask>
+        <subtask>Set up preview iframe in Studio</subtask>
+        <subtask>Test draft → publish workflow</subtask>
+        <subtask>Verify ISR updates only on publish (not draft saves)</subtask>
+        <subtask>Add "Preview" button in Studio toolbar</subtask>
+      </task>
+      <task id="7" ac="7">Create editor training documentation
+        <subtask>Write step-by-step guide for adding new vehicles</subtask>
+        <subtask>Document bulk image upload process</subtask>
+        <subtask>Create guide for updating vehicle status (Current → Sold)</subtask>
+        <subtask>Explain draft/publish workflow</subtask>
+        <subtask>Add troubleshooting section (common errors, how to fix)</subtask>
+        <subtask>Include screenshots and annotated examples</subtask>
+        <subtask>Document SEO best practices for vehicle listings</subtask>
+      </task>
+      <task id="8" ac="8">Conduct training session with content team
+        <subtask>Schedule training session with content editors</subtask>
+        <subtask>Walk through complete vehicle creation workflow</subtask>
+        <subtask>Demonstrate draft/publish and preview functionality</subtask>
+        <subtask>Practice bulk image uploads</subtask>
+        <subtask>Review validation rules and required fields</subtask>
+        <subtask>Answer questions and address concerns</subtask>
+        <subtask>Collect feedback for workflow improvements</subtask>
+      </task>
+    </tasks>
+  </story>
+
+  <acceptanceCriteria>
+    <criterion id="1">Sanity Studio interface customized for Enthusiast Auto workflow</criterion>
+    <criterion id="2">Document templates for new vehicle listings</criterion>
+    <criterion id="3">Bulk image upload working smoothly</criterion>
+    <criterion id="4">Field descriptions and help text for editors</criterion>
+    <criterion id="5">Required field validation prevents incomplete publishing</criterion>
+    <criterion id="6">Draft/published workflow with preview functionality</criterion>
+    <criterion id="7">Editor training documentation created</criterion>
+    <criterion id="8">Training session conducted with content team</criterion>
+  </acceptanceCriteria>
+
+  <artifacts>
+    <docs>
+      <doc>
+        <path>docs/solution-architecture.md</path>
+        <title>Solution Architecture Document</title>
+        <section>Technology Stack - Sanity CMS</section>
+        <snippet>Sanity CMS 3.62.0: Headless CMS for vehicle content, editor-friendly Studio, image CDN included (bandwidth optimization), real-time webhooks, CSV import support confirmed. Studio deployed to Sanity's hosted platform or embedded at /studio route with Google OAuth authentication.</snippet>
+      </doc>
+      <doc>
+        <path>docs/tech-specs/epic-3-vehicle-inventory-tech-spec.md</path>
+        <title>Epic 3 Technical Specification</title>
+        <section>Story 3.1: Sanity CMS Setup</section>
+        <snippet>Sanity client configuration with projectId and dataset, Studio configuration at sanity/sanity.config.ts, environment variables: NEXT_PUBLIC_SANITY_PROJECT_ID, NEXT_PUBLIC_SANITY_DATASET, SANITY_API_TOKEN for read/write operations.</snippet>
+      </doc>
+      <doc>
+        <path>docs/PRD.md</path>
+        <title>Product Requirements Document</title>
+        <section>FR023: Content Management</section>
+        <snippet>Content editors shall manage vehicle inventory through Sanity Studio including adding/editing vehicles, uploading photos, and updating status. Sanity Studio shall enable non-technical editors to publish/update vehicle listings independently.</snippet>
+      </doc>
+      <doc>
+        <path>docs/PRD.md</path>
+        <title>Product Requirements Document</title>
+        <section>NFR006: Performance - Content Updates</section>
+        <snippet>Vehicle content updates in Sanity shall reflect on frontend within 60 seconds (ISR/webhook revalidation). Image uploads shall support batch operations with real-time progress. Photo galleries support 10-30 high-resolution images per vehicle with optimized delivery.</snippet>
+      </doc>
+    </docs>
+    <code>
+      <artifact>
+        <path>sanity.config.ts</path>
+        <kind>config</kind>
+        <symbol>defineConfig</symbol>
+        <lines>1-41</lines>
+        <reason>Main Sanity Studio configuration with deskTool, visionTool, and schema. Customize desk structure here for AC#1 (custom desk structure and branding). BasePath set to /studio for embedded deployment.</reason>
+      </artifact>
+      <artifact>
+        <path>sanity/schemas/vehicle.ts</path>
+        <kind>schema</kind>
+        <symbol>vehicle</symbol>
+        <lines>1-696</lines>
+        <reason>Complete vehicle schema with 8 field groups (basic info, colors/pricing, status, engine/transmission, images, content, featured vehicle, metadata). All required fields already have validation rules - reference for AC#5. Image fields support bulk upload - relates to AC#3.</reason>
+      </artifact>
+      <artifact>
+        <path>sanity/structure.ts</path>
+        <kind>structure</kind>
+        <symbol>structure</symbol>
+        <lines>1-16</lines>
+        <reason>Current desk structure is default (documentTypeListItems). Must be customized for AC#1 to create Current Inventory, Sold Vehicles, and Drafts groupings with custom ordering.</reason>
+      </artifact>
+      <artifact>
+        <path>sanity/lib/client.ts</path>
+        <kind>service</kind>
+        <symbol>client, authenticatedClient</symbol>
+        <lines>1-30</lines>
+        <reason>Sanity client instances for fetching content. Read-only client for server components, authenticated client for webhooks. ISR caching handled at Next.js level (60s revalidation).</reason>
+      </artifact>
+    </code>
+    <dependencies>
+      <node>
+        <package name="@sanity/client" version="3.62.0">Sanity JavaScript client for querying content</package>
+        <package name="next-sanity" version="9.12.0">Next.js integration helpers for Sanity</package>
+        <package name="@sanity/cli" version="3.62.0">Sanity CLI for Studio management (dev dependency)</package>
+        <package name="sanity" version="3.62.0">Sanity Studio and core functionality</package>
+        <package name="@sanity/vision" version="3.62.0">GROQ query playground in Studio</package>
+      </node>
+    </dependencies>
+  </artifacts>
+
+  <constraints>
+    <constraint type="architecture">Sanity Studio must be mounted at /studio route in Next.js app (basePath configured in sanity.config.ts)</constraint>
+    <constraint type="architecture">Use deskTool (deprecated but required due to TypeScript module resolution issues) - TODO: migrate to structureTool when resolved</constraint>
+    <constraint type="content">Vehicle status updates must trigger ISR revalidation within 60 seconds (NFR006)</constraint>
+    <constraint type="content">Bulk image uploads must support 10-30 images per vehicle with progress indicators</constraint>
+    <constraint type="validation">Required fields: listingTitle, year, make, model, price, status, slug, VIN, stockNumber, chassis, mileage, bodyStyle, drive, exteriorColor, interiorColor, engineCodes, engineType, engineSize, transmission, signatureShot</constraint>
+    <constraint type="validation">Year validation: min(1900), max(current year + 1)</constraint>
+    <constraint type="validation">Price validation: min(0), precision(2)</constraint>
+    <constraint type="validation">VIN validation: exactly 17 alphanumeric characters (excluding I, O, Q)</constraint>
+    <constraint type="validation">Image arrays: max 25 images per gallery field</constraint>
+    <constraint type="testing">Manual testing required: non-technical editor must complete vehicle creation in under 15 minutes</constraint>
+    <constraint type="testing">Training session required with 2-3 editors, gather feedback for workflow improvements</constraint>
+    <constraint type="documentation">Training documentation must include screenshots, troubleshooting section, and SEO best practices</constraint>
+  </constraints>
+
+  <interfaces>
+    <interface>
+      <name>Sanity Studio Desk Structure</name>
+      <kind>Studio API</kind>
+      <signature>StructureResolver = (S) => S.list().title("Content").items([...])</signature>
+      <path>sanity/structure.ts</path>
+      <description>Structure builder API for customizing Studio organization. Use S.listItem() for custom views, S.documentTypeList() for filtered lists, and S.defaultDocument() for ordering.</description>
+    </interface>
+    <interface>
+      <name>Sanity Initial Value Templates</name>
+      <kind>Studio API</kind>
+      <signature>defineConfig({ templates: (prev) => [...prev, defineTemplate({ ... })] })</signature>
+      <path>sanity.config.ts</path>
+      <description>API for creating document templates with pre-populated fields. Used for AC#2 to create Standard Vehicle and Sold Vehicle templates.</description>
+    </interface>
+    <interface>
+      <name>Sanity Validation Rules</name>
+      <kind>Schema API</kind>
+      <signature>validation: (Rule) => Rule.required().min(0).max(100).error("message")</signature>
+      <path>sanity/schemas/vehicle.ts</path>
+      <description>Validation API already implemented for all required fields. Can add custom validation functions for slug uniqueness (AC#5).</description>
+    </interface>
+    <interface>
+      <name>Sanity Preview Configuration</name>
+      <kind>Schema API</kind>
+      <signature>preview: { select: { title, media }, prepare(selection) { return { title, subtitle, media } } }</signature>
+      <path>sanity/schemas/vehicle.ts</path>
+      <description>Already implemented in vehicle schema. Shows listingTitle, price, status, and chassis in Studio list view with signatureShot as media.</description>
+    </interface>
+  </interfaces>
+  <tests>
+    <standards>This story requires primarily manual and usability testing rather than automated tests. Testing focuses on non-technical editor experience, workflow efficiency, and training effectiveness. Manual testing should verify custom Studio UI, document templates, bulk upload performance, field validation, and preview functionality work as expected. Training session with 2-3 real editors provides qualitative validation of AC#8.</standards>
+    <locations>
+      <location>Manual testing in Sanity Studio at /studio route</location>
+      <location>Training documentation at docs/sanity-editor-guide.md (to be created)</location>
+    </locations>
+    <ideas>
+      <test ac="1">Verify custom desk structure displays three sections: Current Inventory (status=current), Sold Vehicles (status=sold), Drafts (_id starts with drafts.). Verify vehicles are sorted by newest first (_createdAt desc). Verify custom branding (Enthusiast Auto title, logo if added) appears in Studio.</test>
+      <test ac="2">Create new vehicle using Standard Vehicle template - verify make="BMW" and status="Current" are pre-populated. Create vehicle using Sold Vehicle template - verify status="Sold" is pre-set. Verify template selector appears when creating new document.</test>
+      <test ac="3">Bulk upload 20-30 images to galleryExterior1 field. Verify upload completes successfully without errors. Verify progress indicators show during upload. Verify all images appear in Studio. Verify images are delivered via Sanity CDN on frontend.</test>
+      <test ac="4">Review all vehicle schema fields in Studio. Verify every field has clear description text visible in the interface. Verify complex fields (portable text, arrays) have help text explaining usage. Verify SEO guidance appears for listingTitle and overview fields. Verify fitment tag instructions are clear.</test>
+      <test ac="5">Attempt to publish vehicle without required fields (title, VIN, price, etc). Verify validation prevents publishing and shows clear error messages. Verify year validation rejects values &lt;1900 or &gt;2026. Verify price validation rejects negative values. Test slug uniqueness validation. Verify error messages are user-friendly.</test>
+      <test ac="6">Create draft vehicle, make changes without publishing. Verify changes are saved to draft only. Click Preview button, verify preview URL loads draft content (not published). Publish the vehicle, verify ISR revalidates within 60 seconds on frontend. Verify preview iframe (if configured) shows live content.</test>
+      <test ac="7">Review docs/sanity-editor-guide.md for completeness. Verify it includes: Studio login instructions, step-by-step new vehicle creation, bulk image upload process, status change workflow (Current to Sold), draft/publish explanation, troubleshooting section with common errors, screenshots for key steps, SEO best practices for vehicle listings.</test>
+      <test ac="8">Conduct training session with 2-3 non-technical editors. Walk through complete vehicle creation workflow from login to publish. Demonstrate draft/publish and preview. Practice bulk image upload (10-20 images). Review validation rules and required fields. Ask editors to attempt creating vehicle independently. Time how long it takes (target: under 15 minutes). Collect feedback on pain points, confusing areas, and improvement suggestions. Document feedback for future workflow refinements.</test>
+    </ideas>
+  </tests>
+</story-context>

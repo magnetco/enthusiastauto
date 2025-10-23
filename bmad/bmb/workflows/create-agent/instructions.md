@@ -276,11 +276,11 @@ Create at: {config_output_file}
 # Experiment freely - changes merge at build time
 agent:
   metadata:
-    name: "" # Try nicknames!
+    name: '' # Try nicknames!
 persona:
-  role: ""
-  identity: ""
-  communication_style: "" # Switch styles anytime
+  role: ''
+  identity: ''
+  communication_style: '' # Switch styles anytime
   principles: []
 critical_actions: []
 prompts: []
@@ -454,13 +454,11 @@ Share the accomplishment:
 **"Here's how to activate [agent name]:"**
 
 1. **Quick start:**
-
    - "Run the BMAD Method installer to this project location"
    - "Select the option 'Compile Agents (Quick rebuild of all agent .md files)' after confirming the folder"
    - "Then you can call [agent name] anytime!"
 
 2. **Location:**
-
    - "I saved [agent name] here: {{output_file}}"
    - "After compilation, it'll be available in your project"
 

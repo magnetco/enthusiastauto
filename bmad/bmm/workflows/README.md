@@ -207,18 +207,15 @@ BACKLOG → TODO → IN PROGRESS → DONE
 #### State Definitions
 
 - **BACKLOG**: Ordered list of stories to be drafted (populated at phase transition)
-
   - Contains all stories with IDs, titles, and file names
   - Order is sequential (Epic 1 stories first, then Epic 2, etc.)
 
 - **TODO**: Single story that needs drafting (or drafted, awaiting approval)
-
   - SM drafts story here using `create-story` workflow
   - Story status is "Draft" until user approves
   - User runs `story-ready` workflow to approve
 
 - **IN PROGRESS**: Single story approved for development
-
   - Moved here by `story-ready` workflow
   - DEV implements using `dev-story` workflow
   - Story status is "Ready" or "In Review"
@@ -368,7 +365,6 @@ plan-project (Phase 2)
 ### Tracking Documents
 
 - **bmm-workflow-status.md**: Versioned workflow state tracking with 4-section story backlog
-
   - **BACKLOG**: Ordered list of stories to be drafted
   - **TODO**: Single story ready for drafting (or drafted, awaiting approval)
   - **IN PROGRESS**: Single story approved for development

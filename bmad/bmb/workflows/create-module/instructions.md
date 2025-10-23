@@ -56,7 +56,6 @@ Listen to their description and then:
 
 1. **Module name** - Extract from their description (e.g., "Data Visualization Suite", "RPG Toolkit")
 2. **Module code** - Generate kebab-case from name:
-
    - "Data Visualization Suite" → propose: "data-viz"
    - "RPG Game Master Tools" → propose: "rpg-toolkit"
    - "Team Collaboration System" → propose: "team-collab"
@@ -318,27 +317,27 @@ installation_date: { { date } }
 
 # Installation steps
 install_steps:
-  - name: "Create directories"
-    action: "mkdir"
+  - name: 'Create directories'
+    action: 'mkdir'
     paths:
-      - "{project-root}/bmad/{{module_code}}"
-      - "{project-root}/bmad/{{module_code}}/data"
-      - "{project-root}/bmad/{{module_code}}/agents"
+      - '{project-root}/bmad/{{module_code}}'
+      - '{project-root}/bmad/{{module_code}}/data'
+      - '{project-root}/bmad/{{module_code}}/agents'
 
-  - name: "Copy configuration"
-    action: "copy"
-    source: "{installer_path}/config.yaml"
-    dest: "{project-root}/bmad/{{module_code}}/config.yaml"
+  - name: 'Copy configuration'
+    action: 'copy'
+    source: '{installer_path}/config.yaml'
+    dest: '{project-root}/bmad/{{module_code}}/config.yaml'
 
-  - name: "Register module"
-    action: "register"
-    manifest: "{project-root}/bmad/_cfg/manifest.yaml"
+  - name: 'Register module'
+    action: 'register'
+    manifest: '{project-root}/bmad/_cfg/manifest.yaml'
 
 # External assets (if any)
 external_assets:
-  - description: "{{asset_description}}"
-    source: "assets/{{filename}}"
-    dest: "{{destination_path}}"
+  - description: '{{asset_description}}'
+    source: 'assets/{{filename}}'
+    dest: '{{destination_path}}'
 
 # Post-install message
 post_install_message: |
@@ -357,7 +356,7 @@ Create installer.js stub (optional):
 // This is a placeholder for complex installation logic
 
 function installModule(config) {
-  console.log("Installing {{module_name}} module...");
+  console.log('Installing {{module_name}} module...');
 
   // TODO: Add any complex installation logic here
   // Examples:
@@ -366,7 +365,7 @@ function installModule(config) {
   // - External service registration
   // - File system preparation
 
-  console.log("{{module_name}} module installed successfully!");
+  console.log('{{module_name}} module installed successfully!');
   return true;
 }
 
@@ -520,13 +519,11 @@ Ask if user wants to:
 Run validation checks:
 
 1. **Structure validation:**
-
    - All required directories created
    - Config files properly formatted
    - Installer configuration valid
 
 2. **Component validation:**
-
    - At least one agent or workflow exists (or planned)
    - All references use correct paths
    - Module code consistent throughout

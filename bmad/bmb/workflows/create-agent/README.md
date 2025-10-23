@@ -128,13 +128,13 @@ agent:
     icon: { { agent_icon } }
     module: { { module } }
   persona:
-    role: "..."
-    identity: "..."
-    communication_style: "..."
-    principles: ["...", "..."]
+    role: '...'
+    identity: '...'
+    communication_style: '...'
+    principles: ['...', '...']
   menu:
     - trigger: example
-      workflow: "{project-root}/path/to/workflow.yaml"
+      workflow: '{project-root}/path/to/workflow.yaml'
       description: Do the thing
 ```
 
@@ -150,7 +150,6 @@ If created, generates at:
 Agents are installed to different locations based on their type:
 
 1. **Standalone Agents** (not part of a module)
-
    - Source: Created in your custom agent location (default: `bmad/agents/`)
    - Installed to: `{project-root}/bmad/agents/`
    - Compilation: Run BMAD Method installer and select "Compile Agents"
@@ -210,13 +209,11 @@ The optional brainstorming phase (Step -1) provides a seamless path from vague i
 ### Brainstorming Flow
 
 1. **Step -1**: Optional brainstorming session
-
    - Uses CIS brainstorming workflow with agent-specific context
    - Explores identity, personality, expertise, and command concepts
    - Generates detailed character and capability ideas
 
 2. **Steps 0-2**: Agent setup informed by brainstorming
-
    - Brainstorming output guides agent type selection
    - Character concepts inform basic identity choices
    - Personality insights shape persona development

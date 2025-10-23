@@ -3,7 +3,6 @@
 ## Service Type and Architecture
 
 1. **Service architecture:**
-
    - Monolithic API (single service)
    - Microservices (multiple independent services)
    - Modular monolith (single deployment, modular code)
@@ -11,7 +10,6 @@
    - Hybrid
 
 2. **API paradigm:**
-
    - REST
    - GraphQL
    - gRPC
@@ -30,7 +28,6 @@
 ## Framework and Language
 
 4. **Backend language/framework:**
-
    - Node.js (Express, Fastify, NestJS, Hono)
    - Python (FastAPI, Django, Flask)
    - Go (Gin, Echo, Chi, standard lib)
@@ -43,7 +40,6 @@
    - Other: **\_\_\_**
 
 5. **GraphQL implementation (if applicable):**
-
    - Apollo Server
    - GraphQL Yoga
    - Hasura (auto-generated)
@@ -59,7 +55,6 @@
 ## Database and Data Layer
 
 7. **Primary database:**
-
    - PostgreSQL
    - MySQL/MariaDB
    - MongoDB
@@ -72,7 +67,6 @@
    - Other: **\_\_\_**
 
 8. **Database access pattern:**
-
    - ORM (Prisma, TypeORM, SQLAlchemy, Hibernate, etc.)
    - Query builder (Knex, Kysely, jOOQ)
    - Raw SQL
@@ -80,7 +74,6 @@
    - Mix
 
 9. **Caching layer:**
-
    - Redis
    - Memcached
    - In-memory (application cache)
@@ -89,7 +82,6 @@
    - None needed
 
 10. **Read replicas:**
-
     - Yes (separate read/write databases)
     - No (single database)
     - Planned for future
@@ -102,7 +94,6 @@
 ## Authentication and Authorization
 
 12. **Authentication method:**
-
     - JWT (stateless)
     - Session-based (stateful)
     - OAuth2 provider (Auth0, Okta, Keycloak)
@@ -111,7 +102,6 @@
     - Multiple methods
 
 13. **Authorization pattern:**
-
     - Role-Based Access Control (RBAC)
     - Attribute-Based Access Control (ABAC)
     - Access Control Lists (ACL)
@@ -131,7 +121,6 @@
 ## Message Queue and Event Streaming
 
 15. **Message queue (if needed):**
-
     - RabbitMQ
     - Apache Kafka
     - AWS SQS
@@ -142,7 +131,6 @@
     - Other: **\_\_\_**
 
 16. **Event streaming (if needed):**
-
     - Apache Kafka
     - AWS Kinesis
     - Azure Event Hubs
@@ -158,7 +146,6 @@
 ## Service Communication (Microservices)
 
 18. **Service mesh (if microservices):**
-
     - Istio
     - Linkerd
     - Consul
@@ -166,7 +153,6 @@
     - Not applicable
 
 19. **Service discovery:**
-
     - Kubernetes DNS
     - Consul
     - etcd
@@ -184,14 +170,12 @@
 ## API Design and Documentation
 
 21. **API versioning:**
-
     - URL versioning (/v1/, /v2/)
     - Header versioning (Accept-Version)
     - No versioning (single version)
     - Semantic versioning
 
 22. **API documentation:**
-
     - OpenAPI/Swagger
     - GraphQL introspection/playground
     - Postman collections
@@ -208,7 +192,6 @@
 ## Rate Limiting and Throttling
 
 24. **Rate limiting:**
-
     - Per-user/API key
     - Per-IP
     - Global rate limit
@@ -224,14 +207,12 @@
 ## Data Validation and Processing
 
 26. **Request validation:**
-
     - Schema validation (Zod, Joi, Yup, Pydantic)
     - Manual validation
     - Framework built-in
     - None
 
 27. **Data serialization:**
-
     - JSON
     - Protocol Buffers
     - MessagePack
@@ -247,7 +228,6 @@
 ## Error Handling and Resilience
 
 29. **Error handling strategy:**
-
     - Standard HTTP status codes
     - Custom error codes
     - RFC 7807 (Problem Details)
@@ -255,13 +235,11 @@
     - Mix
 
 30. **Circuit breaker (for external services):**
-
     - Yes (Hystrix, Resilience4j, Polly)
     - No (direct calls)
     - Not needed
 
 31. **Retry logic:**
-
     - Exponential backoff
     - Fixed retries
     - No retries
@@ -274,13 +252,11 @@
 ## Observability
 
 33. **Logging:**
-
     - Structured logging (JSON)
     - Plain text logs
     - Library: (Winston, Pino, Logrus, Zap, etc.)
 
 34. **Log aggregation:**
-
     - ELK Stack (Elasticsearch, Logstash, Kibana)
     - Datadog
     - Splunk
@@ -289,7 +265,6 @@
     - None (local logs)
 
 35. **Metrics and Monitoring:**
-
     - Prometheus
     - Datadog
     - New Relic
@@ -299,7 +274,6 @@
     - None
 
 36. **Distributed tracing:**
-
     - OpenTelemetry
     - Jaeger
     - Zipkin
@@ -308,7 +282,6 @@
     - None
 
 37. **Health checks:**
-
     - Liveness probe (is service up?)
     - Readiness probe (can accept traffic?)
     - Startup probe
@@ -326,32 +299,27 @@
 ## Security
 
 39. **HTTPS/TLS:**
-
     - Required (HTTPS only)
     - Optional (support both)
     - Terminated at load balancer
 
 40. **CORS configuration:**
-
     - Specific origins (whitelist)
     - All origins (open)
     - None needed (same-origin clients)
 
 41. **Security headers:**
-
     - Helmet.js or equivalent
     - Custom headers
     - None (basic)
 
 42. **Input sanitization:**
-
     - SQL injection prevention (parameterized queries)
     - XSS prevention
     - CSRF protection
     - All of the above
 
 43. **Secrets management:**
-
     - Environment variables
     - AWS Secrets Manager
     - HashiCorp Vault
@@ -370,7 +338,6 @@
 ## Deployment and Infrastructure
 
 45. **Deployment platform:**
-
     - AWS (ECS, EKS, Lambda, Elastic Beanstalk)
     - Google Cloud (GKE, Cloud Run, App Engine)
     - Azure (AKS, App Service, Container Instances)
@@ -385,13 +352,11 @@
     - Other: **\_\_\_**
 
 46. **Containerization:**
-
     - Docker
     - Podman
     - Not containerized (direct deployment)
 
 47. **Orchestration:**
-
     - Kubernetes
     - Docker Compose (dev/small scale)
     - AWS ECS
@@ -399,7 +364,6 @@
     - None (single server)
 
 48. **Infrastructure as Code:**
-
     - Terraform
     - CloudFormation
     - Pulumi
@@ -409,7 +373,6 @@
     - Manual setup
 
 49. **Load balancing:**
-
     - Application Load Balancer (AWS ALB, Azure App Gateway)
     - Nginx
     - HAProxy
@@ -427,7 +390,6 @@
 ## CI/CD
 
 51. **CI/CD platform:**
-
     - GitHub Actions
     - GitLab CI
     - CircleCI
@@ -438,7 +400,6 @@
     - Other: **\_\_\_**
 
 52. **Deployment strategy:**
-
     - Rolling deployment
     - Blue-green deployment
     - Canary deployment
@@ -456,20 +417,17 @@
 ## Performance
 
 54. **Performance requirements:**
-
     - High throughput (1000+ req/s)
     - Moderate (100-1000 req/s)
     - Low (< 100 req/s)
 
 55. **Latency requirements:**
-
     - Ultra-low (< 10ms)
     - Low (< 100ms)
     - Moderate (< 500ms)
     - No specific requirement
 
 56. **Connection pooling:**
-
     - Database connection pool
     - HTTP connection pool (for external APIs)
     - None needed
@@ -483,7 +441,6 @@
 ## Data and Storage
 
 58. **File storage (if needed):**
-
     - AWS S3
     - Google Cloud Storage
     - Azure Blob Storage
@@ -492,7 +449,6 @@
     - None needed
 
 59. **Search functionality:**
-
     - Elasticsearch
     - Algolia
     - Meilisearch
@@ -510,24 +466,20 @@
 ## Additional Features
 
 61. **Webhooks (outgoing):**
-
     - Yes (notify external systems)
     - No
 
 62. **Scheduled tasks/Cron jobs:**
-
     - Yes (cleanup, reports, etc.)
     - No
 
 63. **Multi-tenancy:**
-
     - Single tenant
     - Multi-tenant (shared database)
     - Multi-tenant (separate databases)
     - Not applicable
 
 64. **Internationalization (i18n):**
-
     - Multiple languages/locales
     - English only
     - Not applicable

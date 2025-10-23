@@ -3,7 +3,6 @@
 ## Framework and Platform
 
 1. **Primary framework:**
-
    - Electron (JavaScript/TypeScript, web tech, cross-platform)
    - Tauri (Rust backend, web frontend, lightweight)
    - .NET MAUI (C#, cross-platform, native UI)
@@ -16,7 +15,6 @@
    - Other: **\_\_\_**
 
 2. **Target platforms:**
-
    - Windows only
    - macOS only
    - Linux only
@@ -25,7 +23,6 @@
    - Specific Linux distros: **\_\_\_**
 
 3. **UI approach:**
-
    - Native UI (platform-specific controls)
    - Web-based UI (HTML/CSS/JS in Electron/Tauri)
    - Custom-drawn UI (Canvas/OpenGL)
@@ -42,14 +39,12 @@
 ## Architecture
 
 5. **Application architecture:**
-
    - Single-process (all in one)
    - Multi-process (main + renderer processes like Electron)
    - Multi-threaded (background workers)
    - Plugin-based (extensible architecture)
 
 6. **Backend/Business logic:**
-
    - Embedded in app (monolithic)
    - Separate local service
    - Connects to remote API
@@ -67,7 +62,6 @@
 ## System Integration
 
 8. **Operating system integration needs:**
-
    - File system access (read/write user files)
    - System tray/menu bar icon
    - Native notifications
@@ -81,7 +75,6 @@
    - None needed (basic app)
 
 9. **Hardware access:**
-
    - Camera/Microphone
    - USB devices
    - Bluetooth
@@ -103,7 +96,6 @@
 ## Updates and Distribution
 
 11. **Auto-update mechanism:**
-
     - Electron's autoUpdater
     - Squirrel (Windows/Mac)
     - Sparkle (macOS)
@@ -113,7 +105,6 @@
     - No updates (fixed version)
 
 12. **Distribution method:**
-
     - Microsoft Store (Windows)
     - Mac App Store
     - Snap Store (Linux)
@@ -124,7 +115,6 @@
     - Multiple channels
 
 13. **Code signing:**
-
     - Yes - Windows (Authenticode)
     - Yes - macOS (Apple Developer)
     - Yes - both
@@ -137,7 +127,6 @@
 ## Packaging and Installation
 
 15. **Windows installer:**
-
     - NSIS
     - Inno Setup
     - WiX Toolset (MSI)
@@ -147,7 +136,6 @@
     - Other: **\_\_\_**
 
 16. **macOS installer:**
-
     - DMG (drag-to-install)
     - PKG installer
     - Mac App Store
@@ -167,7 +155,6 @@
 ## Configuration and Settings
 
 18. **Settings storage:**
-
     - OS-specific (Registry on Windows, plist on macOS, config files on Linux)
     - JSON/YAML config file
     - SQLite database
@@ -184,7 +171,6 @@
 ## Networking
 
 20. **Network connectivity:**
-
     - Online-only (requires internet)
     - Offline-first (works without internet)
     - Hybrid (enhanced with internet)
@@ -201,7 +187,6 @@
 ## Authentication and Security
 
 22. **Authentication (if applicable):**
-
     - OAuth2 (Google, Microsoft, etc.)
     - Username/password with backend
     - SSO (enterprise)
@@ -209,7 +194,6 @@
     - No authentication needed
 
 23. **Data security:**
-
     - Encrypt sensitive data at rest
     - OS keychain/credential manager
     - Custom encryption
@@ -223,13 +207,11 @@
 ## Performance and Resources
 
 25. **Performance requirements:**
-
     - Lightweight (minimal resource usage)
     - Moderate (typical desktop app)
     - Resource-intensive (video editing, 3D, etc.)
 
 26. **Background operation:**
-
     - Runs in background/system tray
     - Active window only
     - Can minimize to tray
@@ -242,7 +224,6 @@
 ## Development and Build
 
 28. **Build tooling:**
-
     - electron-builder
     - electron-forge
     - Tauri CLI
@@ -254,7 +235,6 @@
     - Other: **\_\_\_**
 
 29. **Development environment:**
-
     - Cross-platform dev (can build on any OS)
     - Platform-specific (need macOS for Mac builds, etc.)
 
@@ -269,7 +249,6 @@
 ## Testing
 
 31. **UI testing approach:**
-
     - Spectron (Electron)
     - Playwright
     - Selenium
@@ -284,20 +263,17 @@
 ## Additional Features
 
 33. **Internationalization (i18n):**
-
     - Multiple languages supported
     - English only
     - User-selectable language
     - OS language detection
 
 34. **Accessibility:**
-
     - Full accessibility support (screen readers, keyboard nav)
     - Basic accessibility
     - Not a priority
 
 35. **Crash reporting:**
-
     - Sentry
     - BugSnag
     - Crashpad (for native crashes)
@@ -305,7 +281,6 @@
     - None
 
 36. **Analytics/Telemetry:**
-
     - Google Analytics
     - Mixpanel
     - PostHog
@@ -313,7 +288,6 @@
     - No telemetry (privacy-focused)
 
 37. **Licensing/DRM (if commercial):**
-
     - License key validation
     - Hardware-locked licenses
     - Subscription validation

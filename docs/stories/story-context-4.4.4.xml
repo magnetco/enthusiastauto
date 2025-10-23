@@ -1,0 +1,275 @@
+<story-context id="bmad/bmm/workflows/4-implementation/story-context/template" v="1.0">
+  <metadata>
+    <epicId>4</epicId>
+    <storyId>4.4</storyId>
+    <title>Cross-Content Linking Components</title>
+    <status>Ready</status>
+    <generatedAt>2025-10-22</generatedAt>
+    <generator>BMAD Story Context Workflow</generator>
+    <sourceStoryPath>docs/stories/story-4.4.md</sourceStoryPath>
+  </metadata>
+
+  <story>
+    <asA>user viewing a vehicle / user viewing a product</asA>
+    <iWant>see compatible parts recommendations / see which vehicles currently in stock use this part</iWant>
+    <soThat>I can discover parts for the vehicle I'm interested in / I can understand real-world fitment examples</soThat>
+    <tasks>
+- Task 1: Create Recommendation Business Logic (AC: 2, 4, 7)
+- Task 2: Implement Caching Layer (AC: 8)
+- Task 3: Create Shared UI Components (AC: 1, 3, 6, 7)
+- Task 4: Integrate Compatible Parts on Vehicle Detail Pages (AC: 1, 5, 6)
+- Task 5: Integrate Vehicles in Stock on Product Detail Pages (AC: 3, 5, 6)
+- Task 6: Write Unit Tests (AC: 9)
+- Task 7: Write Component Tests (AC: 9)
+- Task 8: Integration Testing and QA (AC: all)
+    </tasks>
+  </story>
+
+  <acceptanceCriteria>
+AC1: Compatible Parts Section on Vehicle Detail Pages - Vehicle detail pages display 4-6 relevant products with responsive grid, positioned after specs
+AC2: Fitment Matching Logic for Vehicle → Parts - Match vehicle model/year against Shopify product tags with ranking (exact > model > universal)
+AC3: Vehicles in Stock Section on Product Detail Pages - Product pages display matching current-status vehicles with responsive grid
+AC4: Fitment Matching Logic for Product → Vehicles - Parse product tags to query Sanity for matching vehicles (status=current, max 4)
+AC5: Navigation and Context Preservation - Links use Next.js Link component with proper breadcrumbs and back button support
+AC6: Empty State Handling - Display helpful messages when no recommendations found, using ShadCN Alert component
+AC7: Reusable Components and Shared Logic - RecommendationCarousel component + lib/shared/recommendations.ts business logic
+AC8: Performance and Caching - 5-minute in-memory cache, server-side rendering, <2s page load, lazy-loaded images
+AC9: Testing Requirements - 80%+ coverage for recommendation logic, unit + component + integration tests
+  </acceptanceCriteria>
+
+  <artifacts>
+    <docs>
+      <doc>
+        <path>docs/PRD.md</path>
+        <title>Product Requirements Document - Phase 2</title>
+        <section>FR020, FR021 - Cross-Content Recommendations</section>
+        <snippet>Users shall view compatible parts recommendations on vehicle pages (FR020) and vehicles-with-part recommendations on product pages (FR021). Unified BMW ecosystem enables cross-discovery between inventory and parts.</snippet>
+      </doc>
+      <doc>
+        <path>docs/solution-architecture.md</path>
+        <title>Solution Architecture - Cross-CMS Linking Strategy</title>
+        <section>Vehicle → Compatible Parts Implementation</section>
+        <snippet>getCompatibleParts(vehicle) matches vehicle model/year against Shopify product fitment tags. Products tagged "BMW E46 2001-2006" matched to E46 vehicles. Application-layer matching using Shopify Storefront API queries.</snippet>
+      </doc>
+      <doc>
+        <path>docs/solution-architecture.md</path>
+        <title>Solution Architecture - Component Structure</title>
+        <section>RecommendationCarousel + CrossDiscoveryLinks</section>
+        <snippet>Polymorphic RecommendationCarousel component handles both product and vehicle recommendations. Shared recommendation logic in lib/search/recommendations.ts. Components follow ShadCN patterns.</snippet>
+      </doc>
+      <doc>
+        <path>docs/component-library.md</path>
+        <title>Component Library - ShadCN UI Components</title>
+        <section>Card, Badge, Button Components</section>
+        <snippet>Card component for recommendation items with CardHeader/CardContent/CardFooter. Badge variants (success/warning) for fitment indicators. Button sizes include lg (48px) for CTAs.</snippet>
+      </doc>
+      <doc>
+        <path>docs/stories/story-3.4.md</path>
+        <title>Story 3.4 - Vehicle Detail Page</title>
+        <section>Vehicle Detail Page Structure</section>
+        <snippet>Vehicle detail page (app/vehicles/[slug]/page.tsx) includes hero image, gallery, specifications, service history. Integration point for Compatible Parts section after specs.</snippet>
+      </doc>
+      <doc>
+        <path>docs/stories/story-4.3.md</path>
+        <title>Story 4.3 - Routing Architecture & URL Structure</title>
+        <section>URL Structure and Navigation</section>
+        <snippet>Clean URLs: /vehicles/[slug] and /product/[handle]. Next.js Link component for client-side navigation. Breadcrumbs component with context preservation.</snippet>
+      </doc>
+    </docs>
+    <code>
+      <artifact>
+        <path>lib/shopify/index.ts</path>
+        <kind>service</kind>
+        <symbol>shopifyFetch, getProducts</symbol>
+        <lines>71-124, 448-471</lines>
+        <reason>Core Shopify API client for querying products. Will be used to fetch compatible parts by fitment tags in getCompatibleParts()</reason>
+      </artifact>
+      <artifact>
+        <path>lib/shopify/types.ts</path>
+        <kind>types</kind>
+        <symbol>Product, ShopifyProduct</symbol>
+        <lines>72-76, 119-139</lines>
+        <reason>Product type definitions including tags field (contains fitment data like "BMW E46 2001-2006")</reason>
+      </artifact>
+      <artifact>
+        <path>lib/sanity/queries/vehicles.ts</path>
+        <kind>service</kind>
+        <symbol>getVehicles, VehicleListItem</symbol>
+        <lines>52-151, 7-20</lines>
+        <reason>Sanity vehicle query service. Pattern to follow for querying vehicles by fitment criteria in getVehiclesWithPart()</reason>
+      </artifact>
+      <artifact>
+        <path>app/vehicles/[slug]/page.tsx</path>
+        <kind>page</kind>
+        <symbol>VehicleDetailPage</symbol>
+        <lines>98-277</lines>
+        <reason>Vehicle detail page where Compatible Parts section will be integrated (after specs, line ~221)</reason>
+      </artifact>
+      <artifact>
+        <path>app/product/[handle]/page.tsx</path>
+        <kind>page</kind>
+        <symbol>ProductPage, RelatedProducts</symbol>
+        <lines>63-128, 130-168</lines>
+        <reason>Product detail page where Vehicles in Stock section will be integrated. RelatedProducts pattern can be adapted for vehicle recommendations.</reason>
+      </artifact>
+      <artifact>
+        <path>components/ui/card.tsx</path>
+        <kind>component</kind>
+        <symbol>Card, CardHeader, CardContent, CardFooter</symbol>
+        <lines>5-92</lines>
+        <reason>ShadCN Card component for recommendation item display. Will be used in RecommendationCarousel component.</reason>
+      </artifact>
+      <artifact>
+        <path>components/ui/badge.tsx</path>
+        <kind>component</kind>
+        <symbol>Badge, badgeVariants</symbol>
+        <lines>30-48</lines>
+        <reason>Badge component with success variant for fitment indicators and status badges</reason>
+      </artifact>
+      <artifact>
+        <path>components/shared/FeaturedVehicles.tsx</path>
+        <kind>component</kind>
+        <symbol>FeaturedVehicles</symbol>
+        <lines>all</lines>
+        <reason>Existing vehicle grid component pattern to reference for vehicle card layout in recommendations</reason>
+      </artifact>
+      <artifact>
+        <path>components/shared/PopularParts.tsx</path>
+        <kind>component</kind>
+        <symbol>PopularParts</symbol>
+        <lines>all</lines>
+        <reason>Existing product grid component pattern to reference for product card layout in recommendations</reason>
+      </artifact>
+    </code>
+    <dependencies>
+      <node>
+        <runtime>next@15.3.0-canary.13 (Next.js App Router with Server Components)</runtime>
+        <runtime>react@19.0.0</runtime>
+        <cms>next-sanity@11 (Sanity CMS integration)</cms>
+        <cms>@sanity/client@7.12.0 (Sanity client for GROQ queries)</cms>
+        <styling>tailwindcss@4.0.14</styling>
+        <ui>@radix-ui/* (Accordion, Dialog, Select, Slot, Tooltip components)</ui>
+        <ui>class-variance-authority@0.7.1 (CVA for component variants)</ui>
+        <ui>lucide-react@0.545.0 (Icons)</ui>
+        <testing>@playwright/test@1.56.0 (E2E testing)</testing>
+      </node>
+    </dependencies>
+  </artifacts>
+
+  <constraints>
+    - All recommendation logic MUST be implemented in lib/shared/recommendations.ts for testability (not inline in components)
+    - Components MUST use Next.js 15 Server Components for data fetching (no client-side fetch)
+    - Product queries MUST use existing shopifyFetch() from lib/shopify/index.ts (do not create new Shopify client)
+    - Vehicle queries MUST use Sanity client from sanity/lib/client.ts (follow pattern in lib/sanity/queries/vehicles.ts)
+    - UI components MUST use existing ShadCN Card, Badge, Button components (no custom card styles)
+    - Responsive grid MUST follow Tailwind breakpoints: 2-col mobile (sm:), 3-col tablet (md:), 4-col desktop (lg:) for parts
+    - Responsive grid MUST follow 1-col mobile, 2-col tablet/desktop for vehicles
+    - Cache implementation MUST use in-memory Map with TTL (5 minutes), no external cache service
+    - All paths MUST be project-relative in context file (strip /Users/heggiedesign/Development/enthusiastauto-1 prefix)
+    - Testing MUST achieve 80%+ coverage for lib/shared/recommendations.ts using Vitest (per Dev Notes)
+    - Product tags format assumption: "BMW E46 2001-2006" or "BMW E46" or "BMW Universal"
+    - Vehicle model field available in Sanity schema (chassis field contains model like "E46")
+    - ISR revalidation: 60 seconds (per existing vehicle page revalidate = 60)
+  </constraints>
+  <interfaces>
+    <interface>
+      <name>getCompatibleParts</name>
+      <kind>async function</kind>
+      <signature>async function getCompatibleParts(vehicle: VehicleDetail): Promise&lt;Product[]&gt;</signature>
+      <path>lib/shared/recommendations.ts (new file)</path>
+      <description>Queries Shopify for products matching vehicle chassis/year. Returns max 6 products ranked by fitment relevance.</description>
+    </interface>
+    <interface>
+      <name>getVehiclesWithPart</name>
+      <kind>async function</kind>
+      <signature>async function getVehiclesWithPart(productTags: string[]): Promise&lt;VehicleListItem[]&gt;</signature>
+      <path>lib/shared/recommendations.ts (new file)</path>
+      <description>Queries Sanity for current-status vehicles matching product fitment tags. Returns max 4 vehicles sorted by newest first.</description>
+    </interface>
+    <interface>
+      <name>RecommendationCarousel</name>
+      <kind>React Server Component</kind>
+      <signature>RecommendationCarousel({ items: Product[] | VehicleListItem[], type: "product" | "vehicle", title: string })</signature>
+      <path>components/shared/RecommendationCarousel.tsx (new file)</path>
+      <description>Polymorphic component rendering responsive grid of product or vehicle cards with empty state handling.</description>
+    </interface>
+    <interface>
+      <name>Shopify Storefront API - products query</name>
+      <kind>GraphQL endpoint</kind>
+      <signature>query products(first: Int!, query: String!)</signature>
+      <path>Shopify GraphQL API (via lib/shopify/index.ts:shopifyFetch)</path>
+      <description>Query products by tag string. Use query param like "tag:BMW E46" to filter by fitment.</description>
+    </interface>
+    <interface>
+      <name>Sanity GROQ - vehicles by chassis/year</name>
+      <kind>GROQ query</kind>
+      <signature>*[_type == "vehicle" && chassis in $models && status == "current"] | order(_createdAt desc)</signature>
+      <path>Sanity client (via sanity/lib/client.ts)</path>
+      <description>Query vehicles by chassis array and filter to current status only. Pattern from lib/sanity/queries/vehicles.ts.</description>
+    </interface>
+  </interfaces>
+  <tests>
+    <standards>
+Testing framework: Vitest for unit tests, React Testing Library for component tests, Playwright for E2E integration tests (per package.json). Test files use .test.ts or .test.tsx extension and are co-located with source in __tests__ directories. Target 80%+ coverage for business logic. Mock Shopify/Sanity API calls in unit tests. Use test fixtures for realistic vehicle/product data with various fitment tags.
+    </standards>
+    <locations>
+      - lib/shared/__tests__/recommendations.test.ts (unit tests for fitment logic)
+      - components/shared/__tests__/RecommendationCarousel.test.tsx (component tests)
+      - e2e/ or app/**/*.spec.ts (Playwright integration tests for full page flows)
+    </locations>
+    <ideas>
+      <test id="AC2">
+        <ac>AC2: Fitment Matching Logic for Vehicle → Parts</ac>
+        <testCases>
+          - Parse vehicle chassis "E46" + year "2003" → query tag "BMW E46"
+          - Match exact: product "BMW E46 2001-2006" matches E46 vehicle year 2003
+          - Match model-only: product "BMW E46" matches E46 vehicle any year
+          - Match universal: product "BMW Universal" included in all results
+          - Ranking: exact model+year > model-only > universal
+          - Limit results to max 6 products
+          - Handle malformed tags gracefully (skip invalid tags)
+        </testCases>
+      </test>
+      <test id="AC4">
+        <ac>AC4: Fitment Matching Logic for Product → Vehicles</ac>
+        <testCases>
+          - Parse product tag "BMW E46 2001-2006" → extract model "E46", years 2001-2006
+          - Query Sanity for chassis=="E46" && status=="current"
+          - Filter results to only current status vehicles (exclude sold)
+          - Sort by newest listing first (_createdAt desc)
+          - Limit results to max 4 vehicles
+          - Handle products with no fitment tags (return empty array)
+        </testCases>
+      </test>
+      <test id="AC6">
+        <ac>AC6: Empty State Handling</ac>
+        <testCases>
+          - Render empty state message when no compatible parts found
+          - Render empty state message when no vehicles found
+          - Empty state includes CTA link to Browse All Parts or Browse All Vehicles
+          - Alternative: hide section entirely when zero results (test both approaches)
+        </testCases>
+      </test>
+      <test id="AC8">
+        <ac>AC8: Performance and Caching</ac>
+        <testCases>
+          - Cache stores recommendation results with 5-minute TTL
+          - Cache hit returns cached data without new API call
+          - Cache miss triggers fresh API query
+          - Cache key based on vehicle slug or product handle
+          - Verify page load time remains &lt;2s with recommendations
+        </testCases>
+      </test>
+      <test id="AC9-integration">
+        <ac>AC9: Integration Testing</ac>
+        <testCases>
+          - E2E: Navigate to vehicle detail page, verify Compatible Parts section renders
+          - E2E: Navigate to product detail page, verify Vehicles in Stock section renders
+          - E2E: Click recommended product link, verify navigation to correct product page
+          - E2E: Click recommended vehicle link, verify navigation to correct vehicle page
+          - E2E: Verify breadcrumbs update correctly after cross-navigation
+        </testCases>
+      </test>
+    </ideas>
+  </tests>
+</story-context>

@@ -3,7 +3,6 @@
 ## Language and Platform
 
 1. **Primary language:**
-
    - TypeScript/JavaScript
    - Python
    - Rust
@@ -13,7 +12,6 @@
    - Other: **\_\_\_**
 
 2. **Target runtime:**
-
    - Node.js
    - Browser (frontend)
    - Both Node.js + Browser (isomorphic)
@@ -34,14 +32,12 @@
 ## API Design
 
 4. **Public API style:**
-
    - Functional (pure functions)
    - OOP (classes/instances)
    - Fluent/Builder pattern
    - Mix
 
 5. **API surface size:**
-
    - Minimal (focused, single purpose)
    - Comprehensive (many features)
 
@@ -55,7 +51,6 @@
 ## Type Safety
 
 7. **Type system:**
-
    - TypeScript (JavaScript)
    - Type hints (Python)
    - Strongly typed (Rust, Go, Java)
@@ -70,7 +65,6 @@
 ## Build and Distribution
 
 9. **Build tool:**
-
    - tsup (TypeScript, simple)
    - esbuild (fast)
    - Rollup
@@ -80,7 +74,6 @@
    - Not needed (pure JS)
 
 10. **Output format:**
-
     - ESM (modern)
     - CommonJS (Node.js)
     - UMD (universal)
@@ -94,7 +87,6 @@
 ## Dependencies
 
 12. **Dependency strategy:**
-
     - Zero dependencies (standalone)
     - Minimal dependencies
     - Standard dependencies OK
@@ -115,7 +107,6 @@
 ## Testing
 
 15. **Test framework:**
-
     - Jest (JavaScript)
     - Vitest (Vite-compatible)
     - Pytest (Python)
@@ -131,7 +122,6 @@
 ## Versioning and Releases
 
 17. **Versioning:**
-
     - Semantic versioning (semver)
     - Calendar versioning (calver)
     - Other
@@ -146,7 +136,6 @@
 ## Additional
 
 19. **CLI included:** (if applicable)
-
     - Yes (command-line tool)
     - No (library only)
 

@@ -1,0 +1,510 @@
+<story-context id="bmad/bmm/workflows/4-implementation/story-context/template" v="1.0">
+  <metadata>
+    <epicId>5</epicId>
+    <storyId>5.1</storyId>
+    <title>User Authentication with NextAuth.js</title>
+    <status>Ready</status>
+    <generatedAt>2025-10-22</generatedAt>
+    <generator>BMAD Story Context Workflow</generator>
+    <sourceStoryPath>docs/stories/story-5.1.md</sourceStoryPath>
+  </metadata>
+
+  <story>
+    <asA>user</asA>
+    <iWant>create an account and log in securely</iWant>
+    <soThat>I can access personalized features like My Garage, favorites, and purchase history</soThat>
+    <tasks>
+      <task id="1" ac="9">Setup Database and Prisma - Install Prisma and Vercel Postgres dependencies, initialize Prisma, configure connection, create schema with NextAuth tables (User, Account, Session, VerificationToken), run migrations, generate Prisma client, create singleton instance in lib/db/prisma.ts, create seed script with test user, test database connection</task>
+      <task id="2" ac="3,5">Install and Configure NextAuth.js - Install NextAuth.js v5 beta, Prisma adapter, bcrypt for password hashing, create auth.config.ts with NextAuth configuration, configure Credentials provider for email/password login, configure Prisma adapter for session storage, set session strategy to JWT with 30-day max age, configure CSRF protection and secure cookies, create API route at app/api/auth/[...nextauth]/route.ts, add NextAuth secret to environment variables</task>
+      <task id="3" ac="3,10">Create Authentication Utilities - Create lib/auth/password.ts with hashPassword() (bcrypt, 12 rounds) and verifyPassword() functions, create lib/auth/tokens.ts with generateToken() and verifyToken() functions with expiry check, add password validation utility validatePassword() (min 8 chars, mixed case, number), create TypeScript types in lib/auth/types.ts, add unit tests for password hashing, token generation, validation</task>
+      <task id="4" ac="1,2,8">Build Registration UI and API - Create app/auth/signup/page.tsx with registration form, add form fields using ShadCN Input, Label, Button components, implement client-side validation with React Hook Form and Zod schema, create API route at app/api/auth/signup/route.ts, validate email uniqueness, hash password, create user in database, generate verification token and store in VerificationToken table, send verification email via Resend service, handle errors (duplicate email, email send failure) with user-friendly messages, redirect to email verification pending page on success, add accessibility attributes (aria-labels, keyboard navigation)</task>
+      <task id="5" ac="2,8">Build Email Verification Flow - Install React Email and Resend dependencies, create email template at emails/verify-email.tsx using React Email, configure Resend API key in environment variables, create verification route at app/api/auth/verify-email/route.ts, validate verification token from query parameter, update user.emailVerified timestamp in database, delete used verification token, redirect to signin with success message, handle expired/invalid tokens with resend option, create "resend verification email" endpoint</task>
+      <task id="6" ac="3,8">Build Login UI and API - Create app/auth/signin/page.tsx with login form, add email and password fields with ShadCN components, add "Remember me" checkbox (optional enhancement), add "Forgot password?" link to reset password page, handle form submission with NextAuth signIn("credentials") function, implement rate limiting (max 5 attempts per 15 min per IP), show error messages for invalid credentials, redirect to dashboard or callbackUrl on success, add loading state with disabled form during submission, test login flow with valid and invalid credentials</task>
+      <task id="7" ac="4,8">Build Password Reset Flow - Create app/auth/reset-password/page.tsx with email request form, create API route at app/api/auth/reset-password/route.ts, generate password reset token with 1-hour expiry, send password reset email via Resend, create email template at emails/reset-password.tsx, create app/auth/reset-password/[token]/page.tsx for new password form, validate reset token, show form if valid, handle password change: hash new password, update database, invalidate all existing sessions for security, redirect to signin with success message</task>
+      <task id="8" ac="5">Implement Session Provider and State - Wrap app with NextAuth SessionProvider in app/layout.tsx, create lib/auth/session.ts with getServerSession() helper, add session type definitions for user data, test useSession() hook in client components, test getServerSession() in server components and API routes, configure session sliding window refresh, create session cleanup cron job (remove expired sessions), test concurrent sessions on multiple devices</task>
+      <task id="9" ac="6,8">Build Logout Functionality - Add logout button to user menu in navigation component, add logout button to mobile menu, implement logout handler using NextAuth signOut() function, clear session cookie and invalidate database session, redirect to homepage after logout, show success toast message: "You've been logged out", verify cart and filters persist after logout, test logout from various pages</task>
+      <task id="10" ac="7">Implement Protected Routes Middleware - Create middleware.ts at project root, use NextAuth withAuth() middleware helper, configure protected routes: /dashboard/*, /account/*, configure public routes: /, /products, /vehicles, /search, implement redirect to signin with callbackUrl for unauthenticated access, protect API routes: return 401 for /api/favorites/* without auth, test middleware redirect flow (attempt access → login → redirect back), test API route protection with authenticated and unauthenticated requests</task>
+      <task id="11" ac="8,10">Error Handling and User Feedback - Create error message constants in lib/auth/errors.ts, implement error boundary for auth pages, add Sentry error logging for auth failures, create reusable error alert component with ShadCN Alert, test all error scenarios (duplicate email, invalid credentials, rate limit, network failure), verify no sensitive data exposed in error messages, add loading states to all auth forms</task>
+      <task id="12" ac="10,all">Testing and QA - Write unit tests for password hashing utilities, write unit tests for token generation and validation, write integration tests for registration flow (signup → verify email), write integration tests for login flow (signin → redirect to dashboard), write integration tests for logout flow, write integration tests for password reset flow, write tests for protected route middleware, write tests for rate limiting, run Lighthouse audit on auth pages (accessibility, performance), manual QA testing on mobile, tablet, desktop viewports, test with screen reader for accessibility, verify 80%+ test coverage for auth code</task>
+    </tasks>
+  </story>
+
+  <acceptanceCriteria>
+    <criterion id="AC1">User Registration with Email/Password - Registration form accessible at /auth/signup with fields: name, email, password, confirm password. Password requirements enforced: minimum 8 characters, at least one uppercase, one lowercase, one number. Form validation prevents submission with missing/invalid fields. Client-side validation provides immediate feedback (inline error messages). Server-side validation ensures data integrity. Email must be unique - duplicate emails return clear error message. Successful registration creates user record in Vercel Postgres database. User redirected to email verification page after registration. Form uses ShadCN components (Input, Button, Label, Alert) for consistency. Form accessible via keyboard navigation and screen readers.</criterion>
+    <criterion id="AC2">Email Verification for New Accounts - Verification email sent automatically after registration using Resend service. Email contains verification link with secure token (expires in 24 hours). Clicking verification link marks email as verified in database (emailVerified timestamp). User redirected to signin page with success message after verification. Unverified users can request resend of verification email. Expired tokens show clear error message with resend option. Email template uses React Email for responsive HTML emails. Verification route at /api/auth/verify-email?token=[token] handles token validation.</criterion>
+    <criterion id="AC3">Secure Login with JWT Session Tokens - Login form accessible at /auth/signin with email and password fields. NextAuth.js credentials provider validates email/password against database. Password hashed with bcrypt (salt rounds: 12) for secure storage. Successful login creates JWT session token stored in secure HTTP-only cookie. Session cookie includes CSRF protection token. Session token expires after 30 days of inactivity. Login attempts rate-limited to prevent brute force attacks (max 5 attempts per 15 minutes per IP). Invalid credentials return generic error: "Invalid email or password" (no user enumeration). Successful login redirects to /dashboard or previous protected page. "Remember me" checkbox extends session to 30 days (default: browser session).</criterion>
+    <criterion id="AC4">Password Reset Flow via Email - "Forgot password?" link on signin page navigates to /auth/reset-password. Reset request form accepts email address. If email exists, send password reset email with secure token (expires in 1 hour). If email doesn't exist, show same success message (prevent user enumeration). Reset email contains link to /auth/reset-password/[token] page. Reset password page validates token, shows new password form if valid. New password must meet same requirements as registration. Successful password change invalidates all existing sessions for security. User redirected to signin page with success message. Expired or invalid tokens show error with option to request new reset email.</criterion>
+    <criterion id="AC5">Session Management and Authentication State - NextAuth.js session provider wraps entire application in app/layout.tsx. useSession() hook available throughout app for checking auth state. Session state: "loading", "authenticated", "unauthenticated". Server components can access session via getServerSession(). Session refreshed automatically before expiration (sliding window). Session includes user data: id, name, email, image, emailVerified status. Session stored in Vercel Postgres with Prisma adapter. Concurrent sessions allowed (same user on multiple devices). Session cleanup job removes expired sessions (runs daily via cron).</criterion>
+    <criterion id="AC6">Logout Functionality - Logout button available in user menu (desktop nav) and mobile menu. Clicking logout calls NextAuth signOut() function. Logout clears session cookie and invalidates session in database. User redirected to homepage after logout. Logout works from any page without losing user context. Confirmation modal optional (default: immediate logout). Global state (cart, filters) preserved after logout (stored in localStorage). Success message shown briefly after logout: "You've been logged out".</criterion>
+    <criterion id="AC7">Protected Routes and Middleware - Middleware at /middleware.ts protects routes requiring authentication. Protected routes: /dashboard/*, /account/*, /api/favorites/*. Unauthenticated users redirected to /auth/signin?callbackUrl=[original-url]. After login, users redirected back to original requested page (callbackUrl). API routes return 401 Unauthorized for unauthenticated requests. Middleware uses NextAuth withAuth() helper for route protection. Public routes explicitly allowed: /, /products, /vehicles, /search. Email verification not required for initial login (verified check happens in features).</criterion>
+    <criterion id="AC8">Error Handling and User Feedback - All auth errors show user-friendly messages (no stack traces). Network errors display: "Something went wrong. Please try again." Duplicate email on registration: "An account with this email already exists". Invalid login credentials: "Invalid email or password". Rate limit exceeded: "Too many login attempts. Please try again in 15 minutes." Email sending failures logged to Sentry, user sees: "Email could not be sent. Please try again." Form errors use ShadCN Alert component with destructive variant. Loading states show spinner with disabled form submission. Success messages use ShadCN Alert component with success variant.</criterion>
+    <criterion id="AC9">Database Schema and Prisma Setup - Vercel Postgres database configured with connection pooling. Prisma schema includes NextAuth.js required tables: User, Account, Session, VerificationToken. User table fields: id (cuid), name, email (unique), emailVerified, image, password (hashed), createdAt, updatedAt. Prisma migrations created for schema changes (prisma migrate dev). Prisma client generated and available globally (lib/db/prisma.ts). Database indexes on email, sessionToken for query performance. Prisma Studio accessible for local database debugging. Database seed script creates test user for development.</criterion>
+    <criterion id="AC10">TypeScript Types and Code Quality - All auth-related code fully typed with TypeScript strict mode. NextAuth.js types extended with custom user properties if needed. Utility functions for auth operations: hashPassword(), verifyPassword(), generateToken(). Type-safe API route handlers using Next.js 15 Route Handler types. ESLint rules enforced for security best practices (no hardcoded secrets). Unit tests for password hashing, token generation, validation logic. Integration tests for registration, login, logout, password reset flows. Test coverage target: 80%+ for auth logic.</criterion>
+  </acceptanceCriteria>
+
+  <artifacts>
+    <docs>
+      <doc>
+        <path>docs/PRD.md</path>
+        <title>Product Requirements Document</title>
+        <section>FR016 - User Authentication</section>
+        <snippet>Users shall be able to register for user accounts and authenticate using email/password or social login providers. Phase 2 includes user management system with authenticated experiences including favorites/garage, purchase history, and personalized recommendations. Target: 25%+ user registration rate within 3 months of launch.</snippet>
+      </doc>
+      <doc>
+        <path>docs/solution-architecture.md</path>
+        <title>Solution Architecture - Authentication Strategy</title>
+        <section>Section 5.1 - Auth Strategy (NextAuth.js v5)</section>
+        <snippet>Authentication Provider: NextAuth.js v5 with supported methods: Email/Password (via Email Magic Link), Google OAuth, Facebook OAuth. Database sessions (not JWT) stored in Vercel Postgres for revocable, secure sessions with 30-day max age. Session cookies use httpOnly, sameSite=lax, secure flags. CSRF protection built into NextAuth.</snippet>
+      </doc>
+      <doc>
+        <path>docs/solution-architecture.md</path>
+        <title>Solution Architecture - Database Schema</title>
+        <section>Section 3.1 - Vercel Postgres Schema (Prisma)</section>
+        <snippet>NextAuth.js tables: User (id, name, email, emailVerified, password, image, accounts, sessions, favorites, createdAt, updatedAt), Account (OAuth provider data), Session (sessionToken, userId, expires), VerificationToken (identifier, token, expires). Prisma ORM provides type-safe queries with migrations. Database indexes on email and sessionToken for query performance.</snippet>
+      </doc>
+      <doc>
+        <path>docs/solution-architecture.md</path>
+        <title>Solution Architecture - API Routes</title>
+        <section>Section 4.2 - Authentication Endpoints</section>
+        <snippet>NextAuth endpoints at /api/auth/[...nextauth] handle authentication flows. PrismaAdapter connects NextAuth to Postgres. Protected API routes use getServerSession() to validate authentication and return 401 for unauthenticated requests. Middleware uses withAuth() helper for route protection.</snippet>
+      </doc>
+      <doc>
+        <path>docs/solution-architecture.md</path>
+        <title>Solution Architecture - Protected Routes</title>
+        <section>Section 5.3 - Route Protection Patterns</section>
+        <snippet>Middleware at /middleware.ts protects authenticated routes (/dashboard/*, /account/*, /api/favorites/*). Unauthenticated requests redirect to /auth/signin?callbackUrl=[original-url]. Server components use getServerSession() to access session data. Client components use useSession() hook from next-auth/react.</snippet>
+      </doc>
+      <doc>
+        <path>docs/epic-stories.md</path>
+        <title>Epic Stories - Epic 5 (User Management System)</title>
+        <section>Story 5.1 - User Authentication with NextAuth.js (lines 718-746)</section>
+        <snippet>Story 5.1 implements core authentication: user registration with email/password, email verification, secure login with JWT session tokens, password reset flow via email, session management with 30-day expiration, logout functionality, protected routes, error handling. Uses NextAuth.js v5 (Auth.js) for Next.js 15 compatibility. Configure database adapter for user storage, implement CSRF protection and secure cookies. Effort: 8 points.</snippet>
+      </doc>
+      <doc>
+        <path>docs/solution-architecture.md</path>
+        <title>Solution Architecture - Security Best Practices</title>
+        <section>Section 17.1-17.3 - Authentication & Authorization</section>
+        <snippet>NextAuth.js with secure session cookies (httpOnly, sameSite, secure). Database sessions are revocable with no JWT token exposure. Password hashing handled by NextAuth email provider + Resend magic links. OAuth providers (Google, Facebook) for secure social login. Protected routes via middleware with unauthorized redirects. CSRF protection built into NextAuth. Webhook signature verification (HMAC SHA256), rate limiting support, input validation with Zod schemas, SQL injection prevention via Prisma parameterized queries.</snippet>
+      </doc>
+      <doc>
+        <path>docs/solution-architecture.md</path>
+        <title>Solution Architecture - Environment Variables</title>
+        <section>Section 15 - Environment Configuration</section>
+        <snippet>NextAuth configuration requires: NEXTAUTH_URL (production URL), NEXTAUTH_SECRET (random 32-char string), GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, FACEBOOK_CLIENT_ID, FACEBOOK_CLIENT_SECRET. Postgres connection strings: POSTGRES_URL, POSTGRES_PRISMA_URL (with pgbouncer=true for connection pooling).</snippet>
+      </doc>
+      <doc>
+        <path>docs/solution-architecture.md</path>
+        <title>Solution Architecture - ADR-004 (Vercel Postgres + Prisma)</title>
+        <section>Section 18 - Architecture Decision Records</section>
+        <snippet>Decision: Use Vercel Postgres with Prisma ORM for user data. Rationale: Vercel Native (seamless integration, same dashboard, auto-scaling), Free Tier sufficient for development (10GB storage, 100GB bandwidth), Prisma provides type-safe queries with excellent Next.js DX and auto-generated TypeScript types. Trade-offs: Optimal for Vercel ecosystem, increased complexity vs Supabase alternative.</snippet>
+      </doc>
+      <doc>
+        <path>docs/solution-architecture.md</path>
+        <title>Solution Architecture - ADR-007 (NextAuth Database Sessions)</title>
+        <section>Section 18 - Architecture Decision Records</section>
+        <snippet>Decision: Store sessions in Postgres database, not JWT tokens. Rationale: Revocable sessions (logout, security breach), no size limits (JWT 4KB limit), security (session IDs in cookies not entire session data), GDPR compliance (easier to delete user data with cascade delete). Trade-offs: Database query per request (mitigated by caching), but revocable, secure, and compliant.</snippet>
+      </doc>
+    </docs>
+    <code>
+      <artifact>
+        <path>app/layout.tsx</path>
+        <kind>root-layout</kind>
+        <symbol>RootLayout</symbol>
+        <lines>41-70</lines>
+        <reason>Root layout component where NextAuth SessionProvider must be integrated. Currently wraps app with CartProvider and FilterProvider. SessionProvider should be added at the same level to provide authentication context throughout the app.</reason>
+      </artifact>
+      <artifact>
+        <path>components/shared/UserMenu.tsx</path>
+        <kind>component</kind>
+        <symbol>UserMenu</symbol>
+        <lines>1-42</lines>
+        <reason>Placeholder user menu component with TODO comments for Epic 5 authentication. Shows "Sign In" link for unauthenticated users. Needs to be updated to use useSession() hook from NextAuth to display user profile dropdown when authenticated and handle logout functionality.</reason>
+      </artifact>
+      <artifact>
+        <path>lib/utils.ts</path>
+        <kind>utility</kind>
+        <symbol>cn, validateEnvironmentVariables</symbol>
+        <lines>1-58</lines>
+        <reason>Shared utility functions including cn() for class merging (used in ShadCN components) and validateEnvironmentVariables() pattern for validating required environment variables. Similar validation needed for NextAuth environment variables (NEXTAUTH_SECRET, NEXTAUTH_URL, GOOGLE_CLIENT_ID, etc).</reason>
+      </artifact>
+      <artifact>
+        <path>components/ui/input.tsx</path>
+        <kind>ui-component</kind>
+        <symbol>Input</symbol>
+        <lines>N/A</lines>
+        <reason>ShadCN Input component for form fields. Will be used extensively in registration, login, and password reset forms. Already installed and available for use in auth forms.</reason>
+      </artifact>
+      <artifact>
+        <path>components/ui/button.tsx</path>
+        <kind>ui-component</kind>
+        <symbol>Button</symbol>
+        <lines>N/A</lines>
+        <reason>ShadCN Button component for form submissions, sign in/sign out actions. Already installed and used throughout the app, ensuring consistency in auth UI.</reason>
+      </artifact>
+      <artifact>
+        <path>components/ui/label.tsx</path>
+        <kind>ui-component</kind>
+        <symbol>Label</symbol>
+        <lines>N/A</lines>
+        <reason>ShadCN Label component for accessible form labels. Required for all form inputs in registration and login forms to meet WCAG AA accessibility requirements.</reason>
+      </artifact>
+      <artifact>
+        <path>components/ui/alert.tsx</path>
+        <kind>ui-component</kind>
+        <symbol>Alert</symbol>
+        <lines>N/A</lines>
+        <reason>ShadCN Alert component for displaying error and success messages. Will be used for auth error messages (invalid credentials, duplicate email, rate limit) and success messages (registration complete, password reset sent).</reason>
+      </artifact>
+      <artifact>
+        <path>lib/shopify/index.ts</path>
+        <kind>api-client</kind>
+        <symbol>shopifyFetch</symbol>
+        <lines>N/A</lines>
+        <reason>Existing Shopify API client implementation pattern. Demonstrates API client structure, error handling, and environment variable usage. Can serve as reference for implementing similar patterns in NextAuth API routes and custom auth endpoints.</reason>
+      </artifact>
+      <artifact>
+        <path>contexts/FilterContext.tsx</path>
+        <kind>context-provider</kind>
+        <symbol>FilterProvider</symbol>
+        <lines>N/A</lines>
+        <reason>Existing React Context provider pattern used in the app. Shows how to create and provide context at app level. SessionProvider from NextAuth will follow similar pattern for providing authentication context.</reason>
+      </artifact>
+      <artifact>
+        <path>components/ui/dropdown-menu.tsx</path>
+        <kind>ui-component</kind>
+        <symbol>DropdownMenu</symbol>
+        <lines>N/A</lines>
+        <reason>ShadCN DropdownMenu component for user profile menu. Will be used to display user options (Profile, My Garage, Settings, Logout) when authenticated user clicks on user menu icon.</reason>
+      </artifact>
+    </code>
+    <dependencies>
+      <node>
+        <package>next</package>
+        <version>15.3.0-canary.13</version>
+        <note>Next.js 15 already installed. NextAuth.js v5 beta compatible with Next.js 15.</note>
+      </node>
+      <node>
+        <package>react</package>
+        <version>19.0.0</version>
+        <note>React 19 already installed. NextAuth.js v5 beta supports React 19.</note>
+      </node>
+      <node>
+        <package>typescript</package>
+        <version>5.8.2</version>
+        <note>TypeScript already installed. Will be used for all auth type definitions and strict mode enforcement.</note>
+      </node>
+      <node>
+        <package>@radix-ui/react-*</package>
+        <version>Multiple (see package.json)</version>
+        <note>Radix UI primitives already installed for ShadCN components. No additional UI dependencies needed for auth forms.</note>
+      </node>
+      <toInstall>
+        <package>next-auth@beta</package>
+        <version>5.0.0-beta</version>
+        <reason>Authentication framework for Next.js 15. Provides credentials provider, session management, OAuth support.</reason>
+      </toInstall>
+      <toInstall>
+        <package>@auth/prisma-adapter</package>
+        <version>Latest</version>
+        <reason>NextAuth adapter for Prisma ORM. Connects NextAuth to Vercel Postgres database for user and session storage.</reason>
+      </toInstall>
+      <toInstall>
+        <package>@prisma/client</package>
+        <version>Latest</version>
+        <reason>Prisma ORM client for type-safe database queries. Auto-generates TypeScript types from schema.</reason>
+      </toInstall>
+      <toInstall>
+        <package>@vercel/postgres</package>
+        <version>Latest</version>
+        <reason>Vercel Postgres driver for database connection. Provides connection pooling via PgBouncer.</reason>
+      </toInstall>
+      <toInstall>
+        <package>bcryptjs</package>
+        <version>Latest</version>
+        <reason>Password hashing library. Will be used to hash passwords with 12 salt rounds for secure storage.</reason>
+      </toInstall>
+      <toInstall>
+        <package>@types/bcryptjs</package>
+        <version>Latest</version>
+        <reason>TypeScript type definitions for bcryptjs.</reason>
+      </toInstall>
+      <toInstall>
+        <package>resend</package>
+        <version>Latest</version>
+        <reason>Email service for transactional emails. Will send verification emails, password reset emails.</reason>
+      </toInstall>
+      <toInstall>
+        <package>react-email</package>
+        <version>Latest</version>
+        <reason>Email template library using React components. Will create responsive HTML email templates for verification and password reset.</reason>
+      </toInstall>
+      <toInstall>
+        <package>zod</package>
+        <version>Latest (if not already installed)</version>
+        <reason>Schema validation library for form inputs. Used with React Hook Form for client-side and server-side validation.</reason>
+      </toInstall>
+      <toInstall>
+        <package>react-hook-form</package>
+        <version>Latest</version>
+        <reason>Form library for React. Provides form state management, validation, and submission handling for auth forms.</reason>
+      </toInstall>
+      <toInstall>
+        <package>@hookform/resolvers</package>
+        <version>Latest</version>
+        <reason>Resolver library for React Hook Form to integrate with Zod validation schemas.</reason>
+      </toInstall>
+    </dependencies>
+  </artifacts>
+
+  <constraints>
+    <constraint>
+      <category>Architecture</category>
+      <rule>Follow existing Next.js 15 App Router patterns - use Server Components by default, Client Components only when needed for interactivity (forms, session hooks)</rule>
+    </constraint>
+    <constraint>
+      <category>Architecture</category>
+      <rule>Integrate SessionProvider in app/layout.tsx at root level, similar to existing CartProvider and FilterProvider patterns</rule>
+    </constraint>
+    <constraint>
+      <category>Architecture</category>
+      <rule>Create new directory structure: lib/auth/ for auth utilities, lib/db/ for Prisma client, app/auth/ for auth pages, app/api/auth/ for NextAuth and custom auth endpoints</rule>
+    </constraint>
+    <constraint>
+      <category>Security</category>
+      <rule>Use NextAuth.js v5 beta with Credentials provider for email/password authentication. Configure CSRF protection, secure cookies (httpOnly, sameSite=lax, secure in production)</rule>
+    </constraint>
+    <constraint>
+      <category>Security</category>
+      <rule>Store session as JWT tokens in HTTP-only cookies with 30-day expiration (per solution-architecture.md ADR-007). Note: Story references both JWT and database sessions - use JWT strategy per architecture decision.</rule>
+    </constraint>
+    <constraint>
+      <category>Security</category>
+      <rule>Hash passwords with bcrypt using 12 salt rounds. Never store plain text passwords. Implement password requirements: min 8 characters, uppercase, lowercase, number</rule>
+    </constraint>
+    <constraint>
+      <category>Security</category>
+      <rule>Implement rate limiting for login attempts: max 5 attempts per 15 minutes per IP address to prevent brute force attacks</rule>
+    </constraint>
+    <constraint>
+      <category>Security</category>
+      <rule>Prevent user enumeration: return generic error messages for login failures, duplicate email checks, and password reset requests</rule>
+    </constraint>
+    <constraint>
+      <category>UI/UX</category>
+      <rule>Use existing ShadCN components (Input, Button, Label, Alert) for all auth forms to maintain design consistency across the app</rule>
+    </constraint>
+    <constraint>
+      <category>UI/UX</category>
+      <rule>All auth forms must be accessible via keyboard navigation and screen readers. Include aria-labels, proper focus management, and error announcements</rule>
+    </constraint>
+    <constraint>
+      <category>UI/UX</category>
+      <rule>Update components/shared/UserMenu.tsx to use NextAuth useSession() hook and display user profile dropdown when authenticated</rule>
+    </constraint>
+    <constraint>
+      <category>Database</category>
+      <rule>Use Vercel Postgres with Prisma ORM. Create schema with NextAuth.js required tables: User, Account, Session, VerificationToken per solution-architecture.md Section 3.1</rule>
+    </constraint>
+    <constraint>
+      <category>Database</category>
+      <rule>Add database indexes on email and sessionToken fields for query performance. Use connection pooling via POSTGRES_PRISMA_URL with pgbouncer=true</rule>
+    </constraint>
+    <constraint>
+      <category>Testing</category>
+      <rule>Write unit tests for all auth utilities (password hashing, token generation, validation). Target 80%+ test coverage for auth code</rule>
+    </constraint>
+    <constraint>
+      <category>Testing</category>
+      <rule>Write integration tests for complete auth flows: registration → email verification → login → logout, password reset flow</rule>
+    </constraint>
+    <constraint>
+      <category>Testing</category>
+      <rule>Use existing Vitest setup for unit tests. Add Playwright tests for E2E auth flows if time permits</rule>
+    </constraint>
+    <constraint>
+      <category>Code Quality</category>
+      <rule>All auth code must use TypeScript strict mode. No 'any' types. Extend NextAuth types with custom user properties if needed</rule>
+    </constraint>
+    <constraint>
+      <category>Code Quality</category>
+      <rule>Follow existing code patterns: use cn() utility for class names, validateEnvironmentVariables() pattern for env validation</rule>
+    </constraint>
+    <constraint>
+      <category>Email</category>
+      <rule>Use Resend service for transactional emails (verification, password reset). Create React Email templates for responsive HTML emails</rule>
+    </constraint>
+    <constraint>
+      <category>Email</category>
+      <rule>Email verification tokens expire in 24 hours. Password reset tokens expire in 1 hour. Implement token validation with expiry checks</rule>
+    </constraint>
+    <constraint>
+      <category>Middleware</category>
+      <rule>Create middleware.ts at project root (Next.js 15 convention). Use NextAuth withAuth() helper to protect routes: /dashboard/*, /account/*, /api/favorites/*</rule>
+    </constraint>
+    <constraint>
+      <category>Middleware</category>
+      <rule>Redirect unauthenticated users to /auth/signin?callbackUrl=[original-url]. After login, redirect back to original page using callbackUrl parameter</rule>
+    </constraint>
+  </constraints>
+  <interfaces>
+    <interface>
+      <name>NextAuth Configuration (auth.config.ts)</name>
+      <kind>Configuration</kind>
+      <signature>
+export const authOptions = {
+  adapter: PrismaAdapter(prisma),
+  providers: [
+    CredentialsProvider({
+      name: "credentials",
+      credentials: { email: {}, password: {} },
+      async authorize(credentials) { /* validate and return user */ }
+    })
+  ],
+  session: { strategy: "jwt", maxAge: 30 * 24 * 60 * 60 },
+  pages: { signIn: "/auth/signin", error: "/auth/error" },
+  callbacks: {
+    async session({ session, token }) { /* attach user id */ },
+    async jwt({ token, user }) { /* customize JWT */ }
+  }
+}
+      </signature>
+      <path>lib/auth/nextauth.ts or app/api/auth/[...nextauth]/route.ts</path>
+    </interface>
+    <interface>
+      <name>Password Hashing Utilities</name>
+      <kind>Utility Functions</kind>
+      <signature>
+export async function hashPassword(password: string): Promise&lt;string&gt; {
+  return bcrypt.hash(password, 12);
+}
+
+export async function verifyPassword(password: string, hashedPassword: string): Promise&lt;boolean&gt; {
+  return bcrypt.compare(password, hashedPassword);
+}
+
+export function validatePassword(password: string): { valid: boolean; errors: string[] } {
+  // Min 8 chars, uppercase, lowercase, number
+}
+      </signature>
+      <path>lib/auth/password.ts</path>
+    </interface>
+    <interface>
+      <name>Token Generation Utilities</name>
+      <kind>Utility Functions</kind>
+      <signature>
+export function generateToken(): string {
+  // Crypto-random token
+}
+
+export function verifyToken(token: string, storedToken: { token: string; expires: Date }): boolean {
+  // Check token match and expiry
+}
+      </signature>
+      <path>lib/auth/tokens.ts</path>
+    </interface>
+    <interface>
+      <name>Registration API Route</name>
+      <kind>API Endpoint</kind>
+      <signature>
+POST /api/auth/signup
+Body: { name: string, email: string, password: string }
+Response: { success: boolean, message: string } | { error: string }
+      </signature>
+      <path>app/api/auth/signup/route.ts</path>
+    </interface>
+    <interface>
+      <name>Email Verification API Route</name>
+      <kind>API Endpoint</kind>
+      <signature>
+GET /api/auth/verify-email?token=xxx
+Response: Redirect to /auth/signin with success message or error page
+      </signature>
+      <path>app/api/auth/verify-email/route.ts</path>
+    </interface>
+    <interface>
+      <name>Password Reset API Route</name>
+      <kind>API Endpoint</kind>
+      <signature>
+POST /api/auth/reset-password
+Body: { email: string }
+Response: { success: boolean, message: string }
+
+GET /api/auth/reset-password/[token]
+Response: Show new password form if token valid, error page if expired
+      </signature>
+      <path>app/api/auth/reset-password/route.ts, app/auth/reset-password/[token]/page.tsx</path>
+    </interface>
+    <interface>
+      <name>Server Session Access</name>
+      <kind>Function</kind>
+      <signature>
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/auth/nextauth";
+
+export async function getCurrentUser() {
+  const session = await getServerSession(authOptions);
+  return session?.user || null;
+}
+      </signature>
+      <path>lib/auth/session.ts</path>
+    </interface>
+    <interface>
+      <name>Client Session Hook</name>
+      <kind>React Hook</kind>
+      <signature>
+import { useSession } from "next-auth/react";
+
+// In client component
+const { data: session, status } = useSession();
+// status: "loading" | "authenticated" | "unauthenticated"
+// session: { user: { id, name, email, image, emailVerified } }
+      </signature>
+      <path>next-auth/react</path>
+    </interface>
+    <interface>
+      <name>Prisma User Model</name>
+      <kind>Database Schema</kind>
+      <signature>
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String    @unique
+  emailVerified DateTime?
+  password      String    // bcrypt hashed
+  image         String?
+  accounts      Account[]
+  sessions      Session[]
+  favorites     UserFavorite[]
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  @@index([email])
+}
+      </signature>
+      <path>prisma/schema.prisma</path>
+    </interface>
+  </interfaces>
+  <tests>
+    <standards>The project uses Vitest for unit and integration testing with React Testing Library for component tests. Test files should be colocated with source code using *.test.ts or *.test.tsx naming. All tests run with `pnpm test` or `pnpm test:watch` for watch mode. Test coverage reports generated with `pnpm test:coverage`. Playwright is available for E2E testing with `@playwright/test` installed. TypeScript strict mode enforced in tests. Testing utilities available: @testing-library/jest-dom for DOM assertions, @testing-library/user-event for user interactions, happy-dom for fast DOM environment. Target 80%+ test coverage for authentication code per AC10.</standards>
+    <locations>
+      <location>lib/auth/__tests__/</location>
+      <location>lib/db/__tests__/</location>
+      <location>app/auth/**/*.test.tsx</location>
+      <location>lib/shared/__tests__/</location>
+      <location>tests/e2e/ (Playwright E2E tests)</location>
+    </locations>
+    <ideas>
+      <idea ac="AC3,AC10">Unit tests for password hashing: test hashPassword() returns different hash for same input (salt randomness), test verifyPassword() returns true for correct password and false for incorrect, test password validation function rejects passwords under 8 chars, missing uppercase/lowercase/number</idea>
+      <idea ac="AC2,AC10">Unit tests for token generation: test generateToken() returns unique crypto-random tokens, test verifyToken() returns false for expired tokens, test verifyToken() returns false for mismatched tokens, test 24-hour expiry for verification tokens and 1-hour for reset tokens</idea>
+      <idea ac="AC1,AC8">Integration test for registration flow: POST to /api/auth/signup with valid data creates user in database, hashed password stored (not plain text), verification token created with 24h expiry, verification email sent via Resend, duplicate email returns 400 error, weak password returns validation error</idea>
+      <idea ac="AC2,AC8">Integration test for email verification: GET to /api/auth/verify-email with valid token sets emailVerified timestamp, deletes used token, redirects to signin with success message, expired token returns error with resend option, invalid token returns 404 error</idea>
+      <idea ac="AC3,AC8">Integration test for login flow: POST to NextAuth /api/auth/callback/credentials with valid email/password creates session JWT, invalid credentials return error, unverified email allows login (per AC7 note), rate limiting kicks in after 5 failed attempts, successful login redirects to callbackUrl or /dashboard</idea>
+      <idea ac="AC6,AC8">Integration test for logout: POST to NextAuth signOut endpoint clears session cookie, invalidates JWT token, redirects to homepage, cart and filters preserved in localStorage after logout</idea>
+      <idea ac="AC4,AC8">Integration test for password reset: POST to /api/auth/reset-password with existing email sends reset email, non-existing email returns same success message (no user enumeration), GET to /api/auth/reset-password/[token] with valid token shows password form, expired token shows error, successful password change invalidates all existing sessions</idea>
+      <idea ac="AC7">Integration test for protected routes middleware: unauthenticated GET to /dashboard redirects to /auth/signin?callbackUrl=/dashboard, unauthenticated GET to /api/favorites returns 401, authenticated requests with valid JWT allow access, public routes (/, /products, /vehicles) accessible without auth</idea>
+      <idea ac="AC5,AC10">Component test for UserMenu: shows "Sign In" link when unauthenticated (status=unauthenticated), shows loading skeleton when session loading, shows user profile dropdown when authenticated with user name and logout button, clicking logout calls signOut() function</idea>
+      <idea ac="AC1,AC8">Component test for signup form: form validation displays errors for empty fields, password strength meter shows weak/medium/strong, client-side validation prevents submission with invalid data, successful submission calls API and redirects to verification page, duplicate email error displayed in Alert component, accessibility: all inputs have labels and aria-labels</idea>
+      <idea ac="AC3,AC8">Component test for signin form: form accepts email and password, "Remember me" checkbox toggles session duration, "Forgot password" link navigates to reset page, rate limit error displays after 5 failed attempts, successful login redirects to callbackUrl parameter or /dashboard, loading state disables form during submission</idea>
+      <idea ac="AC10">E2E test with Playwright: complete user journey from registration → email verification (mock) → login → dashboard access → logout → login again, test protected route redirect: attempt /dashboard when logged out → redirected to signin → after login redirected back to /dashboard, test password reset flow: request reset → verify email sent (mock) → submit new password → login with new password succeeds</idea>
+    </ideas>
+  </tests>
+</story-context>

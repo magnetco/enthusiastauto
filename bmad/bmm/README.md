@@ -26,18 +26,15 @@ Specialized AI agents for different development roles:
 The heart of BMM - structured workflows for the four development phases:
 
 1. **Analysis Phase** (Optional)
-
    - `brainstorm-project` - Project ideation
    - `research` - Market/technical research
    - `product-brief` - Product strategy
 
 2. **Planning Phase** (Required)
-
    - `plan-project` - Scale-adaptive project planning
    - Routes to appropriate documentation based on project complexity
 
 3. **Solutioning Phase** (Level 3-4 projects)
-
    - `3-solutioning` - Architecture design
    - `tech-spec` - Epic-specific technical specifications
 

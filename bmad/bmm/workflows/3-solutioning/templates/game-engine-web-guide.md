@@ -48,17 +48,17 @@ This guide provides web game engine-specific guidance (Phaser, PixiJS, Three.js,
 // MainMenuScene.ts
 export class MainMenuScene extends Phaser.Scene {
   constructor() {
-    super({ key: "MainMenu" });
+    super({ key: 'MainMenu' });
   }
 
   create() {
-    this.add.text(400, 300, "Main Menu", { fontSize: "32px" });
+    this.add.text(400, 300, 'Main Menu', { fontSize: '32px' });
 
     const startButton = this.add
-      .text(400, 400, "Start Game", { fontSize: "24px" })
+      .text(400, 400, 'Start Game', { fontSize: '24px' })
       .setInteractive()
-      .on("pointerdown", () => {
-        this.scene.start("GameScene");
+      .on('pointerdown', () => {
+        this.scene.start('GameScene');
       });
   }
 }
@@ -89,18 +89,18 @@ export class MainMenuScene extends Phaser.Scene {
 class PreloadScene extends Phaser.Scene {
   preload() {
     // Show progress bar
-    this.load.on("progress", (value: number) => {
-      console.log("Loading: " + Math.round(value * 100) + "%");
+    this.load.on('progress', (value: number) => {
+      console.log('Loading: ' + Math.round(value * 100) + '%');
     });
 
     // Load assets
-    this.load.atlas("sprites", "assets/sprites.png", "assets/sprites.json");
-    this.load.audio("music", ["assets/music.mp3", "assets/music.ogg"]);
-    this.load.audio("jump", ["assets/sfx/jump.mp3", "assets/sfx/jump.ogg"]);
+    this.load.atlas('sprites', 'assets/sprites.png', 'assets/sprites.json');
+    this.load.audio('music', ['assets/music.mp3', 'assets/music.ogg']);
+    this.load.audio('jump', ['assets/sfx/jump.mp3', 'assets/sfx/jump.ogg']);
   }
 
   create() {
-    this.scene.start("MainMenu");
+    this.scene.start('MainMenu');
   }
 }
 ```
@@ -137,12 +137,7 @@ class BulletPool {
     }
   }
 
-  spawn(
-    x: number,
-    y: number,
-    velocityX: number,
-    velocityY: number,
-  ): Bullet | null {
+  spawn(x: number, y: number, velocityX: number, velocityY: number): Bullet | null {
     const bullet = this.pool.find((b) => !b.active);
     if (bullet) {
       bullet.spawn(x, y, velocityX, velocityY);
@@ -172,15 +167,15 @@ class GameScene extends Phaser.Scene {
   create() {
     // Keyboard
     this.cursors = this.input.keyboard?.createCursorKeys();
-    this.wasd = this.input.keyboard?.addKeys("W,S,A,D") as any;
+    this.wasd = this.input.keyboard?.addKeys('W,S,A,D') as any;
 
     // Mouse/Touch
-    this.input.on("pointerdown", (pointer: Phaser.Input.Pointer) => {
+    this.input.on('pointerdown', (pointer: Phaser.Input.Pointer) => {
       this.handleClick(pointer.x, pointer.y);
     });
 
     // Gamepad (optional)
-    this.input.gamepad?.on("down", (pad, button, index) => {
+    this.input.gamepad?.on('down', (pad, button, index) => {
       this.handleGamepadButton(button);
     });
   }
@@ -211,7 +206,7 @@ interface GameSaveData {
 }
 
 class SaveManager {
-  private static SAVE_KEY = "game_save_data";
+  private static SAVE_KEY = 'game_save_data';
 
   static save(data: GameSaveData): void {
     localStorage.setItem(this.SAVE_KEY, JSON.stringify(data));
@@ -280,9 +275,9 @@ project/
 
 ```typescript
 // Player.test.ts
-import { Player } from "../entities/Player";
+import { Player } from '../entities/Player';
 
-describe("Player", () => {
+describe('Player', () => {
   let player: Player;
 
   beforeEach(() => {
@@ -295,13 +290,13 @@ describe("Player", () => {
     player = new Player(mockScene, 0, 0);
   });
 
-  test("takes damage correctly", () => {
+  test('takes damage correctly', () => {
     player.health = 100;
     player.takeDamage(20);
     expect(player.health).toBe(80);
   });
 
-  test("dies when health reaches zero", () => {
+  test('dies when health reaches zero', () => {
     player.health = 10;
     player.takeDamage(20);
     expect(player.alive).toBe(false);
@@ -349,11 +344,11 @@ export default defineConfig({
     rollupOptions: {
       output: {
         manualChunks: {
-          phaser: ["phaser"], // Separate Phaser bundle
+          phaser: ['phaser'], // Separate Phaser bundle
         },
       },
     },
-    minify: "terser",
+    minify: 'terser',
     terserOptions: {
       compress: {
         drop_console: true, // Remove console.log in prod
@@ -436,7 +431,7 @@ const config: Phaser.Types.Core.GameConfig = {
   width: 800,
   height: 600,
   physics: {
-    default: "arcade",
+    default: 'arcade',
     arcade: { gravity: { y: 300 }, debug: false },
   },
   scene: [PreloadScene, MainMenuScene, GameScene, GameOverScene],
@@ -456,7 +451,7 @@ const app = new PIXI.Application({
 
 document.body.appendChild(app.view);
 
-const sprite = PIXI.Sprite.from("assets/player.png");
+const sprite = PIXI.Sprite.from('assets/player.png');
 app.stage.addChild(sprite);
 
 app.ticker.add((delta) => {
@@ -468,12 +463,7 @@ app.ticker.add((delta) => {
 
 ```typescript
 const scene = new THREE.Scene();
-const camera = new THREE.PerspectiveCamera(
-  75,
-  window.innerWidth / window.innerHeight,
-  0.1,
-  1000,
-);
+const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
 const renderer = new THREE.WebGLRenderer();
 
 renderer.setSize(window.innerWidth, window.innerHeight);

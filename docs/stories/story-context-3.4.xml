@@ -1,0 +1,421 @@
+<story-context id="bmad/bmm/workflows/4-implementation/story-context/template" v="1.0">
+  <metadata>
+    <epicId>3</epicId>
+    <storyId>3.4</storyId>
+    <title>Vehicle Detail Page with Photo Gallery</title>
+    <status>Ready</status>
+    <generatedAt>2025-10-22</generatedAt>
+    <generator>BMAD Story Context Workflow</generator>
+    <sourceStoryPath>docs/stories/story-3.4.md</sourceStoryPath>
+  </metadata>
+
+  <story>
+    <asA>potential buyer</asA>
+    <iWant>view comprehensive vehicle information with high-quality photo galleries</iWant>
+    <soThat>I can evaluate the vehicle thoroughly before contacting the seller</soThat>
+    <tasks>9 tasks, 55 subtasks total:
+- Task 1: Create Dynamic Route and Data Fetching (7 subtasks) - AC1
+- Task 2: Implement Photo Gallery Component (9 subtasks) - AC2
+- Task 3: Build Vehicle Information Display (9 subtasks) - AC3
+- Task 4: Create Breadcrumb Navigation (6 subtasks) - AC4
+- Task 5: Implement Contact/Inquiry CTA (8 subtasks) - AC5
+- Task 6: Handle Sold Vehicle Status (6 subtasks) - AC6
+- Task 7: Implement SEO and Metadata (10 subtasks) - AC7
+- Task 8: Build Responsive Layout (7 subtasks) - AC8-9
+- Task 9: Performance Optimization and Testing (10 subtasks) - AC9</tasks>
+  </story>
+
+  <acceptanceCriteria>
+    <criterion id="AC1">Dynamic Route and Data Fetching - Vehicle detail page accessible at /vehicles/[slug] route with ISR (60s revalidation), generateStaticParams pre-rendering top 50 vehicles, comprehensive GROQ query fetching all vehicle data including images/specs/features/description/service history, notFound() handling for non-existent slugs, Server Component architecture</criterion>
+    <criterion id="AC2">Full-Screen Photo Gallery - Interactive gallery displaying 10-30 vehicle images with main image (aspect-video ratio, Next.js Image optimization), Previous/Next navigation arrows with keyboard support (arrow keys), thumbnail grid (6 columns) with active state highlighting, fullscreen mode with ShadCN Dialog, image counter (X / Y format), lazy loading with LQIP placeholders from Sanity</criterion>
+    <criterion id="AC3">Comprehensive Vehicle Information Display - Header with vehicle title, prominently displayed price (formatted with toLocaleString()), key details (mileage formatted, year, VIN if available), specifications section (engine, transmission, drivetrain, colors, doors, seats), features list as badges/bullets with ShadCN Badge, rich text description from Sanity portable text (H2, H3, strong, emphasis), service history table/accordion (date, type, mileage, description, cost)</criterion>
+    <criterion id="AC4">Breadcrumb Navigation - Breadcrumb component at top showing Home > Vehicles > [Vehicle Title] structure, clickable links for Home and Vehicles, current page (vehicle title) as plain text, schema.org BreadcrumbList JSON-LD structured data for SEO</criterion>
+    <criterion id="AC5">Contact/Inquiry CTA - "Contact Us" or "Inquire About This Vehicle" button prominently placed in sidebar, disabled if vehicle status is "sold", opens contact form modal or links to contact page with pre-filled subject ("Inquiry: [Vehicle Title]"), shows "This vehicle has been sold." message for sold vehicles</criterion>
+    <criterion id="AC6">Sold Vehicle Handling - "SOLD" badge (ShadCN Badge variant="destructive", text-lg px-4 py-2) displayed prominently near title when vehicle.inventoryStatus === "Sold", photo gallery remains functional, contact button hidden/disabled, schema.org offer availability set to "SoldOut"</criterion>
+    <criterion id="AC7">SEO and Metadata Optimization - Dynamic metadata via generateMetadata (title: seo.metaTitle || auto-generated, description: seo.metaDescription || auto-generated from year/make/model/mileage/price, max 160 chars), schema.org Vehicle structured data with JSON-LD (name, year, brand, model, VIN, mileage, transmission, drivetrain, color, price/offers, availability, images array), Open Graph tags for social sharing, Twitter Card meta tags (summary_large_image), canonical URL properly set</criterion>
+    <criterion id="AC8">Responsive Layout and Navigation - Two-column layout on desktop (2/3 content + 1/3 sidebar, Tailwind lg:grid-cols-3), single-column stacked on mobile, sticky sidebar (sticky top-8) with pricing and CTA, "Back to Inventory" link in sidebar, responsive image gallery with touch-friendly controls (44x44px minimum per WCAG AA)</criterion>
+    <criterion id="AC9">Performance and Loading States - Page loads <2s on standard broadband, Next.js Image with priority for hero image, lazy loading for thumbnail grid and below-fold images, Suspense boundaries for async content, no layout shift during image loading (proper aspect ratios and placeholders), ISR cache serves static pages with 60-second background revalidation</criterion>
+  </acceptanceCriteria>
+
+  <artifacts>
+    <docs>
+      <doc>
+        <path>docs/PRD.md</path>
+        <title>Product Requirements Document</title>
+        <section>FR015 - Vehicle Detail Pages</section>
+        <snippet>FR015: Users shall be able to view detailed vehicle pages with comprehensive information including photo galleries, specifications, history, service records, and current availability</snippet>
+      </doc>
+      <doc>
+        <path>docs/PRD.md</path>
+        <title>Product Requirements Document</title>
+        <section>NFR006 - Real-time Inventory</section>
+        <snippet>NFR006: Vehicle inventory status (current/sold) shall update within 60 seconds of changes in the CMS</snippet>
+      </doc>
+      <doc>
+        <path>docs/epic-stories.md</path>
+        <title>Epic Stories Breakdown</title>
+        <section>Story 3.4 - Vehicle Detail Page</section>
+        <snippet>Epic 3 (Vehicle Inventory Integration), Story 3.4: Individual vehicle detail pages with photo galleries (10-30 images), comprehensive specs, service history, SEO optimization. Effort: 8 points. Prerequisites: Story 3.3 complete.</snippet>
+      </doc>
+      <doc>
+        <path>docs/tech-specs/epic-3-vehicle-inventory-tech-spec.md</path>
+        <title>Epic 3 Technical Specification</title>
+        <section>Story 3.4 Implementation Guide (lines 1003-1393)</section>
+        <snippet>Complete implementation code for vehicle detail page with ISR (60s revalidation), generateStaticParams for top 50 vehicles, VehicleGallery Client Component with fullscreen Dialog, schema.org Vehicle structured data, breadcrumb navigation, responsive 2/3-1/3 grid layout, sticky sidebar with pricing/CTA</snippet>
+      </doc>
+      <doc>
+        <path>docs/solution-architecture.md</path>
+        <title>Solution Architecture</title>
+        <section>§2.2 ISR Strategy for Vehicle Pages (lines 129-209)</section>
+        <snippet>Vehicle Detail pages use ISR with 60-second revalidation + webhook-driven on-demand revalidation. generateStaticParams pre-renders top 50 current vehicles at build time. Performance: instant page loads (&lt;100ms TTFB), fresh content, reduced API calls, edge caching scalability.</snippet>
+      </doc>
+      <doc>
+        <path>docs/solution-architecture.md</path>
+        <title>Solution Architecture</title>
+        <section>§3.4 Sanity CDN Image Strategy</section>
+        <snippet>Sanity CDN provides optimized images with LQIP metadata for blur placeholders. Next.js Image component handles responsive sizing with priority loading for hero images and lazy loading for thumbnails/below-fold content.</snippet>
+      </doc>
+      <doc>
+        <path>docs/solution-architecture.md</path>
+        <title>Solution Architecture</title>
+        <section>§7 SEO Architecture</section>
+        <snippet>Schema.org Vehicle structured data for rich snippets. Dynamic generateMetadata respects custom seo.metaTitle/metaDescription from Sanity. Open Graph and Twitter Cards for social sharing. Breadcrumb structured data for improved search results.</snippet>
+      </doc>
+      <doc>
+        <path>docs/stories/story-3.3.md</path>
+        <title>Story 3.3 - Vehicle Listing Page</title>
+        <section>Completed Implementation Reference</section>
+        <snippet>Vehicle listing page at /vehicles route provides navigation to detail pages. Established patterns: Sanity GROQ queries, responsive grid layout, ShadCN Card/Badge components, Next.js Image with Sanity urlFor, format utilities (formatCurrency, formatMileage)</snippet>
+      </doc>
+      <doc>
+        <path>docs/stories/story-3.2.md</path>
+        <title>Story 3.2 - Vehicle Schema</title>
+        <section>Vehicle Data Model Reference</section>
+        <snippet>Vehicle schema at sanity/schemas/vehicle.ts defines all fields: title, slug, year, make, model, trim, vin, price, mileage, status (current/sold), images (signatureShot/soldShot/galleries), specifications, features, description (portable text), serviceHistory, seo fields</snippet>
+      </doc>
+      <doc>
+        <path>docs/stories/story-3.1.md</path>
+        <title>Story 3.1 - Sanity CMS Setup</title>
+        <section>Sanity Client Configuration Reference</section>
+        <snippet>Sanity v4 integrated with Next.js 15. Dual client pattern: read-only client with useCdn:false (ISR handles caching), authenticated client for webhooks. Configuration: lib/sanity/client.ts, lib/sanity/config.ts, environment variables in .env.local</snippet>
+      </doc>
+      <doc>
+        <path>docs/stories/story-1.5.md</path>
+        <title>Story 1.5 - Product Detail Page</title>
+        <section>Detail Page Patterns Reference</section>
+        <snippet>Similar dynamic route structure at app/product/[handle]/page.tsx. Established patterns: breadcrumb navigation, responsive 2-column layout, sticky sidebar with pricing/CTA, Next.js Image optimization, SEO metadata generation</snippet>
+      </doc>
+    </docs>
+    <code>
+      <artifact>
+        <path>app/vehicles/[slug]/page.tsx</path>
+        <kind>route</kind>
+        <symbol>VehicleDetailPage (Server Component)</symbol>
+        <lines>1-91</lines>
+        <reason>EXISTING placeholder detail page route with ISR (60s revalidation), basic GROQ query, notFound() handling. NEEDS COMPLETE REPLACEMENT with full implementation per AC1-AC9.</reason>
+      </artifact>
+      <artifact>
+        <path>sanity/lib/client.ts</path>
+        <kind>service</kind>
+        <symbol>client, authenticatedClient</symbol>
+        <lines>10-29</lines>
+        <reason>Read-only Sanity client for data fetching. Use client.fetch() for vehicleDetailQuery. Configuration: useCdn:false (ISR handles caching), perspective:'published'</reason>
+      </artifact>
+      <artifact>
+        <path>lib/sanity/queries/vehicles.ts</path>
+        <kind>service</kind>
+        <symbol>getVehicles(), VehicleListItem interface</symbol>
+        <lines>1-150</lines>
+        <reason>Existing GROQ query patterns for vehicle listing. Reference for query structure. MUST ADD vehicleDetailQuery for full vehicle data including images array, specifications, features, description (portable text), serviceHistory</reason>
+      </artifact>
+      <artifact>
+        <path>lib/utils/format.ts</path>
+        <kind>utility</kind>
+        <symbol>formatCurrency(), formatMileage()</symbol>
+        <lines>1-31</lines>
+        <reason>Reuse formatCurrency() for price display (handles showCallForPrice logic). Use formatMileage() for odometer reading display</reason>
+      </artifact>
+      <artifact>
+        <path>components/vehicles/VehicleCard.tsx</path>
+        <kind>component</kind>
+        <symbol>VehicleCard</symbol>
+        <lines>-</lines>
+        <reason>Reference for vehicle display patterns, status badge rendering, image handling with Sanity urlFor. Similar patterns needed for detail page hero image</reason>
+      </artifact>
+      <artifact>
+        <path>components/ui/dialog.tsx</path>
+        <kind>component</kind>
+        <symbol>Dialog, DialogContent, DialogTrigger</symbol>
+        <lines>-</lines>
+        <reason>ShadCN Dialog for fullscreen gallery mode. Use DialogContent with max-w-screen-xl for large image display. DialogTrigger on Expand button</reason>
+      </artifact>
+      <artifact>
+        <path>components/ui/badge.tsx</path>
+        <kind>component</kind>
+        <symbol>Badge</symbol>
+        <lines>-</lines>
+        <reason>ShadCN Badge for SOLD status (variant="destructive"), features display. Use text-lg px-4 py-2 for SOLD badge prominence per AC6</reason>
+      </artifact>
+      <artifact>
+        <path>components/ui/button.tsx</path>
+        <kind>component</kind>
+        <symbol>Button</symbol>
+        <lines>-</lines>
+        <reason>ShadCN Button for navigation arrows in gallery (size="icon", variant="ghost"), Contact CTA (primary variant), Back to Inventory link</reason>
+      </artifact>
+      <artifact>
+        <path>components/ui/card.tsx</path>
+        <kind>component</kind>
+        <symbol>Card</symbol>
+        <lines>-</lines>
+        <reason>ShadCN Card for sidebar pricing section. Wraps price, key details (mileage/year/VIN), Contact CTA</reason>
+      </artifact>
+      <artifact>
+        <path>NEW: components/vehicles/VehicleGallery.tsx</path>
+        <kind>component</kind>
+        <symbol>VehicleGallery (Client Component)</symbol>
+        <lines>-</lines>
+        <reason>NEW Client Component ('use client') for photo gallery. Implements AC2: main image display (aspect-video), Previous/Next arrows with ChevronLeft/ChevronRight icons, thumbnail grid (6 columns), fullscreen Dialog, image counter (X/Y format), keyboard navigation (ArrowLeft/ArrowRight/Escape), LQIP blur placeholders from Sanity metadata. See tech-spec lines 1249-1379 for complete implementation</reason>
+      </artifact>
+      <artifact>
+        <path>NEW: components/vehicles/VehicleSpecs.tsx</path>
+        <kind>component</kind>
+        <symbol>VehicleSpecs</symbol>
+        <lines>-</lines>
+        <reason>NEW Server Component for AC3 specifications display. Grid layout showing: engine, transmission, drivetrain, exteriorColor, interiorColor, doors, seats. Display features array as ShadCN Badges or bullet list</reason>
+      </artifact>
+      <artifact>
+        <path>NEW: components/vehicles/VehicleDescription.tsx</path>
+        <kind>component</kind>
+        <symbol>VehicleDescription</symbol>
+        <lines>-</lines>
+        <reason>NEW Server Component for AC3 portable text rendering. Use @portabletext/react with custom serializers for H2, H3, strong, emphasis marks. Render vehicle.description (Sanity portable text field)</reason>
+      </artifact>
+      <artifact>
+        <path>NEW: components/vehicles/ServiceHistory.tsx</path>
+        <kind>component</kind>
+        <symbol>ServiceHistory</symbol>
+        <lines>-</lines>
+        <reason>NEW Server Component for AC3 service records. Display vehicle.serviceHistory array as table or ShadCN Accordion. Columns/fields: date, type, mileage, description, cost (optional). Sort by date descending</reason>
+      </artifact>
+      <artifact>
+        <path>NEW: components/shared/Breadcrumb.tsx</path>
+        <kind>component</kind>
+        <symbol>Breadcrumb</symbol>
+        <lines>-</lines>
+        <reason>NEW Server Component for AC4 breadcrumb navigation. Structure: Home > Vehicles > [Vehicle Title]. Uses Next.js Link for clickable items. Includes schema.org BreadcrumbList JSON-LD structured data for SEO</reason>
+      </artifact>
+      <artifact>
+        <path>NEW: components/shared/ContactInquiry.tsx</path>
+        <kind>component</kind>
+        <symbol>ContactInquiry</symbol>
+        <lines>-</lines>
+        <reason>NEW Client or Server Component for AC5 contact CTA. Button label: "Inquire About This Vehicle" or "Contact Us". Opens contact form modal OR links to /contact with pre-filled subject (format: "Inquiry: {vehicle title}"). Disabled when vehicle.inventoryStatus === "Sold". Shows "This vehicle has been sold." message for sold vehicles</reason>
+      </artifact>
+      <artifact>
+        <path>sanity/schemas/vehicle.ts</path>
+        <kind>schema</kind>
+        <symbol>vehicle schema</symbol>
+        <lines>-</lines>
+        <reason>Reference for vehicle data model fields. Key fields for detail page: listingTitle, slug, chassis, mileage, listingPrice, showCallForPrice, inventoryStatus (Current Inventory/Sold), vin, signatureShot/soldShot (hero images), galleryExterior1/2/3/galleryInterior1/2 (image arrays), specifications object, listingThumbnailFeatures array, highlights/overview (portable text), history (plain text), seo object (metaTitle, metaDescription), _createdAt, updatedAt</reason>
+      </artifact>
+    </code>
+    <dependencies>
+      <ecosystem name="Node.js">
+        <package name="next" version="15.3.0-canary.13">App Router, generateStaticParams, generateMetadata, notFound(), revalidatePath, Image component with priority/lazy loading</package>
+        <package name="react" version="19.0.0">Client Components, Server Components, useState for gallery state</package>
+        <package name="typescript" version="5.8.2">Type-safe component props and Sanity query responses</package>
+        <package name="sanity" version="4">Sanity v4 client, GROQ queries, portable text</package>
+        <package name="@sanity/client" version="~7.12.0">createClient for read-only Sanity client</package>
+        <package name="next-sanity" version="~11">Sanity Next.js integration utilities</package>
+        <package name="@portabletext/react" version="latest">REQUIRED NEW: Portable text renderer for vehicle.highlights/overview fields</package>
+        <package name="@sanity/image-url" version="~1.0.0">urlFor() image URL builder for Sanity CDN</package>
+        <package name="lucide-react" version="latest">ChevronLeft, ChevronRight, Expand icons for gallery navigation</package>
+        <package name="tailwindcss" version="4.0">Responsive grid layout, aspect-video, sticky positioning</package>
+        <package name="@radix-ui/react-dialog" version="~1.1.0">ShadCN Dialog primitive for fullscreen gallery</package>
+        <package name="@radix-ui/react-slot" version="~1.1.0">ShadCN Button primitive</package>
+      </ecosystem>
+    </dependencies>
+  </artifacts>
+
+  <constraints>
+    <constraint>Next.js 15 App Router with Server Components default. VehicleGallery MUST be Client Component ('use client') for interactivity. All other components can be Server Components unless they need state/events</constraint>
+    <constraint>ISR configuration REQUIRED: export const revalidate = 60 in page.tsx per NFR006 (60-second freshness requirement)</constraint>
+    <constraint>generateStaticParams REQUIRED: Pre-render top 50 current vehicles at build time with GROQ query *[_type == "vehicle" AND inventoryStatus == "Current Inventory"][0...50]. Vehicles not in top 50 generated on-demand</constraint>
+    <constraint>vehicleDetailQuery MUST fetch ALL vehicle data: _id, listingTitle, slug, chassis, mileage, listingPrice, showCallForPrice, inventoryStatus, vin (optional), images[] with asset->{url, metadata{lqip, dimensions}}, specifications object, listingThumbnailFeatures array, highlights/overview (portable text), history (plain text), seo{metaTitle, metaDescription}, _createdAt, updatedAt. CRITICAL: Fetch ALL gallery images (signatureShot, soldShot, galleryExterior1/2/3, galleryInterior1/2) and combine into single images[] array for gallery component</constraint>
+    <constraint>Image strategy: Use signatureShot as hero image for Current Inventory vehicles. Use soldShot as hero for Sold vehicles. Combine all gallery arrays (exterior1/2/3, interior1/2) into flattened images array for VehicleGallery component. Remove nulls/undefined. Support 10-30 images per AC2</constraint>
+    <constraint>Portable text rendering: Install @portabletext/react. Use PortableText component with custom serializers for H2, H3, normal, strong, emphasis marks. Render vehicle.highlights and vehicle.overview fields (both are portable text per schema)</constraint>
+    <constraint>Service history: Render vehicle.serviceHistory array if exists and length > 0. Each record has: date (ISO string), type (string), mileage (number), description (string), cost (number, optional). Sort by date descending with | order(date desc) in GROQ query</constraint>
+    <constraint>Schema.org structured data REQUIRED for AC7: @type: 'Vehicle', name (listingTitle), vehicleModelDate (extract year from chassis or listingTitle), brand {name: "BMW"}, model (chassis), mileageFromOdometer {value, unitCode: 'SMI'}, vehicleIdentificationNumber (vin if available), vehicleTransmission (specifications.transmission), driveWheelConfiguration (specifications.drivetrain), color (specifications.exteriorColor), offers {price, priceCurrency: 'USD', availability: sold ? 'SoldOut' : 'InStock'}, image (array of all image URLs)</constraint>
+    <constraint>generateMetadata REQUIRED for AC7: title = seo?.metaTitle || "${listingTitle} - Enthusiast Auto", description = seo?.metaDescription || auto-generate from chassis/mileage/price, openGraph {title, description, images: [hero image URL], type: 'website'}, twitter {card: 'summary_large_image', title, description, images}</constraint>
+    <constraint>Breadcrumb schema.org: Include script tag with @type: 'BreadcrumbList', itemListElement array with position 1/2/3 for Home/Vehicles/Vehicle. Each item has @type: 'ListItem', position, name, item (URL). Last item (vehicle) should not have item URL</constraint>
+    <constraint>Responsive layout: Two-column grid on desktop (lg:grid-cols-3) with main content lg:col-span-2 and sidebar lg:col-span-1. Single-column stacking on mobile. Sidebar uses sticky top-8 positioning on desktop for persistent CTA visibility</constraint>
+    <constraint>Gallery keyboard navigation: Add useEffect with keydown event listener. ArrowLeft calls prevImage(), ArrowRight calls nextImage(), Escape closes fullscreen Dialog. Clean up listener on unmount</constraint>
+    <constraint>Gallery image optimization: Hero image (first in array) uses priority={true} for LCP optimization per AC9. Thumbnail grid and images below fold use loading="lazy". LQIP blur placeholder from Sanity metadata.lqip via placeholder="blur" blurDataURL prop</constraint>
+    <constraint>SOLD vehicle handling: Check inventoryStatus === "Sold". Show Badge variant="destructive" with "SOLD" text (text-lg px-4 py-2 for prominence). Hide/disable ContactInquiry button. Show "This vehicle has been sold." message. Update schema.org availability to "https://schema.org/SoldOut"</constraint>
+    <constraint>Format utilities: Use formatCurrency(price, showCallForPrice) from lib/utils/format.ts for all price display. Use formatMileage(mileage) for odometer display</constraint>
+    <constraint>Next.js Image component: MUST add Sanity CDN domain to next.config.ts remotePatterns if not already present. Use sizes attribute for responsive images: "(max-width: 1024px) 100vw, 66vw" for main image, "(max-width: 768px) 16vw, 10vw" for thumbnails per solution-architecture.md image optimization strategy</constraint>
+    <constraint>Touch targets: All interactive elements (buttons, thumbnails) MUST be minimum 44x44px per WCAG AA compliance and AC8</constraint>
+    <constraint>404 handling: If vehicle not found (query returns null), call notFound() from next/navigation. Next.js will render 404 page</constraint>
+    <constraint>TypeScript strict mode: All component props MUST have interfaces. Sanity query responses MUST be typed. Use client.fetch&lt;VehicleDetail&gt;(query, params) with proper interface</constraint>
+    <constraint>Accessibility: All images MUST have alt text. Use img.alt from Sanity if available, fallback to "${listingTitle} - Image ${index + 1}". Gallery buttons MUST have aria-label for screen readers</constraint>
+    <constraint>NO client-side data fetching: Vehicle data fetched server-side in page.tsx. VehicleGallery receives images as props. All API calls happen in Server Components with ISR caching</constraint>
+    <constraint>Performance targets per AC9: Page loads <2s, Lighthouse Performance 85+, SEO 95+. Use Next.js Image with proper sizing, lazy loading, ISR caching. Minimize JavaScript with Server Components where possible</constraint>
+    <constraint>Code organization: Follow established project structure. New vehicle components in components/vehicles/. Shared components (Breadcrumb, ContactInquiry) in components/shared/. GROQ queries in lib/sanity/queries/vehicles.ts. ShadCN components already exist in components/ui/</constraint>
+    <constraint>Build validation REQUIRED: pnpm build MUST pass with zero TypeScript errors. Route should show "Static (ISR: 60s)" in build output confirming ISR configuration</constraint>
+  </constraints>
+  <interfaces>
+    <interface>
+      <name>VehicleDetail (TypeScript interface)</name>
+      <kind>Data model</kind>
+      <signature>interface VehicleDetail { _id: string; listingTitle: string; slug: { current: string }; chassis: string; mileage: number; listingPrice?: number; showCallForPrice: boolean; inventoryStatus: "Current Inventory" | "Sold"; vin?: string; images: SanityImage[]; specifications?: VehicleSpecifications; features?: string[]; highlights?: PortableTextBlock[]; overview?: PortableTextBlock[]; history?: string; serviceHistory?: ServiceRecord[]; seo?: { metaTitle?: string; metaDescription?: string }; _createdAt: string; updatedAt?: string; }</signature>
+      <path>NEW: Define in page.tsx or lib/sanity/types/vehicle.ts</path>
+    </interface>
+    <interface>
+      <name>vehicleDetailQuery (GROQ query constant)</name>
+      <kind>Sanity GROQ query</kind>
+      <signature>const vehicleDetailQuery = `*[_type == "vehicle" AND slug.current == $slug][0] { _id, listingTitle, slug, chassis, mileage, listingPrice, showCallForPrice, inventoryStatus, vin, "images": [signatureShot, soldShot, galleryExterior1[], galleryExterior2[], galleryExterior3[], galleryInterior1[], galleryInterior2[]][]{asset->{url, metadata{lqip, dimensions}}, alt, caption}, specifications, listingThumbnailFeatures, highlights, overview, history, serviceHistory[] | order(date desc), seo, _createdAt, updatedAt }`</signature>
+      <path>NEW: Add to lib/sanity/queries/vehicles.ts</path>
+    </interface>
+    <interface>
+      <name>VehicleGallery component props</name>
+      <kind>React component interface</kind>
+      <signature>interface VehicleGalleryProps { images: SanityImage[]; title: string; }</signature>
+      <path>NEW: components/vehicles/VehicleGallery.tsx</path>
+    </interface>
+    <interface>
+      <name>VehicleSpecs component props</name>
+      <kind>React component interface</kind>
+      <signature>interface VehicleSpecsProps { specifications?: VehicleSpecifications; features?: string[]; }</signature>
+      <path>NEW: components/vehicles/VehicleSpecs.tsx</path>
+    </interface>
+    <interface>
+      <name>VehicleDescription component props</name>
+      <kind>React component interface</kind>
+      <signature>interface VehicleDescriptionProps { highlights?: PortableTextBlock[]; overview?: PortableTextBlock[]; }</signature>
+      <path>NEW: components/vehicles/VehicleDescription.tsx</path>
+    </interface>
+    <interface>
+      <name>ServiceHistory component props</name>
+      <kind>React component interface</kind>
+      <signature>interface ServiceHistoryProps { records: ServiceRecord[]; }; interface ServiceRecord { date: string; type: string; mileage: number; description: string; cost?: number; }</signature>
+      <path>NEW: components/vehicles/ServiceHistory.tsx</path>
+    </interface>
+    <interface>
+      <name>Breadcrumb component props</name>
+      <kind>React component interface</kind>
+      <signature>interface BreadcrumbProps { items: BreadcrumbItem[]; }; interface BreadcrumbItem { label: string; href?: string; }</signature>
+      <path>NEW: components/shared/Breadcrumb.tsx</path>
+    </interface>
+    <interface>
+      <name>ContactInquiry component props</name>
+      <kind>React component interface</kind>
+      <signature>interface ContactInquiryProps { subject: string; vehicleId: string; disabled?: boolean; soldMessage?: string; }</signature>
+      <path>NEW: components/shared/ContactInquiry.tsx</path>
+    </interface>
+    <interface>
+      <name>generateMetadata function</name>
+      <kind>Next.js metadata API</kind>
+      <signature>export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata></signature>
+      <path>app/vehicles/[slug]/page.tsx</path>
+    </interface>
+    <interface>
+      <name>generateStaticParams function</name>
+      <kind>Next.js static generation API</kind>
+      <signature>export async function generateStaticParams(): Promise<{ slug: string }[]></signature>
+      <path>app/vehicles/[slug]/page.tsx</path>
+    </interface>
+    <interface>
+      <name>Next.js Image component</name>
+      <kind>Next.js Image API</kind>
+      <signature>&lt;Image src={string} alt={string} fill={boolean} className={string} priority={boolean} loading="lazy"|"eager" sizes={string} placeholder="blur" blurDataURL={string} /&gt;</signature>
+      <path>next/image</path>
+    </interface>
+    <interface>
+      <name>ShadCN Dialog component</name>
+      <kind>UI component API</kind>
+      <signature>&lt;Dialog open={boolean} onOpenChange={(open) => void}&gt;&lt;DialogContent className="max-w-screen-xl"&gt;...&lt;/DialogContent&gt;&lt;/Dialog&gt;</signature>
+      <path>components/ui/dialog.tsx</path>
+    </interface>
+    <interface>
+      <name>ShadCN Badge component</name>
+      <kind>UI component API</kind>
+      <signature>&lt;Badge variant="default"|"destructive"|"outline"|"secondary"&gt;text&lt;/Badge&gt;</signature>
+      <path>components/ui/badge.tsx</path>
+    </interface>
+    <interface>
+      <name>PortableText component</name>
+      <kind>Sanity portable text renderer</kind>
+      <signature>&lt;PortableText value={PortableTextBlock[]} components={{types: {...}, marks: {...}, block: {...}}}&gt;</signature>
+      <path>@portabletext/react</path>
+    </interface>
+  </interfaces>
+  <tests>
+    <standards>Next.js 15 App Router testing with @testing-library/react and vitest. Server Components tested with async rendering. Client Components tested with user interactions (fireEvent, userEvent). E2E testing with Playwright for gallery interactions and responsive layout. Lighthouse audits for performance validation (targets: Performance 85+, SEO 95+, Accessibility 95+). Manual testing across devices (mobile 320px, tablet 768px, desktop 1280px+). SEO validation with Google Rich Results Test and Facebook Sharing Debugger.</standards>
+    <locations>__tests__/app/vehicles/[slug]/page.test.tsx, __tests__/components/vehicles/VehicleGallery.test.tsx, __tests__/components/vehicles/VehicleSpecs.test.tsx, __tests__/components/vehicles/VehicleDescription.test.tsx, __tests__/components/vehicles/ServiceHistory.test.tsx, __tests__/components/shared/Breadcrumb.test.tsx, __tests__/components/shared/ContactInquiry.test.tsx</locations>
+    <ideas>
+      <test ac="AC1" task="1">Vehicle detail page accessible at /vehicles/[slug] - navigate to /vehicles/test-vehicle-slug and verify 200 status</test>
+      <test ac="AC1" task="1">ISR configuration - verify export const revalidate = 60 in page.tsx source code</test>
+      <test ac="AC1" task="1">generateStaticParams pre-renders top 50 - verify GROQ query *[_type == "vehicle" AND inventoryStatus == "Current Inventory"][0...50], check build output shows 50+ static pages</test>
+      <test ac="AC1" task="1">vehicleDetailQuery fetches all data - verify query includes images, specifications, features, description, serviceHistory, seo fields</test>
+      <test ac="AC1" task="1">404 handling - navigate to /vehicles/non-existent-slug and verify notFound() renders 404 page</test>
+      <test ac="AC1" task="1">Server Component architecture - verify page.tsx has no 'use client' directive</test>
+      <test ac="AC2" task="2">Photo gallery displays 10-30 images - load vehicle with multiple gallery images, verify all exterior/interior galleries combined and rendered</test>
+      <test ac="AC2" task="2">Main image aspect-video ratio - verify Next.js Image with aspect-video class renders correctly without distortion</test>
+      <test ac="AC2" task="2">Navigation arrows functional - click Previous/Next buttons, verify currentIndex state updates and image changes</test>
+      <test ac="AC2" task="2">Thumbnail grid 6 columns - verify grid-cols-6 class applied, thumbnails display in 6-column layout on desktop</test>
+      <test ac="AC2" task="2">Active thumbnail highlighting - click thumbnail, verify border-primary class applied to active thumbnail</test>
+      <test ac="AC2" task="2">Fullscreen mode - click Expand button, verify Dialog opens with fullscreen image</test>
+      <test ac="AC2" task="2">Image counter display - verify "{currentIndex + 1} / {images.length}" text displays correctly</test>
+      <test ac="AC2" task="2">Keyboard navigation - press ArrowLeft/ArrowRight, verify image changes; press Escape in fullscreen, verify Dialog closes</test>
+      <test ac="AC2" task="2">LQIP blur placeholders - verify Next.js Image placeholder="blur" with blurDataURL from Sanity metadata.lqip</test>
+      <test ac="AC2" task="2">Lazy loading - verify thumbnail images have loading="lazy" attribute</test>
+      <test ac="AC3" task="3">Vehicle title displays - verify h1 with vehicle.listingTitle renders on page</test>
+      <test ac="AC3" task="3">Price formatted correctly - verify formatCurrency() shows $XX,XXX format or "Call for Price" when showCallForPrice is true</test>
+      <test ac="AC3" task="3">Mileage formatted - verify formatMileage() shows "XXX,XXX miles" format</test>
+      <test ac="AC3" task="3">VIN displays if available - verify VIN shows in sidebar when vehicle.vin exists</test>
+      <test ac="AC3" task="3">Specifications display - verify VehicleSpecs shows engine, transmission, drivetrain, colors, doors, seats from specifications object</test>
+      <test ac="AC3" task="3">Features display - verify listingThumbnailFeatures array rendered as ShadCN Badges or bullet list</test>
+      <test ac="AC3" task="3">Description renders portable text - verify PortableText component renders vehicle.highlights and vehicle.overview with H2, H3, strong, emphasis formatting</test>
+      <test ac="AC3" task="3">Service history table - verify ServiceHistory component renders vehicle.serviceHistory array with date, type, mileage, description, cost columns; sorted by date descending</test>
+      <test ac="AC4" task="4">Breadcrumb structure - verify "Home > Vehicles > [Vehicle Title]" displays at top of page</test>
+      <test ac="AC4" task="4">Breadcrumb links clickable - click "Home" link, verify navigates to /; click "Vehicles" link, verify navigates to /vehicles</test>
+      <test ac="AC4" task="4">Current page not linked - verify vehicle title in breadcrumb is plain text (no link)</test>
+      <test ac="AC4" task="4">Breadcrumb schema.org JSON-LD - verify script tag with @type: 'BreadcrumbList', itemListElement with 3 items (positions 1/2/3)</test>
+      <test ac="AC5" task="5">Contact CTA displays - verify "Inquire About This Vehicle" or "Contact Us" button in sidebar for current inventory vehicles</test>
+      <test ac="AC5" task="5">Contact button disabled for sold - verify button hidden/disabled when inventoryStatus === "Sold"</test>
+      <test ac="AC5" task="5">Pre-filled subject - verify contact form/link includes subject "Inquiry: {vehicle.listingTitle}"</test>
+      <test ac="AC5" task="5">Sold message displays - verify "This vehicle has been sold." text shows for sold vehicles instead of contact button</test>
+      <test ac="AC6" task="6">SOLD badge displays - verify Badge variant="destructive" with "SOLD" text shows near title for sold vehicles</test>
+      <test ac="AC6" task="6">SOLD badge styling - verify text-lg px-4 py-2 classes applied for prominence</test>
+      <test ac="AC6" task="6">Photo gallery remains functional - verify gallery arrows/thumbnails still work for sold vehicles</test>
+      <test ac="AC6" task="6">Contact button hidden for sold - verify ContactInquiry button not rendered when inventoryStatus === "Sold"</test>
+      <test ac="AC6" task="6">Schema.org availability SoldOut - verify schema.org offers.availability is "https://schema.org/SoldOut" for sold vehicles</test>
+      <test ac="AC7" task="7">generateMetadata function - verify async function exports from page.tsx</test>
+      <test ac="AC7" task="7">Meta title custom or default - verify title uses seo.metaTitle if exists, else "{listingTitle} - Enthusiast Auto"</test>
+      <test ac="AC7" task="7">Meta description custom or auto - verify description uses seo.metaDescription if exists, else auto-generated from chassis/mileage/price</test>
+      <test ac="AC7" task="7">Schema.org Vehicle JSON-LD - verify script tag with @type: 'Vehicle', all required properties (name, year, brand, model, VIN, mileage, transmission, color, offers, images)</test>
+      <test ac="AC7" task="7">Open Graph tags - verify og:title, og:description, og:image, og:type meta tags present with correct values</test>
+      <test ac="AC7" task="7">Twitter Card tags - verify twitter:card = summary_large_image, twitter:title, twitter:description, twitter:image meta tags present</test>
+      <test ac="AC7" task="7">Canonical URL - verify canonical link tag with correct URL</test>
+      <test ac="AC7" task="7">Google Rich Results Test - validate Vehicle structured data passes Google's validator</test>
+      <test ac="AC7" task="7">Facebook Sharing Debugger - verify Open Graph preview displays correctly</test>
+      <test ac="AC8" task="8">Two-column layout desktop - verify lg:grid-cols-3 with lg:col-span-2 (content) and lg:col-span-1 (sidebar) on screens ≥1024px</test>
+      <test ac="AC8" task="8">Single-column mobile - verify grid-cols-1 stacking on screens <1024px</test>
+      <test ac="AC8" task="8">Sticky sidebar desktop - verify sidebar has sticky top-8 class, remains visible when scrolling on desktop</test>
+      <test ac="AC8" task="8">Back to Inventory link - verify "← Back to Inventory" button/link in sidebar navigates to /vehicles</test>
+      <test ac="AC8" task="8">Responsive gallery - verify thumbnail grid adapts to screen size (6 cols desktop, fewer on mobile)</test>
+      <test ac="AC8" task="8">Touch-friendly controls - verify all buttons (arrows, thumbnails) are minimum 44x44px per WCAG AA</test>
+      <test ac="AC9" task="9">Page load time - verify page loads in <2 seconds on standard broadband with Lighthouse or WebPageTest</test>
+      <test ac="AC9" task="9">Hero image priority - verify first gallery image has priority={true} attribute</test>
+      <test ac="AC9" task="9">Lazy loading thumbnails - verify thumbnail grid images have loading="lazy"</test>
+      <test ac="AC9" task="9">Lazy loading below fold - verify ServiceHistory and other below-fold content uses Suspense boundaries if async</test>
+      <test ac="AC9" task="9">No layout shift - verify Next.js Image with aspect ratios and placeholders prevents CLS, Lighthouse CLS score <0.1</test>
+      <test ac="AC9" task="9">ISR cache serves static - verify first request generates page, subsequent requests within 60s serve cached HTML</test>
+      <test ac="AC9" task="9">Lighthouse Performance score - verify score ≥85 on mobile, ≥90 on desktop</test>
+      <test ac="AC9" task="9">Lighthouse SEO score - verify score ≥95 (meta tags, structured data, semantic HTML)</test>
+      <test ac="AC9" task="9">TypeScript build passes - verify pnpm build completes with zero errors</test>
+      <test ac="AC9" task="9">Build output shows ISR - verify route shows "Static (ISR: 60s)" in build output, confirming revalidate = 60 configuration</test>
+    </ideas>
+  </tests>
+</story-context>

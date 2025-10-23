@@ -3,7 +3,6 @@
 ## Frontend
 
 1. **Framework choice:**
-
    - Next.js (React, App Router, SSR)
    - React (SPA, client-only)
    - Vue 3 + Nuxt
@@ -11,7 +10,6 @@
    - Other: **\_\_\_**
 
 2. **Styling approach:**
-
    - Tailwind CSS (utility-first)
    - CSS Modules
    - Styled Components (CSS-in-JS)
@@ -28,7 +26,6 @@
 ## Backend
 
 4. **Backend approach:**
-
    - Next.js API Routes (integrated)
    - Express.js (Node.js)
    - Nest.js (Node.js, structured)
@@ -47,7 +44,6 @@
 ## Database
 
 6. **Primary database:**
-
    - PostgreSQL (relational, ACID)
    - MySQL
    - MongoDB (document)
@@ -78,7 +74,6 @@
 ## Deployment
 
 9. **Hosting platform:**
-
    - Vercel (optimal for Next.js)
    - Netlify
    - AWS (EC2, ECS, Lambda)
@@ -97,7 +92,6 @@
 ## Additional Services (if applicable)
 
 11. **Email service:** (if transactional emails needed)
-
     - Resend (developer-friendly, modern)
     - SendGrid
     - AWS SES
@@ -105,7 +99,6 @@
     - None needed
 
 12. **Payment processing:** (if e-commerce/subscriptions)
-
     - Stripe (comprehensive)
     - Lemon Squeezy (SaaS-focused)
     - PayPal
@@ -113,7 +106,6 @@
     - None needed
 
 13. **File storage:** (if user uploads)
-
     - Supabase Storage
     - AWS S3
     - Cloudflare R2
@@ -122,7 +114,6 @@
     - None needed
 
 14. **Search:** (if full-text search beyond database)
-
     - Elasticsearch
     - Algolia
     - Meilisearch
@@ -131,7 +122,6 @@
     - None needed
 
 15. **Caching:** (if performance critical)
-
     - Redis (external cache)
     - In-memory (Node.js cache)
     - CDN caching (Cloudflare/Vercel)

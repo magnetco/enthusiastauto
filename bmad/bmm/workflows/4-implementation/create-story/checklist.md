@@ -1,15 +1,15 @@
 ---
-title: "Create Story Checklist"
-validation-target: "Newly generated story markdown file"
+title: 'Create Story Checklist'
+validation-target: 'Newly generated story markdown file'
 required-inputs:
-  - "epics.md (preferred) or PRD"
+  - 'epics.md (preferred) or PRD'
 optional-inputs:
-  - "solution-architecture document for architecture context"
+  - 'solution-architecture document for architecture context'
 validation-rules:
-  - "Story structure matches sections: Status, Story, Acceptance Criteria, Tasks/Subtasks, Dev Notes, Change Log, Dev Agent Record"
-  - "Dev Notes include Project Structure Notes and References subsections"
-  - "All non-trivial technical notes include a source citation"
-  - "Tasks include explicit testing subtasks based on testing strategy"
+  - 'Story structure matches sections: Status, Story, Acceptance Criteria, Tasks/Subtasks, Dev Notes, Change Log, Dev Agent Record'
+  - 'Dev Notes include Project Structure Notes and References subsections'
+  - 'All non-trivial technical notes include a source citation'
+  - 'Tasks include explicit testing subtasks based on testing strategy'
 ---
 
 # Create Story Checklist

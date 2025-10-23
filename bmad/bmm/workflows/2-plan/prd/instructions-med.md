@@ -211,7 +211,6 @@ Since this is a Level {{project_level}} project, you need solutioning before imp
 ### Phase 2: Detailed Planning
 
 - [ ] **Generate detailed user stories**
-
   - Command: `workflow generate-stories`
   - Input: epic-stories.md + solution-architecture.md
   - Output: user-stories.md with full acceptance criteria
@@ -224,7 +223,6 @@ Since this is a Level {{project_level}} project, you need solutioning before imp
 ### Phase 3: Development Preparation
 
 - [ ] **Set up development environment**
-
   - Repository structure
   - CI/CD pipeline
   - Development tools

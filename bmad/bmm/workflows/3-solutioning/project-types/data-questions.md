@@ -3,7 +3,6 @@
 ## Project Type and Scope
 
 1. **Primary project focus:**
-
    - ETL/Data Pipeline (move and transform data)
    - Data Analytics (BI, dashboards, reports)
    - Machine Learning Training (build models)
@@ -14,7 +13,6 @@
    - Multiple focuses
 
 2. **Scale of data:**
-
    - Small (< 1GB, single machine)
    - Medium (1GB - 1TB, can fit in memory with careful handling)
    - Large (1TB - 100TB, distributed processing needed)
@@ -30,7 +28,6 @@
 ## Programming Language and Environment
 
 4. **Primary language:**
-
    - Python (pandas, numpy, sklearn, pytorch, tensorflow)
    - R (tidyverse, caret)
    - Scala (Spark)
@@ -40,7 +37,6 @@
    - Multiple languages
 
 5. **Development environment:**
-
    - Jupyter Notebooks (exploration)
    - Production code (scripts/applications)
    - Both (notebooks for exploration, code for production)
@@ -54,7 +50,6 @@
 ## Data Sources
 
 7. **Data source types:**
-
    - Relational databases (PostgreSQL, MySQL, SQL Server)
    - NoSQL databases (MongoDB, Cassandra)
    - Data warehouses (Snowflake, BigQuery, Redshift)
@@ -66,7 +61,6 @@
    - Multiple sources
 
 8. **Data ingestion frequency:**
-
    - One-time load
    - Scheduled batch (daily, hourly)
    - Real-time/streaming
@@ -86,7 +80,6 @@
 ## Data Storage
 
 10. **Primary data storage:**
-
     - Data Warehouse (Snowflake, BigQuery, Redshift, Synapse)
     - Data Lake (S3, GCS, ADLS with Parquet/Avro)
     - Lakehouse (Databricks, Delta Lake, Iceberg, Hudi)
@@ -96,7 +89,6 @@
     - Multiple storage layers
 
 11. **Storage format (for files):**
-
     - Parquet (columnar, optimized)
     - Avro (row-based, schema evolution)
     - ORC (columnar, Hive)
@@ -106,7 +98,6 @@
     - Iceberg format
 
 12. **Data partitioning strategy:**
-
     - By date (year/month/day)
     - By category/dimension
     - By hash
@@ -121,7 +112,6 @@
 ## Data Processing and Transformation
 
 14. **Data processing framework:**
-
     - pandas (single machine)
     - Dask (parallel pandas)
     - Apache Spark (distributed)
@@ -133,7 +123,6 @@
     - Multiple frameworks
 
 15. **Compute platform:**
-
     - Local machine (development)
     - Cloud VMs (EC2, Compute Engine)
     - Serverless (AWS Lambda, Cloud Functions)
@@ -144,7 +133,6 @@
     - Multiple platforms
 
 16. **ETL tool (if applicable):**
-
     - dbt (SQL transformations)
     - Apache Airflow (orchestration + code)
     - Dagster (data orchestration)
@@ -156,7 +144,6 @@
     - None needed
 
 17. **Data quality checks:**
-
     - Great Expectations
     - dbt tests
     - Custom validation scripts
@@ -173,7 +160,6 @@
 ## Machine Learning (if applicable)
 
 19. **ML framework:**
-
     - scikit-learn (classical ML)
     - PyTorch (deep learning)
     - TensorFlow/Keras (deep learning)
@@ -184,7 +170,6 @@
     - Not applicable
 
 20. **ML use case:**
-
     - Classification
     - Regression
     - Clustering
@@ -196,7 +181,6 @@
     - Other: **\_\_\_**
 
 21. **Model training infrastructure:**
-
     - Local machine (GPU/CPU)
     - Cloud VMs with GPU (EC2 P/G instances, GCE A2)
     - SageMaker
@@ -207,7 +191,6 @@
     - On-premise cluster
 
 22. **Experiment tracking:**
-
     - MLflow
     - Weights and Biases
     - Neptune.ai
@@ -218,7 +201,6 @@
     - None
 
 23. **Model registry:**
-
     - MLflow Model Registry
     - SageMaker Model Registry
     - Vertex AI Model Registry
@@ -226,7 +208,6 @@
     - None
 
 24. **Feature store:**
-
     - Feast
     - Tecton
     - SageMaker Feature Store
@@ -236,7 +217,6 @@
     - Not needed
 
 25. **Hyperparameter tuning:**
-
     - Manual tuning
     - Grid search
     - Random search
@@ -246,7 +226,6 @@
     - Not needed
 
 26. **Model serving (inference):**
-
     - Batch inference (process large datasets)
     - Real-time API (REST/gRPC)
     - Streaming inference (Kafka, Kinesis)
@@ -254,7 +233,6 @@
     - Not applicable (training only)
 
 27. **Model serving platform (if real-time):**
-
     - FastAPI + container (self-hosted)
     - SageMaker Endpoints
     - Vertex AI Predictions
@@ -267,7 +245,6 @@
     - Other: **\_\_\_**
 
 28. **Model monitoring (in production):**
-
     - Data drift detection
     - Model performance monitoring
     - Prediction logging
@@ -286,7 +263,6 @@
 ## Orchestration and Workflow
 
 30. **Workflow orchestration:**
-
     - Apache Airflow
     - Prefect
     - Dagster
@@ -300,14 +276,12 @@
     - None (manual runs)
 
 31. **Orchestration platform:**
-
     - Self-hosted (VMs, K8s)
     - Managed service (MWAA, Cloud Composer, Prefect Cloud)
     - Serverless
     - Multiple platforms
 
 32. **Job scheduling:**
-
     - Time-based (daily, hourly)
     - Event-driven (S3 upload, database change)
     - Manual trigger
@@ -322,7 +296,6 @@
 ## Data Analytics and Visualization
 
 34. **BI/Visualization tool:**
-
     - Tableau
     - Power BI
     - Looker / Looker Studio
@@ -335,7 +308,6 @@
     - None needed
 
 35. **Reporting frequency:**
-
     - Real-time dashboards
     - Daily reports
     - Weekly/Monthly reports
@@ -352,7 +324,6 @@
 ## Data Governance and Security
 
 37. **Data catalog:**
-
     - Amundsen
     - DataHub
     - AWS Glue Data Catalog
@@ -362,13 +333,11 @@
     - None (small team)
 
 38. **Data lineage tracking:**
-
     - Automated (DataHub, Amundsen)
     - Manual documentation
     - Not tracked
 
 39. **Access control:**
-
     - Row-level security (RLS)
     - Column-level security
     - Database/warehouse roles
@@ -376,7 +345,6 @@
     - None (internal team only)
 
 40. **PII/Sensitive data handling:**
-
     - Encryption at rest
     - Encryption in transit
     - Data masking
@@ -395,7 +363,6 @@
 ## Testing and Validation
 
 42. **Data testing:**
-
     - Unit tests (transformation logic)
     - Integration tests (end-to-end pipeline)
     - Data quality tests
@@ -414,7 +381,6 @@
 ## Deployment and CI/CD
 
 44. **Deployment strategy:**
-
     - GitOps (version-controlled config)
     - Manual deployment
     - CI/CD pipeline (GitHub Actions, GitLab CI)
@@ -422,7 +388,6 @@
     - Terraform/IaC
 
 45. **Environment separation:**
-
     - Dev / Staging / Production
     - Dev / Production only
     - Single environment
@@ -434,7 +399,6 @@
 ## Monitoring and Observability
 
 47. **Pipeline monitoring:**
-
     - Orchestrator built-in (Airflow UI, Prefect)
     - Custom dashboards
     - Alerts on failures
@@ -442,7 +406,6 @@
     - None
 
 48. **Performance monitoring:**
-
     - Query performance (slow queries)
     - Job duration tracking
     - Cost monitoring (cloud spend)
@@ -469,7 +432,6 @@
 ## Collaboration and Documentation
 
 51. **Team collaboration:**
-
     - Git for code
     - Shared notebooks (JupyterHub, Databricks)
     - Documentation wiki
@@ -477,7 +439,6 @@
     - Pair programming
 
 52. **Documentation approach:**
-
     - README files
     - Docstrings in code
     - Notebooks with markdown
@@ -493,14 +454,12 @@
 ## Performance and Scale
 
 54. **Performance requirements:**
-
     - Near real-time (< 1 minute latency)
     - Batch (hours acceptable)
     - Interactive queries (< 10 seconds)
     - No specific requirements
 
 55. **Scalability needs:**
-
     - Must scale to 10x data volume
     - Current scale sufficient
     - Unknown (future growth)

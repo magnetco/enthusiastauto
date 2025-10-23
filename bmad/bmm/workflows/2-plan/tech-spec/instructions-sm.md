@@ -171,7 +171,6 @@ Run cohesion validation? (y/n)</ask>
 **Recommended Next Steps:**
 
 - [ ] **Create test plan** for the change
-
   - Unit tests for the specific change
   - Integration test if affects other components
 

@@ -1,0 +1,369 @@
+<story-context id="bmad/bmm/workflows/4-implementation/story-context/template" v="1.0">
+  <metadata>
+    <epicId>3</epicId>
+    <storyId>3.5</storyId>
+    <title>Vehicle Status Management & Real-Time Updates</title>
+    <status>Ready</status>
+    <generatedAt>2025-10-22</generatedAt>
+    <generator>BMAD Story Context Workflow</generator>
+    <sourceStoryPath>docs/stories/story-3.5.md</sourceStoryPath>
+  </metadata>
+
+  <story>
+    <asA>content editor</asA>
+    <iWant>update vehicle status (current/sold) instantly in Sanity Studio</iWant>
+    <soThat>the website always reflects accurate inventory availability with minimal delay</soThat>
+    <tasks>
+      - Task 1: Enhance Vehicle Schema with Status Field (7 subtasks)
+      - Task 2: Create Webhook Revalidation API Route (7 subtasks)
+      - Task 3: Configure Sanity Webhook (10 subtasks)
+      - Task 4: Update Vehicle Listing Page for Status (6 subtasks)
+      - Task 5: Update Vehicle Detail Page for Status (6 subtasks)
+      - Task 6: Update Homepage Featured Vehicles (4 subtasks)
+      - Task 7: Create Editor Documentation (6 subtasks)
+      - Task 8: Testing and Validation (9 subtasks)
+      Total: 8 tasks, 55 subtasks
+    </tasks>
+  </story>
+
+  <acceptanceCriteria>
+    <criterion id="AC1" priority="critical">
+      <title>Status Field in Sanity Studio</title>
+      <description>Editors can mark vehicles as "current" or "sold" via dropdown/radio in Sanity Studio with required validation, immediate save on publish, and default status of "current" for new vehicles</description>
+    </criterion>
+    <criterion id="AC2" priority="critical">
+      <title>Webhook Configuration</title>
+      <description>Sanity webhook configured to trigger on vehicle document changes (create, update, delete) with URL https://shop.enthusiastauto.com/api/revalidate/vehicle/{slug.current}, filter _type == "vehicle", projection including slug/status/_id, secret for signature verification, and triggers within 5 seconds</description>
+    </criterion>
+    <criterion id="AC3" priority="critical">
+      <title>Next.js Revalidation API Route</title>
+      <description>API route at app/api/revalidate/vehicle/[slug]/route.ts with POST handler that verifies Sanity webhook signature using HMAC SHA-256, revalidates /vehicles/[slug], /vehicles, and / paths, returns JSON response {revalidated: true, slug: "vehicle-slug"}, and handles errors (401/400/500) with logging</description>
+    </criterion>
+    <criterion id="AC4" priority="high">
+      <title>Vehicle Listing Page Updates</title>
+      <description>Listing page reflects status changes within 60 seconds via ISR, webhook triggers immediate updates, filter option to show/hide sold vehicles, SOLD badge displays on cards when status is "sold", sold vehicles optionally sorted to end</description>
+    </criterion>
+    <criterion id="AC5" priority="high">
+      <title>Vehicle Detail Page Updates</title>
+      <description>Detail page shows SOLD overlay/badge when status is "sold" using ShadCN Badge variant="destructive" near title, contact/inquiry button hidden or disabled for sold vehicles, schema.org offer availability set to "SoldOut", page revalidates immediately on webhook trigger</description>
+    </criterion>
+    <criterion id="AC6" priority="high">
+      <title>Homepage Featured Vehicles</title>
+      <description>Homepage vehicle sections exclude sold vehicles by default, if featured vehicle is sold it's replaced with next current vehicle, homepage revalidates when featured vehicle status changes, query uses status == "current" && featured == true filter</description>
+    </criterion>
+    <criterion id="AC7" priority="medium">
+      <title>Editor Workflow Documentation</title>
+      <description>Documentation created for "How to Mark a Vehicle as Sold" with step-by-step guide with screenshots, training materials updated, help text added to status field in schema, troubleshooting guide for common issues</description>
+    </criterion>
+  </acceptanceCriteria>
+
+  <artifacts>
+    <docs>
+      <doc id="1">
+        <path>docs/PRD.md</path>
+        <title>Functional Requirement FR014</title>
+        <section>Sanity CMS Integration with Status Tracking</section>
+        <snippet>The system shall integrate with Sanity CMS to retrieve and display vehicle inventory data including images, specifications, pricing, and availability status (current/sold)</snippet>
+      </doc>
+      <doc id="2">
+        <path>docs/PRD.md</path>
+        <title>Non-Functional Requirement NFR006</title>
+        <section>Content Management & CMS Performance</section>
+        <snippet>Vehicle content updates in Sanity shall reflect on the frontend within 60 seconds (ISR/webhook revalidation)</snippet>
+      </doc>
+      <doc id="3">
+        <path>docs/epic-stories.md</path>
+        <title>Story 3.5: Vehicle Status Management & Real-Time Updates</title>
+        <section>Epic 3 Story Definition</section>
+        <snippet>As a content editor, I want to update vehicle status (current/sold) instantly, so that the website always reflects accurate inventory availability. Status change triggers webhook to revalidate affected pages. Listing page updates within 60 seconds of status change.</snippet>
+      </doc>
+      <doc id="4">
+        <path>docs/solution-architecture.md</path>
+        <title>Server-Side Rendering Strategy</title>
+        <section>§2.2 ISR Implementation and Webhook-Driven Revalidation</section>
+        <snippet>Webhook-Driven Revalidation: Sanity webhook triggers on-demand revalidation. After status change, revalidatePath(/vehicles/[slug]) and revalidatePath(/vehicles) are called. Performance Benefits: Instant page loads from pre-rendered HTML, Fresh content with 60s revalidation + webhook keeping inventory current.</snippet>
+      </doc>
+      <doc id="5">
+        <path>docs/solution-architecture.md</path>
+        <title>Database Schema (Sanity Vehicle Schema)</title>
+        <section>§3.1 Sanity CMS Schema for Vehicles</section>
+        <snippet>The status field is a string type with options ['Current', 'Sold'], validation required. Vehicle documents include title, slug, year, model, price, mileage, and status (current/sold) for inventory tracking.</snippet>
+      </doc>
+      <doc id="6">
+        <path>docs/solution-architecture.md</path>
+        <title>Caching Strategy</title>
+        <section>§6.4 Multi-Layer Caching and Cache Invalidation</section>
+        <snippet>Sanity vehicle cache set to 60 seconds (matches ISR revalidation). Cache Invalidation: Sanity content update triggers webhook that calls revalidatePath() to purge affected routes. Webhook → revalidatePath() handles status changes.</snippet>
+      </doc>
+      <doc id="7">
+        <path>docs/tech-specs/epic-3-vehicle-inventory-tech-spec.md</path>
+        <title>Story 3.5 Implementation Overview</title>
+        <section>Webhook Implementation for Real-Time Status Updates</section>
+        <snippet>Configure Sanity webhooks to trigger Next.js On-Demand ISR. Use Next.js revalidatePath API. URL: https://shop.enthusiastauto.com/api/revalidate/vehicle/{slug.current}. Webhook verifies signature, parses payload, revalidates listing and detail pages within 60 seconds of status change.</snippet>
+      </doc>
+    </docs>
+    <code>
+      <artifact id="1" importance="PRIMARY">
+        <path>sanity/schemas/vehicle.ts</path>
+        <kind>schema</kind>
+        <symbol>vehicle</symbol>
+        <lines>1-100+</lines>
+        <reason>Vehicle schema that needs status field added. Currently has inventoryStatus field as "Current Inventory" or "Sold" - needs to be enhanced with validation, default value, and help text</reason>
+      </artifact>
+      <artifact id="2" importance="PRIMARY">
+        <path>lib/sanity/queries/vehicles.ts</path>
+        <kind>queries</kind>
+        <symbol>getVehicles, getVehicleDetail, vehicleDetailQuery</symbol>
+        <lines>ALL</lines>
+        <reason>GROQ queries that already include inventoryStatus field in projections. Vehicle types VehicleListItem and VehicleDetail already have inventoryStatus: "Current Inventory" | "Sold". No changes needed here - status field already projected</reason>
+      </artifact>
+      <artifact id="3" importance="PRIMARY">
+        <path>components/vehicles/VehicleCard.tsx</path>
+        <kind>component</kind>
+        <symbol>VehicleCard</symbol>
+        <lines>1-80</lines>
+        <reason>Vehicle card component already handles sold state! Line 15 checks isSold, lines 43-49 render SOLD overlay, lines 52-63 render status badge. Component already implements AC4 requirements</reason>
+      </artifact>
+      <artifact id="4" importance="PRIMARY">
+        <path>app/vehicles/[slug]/page.tsx</path>
+        <kind>page</kind>
+        <symbol>VehicleDetailPage</symbol>
+        <lines>1-100+</lines>
+        <reason>Vehicle detail page with ISR revalidation (line 19: revalidate = 60). Needs SOLD badge added near title and ContactInquiry component needs sold state handling for AC5</reason>
+      </artifact>
+      <artifact id="5" importance="REFERENCE">
+        <path>components/ui/badge.tsx</path>
+        <kind>component</kind>
+        <symbol>Badge</symbol>
+        <lines>ALL</lines>
+        <reason>ShadCN Badge component used for status display. Supports variant="destructive" for sold badges</reason>
+      </artifact>
+      <artifact id="6" importance="REFERENCE">
+        <path>components/shared/ContactInquiry.tsx</path>
+        <kind>component</kind>
+        <symbol>ContactInquiry</symbol>
+        <lines>ALL</lines>
+        <reason>Contact/inquiry component that needs to be hidden or disabled for sold vehicles on detail page (AC5)</reason>
+      </artifact>
+      <artifact id="7" importance="PRIMARY">
+        <path>app/vehicles/page.tsx</path>
+        <kind>page</kind>
+        <symbol>VehiclesListingPage</symbol>
+        <lines>ALL</lines>
+        <reason>Vehicle listing page that uses getVehicles query. Already supports status filtering via VehicleFilters. ISR configured with 60s revalidation</reason>
+      </artifact>
+      <artifact id="8" importance="PRIMARY">
+        <path>app/page.tsx</path>
+        <kind>page</kind>
+        <symbol>HomePage</symbol>
+        <lines>ALL</lines>
+        <reason>Homepage that needs to filter featured vehicles by status == "current". Needs GROQ query update to exclude sold vehicles from featured sections (AC6)</reason>
+      </artifact>
+      <artifact id="9" importance="NEW">
+        <path>app/api/revalidate/vehicle/[slug]/route.ts</path>
+        <kind>api-route</kind>
+        <symbol>POST handler</symbol>
+        <lines>N/A - NEW FILE</lines>
+        <reason>New webhook revalidation API route. Needs to verify Sanity webhook signature using HMAC SHA-256, parse payload, call revalidatePath for /vehicles/[slug], /vehicles, and / (AC3)</reason>
+      </artifact>
+      <artifact id="10" importance="REFERENCE">
+        <path>sanity/lib/client.ts</path>
+        <kind>config</kind>
+        <symbol>client</symbol>
+        <lines>ALL</lines>
+        <reason>Sanity client configuration reference. Shows dual-client pattern with read-only and authenticated clients</reason>
+      </artifact>
+    </code>
+    <dependencies>
+      <ecosystem type="node">
+        <package name="next" version="15.3.0-canary.13">
+          <note>Next.js 15 with App Router, ISR, and revalidatePath API for webhook-driven revalidation</note>
+        </package>
+        <package name="react" version="19.0.0">
+          <note>React 19 for Server Components</note>
+        </package>
+        <package name="sanity" version="4">
+          <note>Sanity v4 for CMS with webhook support</note>
+        </package>
+        <package name="@sanity/client" version="^7.12.0">
+          <note>Sanity client for GROQ queries</note>
+        </package>
+        <package name="next-sanity" version="11">
+          <note>Next.js integration for Sanity</note>
+        </package>
+        <package name="typescript" version="5.8.2">
+          <note>TypeScript for type-safe development</note>
+        </package>
+      </ecosystem>
+      <framework name="Next.js 15 App Router">ISR with 60s revalidation + webhook-driven on-demand revalidation</framework>
+      <framework name="Sanity CMS v4">Vehicle inventory management with webhook support</framework>
+      <framework name="ShadCN UI">Badge component for status display (variant="destructive" for sold)</framework>
+    </dependencies>
+  </artifacts>
+
+  <constraints>
+    <constraint id="1" type="architecture">
+      <title>ISR Strategy with Dual Revalidation</title>
+      <description>Vehicle pages use 60-second ISR baseline (export const revalidate = 60) PLUS webhook-driven on-demand revalidation. Webhook provides near-instant updates, ISR provides fallback if webhook fails</description>
+    </constraint>
+    <constraint id="2" type="security">
+      <title>Webhook Signature Verification Required</title>
+      <description>All Sanity webhooks MUST verify signature using HMAC SHA-256 with SANITY_WEBHOOK_SECRET. Invalid signatures return 401 Unauthorized. Use Node.js crypto.createHmac('sha256', secret)</description>
+    </constraint>
+    <constraint id="3" type="data">
+      <title>Existing inventoryStatus Field</title>
+      <description>Vehicle schema already has inventoryStatus field with values "Current Inventory" or "Sold". DO NOT create new status field. Story adds validation, default value, and help text to existing field</description>
+    </constraint>
+    <constraint id="4" type="api">
+      <title>Next.js 15 revalidatePath API</title>
+      <description>Use next/cache revalidatePath(path: string) for on-demand revalidation. Call for all affected paths: /vehicles/[slug], /vehicles, / (homepage)</description>
+    </constraint>
+    <constraint id="5" type="ui">
+      <title>ShadCN Badge for SOLD Display</title>
+      <description>Use ShadCN Badge component with variant="destructive" for sold badges on detail page. Listing page already implements SOLD overlay - verify consistency</description>
+    </constraint>
+    <constraint id="6" type="data">
+      <title>Status-Driven Hero Image Selection</title>
+      <description>Vehicle hero image selection: use soldShot when inventoryStatus === "Sold", else use signatureShot. Already implemented in VehicleCard.tsx line 18</description>
+    </constraint>
+    <constraint id="7" type="testing">
+      <title>Webhook Testing Requirements</title>
+      <description>Test webhook signature verification with invalid signatures (must return 401). Test rapid status changes for race conditions. Monitor Sanity webhook logs for delivery success</description>
+    </constraint>
+    <constraint id="8" type="deployment">
+      <title>Environment Variables</title>
+      <description>SANITY_WEBHOOK_SECRET must be added to .env.local AND Vercel environment variables. Secret generated in Sanity dashboard during webhook configuration</description>
+    </constraint>
+    <constraint id="9" type="ui">
+      <title>Sold Vehicle UX Consistency</title>
+      <description>Sold vehicles must show: (1) SOLD badge/overlay on listing, (2) SOLD badge near title on detail page, (3) Contact button hidden/disabled on detail, (4) Reduced opacity on listing card (opacity-70), (5) schema.org availability = "SoldOut"</description>
+    </constraint>
+    <constraint id="10" type="architecture">
+      <title>TypeScript Strict Mode</title>
+      <description>All code must pass TypeScript strict mode compilation. Run pnpm build to validate before completion</description>
+    </constraint>
+  </constraints>
+
+  <interfaces>
+    <interface id="1">
+      <name>Next.js revalidatePath API</name>
+      <kind>Next.js API</kind>
+      <signature>revalidatePath(path: string): void</signature>
+      <path>next/cache</path>
+      <description>On-demand ISR revalidation. Call from webhook handler to purge cache for specific paths. Imported from 'next/cache'</description>
+    </interface>
+    <interface id="2">
+      <name>Sanity Webhook Payload</name>
+      <kind>Webhook Payload</kind>
+      <signature>{ _id: string; slug: { current: string }; status: string }</signature>
+      <path>POST body from Sanity webhook</path>
+      <description>Webhook sends vehicle document projection with slug and status fields. Parse from request body in API route</description>
+    </interface>
+    <interface id="3">
+      <name>HMAC Signature Verification</name>
+      <kind>Node.js crypto</kind>
+      <signature>crypto.createHmac('sha256', secret).update(body).digest('hex')</signature>
+      <path>Node.js crypto module</path>
+      <description>Verify webhook signature using HMAC SHA-256. Compare computed signature with x-sanity-signature header</description>
+    </interface>
+    <interface id="4">
+      <name>VehicleListItem Interface</name>
+      <kind>TypeScript Interface</kind>
+      <signature>{ inventoryStatus: "Current Inventory" | "Sold"; ... }</signature>
+      <path>lib/sanity/queries/vehicles.ts</path>
+      <description>TypeScript interface for vehicle list items. Already includes inventoryStatus field</description>
+    </interface>
+    <interface id="5">
+      <name>Badge Component Props</name>
+      <kind>React Component</kind>
+      <signature>Badge({ variant: "default" | "destructive" | "secondary" | "outline", children })</signature>
+      <path>components/ui/badge.tsx</path>
+      <description>ShadCN Badge component. Use variant="destructive" for SOLD badges on detail page</description>
+    </interface>
+    <interface id="6">
+      <name>Sanity defineField API</name>
+      <kind>Sanity Schema API</kind>
+      <signature>defineField({ name, title, type, validation, initialValue, description })</signature>
+      <path>sanity package</path>
+      <description>Sanity v4 field definition API. Used to add validation, default value, and help text to inventoryStatus field</description>
+    </interface>
+    <interface id="7">
+      <name>GROQ Query Filter</name>
+      <kind>GROQ Query Language</kind>
+      <signature>*[_type == "vehicle" && inventoryStatus == "Current Inventory"]</signature>
+      <path>lib/sanity/queries/vehicles.ts</path>
+      <description>GROQ filter syntax for excluding sold vehicles from featured vehicle queries on homepage</description>
+    </interface>
+  </interfaces>
+  <tests>
+    <standards>
+      Manual testing is primary approach for this story due to webhook integration and CMS interaction requirements. TypeScript build validation (pnpm build) required before completion. Unit tests recommended for webhook signature verification logic. Integration tests for end-to-end webhook flow from Sanity to Next.js revalidation. Monitor Sanity webhook logs in dashboard for delivery success/failure. Test ISR fallback behavior when webhook fails (60-second revalidation). Verify sold vehicle display consistency across all pages (listing, detail, homepage).
+    </standards>
+    <locations>
+      - app/__tests__/ (if unit tests added for webhook handler)
+      - Manual testing: Sanity Studio (change vehicle status)
+      - Manual testing: Sanity dashboard webhook logs
+      - Browser testing: listing page, detail page, homepage
+      - Build validation: pnpm build command
+    </locations>
+    <ideas>
+      <test ac="AC1" task="Task 1">
+        <idea>Verify inventoryStatus field appears in Sanity Studio vehicle editor with radio/dropdown layout</idea>
+        <idea>Test required validation: attempt to save vehicle without status (should fail)</idea>
+        <idea>Test default value: create new vehicle and verify status defaults to "Current Inventory"</idea>
+        <idea>Test help text appears on status field: "Mark as Sold when vehicle is no longer available"</idea>
+        <idea>Test status save: publish vehicle with status change and verify it persists</idea>
+      </test>
+      <test ac="AC2" task="Task 3">
+        <idea>Verify webhook created in Sanity dashboard with correct URL: https://shop.enthusiastauto.com/api/revalidate/vehicle/{slug.current}</idea>
+        <idea>Test webhook filter: change product document (not vehicle) and verify webhook does NOT trigger</idea>
+        <idea>Test webhook projection: verify payload includes slug, status, _id fields</idea>
+        <idea>Test webhook secret configured and copied to SANITY_WEBHOOK_SECRET env var</idea>
+        <idea>Test webhook timing: change vehicle status and verify webhook triggers within 5 seconds (check Sanity logs)</idea>
+      </test>
+      <test ac="AC3" task="Task 2">
+        <idea>Test webhook signature verification: send request with invalid signature, verify 401 response</idea>
+        <idea>Test missing slug handling: send webhook payload without slug, verify 400 response</idea>
+        <idea>Test revalidatePath calls: verify logs show revalidation for /vehicles/[slug], /vehicles, /</idea>
+        <idea>Test success response: verify webhook returns JSON {revalidated: true, slug: "vehicle-slug"}</idea>
+        <idea>Test error logging: verify console.log output for monitoring revalidation events</idea>
+        <idea>Test processing failure: simulate error and verify 500 response with error message</idea>
+      </test>
+      <test ac="AC4" task="Task 4">
+        <idea>Test listing page ISR: wait 60 seconds after status change, verify page updates (fallback)</idea>
+        <idea>Test listing page webhook revalidation: change status and verify page updates within 5-10 seconds</idea>
+        <idea>Test SOLD badge display: verify badge appears on vehicle cards when status is "sold"</idea>
+        <idea>Test sold vehicle opacity: verify sold vehicles have reduced opacity (opacity-70)</idea>
+        <idea>Test filter UI: use status filter to show/hide sold vehicles (if implemented)</idea>
+        <idea>Test sorting: verify sold vehicles move to end of list when sorting enabled (if implemented)</idea>
+      </test>
+      <test ac="AC5" task="Task 5">
+        <idea>Test detail page SOLD badge: verify badge appears near title with variant="destructive"</idea>
+        <idea>Test contact button disabled: verify ContactInquiry component hidden/disabled for sold vehicles</idea>
+        <idea>Test schema.org metadata: inspect page source and verify offers.availability = "SoldOut" for sold</idea>
+        <idea>Test detail page webhook revalidation: change status and verify page updates immediately</idea>
+        <idea>Test ISR fallback: disable webhook and verify detail page updates within 60 seconds</idea>
+      </test>
+      <test ac="AC6" task="Task 6">
+        <idea>Test homepage excludes sold featured vehicles: mark featured vehicle as sold, verify it's replaced</idea>
+        <idea>Test homepage GROQ query: verify query includes && inventoryStatus == "Current Inventory" filter</idea>
+        <idea>Test homepage webhook revalidation: change featured vehicle status and verify homepage updates</idea>
+        <idea>Test featured vehicle replacement: verify next current vehicle appears when featured vehicle is sold</idea>
+      </test>
+      <test ac="AC7" task="Task 7">
+        <idea>Verify editor documentation created at sanity/docs/how-to-mark-vehicle-sold.md</idea>
+        <idea>Test documentation includes screenshots of status field in Sanity Studio</idea>
+        <idea>Test documentation describes expected timing: updates within 60 seconds</idea>
+        <idea>Test troubleshooting section covers webhook failures and revalidation delays</idea>
+      </test>
+      <test ac="ALL" task="Task 8">
+        <idea>Test complete workflow: change status in Sanity → check webhook logs → verify all pages update</idea>
+        <idea>Test rapid status changes: toggle status multiple times quickly, verify no race conditions</idea>
+        <idea>Test TypeScript build: run pnpm build and verify zero errors</idea>
+        <idea>Test all revalidation paths: verify detail page, listing page, and homepage all update</idea>
+        <idea>Test sold vehicle UX consistency: verify SOLD badge/overlay, disabled contact, reduced opacity</idea>
+        <idea>Verify SANITY_WEBHOOK_SECRET added to both .env.local and Vercel</idea>
+      </test>
+    </ideas>
+  </tests>
+</story-context>
