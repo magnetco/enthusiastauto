@@ -9,7 +9,7 @@ import { VehicleGallery } from "@/components/vehicles/VehicleGallery";
 import { VehicleSpecs } from "@/components/vehicles/VehicleSpecs";
 import { VehicleDescription } from "@/components/vehicles/VehicleDescription";
 import { Breadcrumbs } from "@/components/shared/Breadcrumbs";
-import { ContactInquiry } from "@/components/shared/ContactInquiry";
+import { VehicleContactForm } from "@/components/vehicles/VehicleContactForm";
 import { Badge } from "@/components/ui/badge";
 import { RecommendationCarousel } from "@/components/shared/RecommendationCarousel";
 import { getCompatibleParts } from "@/lib/shared/recommendations";
@@ -261,10 +261,16 @@ export default async function VehicleDetailPage({
               </dl>
             </div>
 
-            {/* Contact CTA */}
-            <ContactInquiry
-              vehicleTitle={vehicle.listingTitle}
-              isSold={isSold}
+            {/* Contact Form */}
+            <VehicleContactForm
+              slug={slug}
+              title={vehicle.listingTitle}
+              year={parseInt(vehicle.listingTitle.match(/^\d{4}/)?.[0] || new Date().getFullYear().toString())}
+              make="BMW"
+              model={vehicle.chassis}
+              price={vehicle.listingPrice || 0}
+              status={vehicle.status}
+              source="Enthusiast Auto"
             />
 
             {/* Back to Inventory */}
