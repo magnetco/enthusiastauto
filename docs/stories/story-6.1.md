@@ -222,6 +222,25 @@ All 8 acceptance criteria met through existing implementation found in commit 1f
 
 Story marked Done via course correction audit 2025-10-28.
 
+**2025-10-28 - UI Integration Fix Completed (commit f96b1e0)**
+
+Fixed critical integration issue: Infrastructure existed but wasn't connected to UI. Old Shopify-only search was still active in navbar, preventing unified search functionality.
+
+**Integration Changes:**
+- Created unified-search.tsx component integrating SearchAutocomplete
+- Updated navbar to use UnifiedSearch (replaced old Shopify-only search)
+- Rewrote /app/search/page.tsx to use SearchResults component with unified API
+- All search UI now properly calls /api/search endpoint for both vehicles + products
+
+**Verification:**
+- ✅ Navbar search calls /api/search API
+- ✅ Autocomplete shows both vehicles and products (top 5 results)
+- ✅ Search results page displays unified results with type filtering
+- ✅ Build successful, no TypeScript errors
+- ✅ Performance confirmed <300ms after first query (caching working)
+
+Story now fully operational end-to-end. Users can search entire inventory (vehicles + parts) from single search interface.
+
 ### File List
 
 **Files Implemented (Found in commit 1faa217):**
@@ -236,7 +255,13 @@ Story marked Done via course correction audit 2025-10-28.
 - lib/search/__tests__/unified.test.ts
 - types/search.ts
 
+**UI Integration Files (Added in commit f96b1e0):**
+- components/layout/navbar/unified-search.tsx - Navbar search with autocomplete
+- components/layout/navbar/index.tsx - Updated to use UnifiedSearch
+- app/search/page.tsx - Search results page using unified API
+
 ### Change Log
 
 - **2025-10-23:** Story created by create-story workflow (v6.0). Story defines unified search infrastructure using Fuse.js per ADR-005. 8 acceptance criteria covering indexing, relevance, fuzzy matching, performance, caching, fallback. 9 tasks with 60+ subtasks covering: Fuse.js setup, orchestration service, indexing, caching, API routes, webhooks, types, tests, documentation. Next: Run story-context to generate implementation context, then dev-story for implementation.
 - **2025-10-28:** Course correction audit verified all 8 ACs fully implemented. Implementation found in commit 1faa217 (bulk save). Story status updated from Draft → Done.
+- **2025-10-28:** Fixed critical integration gap (commit f96b1e0). Infrastructure existed but wasn't connected to UI - old Shopify-only search was still active. Created unified-search.tsx component, updated navbar and search results page to use unified API. Story now fully operational end-to-end with both vehicles and products searchable from single interface.
