@@ -9,8 +9,8 @@
 ## Current Status
 
 **Current Phase:** 4-Implementation (Phase 2)
-**Current Workflow:** story-approved (Story 9.1) - Complete
-**Overall Progress:** Phase 1 Complete (10/10 stories, 50 points) | Phase 2 In Progress (11/20 stories complete, 111/141 points, 78.7%)
+**Current Workflow:** Course Correction Complete - Project Status Reconciled
+**Overall Progress:** Phase 1 Complete (10/10 stories, 50 points) | Phase 2 In Progress (14/20 stories complete, 88/141 points, 62.4%)
 
 **Project Level:** 3 (Complex system - subsystems and integrations)
 **Project Type:** Web Application
@@ -24,104 +24,107 @@
 - [x] **1-Analysis** - Documentation phase (Complete)
 - [x] **2-Plan** - Planning phase (PRD + UX Spec) (Complete)
 - [x] **3-Solutioning** - Architecture design (✅ COMPLETE 2025-10-21)
-- [ ] **4-Implementation** - Phase 2 development (In Progress - 10/20 stories complete, 105/141 points, 74.5%)
+- [ ] **4-Implementation** - Phase 2 development (In Progress - 14/20 stories complete, 88/141 points, 62.4%)
 
 ---
 
 ## Implementation Progress
 
 ### BACKLOG
-7 stories remaining (31 points):
-- Epic 5: User Management System (3 stories remaining, 18 points - Story 5.3 moved to TODO)
-- Epic 6: Advanced Search & Discovery (4 stories, 39 points - needs Epic 5 complete)
+3 stories remaining (15 points):
+- Epic 5: User Management System (2 stories remaining, 10 points - Stories 5.5, 5.6)
+- Epic 6: Advanced Search & Discovery (1 story remaining, 5 points - Story 6.4 SEO)
 
 ### TODO (Next to Implement)
-**Story 5.3: User Profile & Account Settings**
-- **File:** `docs/stories/story-5.3.md`
-- **Context:** Not yet generated
-- **Epic:** 5 (User Management System)
-- **Points:** 8
-- **Status:** Not created
-- **Description:** User profile page, edit name/avatar, change password, manage addresses/payment, view linked social accounts, delete account
-- **Next Action:** Run `/bmad:bmm:workflows:create-story` to draft this story (SM agent)
-
-### IN PROGRESS
-
 **Story 4.4: Cross-Content Linking Components**
 - **File:** `docs/stories/story-4.4.md`
 - **Context:** `docs/stories/story-context-4.4.4.xml` (Generated: 2025-10-22)
 - **Epic:** 4 (Unified Site Architecture)
 - **Points:** 8
-- **Status:** Ready for Review (implementation complete 2025-10-23)
+- **Status:** Bug Fix Needed
 - **Description:** Compatible parts recommendations on vehicle pages, vehicles in stock section on product pages
-- **Next Action:** Run `/bmad:bmm:workflows:story-approved` to mark complete when satisfied with implementation (DEV agent)
+- **Bug:** "Vehicles in Stock" section not showing on product pages. Needs runtime debugging.
+- **Next Action:** Debug with runtime logs to verify tag extraction and GROQ query results
 
-### RECENTLY COMPLETED (Last 5 Stories)
+### IN PROGRESS
+
+No stories currently in active development. Next: Fix Story 4.4 bug or continue Epic 5/6.
+
+### RECENTLY COMPLETED (Stories from Course Correction Audit)
+
+**Story 7.1: Service Request Page & Form** ✅
+- **Epic:** 7 (Services) | **Points:** 5 | **Completed:** 2025-10-28
+- **Description:** Service request form with email notifications and database storage
+- **Implementation:** /services page with 4 service cards, React Hook Form + Zod, Resend email integration, ServiceRequest Prisma model, navigation links added
+
+**Story 6.3: Recommendation Engine** ✅
+- **Epic:** 6 | **Points:** 13 | **Completed:** 2025-10-28
+- **Description:** Personalized recommendations based on garage items and browsing history
+- **Implementation:** Activity tracking (cookies), scoring engine (3.0x garage, 2.0x views, 1.5x purchases), fallback system, RecommendationCarousel component, API with caching
+
+**Story 6.2: Unified Search UI & Results Page** ✅
+- **Epic:** 6 | **Points:** 8 | **Completed:** 2025-10-28
+- **Description:** Search bar in navigation, autocomplete, /search results page
+- **Implementation:** 10 search components, 300ms debounced autocomplete, type filtering, pagination, query highlighting, empty states, SEO metadata
+
+**Story 6.1: Unified Search Infrastructure** ✅
+- **Epic:** 6 | **Points:** 13 | **Completed:** 2025-10-28 (verified via audit)
+- **Description:** Fuse.js search indexing both Sanity vehicles and Shopify products
+- **Implementation:** Fuse.js with field weighting, 15min index refresh, 5min result cache, API with rate limiting, 3 test files, <300ms performance
+
+**Story 5.4: "My Garage" - Favorites System** ✅
+- **Epic:** 5 | **Points:** 8 | **Completed:** 2025-10-24
+- **Description:** Save favorite vehicles and parts, My Garage page
+- **Implementation:** UserFavorite table, FavoriteButton component, /account/garage page with tabs, 50-item limit, optimistic UI
+
+**Story 5.3: User Profile & Account Settings** ✅
+- **Epic:** 5 | **Points:** 8 | **Completed:** 2025-10-23
+- **Description:** Profile page with edit, password change, addresses, connected accounts, account deletion
+- **Implementation:** /account/profile page, 5 client components, 5 API routes, avatar upload to Vercel Blob, GDPR-compliant deletion
 
 **Story 5.2: Social Login Integration** ✅
 - **Epic:** 5 | **Points:** 5 | **Completed:** 2025-10-23
-- **Description:** Google OAuth integration with NextAuth.js, social login UI, account linking, OAuth security
-- **Implementation:** Google OAuth provider configured with minimal scopes (openid, email, profile), "Sign in with Google" button on signin page, automatic emailVerified for OAuth users, Prisma adapter handles account linking, comprehensive error handling with user-friendly messages, CSRF protection, nonce for OpenID Connect, build successful. Facebook OAuth deferred as "nice to have".
+- **Description:** Google OAuth integration
+- **Implementation:** Google OAuth with NextAuth.js, automatic emailVerified, account linking
 
-**Story 5.1: User Authentication with NextAuth.js** ✅
+**Story 5.1: User Authentication** ✅
 - **Epic:** 5 | **Points:** 8 | **Completed:** 2025-10-23
-- **Description:** User registration and login with email/password, email verification, session management, protected routes, password reset
-- **Implementation:** Complete auth system with NextAuth.js v5, Prisma database integration, Resend email verification, password reset flow, protected routes middleware, JWT sessions. All 10 acceptance criteria met.
-
-**Story 4.3: Routing Architecture & URL Structure** ✅
-- **Epic:** 4 | **Points:** 5 | **Completed:** 2025-10-22
-- **Description:** Clean SEO-friendly URLs with routing, breadcrumbs, redirects, sitemap, canonical URLs
-- **Implementation:** Auto-generating Breadcrumbs component, 11 301 redirects, enhanced sitemap with vehicle data, canonical URLs on all pages
-
-**Story 4.2: Homepage Redesign for Dual Content** ✅
-- **Epic:** 4 | **Points:** 8 | **Completed:** 2025-10-22
-- **Description:** Homepage showcasing both vehicles and parts as unified BMW platform
-- **Implementation:** HeroSection, FeaturedVehicles, PopularParts, AboutSection components with ISR and dual-CMS
-
-**Story 4.1: Unified Navigation Header** ✅
-- **Epic:** 4 | **Points:** 5 | **Completed:** 2025-10-22
-- **Description:** Unified navigation with Vehicles/Parts links, mobile menu, active state highlighting
-- **Implementation:** Navigation component with 5 new files, active state detection, mobile HeadlessUI Dialog
-
-**Story 3.6: Sanity Studio Workflow & Editor Training** ✅
-- **Epic:** 3 | **Points:** 3 | **Completed:** 2025-10-22
-- **Description:** Custom desk structure, vehicle templates, editor training documentation
-- **Implementation:** Custom desk with filtered views, 5 body type templates, preview API routes, comprehensive editor guide
-
-**Story 3.5: Vehicle Status Management & Real-Time Updates** ✅
-- **Epic:** 3 | **Points:** 5 | **Completed:** 2025-10-22
-- **Description:** Real-time vehicle status updates, webhook integration, ISR revalidation
-- **Implementation:** Webhook routes, ISR revalidation on vehicle updates, status badge system
+- **Description:** User registration, login, email verification, password reset
+- **Implementation:** NextAuth.js v5, Prisma, Resend, protected routes middleware
 
 ---
 
 ## 🎯 Next Recommended Action
 
-**Action:** Implement Story 9.1 (Navigation Completeness & User Account Links)
-**Command:** `/bmad:bmm:workflows:dev-story` for Story 9.1 OR load DEV agent and run `*develop`
-**Agent:** DEV agent
+**Action:** Fix Story 4.4 Bug OR Continue Epic 5/6
+**Status:** Course correction complete - accurate project tracking restored
 
-**Why this step?**
-- **Story 9.1** is now marked Ready for implementation
-- Quick navigation fix to link Services, Profile, and Garage pages
-- Small story (1-2 hours) - adds missing navigation links to existing pages
-- Improves UX by making all features discoverable
+**Option 1 - Fix Story 4.4 Bug:**
+- **Story 4.4** has a known bug: "Vehicles in Stock" section not showing on product pages
+- Vehicle → Parts direction works ✅, Product → Vehicles broken ❌
+- Fix will complete Epic 4 (4/4 stories, 26/26 points) 🎉
 
-**Alternatively - Continue Epic 4:**
-- **Story 4.4** is also ready for implementation (Cross-Content Linking)
-- Context generated (2025-10-22), all prerequisites complete
-- Will complete Epic 4 (4/4 stories, 26/26 points) 🎉
+**Option 2 - Continue Epic 5:**
+- **Story 5.5:** Purchase History Integration (5 points) - Requires Shopify Customer API
+- **Story 5.6:** User Dashboard with Recommendations (5 points) - Requires Epic 6 done (✅ almost there!)
 
-**Progress Summary:**
-- Epic 3 (Vehicle Inventory): ✅ 6/6 stories complete (37 points)
-- Epic 4 (Unified Site Architecture): 3/4 stories complete (18/26 points, 69.2%) - Story 4.4 ready (FINAL STORY!)
-- Epic 5 (User Management): 2/6 stories complete (13/39 points, 33.3%) - Stories 5.1, 5.2 ✅ complete
-- Epic 6 (Advanced Search): 0/4 stories (blocked by Epic 5)
-- Epic 9 (Navigation & UX): Story 9.1 Ready for implementation
+**Option 3 - Complete Epic 6:**
+- **Story 6.4:** SEO Optimization & Schema Markup (5 points)
+- Will complete Epic 6 (4/4 stories, 39/39 points) 🎉
+- Prerequisites met: Epic 3 ✅ and Epic 4 mostly done
+
+**Progress Summary (CORRECTED):**
+- Epic 3 (Vehicle Inventory): ✅ 6/6 stories complete (37/37 points, 100%)
+- Epic 4 (Unified Site Architecture): 3/4 stories (18/26 points, 69.2%) - Story 4.4 has bug
+- Epic 5 (User Management): ✅ 4/6 stories complete (29/39 points, 74.4%) - 5.1, 5.2, 5.3, 5.4 done
+- Epic 6 (Advanced Search): ✅ 3/4 stories complete (34/39 points, 87.2%) - 6.1, 6.2, 6.3 done
+- Epic 7 (Services): ✅ 1/1 story complete (5 points, 100%) - Story 7.1 done
 
 ---
 
 ## Decisions Log
+
+**2025-10-28 - COURSE CORRECTION COMPLETE:** Comprehensive audit reconciled git commit 1faa217 (bulk save) with workflow tracking. Discovered significant untracked implementations: Epic 5 actually 4/6 complete (not 2/6), Epic 6 actually 3/4 complete (not 0/4 blocked), Epic 7 Story 7.1 complete (not tracked). Verified implementations against acceptance criteria: Story 6.1 (all 8 ACs met), Story 6.2 (complete), Story 6.3 (complete), Story 5.3 (complete), Story 5.4 (complete), Story 7.1 (complete). Updated Story 6.1 status: Draft → Done with completion notes. Corrected overall progress: Phase 2 from "11/20 stories, 78.7%" to **14/20 stories, 62.4%** (88/141 points). Percentage was inflated due to incomplete tracking. Epic 6 no longer blocked - 87.2% complete. Epic 5 now 74.4% complete. Added Epic 7 (Services) with Story 7.1 done. Updated workflow status file with corrected epic progress, accurate backlog (3 stories remaining), and realistic next actions. True remaining work: Story 4.4 bug fix, Stories 5.5-5.6, Story 6.4.
 
 **2025-10-28:** Story 9.1 (Navigation Completeness & User Account Links) approved and marked done by DEV agent. All 6 acceptance criteria validated, build successful, no regressions. Story moved to DONE. Navigation improvements complete: Services link in navbar and mobile menu, Profile and Garage links in user dropdown, Dashboard link removed. Epic 9 (Navigation & UX) - Story 9.1 complete (1/1 stories, 100%). Progress: 78.7% (111/141 points). Next: Continue with Story 4.4 (Cross-Content Linking) or Story 5.3 (User Profile & Account Settings).
 

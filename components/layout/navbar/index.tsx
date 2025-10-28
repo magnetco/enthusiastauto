@@ -5,7 +5,7 @@ import { Menu } from "lib/shopify/types";
 import Link from "next/link";
 import { Suspense } from "react";
 import MobileMenu from "./mobile-menu";
-import Search, { SearchSkeleton } from "./search";
+import UnifiedSearch, { UnifiedSearchSkeleton } from "./unified-search";
 
 const { SITE_NAME } = process.env;
 
@@ -46,8 +46,8 @@ export async function Navbar() {
             ) : null}
           </div>
           <div className="hidden justify-center md:flex md:w-1/3">
-            <Suspense fallback={<SearchSkeleton />}>
-              <Search />
+            <Suspense fallback={<UnifiedSearchSkeleton />}>
+              <UnifiedSearch />
             </Suspense>
           </div>
           <div className="flex justify-end md:w-1/3">
