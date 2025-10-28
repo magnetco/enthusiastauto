@@ -9,7 +9,7 @@
 ## Current Status
 
 **Current Phase:** 4-Implementation (Phase 2)
-**Current Workflow:** dev-story (Story 4.4) - Complete (Ready for Review)
+**Current Workflow:** dev-story (Story 9.1) - Complete (Ready for Review)
 **Overall Progress:** Phase 1 Complete (10/10 stories, 50 points) | Phase 2 In Progress (11/20 stories complete, 111/141 points, 78.7%)
 
 **Project Level:** 3 (Complex system - subsystems and integrations)
@@ -97,30 +97,39 @@
 
 ## 🎯 Next Recommended Action
 
-**Action:** Implement Story 4.4 (Cross-Content Linking)
-**Command:** `/bmad:bmm:workflows:dev-story` for Story 4.4
+**Action:** Implement Story 9.1 (Navigation Completeness & User Account Links)
+**Command:** `/bmad:bmm:workflows:dev-story` for Story 9.1 OR load DEV agent and run `*develop`
 **Agent:** DEV agent
 
 **Why this step?**
-- **Story 4.4** is ready for implementation in IN PROGRESS section
+- **Story 9.1** is now marked Ready for implementation
+- Quick navigation fix to link Services, Profile, and Garage pages
+- Small story (1-2 hours) - adds missing navigation links to existing pages
+- Improves UX by making all features discoverable
+
+**Alternatively - Continue Epic 4:**
+- **Story 4.4** is also ready for implementation (Cross-Content Linking)
 - Context generated (2025-10-22), all prerequisites complete
 - Will complete Epic 4 (4/4 stories, 26/26 points) 🎉
-- Cross-discovery components: vehicle parts recommendations and vehicles in stock
-
-**After Story 4.4 implementation:**
-1. Run `/bmad:bmm:workflows:story-approved` to mark complete
-2. Epic 4 COMPLETE! ✅
-3. Move to Story 5.3 (User Profile) or continue with Epic 5
 
 **Progress Summary:**
 - Epic 3 (Vehicle Inventory): ✅ 6/6 stories complete (37 points)
 - Epic 4 (Unified Site Architecture): 3/4 stories complete (18/26 points, 69.2%) - Story 4.4 ready (FINAL STORY!)
 - Epic 5 (User Management): 2/6 stories complete (13/39 points, 33.3%) - Stories 5.1, 5.2 ✅ complete
 - Epic 6 (Advanced Search): 0/4 stories (blocked by Epic 5)
+- Epic 9 (Navigation & UX): Story 9.1 Ready for implementation
 
 ---
 
 ## Decisions Log
+
+**2025-10-28:** Completed dev-story for Story 9.1 (Navigation Completeness & User Account Links). Implementation complete: All 6 tasks and 76 subtasks checked off. Added Services link to desktop navbar and mobile menu, added Profile and Garage links to user dropdown, removed broken Dashboard link. Modified 3 files (Navigation.tsx, UserMenu.tsx, MobileMenu.tsx). Build successful with 41 routes generated, no TypeScript errors introduced. All 6 acceptance criteria met: Services in navbar, Profile/Garage in dropdown, Dashboard removed, mobile menu parity, consistent ordering. Story status: Ready for Review. Progress: 78.7% (111/141 points). Next: User reviews Story 9.1 implementation and runs story-approved when satisfied.
+
+**2025-10-28:** Story 9.1 (Navigation Completeness & User Account Links) marked ready for development by PM agent. Story file status updated: Draft → Ready. Story addresses navigation gaps by adding Services link to navbar, Profile and Garage links to user dropdown, and removing broken Dashboard link. Small UX improvement story (1-2 hours). Status: Ready for implementation via dev-story workflow. Next: DEV agent implements Story 9.1, or continue with Story 4.4 (Cross-Content Linking) which is also ready.
+
+**2025-10-28:** Completed story-context for Story 8.1 (Sanity CMS Schema for Events). Context file: `docs/stories/story-context-8.8.1.xml`. Comprehensive implementation guidance generated including: 10 acceptance criteria (event document schema with all required fields, status management with three states, date/location fields, photo gallery 1-20 images with captions/hotspot, rich text description using portable text, SEO metadata fields, external links, Studio preview with emoji badges, field validation rules, schema registration), 10 tasks captured with 40+ subtasks, 4 documentation references (PRD Epic 8 placeholder, epic-stories, solution-architecture Sanity patterns, story-8.1.md), 6 code artifacts (vehicle.ts schema as critical reference pattern, schemaTypes/index.ts for registration, structure.ts for desk config, package.json dependency verification, client/image utilities), complete dependency list (all Sanity packages already installed from Epic 3), 9 architectural constraints (follow vehicle pattern, defineType/defineField syntax, hotspot for images, portable text, preview config), 7 constraint sections (status field design with emoji badges 🔵🟢⚪, image requirements 1200x630px hero, calendar export fields for Story 8.4, SEO metadata limits 60/160 chars, validation rules, studio preview format, desk structure with filtered views), 4 interface definitions (EventSchema structure, EventPreview format, SchemaRegistration pattern, DeskStructureConfig), testing standards with 38 test ideas mapped to 10 ACs covering validation, gallery limits, portable text, preview rendering, filtered views, TypeScript generation. Note: Epic 8 not yet formally added to PRD/epic-stories (story references placeholder sections), Event schema will be first content type in Epic 8. Story ready for DEV agent implementation via dev-story workflow. Progress: 78.7% (111/141 points). Next: DEV agent implements Story 8.1, or continue Epic 4/5 stories.
+
+**2025-10-28:** Story 8.1 (Sanity CMS Schema for Events) marked ready for development by SM agent. Story file status updated: Draft → Ready. Story 8.1 is now approved for context generation and implementation. This is the first story in Epic 8 (Events Management), which will enable event content management through Sanity CMS. Story includes 10 acceptance criteria for event schema (status management, photo galleries, SEO metadata, calendar export fields), 10 implementation tasks, builds on Sanity CMS infrastructure from Epic 3. 3 points. Next: Generate context for Story 8.1 via story-context workflow, then implement via dev-story, or continue drafting Story 8.2 (Events Listing Page).
 
 **2025-10-28:** Completed create-story for Story 8.1 (Sanity CMS Schema for Events). Story file created: `docs/stories/story-8.1.md`. Comprehensive story with 10 acceptance criteria covering: event document schema with all required fields (title, slug, eventDate, location, status, hero image, photo gallery, description, external website link, SEO metadata), status management with three states (upcoming/recap/past), date and location fields with validation, photo gallery support (1-20 images with captions and hotspot), rich text description using portable text, SEO metadata fields for social sharing, external links for third-party event pages, Studio preview configuration with status badges and formatted dates, field validation rules for required fields and data formats, schema registration in Sanity config. 10 implementation tasks with 40+ subtasks covering: event schema file creation following vehicle schema pattern, field validation rules implementation, Studio preview configuration with status badge emojis (🔵 Upcoming, 🟢 Recap, ⚪ Past), schema registration in Sanity config, Studio desk structure with filtered views (Upcoming Events, Past Events Recaps, Archived Events), helper fields for calendar export (startTime, endTime, timezone for future Story 8.4), sample event creation for testing, TypeScript types generation via `sanity schema extract`, documentation for content editors, comprehensive testing and validation. Extends Epic 8 (Events Management) with Sanity CMS foundation for event content management. Builds on existing Sanity CMS infrastructure from Epic 3 (Stories 3.1-3.2) with vehicle schema as reference pattern. Status field design: upcoming (future events), recap (past events with photos/content), past (archived events). Calendar export fields included in schema to support .ics generation in Story 8.4. 3 points. Status: Draft (needs review via story-ready workflow). Epic 8 progress: 1/4 stories drafted (0/16 points implemented). Next: Review story and approve for development context generation, then continue drafting Story 8.2 (Events Listing Page).
 

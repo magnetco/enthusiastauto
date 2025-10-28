@@ -82,13 +82,18 @@ export default function UserMenu() {
           </DropdownMenuLabel>
           <DropdownMenuSeparator />
           <DropdownMenuItem asChild>
-            <Link href="/account" className="cursor-pointer">
-              Account Settings
+            <Link href="/account/profile" className="cursor-pointer">
+              Profile
             </Link>
           </DropdownMenuItem>
           <DropdownMenuItem asChild>
-            <Link href="/dashboard" className="cursor-pointer">
-              Dashboard
+            <Link href="/account/garage" className="cursor-pointer">
+              Garage
+            </Link>
+          </DropdownMenuItem>
+          <DropdownMenuItem asChild>
+            <Link href="/account" className="cursor-pointer">
+              Account Settings
             </Link>
           </DropdownMenuItem>
           <DropdownMenuSeparator />

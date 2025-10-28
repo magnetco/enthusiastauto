@@ -117,6 +117,14 @@ export default function MobileMenu({ menu }: MobileMenuProps) {
                     </li>
                     <li>
                       <NavLink
+                        href="/services"
+                        className="block py-3 text-xl min-h-[44px] flex items-center"
+                      >
+                        Services
+                      </NavLink>
+                    </li>
+                    <li>
+                      <NavLink
                         href="/about"
                         className="block py-3 text-xl min-h-[44px] flex items-center"
                       >
@@ -140,6 +148,7 @@ export default function MobileMenu({ menu }: MobileMenuProps) {
                               ![
                                 "Vehicles",
                                 "Parts",
+                                "Services",
                                 "About",
                                 "Contact",
                               ].includes(item.title),

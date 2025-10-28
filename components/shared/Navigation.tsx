@@ -45,6 +45,9 @@ export async function Navigation() {
                 <NavLink href="/products">Parts</NavLink>
               </li>
               <li>
+                <NavLink href="/services">Services</NavLink>
+              </li>
+              <li>
                 <NavLink href="/about">About</NavLink>
               </li>
               <li>
@@ -55,7 +58,7 @@ export async function Navigation() {
                 ? menu
                     .filter(
                       (item) =>
-                        !["Vehicles", "Parts", "About", "Contact"].includes(
+                        !["Vehicles", "Parts", "Services", "About", "Contact"].includes(
                           item.title,
                         ),
                     )
