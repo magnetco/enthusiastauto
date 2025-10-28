@@ -1,6 +1,6 @@
 # Story 4.4: Cross-Content Linking Components
 
-Status: Ready for Review
+Status: Bug Fix Needed - Vehicle Matching Not Working
 
 ## Story
 
@@ -254,6 +254,47 @@ claude-sonnet-4-5-20250929
 ### Debug Log References
 
 2025-10-22: Implemented cross-content linking with dual-CMS architecture. Created recommendation business logic with fitment tag parsing supporting E-series, F-series, and G-series BMWs. Implemented 5-minute in-memory caching for performance optimization. Built polymorphic RecommendationCarousel component for both products and vehicles. Integrated into vehicle detail pages (/vehicles/[slug]) and product pages (/product/[handle]). Comprehensive unit test suite created with Vitest covering fitment parsing, ranking logic, and cache functionality. Build successful with all TypeScript type checks passing.
+
+**2025-10-28: Bug Investigation - "Vehicles in Stock" Section Not Working**
+
+**Issue:** Product pages (e.g., http://localhost:3000/product/kw-v4-coilover-kit-for-2021-bmw-m3-and-m4-adjustable-high-performance-suspension-by-kw) are not showing matching vehicles in the "Vehicles in Stock with This Part" section.
+
+**Root Cause Analysis:**
+1. **Compatible Parts (Vehicle → Parts)**: WORKING ✅
+   - Vehicle detail pages successfully show compatible parts
+   - Uses vehicle chassis code to search Shopify products by tags
+
+2. **Vehicles in Stock (Product → Vehicles)**: NOT WORKING ❌
+   - Product detail pages not showing matching vehicles
+   - Direction: Product tags → Vehicle chassis codes
+
+**Discovery - Tag Format Mismatch:**
+- Shopify product tags format: `"BMW M4 Base 2023"`, `"BMW M3 Competition 2021"` (model names with years)
+- Original code expected: `"BMW E46"`, `"BMW G82"` (chassis codes)
+- Current inventory has E24, E30 vehicles (1980s BMWs)
+- Test product (KW coilovers) tagged for M3/M4 2021-2023 (G80/G82 chassis)
+
+**Attempted Fixes:**
+1. Changed query from `status == "current"` to `inventoryStatus == "Current Inventory"` (vehicles have null status, use inventoryStatus field)
+2. Added model-to-chassis mapping (M3 → G80, M4 → G82, etc.)
+3. Added year-based generation detection for M3/M4/M5 models
+4. Enhanced `extractModelsFromTags()` to parse model names from tags like "BMW M4 Base 2023"
+5. Added debug logging to track tag extraction and query execution
+
+**Files Modified:**
+- `lib/shared/recommendations.ts` - Added MODEL_TO_CHASSIS_MAP, enhanced extractModelsFromTags(), updated GROQ query
+
+**Current Status:**
+- Build passing ✅
+- Logic appears correct ✅
+- Still not displaying vehicles ❌
+- Needs further investigation with actual runtime logs and data verification
+
+**Next Steps:**
+1. Verify debug logs show correct chassis extraction from product tags
+2. Confirm GROQ query is finding vehicles in Sanity
+3. Check if inventory has vehicles matching test product chassis codes
+4. May need to add test data (G82 vehicle) or test with matching product (E24/E30 parts)
 
 ### Completion Notes
 

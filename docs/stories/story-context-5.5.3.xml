@@ -1,0 +1,527 @@
+<story-context id="bmad/bmm/workflows/4-implementation/story-context/template" v="1.0">
+  <metadata>
+    <epicId>5</epicId>
+    <storyId>5.3</storyId>
+    <title>User Profile & Account Settings</title>
+    <status>Ready</status>
+    <generatedAt>2025-10-23</generatedAt>
+    <generator>BMAD Story Context Workflow</generator>
+    <sourceStoryPath>docs/stories/story-5.3.md</sourceStoryPath>
+  </metadata>
+
+  <story>
+    <asA>registered user</asA>
+    <iWant>manage my profile information and account settings</iWant>
+    <soThat>I can keep my information up-to-date and control my account preferences</soThat>
+    <tasks>
+      <task id="1">Create Profile Page UI (AC: 1, 2, 8) - 9 subtasks</task>
+      <task id="2">Build Edit Profile Form (AC: 2, 8) - 13 subtasks</task>
+      <task id="3">Implement Change Password Feature (AC: 3, 8) - 12 subtasks</task>
+      <task id="4">Build Addresses Management (AC: 4, 7) - 14 subtasks</task>
+      <task id="5">Build Connected Accounts Section (AC: 5, 7) - 13 subtasks</task>
+      <task id="6">Implement Delete Account Feature (AC: 6, 7, 9) - 11 subtasks</task>
+      <task id="7">API Routes and Server Logic (AC: 8, 9) - 12 subtasks</task>
+      <task id="8">Form Validation and User Feedback (AC: 7) - 8 subtasks</task>
+      <task id="9">Testing and QA (AC: all) - 13 subtasks</task>
+    </tasks>
+  </story>
+
+  <acceptanceCriteria>
+    <ac id="1" title="Profile Page Display">
+      Profile page accessible at /account/profile (protected route). Displays user information: name, email, avatar/image, account creation date. Email read-only. Avatar with initials fallback. Account type indicator (email/password, Google, Facebook). Uses ShadCN components (Card, Avatar, Label, Badge). Responsive layout (mobile, tablet, desktop). Loading state. Breadcrumb navigation: Dashboard > Profile.
+    </ac>
+    <ac id="2" title="Edit Profile Information">
+      "Edit Profile" button toggles form into edit mode. Editable fields: name, avatar image upload. Name validation: required, 2-50 characters, trimmed whitespace. Avatar upload: JPEG, PNG, WebP, max 5MB. Image preview before saving. Image auto-resized (max 512x512px). "Save Changes" and "Cancel" buttons. ShadCN Input, Button, Label components. Client-side and server-side validation. Success message: "Profile updated successfully". Error handling for upload failures, network errors, validation errors.
+    </ac>
+    <ac id="3" title="Change Password for Email/Password Accounts">
+      "Change Password" section visible only for users with email/password authentication. Section hidden for OAuth-only users (prompt to add password shown instead). Form fields: current password, new password, confirm new password. Password requirements: minimum 8 characters, uppercase, lowercase, number. Current password validated. New password must differ from current. Password strength indicator (weak/medium/strong). Successful change invalidates all sessions (re-login required). Redirect to signin with message: "Password changed successfully. Please log in again." Error handling: incorrect current password, weak new password, password mismatch. Keyboard and screen reader accessible.
+    </ac>
+    <ac id="4" title="Manage Saved Addresses (Shipping and Billing)">
+      "Addresses" section shows list of saved addresses. Each address displays: label (Home, Work, etc.), street, city, state, zip, country. "Add New Address" button opens address form modal/drawer. Address form fields: label, street address, city, state/province, postal code, country, phone (optional). Address validation using basic format checks (zip code format, required fields). "Edit" button opens form pre-filled with current data. "Delete" button with confirmation dialog: "Are you sure you want to delete this address?". "Set as Default" option marks address as default shipping/billing. Default address badge shown. Addresses saved to Vercel Postgres User table (addresses JSON field) or separate Address table. Empty state: "No saved addresses yet. Add your first address to speed up checkout." Integration point: Addresses available for Shopify checkout (future enhancement).
+    </ac>
+    <ac id="5" title="View Linked Social Accounts">
+      "Connected Accounts" section shows linked social authentication providers. Each linked account displays: provider name (Google, Facebook), linked email, link date. Google account shown with Google icon, Facebook with Facebook icon. "Unlink" button available if user has multiple authentication methods (prevents account lockout). Unlink confirmation dialog: "Are you sure you want to unlink [provider]? You can re-link at any time." If user only has one social account and no password, unlink button disabled with tooltip: "Add a password before unlinking your only authentication method." "Link [Provider]" button shown for unlinked providers (Google, Facebook). Linking new account initiates OAuth flow (same as signin OAuth flow). Successful link shows success message: "[Provider] account linked successfully." Empty state for email/password-only users: "No social accounts linked. Link Google or Facebook for faster login."
+    </ac>
+    <ac id="6" title="Delete Account">
+      "Delete Account" button in "Danger Zone" section at bottom of page. Button styled with destructive variant (red) and icon to indicate severity. Clicking button opens confirmation modal with detailed warning text. Warning explains data deletion: "This will permanently delete your account, profile, favorites, and all associated data. This action cannot be undone." Confirmation requires typing "DELETE" in text input to proceed (prevents accidental deletion). Additional checkbox: "I understand this action is permanent and cannot be undone". "Cancel" and "Permanently Delete Account" buttons in modal. Account deletion removes User record from database (cascades to related data: sessions, favorites, addresses). User signed out immediately after deletion. Redirect to homepage with message: "Your account has been deleted. We're sorry to see you go." Privacy policy compliance: User data fully removed from database (GDPR right to deletion).
+    </ac>
+    <ac id="7" title="Form Validation and User Feedback">
+      All forms validate on blur and on submit. Inline error messages shown below invalid fields with red text. Error messages clear and specific: "Name is required", "Password must be at least 8 characters". Success messages shown using ShadCN Toast component (top-right corner, auto-dismiss 3s). Loading states shown during API requests (spinner, disabled buttons). Network errors display user-friendly message: "Something went wrong. Please try again." Form accessibility: ARIA labels, error announcements to screen readers, keyboard navigation. Unsaved changes warning if user navigates away with pending edits (browser confirm dialog).
+    </ac>
+    <ac id="8" title="Database Schema and API Integration">
+      User profile updates via API route: PATCH /api/user/profile. Password change via API route: POST /api/user/password. Addresses managed via API routes: GET/POST/PATCH/DELETE /api/user/addresses. Account deletion via API route: DELETE /api/user/account with confirmation token. All API routes protected by NextAuth middleware (require valid session). API routes return 401 Unauthorized for unauthenticated requests. API routes return 403 Forbidden if user attempts to modify another user's data. Optimistic UI updates where appropriate (immediate feedback while API processes). Database transactions for critical operations (password change, account deletion).
+    </ac>
+    <ac id="9" title="Security and Privacy Compliance">
+      Profile page requires authentication (middleware protection). User can only view/edit their own profile (enforce userId match in API). Password change requires current password verification (prevent unauthorized changes). Account deletion requires explicit confirmation (prevent accidental/malicious deletion). Session invalidation after password change (force re-login for security). Payment information handled entirely by Shopify (zero PCI compliance scope in our app). Avatar image uploads scanned for malicious content (future enhancement: virus scanning). User data deletion complies with GDPR right to deletion. Privacy policy accessible from profile page footer. No sensitive data exposed in API responses (passwords hashed, tokens redacted).
+    </ac>
+  </acceptanceCriteria>
+
+  <artifacts>
+    <docs>
+      <doc>
+        <path>docs/PRD.md</path>
+        <title>Product Requirements Document</title>
+        <section>Epic 5: User Management System (Phase 2)</section>
+        <snippet>Goal: Implement user authentication and personalized features including favorites, garage, and account management. Stories: 7-9 stories covering authentication, user registration, user profiles, favorites/garage, purchase history integration, account dashboard, and social login. User profile management (personal info, saved addresses, payment methods). Session management and security (JWT, HTTPS, GDPR compliance).</snippet>
+      </doc>
+      <doc>
+        <path>docs/PRD.md</path>
+        <title>Product Requirements Document</title>
+        <section>NFR007: Security & Authentication</section>
+        <snippet>User authentication shall implement industry-standard security practices (password hashing, JWT tokens, HTTPS-only). User data shall be encrypted at rest and in transit. Session management shall include automatic timeout after 30 days of inactivity. The system shall comply with GDPR/CCPA data privacy requirements for user data handling.</snippet>
+      </doc>
+      <doc>
+        <path>docs/epic-stories.md</path>
+        <title>Epic Stories Document</title>
+        <section>Story 5.3: User Profile & Account Settings</section>
+        <snippet>As a registered user, I want to manage my profile information and account settings, so that I can keep my information up-to-date. Prerequisites: Story 5.1 complete (authentication working), User database schema includes profile fields. Profile page shows: name, email, avatar, account creation date. User can edit: name, avatar image. User can change password (if email/password account). User can update saved addresses. User can view linked social accounts. User can delete account (with confirmation dialog). Create profile page at /account/profile.</snippet>
+      </doc>
+      <doc>
+        <path>docs/solution-architecture.md</path>
+        <title>Solution Architecture Document</title>
+        <section>3.1 Database Schema (Vercel Postgres via Prisma)</section>
+        <snippet>NextAuth.js tables: Account model (OAuth provider data), Session model (session tokens, userId, expires), User model (id, name, email, emailVerified, image, accounts, sessions, favorites, createdAt, updatedAt). User model supports both email/password and OAuth authentication methods.</snippet>
+      </doc>
+      <doc>
+        <path>docs/solution-architecture.md</path>
+        <title>Solution Architecture Document</title>
+        <section>4.2 API Routes - Authentication Endpoints (NextAuth.js)</section>
+        <snippet>app/api/auth/[...nextauth]/route.ts - NextAuth configuration with GoogleProvider, FacebookProvider, EmailProvider. PrismaAdapter for database integration. Session strategy: database with 30-day maxAge. Callbacks include session callback to add user.id to session object.</snippet>
+      </doc>
+      <doc>
+        <path>docs/solution-architecture.md</path>
+        <title>Solution Architecture Document</title>
+        <section>2.1 Route Structure - User Dashboard Routes</section>
+        <snippet>/dashboard (User dashboard - SSR, protected), /dashboard/profile (User profile - SSR), /dashboard/garage (My Garage favorites - SSR), /dashboard/orders (Order history - SSR, Shopify integration). All routes server-rendered and protected by authentication middleware.</snippet>
+      </doc>
+      <doc>
+        <path>docs/stories/story-5.1.md</path>
+        <title>Story 5.1: User Authentication with NextAuth.js</title>
+        <section>Predecessor Story - Auth Foundation</section>
+        <snippet>Complete auth system implemented with NextAuth.js v5, Prisma database integration, Resend email verification, password reset flow, protected routes middleware, JWT sessions. User model established with: id, name, email, emailVerified, password (hashed with bcrypt), image, accounts, sessions. Middleware protects /account/* routes. All 10 acceptance criteria met.</snippet>
+      </doc>
+      <doc>
+        <path>docs/stories/story-5.2.md</path>
+        <title>Story 5.2: Social Login Integration</title>
+        <section>Predecessor Story - OAuth Integration</section>
+        <snippet>Google OAuth integration with NextAuth.js, social login UI, account linking, OAuth security. Google OAuth provider configured with minimal scopes (openid, email, profile). "Sign in with Google" button on signin page. Automatic emailVerified for OAuth users. Prisma adapter handles account linking. Account model structure supports linking multiple OAuth providers to single user account.</snippet>
+      </doc>
+      <doc>
+        <path>docs/stories/story-context-5.5.1.xml</path>
+        <title>Story 5.1 Context File</title>
+        <section>Implementation Context - Auth Foundation</section>
+        <snippet>NextAuth.js v5 configuration, Prisma User/Account/Session models, bcrypt password hashing (12 rounds), protected route middleware, email verification with Resend, password reset flow. API routes: /api/auth/[...nextauth], lib/auth/config.ts for NextAuth options. Established patterns for session management, password validation, and database operations.</snippet>
+      </doc>
+      <doc>
+        <path>docs/stories/story-context-5.5.2.xml</path>
+        <title>Story 5.2 Context File</title>
+        <section>Implementation Context - OAuth Integration</section>
+        <snippet>OAuth provider configuration (GoogleProvider, minimal scopes), Account linking via Prisma adapter, social auth UI components, NextAuth callbacks for OAuth user creation and emailVerified auto-setting. Account table structure: userId, provider, providerAccountId, type, access_token, refresh_token, scope. Patterns for handling first-time OAuth users vs existing users linking accounts.</snippet>
+      </doc>
+    </docs>
+    <code>
+      <artifact>
+        <path>lib/auth/config.ts</path>
+        <kind>auth-configuration</kind>
+        <symbol>authConfig</symbol>
+        <reason>NextAuth.js v5 configuration with providers (Credentials, Google), Prisma adapter, callbacks for session and JWT. Reuse for understanding auth patterns and session management.</reason>
+      </artifact>
+      <artifact>
+        <path>lib/auth/password.ts</path>
+        <kind>utility</kind>
+        <symbol>hashPassword, verifyPassword, validatePasswordStrength</symbol>
+        <reason>Password hashing with bcrypt (12 rounds) and validation utilities. Critical for password change feature - reuse verifyPassword to validate current password before allowing change.</reason>
+      </artifact>
+      <artifact>
+        <path>lib/auth/session.ts</path>
+        <kind>utility</kind>
+        <symbol>getServerSession, requireAuth</symbol>
+        <reason>Server-side session management utilities. Use getServerSession to fetch authenticated user data in profile page server component.</reason>
+      </artifact>
+      <artifact>
+        <path>lib/auth/types.ts</path>
+        <kind>types</kind>
+        <symbol>SessionUser, AuthError types</symbol>
+        <reason>TypeScript types for authentication. Extend or reference for profile-related types.</reason>
+      </artifact>
+      <artifact>
+        <path>app/api/auth/[...nextauth]/route.ts</path>
+        <kind>api-route</kind>
+        <symbol>GET, POST handlers</symbol>
+        <reason>NextAuth.js API route handlers. Reference for understanding auth flow and session creation.</reason>
+      </artifact>
+      <artifact>
+        <path>middleware.ts</path>
+        <kind>middleware</kind>
+        <symbol>middleware function</symbol>
+        <reason>Protected route middleware (from Story 5.1) that redirects unauthenticated users. Already protects /account/* routes including /account/profile.</reason>
+      </artifact>
+      <artifact>
+        <path>prisma/schema.prisma</path>
+        <kind>database-schema</kind>
+        <symbol>User, Account, Session models</symbol>
+        <lines>17-66</lines>
+        <reason>Current Prisma schema with User model (id, name, email, emailVerified, password, image, accounts, sessions, createdAt, updatedAt). Account model for OAuth linking (userId, provider, providerAccountId, access_token, etc.). May need to extend User model with addresses field (JSON) or create separate Address table.</reason>
+      </artifact>
+      <artifact>
+        <path>components/ui/button.tsx</path>
+        <kind>component</kind>
+        <symbol>Button</symbol>
+        <reason>ShadCN Button component with variants (default, destructive, outline, secondary, ghost, link). Use destructive variant for "Delete Account" button.</reason>
+      </artifact>
+      <artifact>
+        <path>components/ui/card.tsx</path>
+        <kind>component</kind>
+        <symbol>Card, CardHeader, CardContent, CardFooter</symbol>
+        <reason>ShadCN Card components for layout sections on profile page (Profile Info, Addresses, Connected Accounts, etc.).</reason>
+      </artifact>
+      <artifact>
+        <path>components/ui/input.tsx</path>
+        <kind>component</kind>
+        <symbol>Input</symbol>
+        <reason>ShadCN Input component for form fields (name, password, address fields).</reason>
+      </artifact>
+      <artifact>
+        <path>components/ui/label.tsx</path>
+        <kind>component</kind>
+        <symbol>Label</symbol>
+        <reason>ShadCN Label component for form field labels with accessibility support.</reason>
+      </artifact>
+      <artifact>
+        <path>components/ui/badge.tsx</path>
+        <kind>component</kind>
+        <symbol>Badge</symbol>
+        <reason>ShadCN Badge component for account type indicators (email/password, Google, Facebook) and default address badge.</reason>
+      </artifact>
+      <artifact>
+        <path>components/ui/dialog.tsx</path>
+        <kind>component</kind>
+        <symbol>Dialog, DialogContent, DialogHeader, DialogFooter</symbol>
+        <reason>ShadCN Dialog component for confirmation modals (unlink account, delete account).</reason>
+      </artifact>
+      <artifact>
+        <path>components/ui/alert.tsx</path>
+        <kind>component</kind>
+        <symbol>Alert, AlertDescription</symbol>
+        <reason>ShadCN Alert component for inline error messages and warnings.</reason>
+      </artifact>
+    </code>
+    <dependencies>
+      <node>
+        <package>next</package>
+        <version>15.3.0-canary.13</version>
+        <status>installed</status>
+      </node>
+      <node>
+        <package>next-auth</package>
+        <version>5.0.0-beta.29</version>
+        <status>installed</status>
+        <note>NextAuth.js v5 - Auth foundation from Story 5.1</note>
+      </node>
+      <node>
+        <package>@auth/prisma-adapter</package>
+        <version>^2.11.0</version>
+        <status>installed</status>
+        <note>Prisma adapter for NextAuth - handles OAuth account linking</note>
+      </node>
+      <node>
+        <package>@prisma/client</package>
+        <version>^6.18.0</version>
+        <status>installed</status>
+        <note>Prisma ORM for database operations</note>
+      </node>
+      <node>
+        <package>prisma</package>
+        <version>^6.18.0</version>
+        <status>installed (devDependencies)</status>
+        <note>Prisma CLI for migrations and schema management</note>
+      </node>
+      <node>
+        <package>bcryptjs</package>
+        <version>^3.0.2</version>
+        <status>installed</status>
+        <note>Password hashing - used in lib/auth/password.ts</note>
+      </node>
+      <node>
+        <package>react-hook-form</package>
+        <version>^7.65.0</version>
+        <status>installed</status>
+        <note>Form state management - use for profile forms</note>
+      </node>
+      <node>
+        <package>@hookform/resolvers</package>
+        <version>^5.2.2</version>
+        <status>installed</status>
+        <note>Form validation resolvers - use with Zod schemas</note>
+      </node>
+      <node>
+        <package>zod</package>
+        <version>^3.25.76</version>
+        <status>installed</status>
+        <note>Schema validation - use for form validation (profile, password, address)</note>
+      </node>
+      <node>
+        <package>sonner</package>
+        <version>^2.0.1</version>
+        <status>installed</status>
+        <note>Toast notifications - use for success/error messages (alternative to ShadCN Toast)</note>
+      </node>
+      <node>
+        <package>lucide-react</package>
+        <version>^0.545.0</version>
+        <status>installed</status>
+        <note>Icon library - use for UI icons (edit, delete, warning, etc.)</note>
+      </node>
+      <node>
+        <package>@radix-ui/react-dialog</package>
+        <version>^1.1.15</version>
+        <status>installed</status>
+        <note>Dialog/Modal primitives - ShadCN Dialog uses this</note>
+      </node>
+      <node>
+        <package>@radix-ui/react-label</package>
+        <version>^2.1.7</version>
+        <status>installed</status>
+        <note>Label primitives - ShadCN Label uses this</note>
+      </node>
+      <node>
+        <package>@radix-ui/react-tooltip</package>
+        <version>^1.2.8</version>
+        <status>installed</status>
+        <note>Tooltip primitives - use for disabled unlink button explanation</note>
+      </node>
+      <node>
+        <package>tailwindcss</package>
+        <version>^4.0.14</version>
+        <status>installed (devDependencies)</status>
+        <note>CSS framework - use for styling and responsive design</note>
+      </node>
+      <node>
+        <package>@vercel/blob</package>
+        <version>to be installed</version>
+        <status>NOT installed</status>
+        <note>OPTIONAL: Avatar image upload to Vercel Blob storage. Alternative: use @vercel/blob or cloudinary or skip image upload for MVP</note>
+      </node>
+      <node>
+        <package>sharp</package>
+        <version>to be installed</version>
+        <status>NOT installed</status>
+        <note>OPTIONAL: Image resize/optimization for avatar uploads. Next.js has built-in image optimization that may be sufficient</note>
+      </node>
+    </dependencies>
+  </artifacts>
+
+  <constraints>
+    <constraint>NextAuth.js v5 patterns: Use getServerSession() for server components, session callback adds user.id to session object, database session strategy (not JWT)</constraint>
+    <constraint>Prisma database operations: Use lib/db/prisma.ts singleton client, transactions for critical operations (password change, account deletion), cascade deletes configured in schema</constraint>
+    <constraint>Protected routes: /account/* routes already protected by middleware.ts from Story 5.1, redirects unauthenticated users to /auth/signin</constraint>
+    <constraint>Password security: Use lib/auth/password.ts utilities (hashPassword, verifyPassword), bcrypt with 12 rounds, current password verification required before change</constraint>
+    <constraint>Session invalidation: Password changes must invalidate all existing sessions (delete from Session table where userId matches), force re-login for security</constraint>
+    <constraint>Account linking safety: Prevent unlinking if user only has one auth method (check Account table count for userId), disable unlink button with tooltip explanation</constraint>
+    <constraint>ShadCN UI components: Use existing components from components/ui/ (Button, Card, Input, Label, Badge, Dialog, Alert), follow established styling patterns from Phase 1</constraint>
+    <constraint>Form validation: Client-side with React Hook Form + Zod schemas (likely already installed), server-side validation in API routes, inline error messages below fields</constraint>
+    <constraint>API route security: Require valid NextAuth session via getServerSession(), enforce userId matching (users can only modify their own data), return 401/403 for unauthorized access</constraint>
+    <constraint>Database schema update: Extend User model with addresses JSON field OR create separate Address table with userId foreign key, onDelete: Cascade for data cleanup</constraint>
+    <constraint>Image upload: Avatar upload to Vercel Blob storage (or Cloudinary), max 5MB, JPEG/PNG/WebP formats, auto-resize to 512x512px, file validation before upload</constraint>
+    <constraint>GDPR compliance: Account deletion must permanently remove User record and cascade to all related data (sessions, favorites, addresses), right to deletion</constraint>
+    <constraint>Payment methods: Do NOT manage payment information in app - delegate entirely to Shopify for PCI compliance, zero payment data in our database</constraint>
+    <constraint>OAuth provider data: Account table stores provider tokens, use for displaying linked accounts (provider, providerAccountId), handle multiple accounts per user</constraint>
+    <constraint>Error handling: User-friendly error messages, network errors show generic "Something went wrong. Please try again.", specific errors for validation failures</constraint>
+    <constraint>Accessibility: ARIA labels on form fields, error announcements to screen readers, keyboard navigation support, focus management in modals</constraint>
+    <constraint>Loading states: Show spinners/skeleton loaders during API requests, disable buttons while processing, optimistic UI updates where appropriate</constraint>
+    <constraint>TypeScript strict mode: All code must pass strict type checking, use Prisma-generated types, define custom types in lib/auth/types.ts or new lib/profile/types.ts</constraint>
+    <constraint>Testing requirements: 80%+ test coverage, unit tests for utilities, integration tests for API routes and forms, accessibility tests with screen reader</constraint>
+    <constraint>Responsive design: Mobile-first approach, works on mobile (320px+), tablet (768px+), desktop (1024px+), use Tailwind responsive classes</constraint>
+  </constraints>
+  <interfaces>
+    <interface>
+      <name>getServerSession</name>
+      <kind>function</kind>
+      <signature>async function getServerSession(): Promise&lt;Session | null&gt;</signature>
+      <path>lib/auth/session.ts</path>
+      <description>Fetch authenticated user session server-side. Returns session with user object (id, name, email, image) or null if not authenticated. Use in profile page server component.</description>
+    </interface>
+    <interface>
+      <name>verifyPassword</name>
+      <kind>function</kind>
+      <signature>async function verifyPassword(password: string, hashedPassword: string): Promise&lt;boolean&gt;</signature>
+      <path>lib/auth/password.ts</path>
+      <description>Verify plaintext password against bcrypt hash. Use to validate current password before allowing password change.</description>
+    </interface>
+    <interface>
+      <name>hashPassword</name>
+      <kind>function</kind>
+      <signature>async function hashPassword(password: string): Promise&lt;string&gt;</signature>
+      <path>lib/auth/password.ts</path>
+      <description>Hash password with bcrypt (12 rounds). Use to hash new password before storing in database.</description>
+    </interface>
+    <interface>
+      <name>validatePasswordStrength</name>
+      <kind>function</kind>
+      <signature>function validatePasswordStrength(password: string): { valid: boolean; errors: string[] }</signature>
+      <path>lib/auth/password.ts</path>
+      <description>Validate password meets requirements (8+ chars, uppercase, lowercase, number). Use for client-side and server-side validation of new password.</description>
+    </interface>
+    <interface>
+      <name>User Prisma model</name>
+      <kind>database-model</kind>
+      <signature>User { id: string, name: string?, email: string, emailVerified: DateTime?, password: string?, image: string?, accounts: Account[], sessions: Session[], createdAt: DateTime, updatedAt: DateTime }</signature>
+      <path>prisma/schema.prisma</path>
+      <description>User database model. Extend with addresses field (Json?) or create separate Address model. Use for profile data operations (update name, image, addresses).</description>
+    </interface>
+    <interface>
+      <name>Account Prisma model</name>
+      <kind>database-model</kind>
+      <signature>Account { id: string, userId: string, provider: string, providerAccountId: string, type: string, access_token?: string, ... }</signature>
+      <path>prisma/schema.prisma</path>
+      <description>OAuth account linking model. Query by userId to display linked social accounts. Delete to unlink provider.</description>
+    </interface>
+    <interface>
+      <name>PATCH /api/user/profile</name>
+      <kind>api-endpoint</kind>
+      <signature>Request: { name?: string, image?: string } | Response: { success: boolean, user: User }</signature>
+      <path>app/api/user/profile/route.ts (to be created)</path>
+      <description>Update user profile (name, avatar image). Require session, validate userId matches session.user.id. Return updated user object.</description>
+    </interface>
+    <interface>
+      <name>POST /api/user/password</name>
+      <kind>api-endpoint</kind>
+      <signature>Request: { currentPassword: string, newPassword: string } | Response: { success: boolean }</signature>
+      <path>app/api/user/password/route.ts (to be created)</path>
+      <description>Change user password. Verify current password, validate new password strength, hash and update, invalidate all sessions, sign out user.</description>
+    </interface>
+    <interface>
+      <name>GET/POST /api/user/addresses</name>
+      <kind>api-endpoint</kind>
+      <signature>GET: Response: { addresses: Address[] } | POST: Request: Address | Response: { address: Address }</signature>
+      <path>app/api/user/addresses/route.ts (to be created)</path>
+      <description>Manage user addresses. GET returns all addresses for authenticated user. POST creates new address. Addresses stored in User.addresses JSON or separate Address table.</description>
+    </interface>
+    <interface>
+      <name>DELETE /api/user/account</name>
+      <kind>api-endpoint</kind>
+      <signature>Request: { confirmation: string } | Response: { success: boolean }</signature>
+      <path>app/api/user/account/route.ts (to be created)</path>
+      <description>Delete user account permanently. Require confirmation string "DELETE", delete User record (cascades to sessions, favorites, addresses), sign out, return success.</description>
+    </interface>
+  </interfaces>
+  <tests>
+    <standards>
+      Testing framework: Vitest with @testing-library/react for component tests, @testing-library/user-event for interactions.
+      Test organization: __tests__ directories colocated with source files (e.g., app/account/profile/__tests__/, lib/profile/__tests__/).
+      Coverage target: 80%+ test coverage for all profile-related code.
+      Test types: Unit tests for utilities and API logic, integration tests for API routes and forms, component tests for UI rendering and interactions, accessibility tests with screen reader simulation.
+      Existing patterns: See lib/auth/__tests__/oauth-config.test.ts and app/auth/signin/__tests__/SigninPage.test.tsx for established testing patterns from Stories 5.1 and 5.2.
+    </standards>
+    <locations>
+      <location>app/account/profile/__tests__/</location>
+      <location>app/api/user/__tests__/</location>
+      <location>lib/profile/__tests__/</location>
+      <location>components/account/__tests__/</location>
+    </locations>
+    <ideas>
+      <test ac="1" title="Profile Page Display">
+        <idea>Test profile page renders with user data (name, email, avatar, account creation date)</idea>
+        <idea>Test email field is read-only (no edit input)</idea>
+        <idea>Test avatar displays with initials fallback when no image</idea>
+        <idea>Test account type badges display correctly (email/password, Google, Facebook)</idea>
+        <idea>Test breadcrumb navigation renders (Dashboard > Profile)</idea>
+        <idea>Test loading state shows skeleton/spinner while fetching data</idea>
+        <idea>Test responsive layout on mobile (320px), tablet (768px), desktop (1024px)</idea>
+        <idea>Test unauthenticated users redirected to signin by middleware</idea>
+      </test>
+      <test ac="2" title="Edit Profile Information">
+        <idea>Test "Edit Profile" button toggles form into edit mode</idea>
+        <idea>Test name field validation (required, 2-50 chars, trimmed whitespace)</idea>
+        <idea>Test avatar upload accepts JPEG/PNG/WebP, rejects other formats</idea>
+        <idea>Test avatar upload rejects files >5MB</idea>
+        <idea>Test image preview shows before saving</idea>
+        <idea>Test "Save Changes" button submits form and calls API</idea>
+        <idea>Test "Cancel" button reverts changes and returns to view mode</idea>
+        <idea>Test success toast message shown after successful update</idea>
+        <idea>Test error handling for network failures, validation errors, upload failures</idea>
+        <idea>Test API route PATCH /api/user/profile updates User record and returns updated user</idea>
+      </test>
+      <test ac="3" title="Change Password">
+        <idea>Test "Change Password" section visible only for email/password users</idea>
+        <idea>Test section hidden for OAuth-only users (password null in database)</idea>
+        <idea>Test password strength indicator updates as user types (weak/medium/strong)</idea>
+        <idea>Test password validation: minimum 8 chars, uppercase, lowercase, number</idea>
+        <idea>Test current password verification against database hash</idea>
+        <idea>Test new password must differ from current password</idea>
+        <idea>Test successful password change invalidates all sessions</idea>
+        <idea>Test user redirected to signin page with success message after password change</idea>
+        <idea>Test error handling: incorrect current password, weak new password, password mismatch</idea>
+        <idea>Test API route POST /api/user/password verifies, hashes, updates, invalidates sessions</idea>
+      </test>
+      <test ac="4" title="Manage Addresses">
+        <idea>Test addresses list displays with label, street, city, state, zip</idea>
+        <idea>Test "Add New Address" button opens modal/drawer form</idea>
+        <idea>Test address form validation (required fields, zip code format)</idea>
+        <idea>Test "Edit" button opens form pre-filled with current address data</idea>
+        <idea>Test "Delete" button shows confirmation dialog before deleting</idea>
+        <idea>Test "Set as Default" toggle marks address as default</idea>
+        <idea>Test default address badge displayed on applicable address</idea>
+        <idea>Test empty state message when no addresses saved</idea>
+        <idea>Test API routes: GET /api/user/addresses returns user addresses</idea>
+        <idea>Test API routes: POST /api/user/addresses creates new address</idea>
+        <idea>Test API routes: PATCH /api/user/addresses/[id] updates address</idea>
+        <idea>Test API routes: DELETE /api/user/addresses/[id] deletes address</idea>
+      </test>
+      <test ac="5" title="View Linked Social Accounts">
+        <idea>Test linked accounts display with provider name, email, link date, icon</idea>
+        <idea>Test "Unlink" button available if user has multiple auth methods</idea>
+        <idea>Test "Unlink" button disabled if user only has one social account and no password</idea>
+        <idea>Test disabled unlink button shows tooltip explaining why</idea>
+        <idea>Test unlink confirmation dialog shown with warning text</idea>
+        <idea>Test "Link [Provider]" button shown for unlinked providers</idea>
+        <idea>Test linking new account initiates OAuth flow</idea>
+        <idea>Test successful link shows success message</idea>
+        <idea>Test empty state for email-only users suggesting social login</idea>
+        <idea>Test API route DELETE /api/user/accounts/[provider] removes Account record</idea>
+      </test>
+      <test ac="6" title="Delete Account">
+        <idea>Test "Delete Account" button visible in "Danger Zone" section</idea>
+        <idea>Test delete button styled with destructive variant (red)</idea>
+        <idea>Test confirmation modal opens with detailed warning text</idea>
+        <idea>Test confirmation requires typing "DELETE" in text input</idea>
+        <idea>Test confirmation requires checkbox: "I understand this action is permanent"</idea>
+        <idea>Test "Permanently Delete Account" button disabled until both conditions met</idea>
+        <idea>Test account deletion removes User record from database</idea>
+        <idea>Test account deletion cascades to sessions, favorites, addresses (GDPR compliance)</idea>
+        <idea>Test user signed out immediately after deletion</idea>
+        <idea>Test redirect to homepage with deletion confirmation message</idea>
+        <idea>Test API route DELETE /api/user/account validates confirmation and deletes User</idea>
+      </test>
+      <test ac="7" title="Form Validation and User Feedback">
+        <idea>Test all forms validate on blur and on submit</idea>
+        <idea>Test inline error messages shown below invalid fields with red text</idea>
+        <idea>Test error messages clear and specific (e.g., "Name is required")</idea>
+        <idea>Test success messages shown using toast component (auto-dismiss 3s)</idea>
+        <idea>Test loading states during API requests (spinner, disabled buttons)</idea>
+        <idea>Test network errors display user-friendly message</idea>
+        <idea>Test form accessibility: ARIA labels, keyboard navigation, error announcements</idea>
+        <idea>Test unsaved changes warning when navigating away (browser confirm dialog)</idea>
+      </test>
+      <test ac="8" title="Database Schema and API Integration">
+        <idea>Test API route PATCH /api/user/profile protected by NextAuth middleware</idea>
+        <idea>Test API route POST /api/user/password protected by NextAuth middleware</idea>
+        <idea>Test API routes return 401 Unauthorized for unauthenticated requests</idea>
+        <idea>Test API routes return 403 Forbidden if user attempts to modify another user's data</idea>
+        <idea>Test database transactions for password change (update + invalidate sessions)</idea>
+        <idea>Test database transactions for account deletion (delete User + cascade)</idea>
+        <idea>Test optimistic UI updates (immediate feedback while API processes)</idea>
+      </test>
+      <test ac="9" title="Security and Privacy Compliance">
+        <idea>Test profile page requires authentication (middleware redirects unauthenticated users)</idea>
+        <idea>Test user can only view/edit their own profile (userId match enforcement)</idea>
+        <idea>Test password change requires current password verification</idea>
+        <idea>Test session invalidation after password change (all sessions deleted)</idea>
+        <idea>Test account deletion requires explicit confirmation ("DELETE" + checkbox)</idea>
+        <idea>Test GDPR compliance: account deletion removes all user data from database</idea>
+        <idea>Test no sensitive data exposed in API responses (passwords redacted, tokens hidden)</idea>
+        <idea>Test security: unauthorized access attempts blocked (401/403 responses)</idea>
+      </test>
+    </ideas>
+  </tests>
+</story-context>

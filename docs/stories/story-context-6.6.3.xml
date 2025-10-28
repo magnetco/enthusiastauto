@@ -1,0 +1,419 @@
+<story-context id="bmad/bmm/workflows/4-implementation/story-context/template" v="1.0">
+  <metadata>
+    <epicId>6</epicId>
+    <storyId>6.3</storyId>
+    <title>Recommendation Engine - Basic Algorithm</title>
+    <status>Ready</status>
+    <generatedAt>2025-10-28</generatedAt>
+    <generator>BMAD Story Context Workflow</generator>
+    <sourceStoryPath>docs/stories/story-6.3.md</sourceStoryPath>
+  </metadata>
+
+  <story>
+    <asA>user</asA>
+    <iWant>to see personalized recommendations based on my activity (garage items, browsing history, purchase history)</iWant>
+    <soThat>I discover relevant vehicles and parts I might not have found on my own</soThat>
+    <tasks>
+      <task id="1">Design recommendation algorithm strategy (AC: #1, #2, #3)</task>
+      <task id="2">Implement user activity tracking (AC: #1)</task>
+      <task id="3">Create recommendation scoring engine (AC: #2, #3, #6, #8)</task>
+      <task id="4">Implement fallback recommendations for new users (AC: #7)</task>
+      <task id="5">Create RecommendationCarousel component (AC: #4, #5)</task>
+      <task id="6">Integrate RecommendationCarousel on key pages (AC: #4)</task>
+      <task id="7">Create recommendations API route (AC: #6)</task>
+      <task id="8">Add TypeScript types for recommendations (AC: All)</task>
+      <task id="9">Write unit tests for recommendation engine (AC: #2, #3, #6, #7, #8)</task>
+      <task id="10">Document recommendation system (AC: All)</task>
+    </tasks>
+  </story>
+
+  <acceptanceCriteria>
+    <criterion id="1">User Activity Tracking - System tracks user browsing activity (vehicle views, product views) in cookies or database for recommendation input</criterion>
+    <criterion id="2">Garage-Based Recommendations - Recommendations consider items saved in user's garage (vehicles and parts from Story 5.4)</criterion>
+    <criterion id="3">Purchase History Integration - Recommendations consider past purchases (if available from Shopify customer data)</criterion>
+    <criterion id="4">Multi-Location Display - "Recommended for You" sections appear on homepage, user dashboard, and optionally vehicle/product pages</criterion>
+    <criterion id="5">Mixed Content Recommendations - Recommendations show mix of both vehicles AND parts when user has both types in garage</criterion>
+    <criterion id="6">Performance Target - Recommendation generation completes within 200ms per NFR009</criterion>
+    <criterion id="7">Fallback for New Users - New users without history see popular/featured items instead of personalized recommendations</criterion>
+    <criterion id="8">Smart Exclusions - Recommendations exclude items already in user's garage to avoid redundancy</criterion>
+  </acceptanceCriteria>
+
+  <artifacts>
+    <docs>
+      <doc>
+        <path>docs/PRD.md</path>
+        <title>Product Requirements Document</title>
+        <section>FR022 - Personalized Recommendations</section>
+        <snippet>The system shall provide personalized recommendations for vehicles and parts based on user browsing history and saved favorites</snippet>
+      </doc>
+      <doc>
+        <path>docs/PRD.md</path>
+        <title>Product Requirements Document</title>
+        <section>NFR009 - Search & Discovery Performance</section>
+        <snippet>Unified search queries shall return results within 300ms for 95th percentile of requests (applies to recommendation generation)</snippet>
+      </doc>
+      <doc>
+        <path>docs/PRD.md</path>
+        <title>Product Requirements Document</title>
+        <section>User Management System</section>
+        <snippet>Implement user account system that enables authenticated experiences including favorites/garage, purchase history, and personalized recommendations</snippet>
+      </doc>
+      <doc>
+        <path>docs/PRD.md</path>
+        <title>Product Requirements Document</title>
+        <section>Advanced Search & Discovery Goals</section>
+        <snippet>Personalized recommendations based on user garage and browsing history, search analytics and ranking optimization</snippet>
+      </doc>
+      <doc>
+        <path>docs/epic-stories.md</path>
+        <title>Epic Stories</title>
+        <section>Story 6.3 - Recommendation Engine</section>
+        <snippet>Basic Algorithm - See personalized recommendations based on activity to discover relevant vehicles and parts. 13 points.</snippet>
+      </doc>
+      <doc>
+        <path>docs/solution-architecture.md</path>
+        <title>Solution Architecture</title>
+        <section>Component Architecture - Search & Discovery</section>
+        <snippet>RecommendationCarousel component in Search & Discovery layer (component 5)</snippet>
+      </doc>
+      <doc>
+        <path>docs/solution-architecture.md</path>
+        <title>Solution Architecture</title>
+        <section>Business Logic Layer</section>
+        <snippet>Search & Recommendation Service handles unified search, relevance ranking, and personalized recommendations</snippet>
+      </doc>
+      <doc>
+        <path>docs/stories/story-5.4.md</path>
+        <title>Story 5.4 - My Garage</title>
+        <section>Prerequisite Foundation</section>
+        <snippet>UserFavorite table provides garage items data for recommendation scoring. Garage items weighted 3.0 in algorithm.</snippet>
+      </doc>
+      <doc>
+        <path>docs/stories/story-4.4.md</path>
+        <title>Story 4.4 - Cross-Content Linking</title>
+        <section>Existing Foundation</section>
+        <snippet>lib/shared/recommendations.ts provides Vehicle→Parts and Product→Vehicles cross-discovery patterns to extend for personalized recommendations</snippet>
+      </doc>
+      <doc>
+        <path>docs/stories/story-6.1.md</path>
+        <title>Story 6.1 - Unified Search Infrastructure</title>
+        <section>Related System</section>
+        <snippet>Fuse.js search API at /api/search with relevance ranking and caching patterns (15min index TTL, 5min result TTL) to reuse for recommendation indexing</snippet>
+      </doc>
+    </docs>
+    <code>
+      <artifact>
+        <path>lib/shared/recommendations.ts</path>
+        <kind>service</kind>
+        <symbol>getCompatibleParts, getVehiclesWithPart</symbol>
+        <lines>1-386</lines>
+        <reason>Existing cross-discovery foundation (Story 4.4) - provides Vehicle→Parts and Product→Vehicles matching patterns, fitment tag parsing, compatibility tag generation, and 5-minute caching. Story 6.3 extends these patterns for personalized user-based recommendations.</reason>
+      </artifact>
+      <artifact>
+        <path>lib/cache/memory.ts</path>
+        <kind>utility</kind>
+        <symbol>memoryCache, MemoryCache</symbol>
+        <lines>1-132</lines>
+        <reason>In-memory caching utility with TTL support (default 5min). Use for caching user-specific recommendations (5min TTL) and fallback recommendations (15min TTL). Already used by Story 4.4 recommendations.</reason>
+      </artifact>
+      <artifact>
+        <path>prisma/schema.prisma</path>
+        <kind>schema</kind>
+        <symbol>User, UserFavorite</symbol>
+        <lines>17-82</lines>
+        <reason>Database schema for user authentication and favorites. UserFavorite table (Story 5.4) stores garage items (vehicles/parts) used for recommendation scoring. User model supports optional UserActivity relation for tracking browsing history.</reason>
+      </artifact>
+      <artifact>
+        <path>types/search.ts</path>
+        <kind>types</kind>
+        <symbol>SearchResult, SearchQuery, SearchResponse</symbol>
+        <lines>1-77</lines>
+        <reason>Unified search types from Story 6.1. Provides SearchResult interface for polymorphic vehicle/product handling. Use as pattern for recommendation result types.</reason>
+      </artifact>
+      <artifact>
+        <path>lib/search/unified.ts</path>
+        <kind>service</kind>
+        <symbol>searchAll</symbol>
+        <lines>N/A</lines>
+        <reason>Unified search service (Story 6.1) with dual-CMS indexing (Sanity + Shopify), Fuse.js integration, and relevance ranking. Can reuse indexing and search logic for finding similar items in recommendation algorithm.</reason>
+      </artifact>
+      <artifact>
+        <path>lib/search/fuse.ts</path>
+        <kind>config</kind>
+        <symbol>vehicleFuseConfig, productFuseConfig</symbol>
+        <lines>N/A</lines>
+        <reason>Fuse.js configuration for vehicles and products (Story 6.1) with field weights and threshold settings. Reference for similarity matching in recommendation scoring.</reason>
+      </artifact>
+      <artifact>
+        <path>components/vehicles/VehicleCard.tsx</path>
+        <kind>component</kind>
+        <symbol>VehicleCard</symbol>
+        <lines>N/A</lines>
+        <reason>Vehicle card component pattern for rendering vehicle recommendations. RecommendationCarousel will use this for displaying vehicle items.</reason>
+      </artifact>
+      <artifact>
+        <path>components/layout/product-grid-items.tsx</path>
+        <kind>component</kind>
+        <symbol>ProductGridItems</symbol>
+        <lines>N/A</lines>
+        <reason>Product card component pattern for rendering product recommendations. RecommendationCarousel will use this for displaying part items.</reason>
+      </artifact>
+      <artifact>
+        <path>lib/auth/session.ts</path>
+        <kind>utility</kind>
+        <symbol>getServerSession, getCurrentUser</symbol>
+        <lines>N/A</lines>
+        <reason>Server-side session utilities for retrieving authenticated user. Use to get userId for personalized recommendations vs fallback for anonymous users.</reason>
+      </artifact>
+      <artifact>
+        <path>lib/favorites/utils.ts</path>
+        <kind>utility</kind>
+        <symbol>getUserFavorites</symbol>
+        <lines>N/A</lines>
+        <reason>Utility for fetching user's garage items (Story 5.4). Use to retrieve UserFavorite records for recommendation scoring (garage items weighted 3.0).</reason>
+      </artifact>
+      <artifact>
+        <path>lib/sanity/queries/vehicles.ts</path>
+        <kind>query</kind>
+        <symbol>VehicleDetail, VehicleListItem</symbol>
+        <lines>N/A</lines>
+        <reason>Sanity query utilities and types for vehicles. Use for fetching popular vehicles for fallback recommendations and for indexing vehicles in recommendation search.</reason>
+      </artifact>
+      <artifact>
+        <path>lib/shopify/index.ts</path>
+        <kind>client</kind>
+        <symbol>shopifyFetch</symbol>
+        <lines>N/A</lines>
+        <reason>Shopify GraphQL client for querying products. Use for fetching popular products for fallback recommendations and for querying Shopify Customer API for purchase history.</reason>
+      </artifact>
+      <artifact>
+        <path>app/api/search/route.ts</path>
+        <kind>api</kind>
+        <symbol>GET /api/search</symbol>
+        <lines>N/A</lines>
+        <reason>Search API route pattern (Story 6.1) with validation, error handling, and rate limiting. Reference for implementing /api/recommendations route.</reason>
+      </artifact>
+      <artifact>
+        <path>components/search/SearchResultCard.tsx</path>
+        <kind>component</kind>
+        <symbol>SearchResultCard</symbol>
+        <lines>N/A</lines>
+        <reason>Polymorphic result card component (Story 6.2) handling both vehicles and products. Pattern for RecommendationCarousel card rendering.</reason>
+      </artifact>
+    </code>
+    <dependencies>
+      <ecosystem name="node">
+        <package name="next" version="15.3.0-canary.13">Next.js App Router framework</package>
+        <package name="react" version="19.0.0">React library for UI components</package>
+        <package name="@prisma/client" version="^6.18.0">Prisma ORM for database operations (User, UserFavorite models)</package>
+        <package name="next-auth" version="5.0.0-beta.29">NextAuth.js for authentication and session management</package>
+        <package name="@sanity/client" version="^7.12.0">Sanity CMS client for vehicle data queries</package>
+        <package name="fuse.js" version="^7.1.0">Fuzzy search library for similarity matching (already installed, used by Story 6.1)</package>
+        <package name="zod" version="^3.25.76">Schema validation for types and API inputs</package>
+        <package name="lucide-react" version="^0.545.0">Icon library for UI</package>
+        <package name="tailwind-merge" version="^3.3.1">Tailwind CSS utility for merging class names</package>
+        <package name="class-variance-authority" version="^0.7.1">CVA for component variants</package>
+      </ecosystem>
+      <ecosystem name="dependencies-note">
+        <note>All required packages already installed. No new dependencies needed for Story 6.3.</note>
+        <note>Cookie handling: Use Next.js cookies() API (built-in)</note>
+        <note>Caching: Use existing lib/cache/memory.ts (in-memory with TTL)</note>
+        <note>Shopify API: Use existing lib/shopify client for product/customer queries</note>
+      </ecosystem>
+    </dependencies>
+  </artifacts>
+
+  <constraints>
+    <constraint>App Router patterns: Server Components by default, Client Components marked with "use client", server actions for mutations</constraint>
+    <constraint>TypeScript strict mode: All code must pass TypeScript compilation with strict: true</constraint>
+    <constraint>Recommendation scoring algorithm: Garage items (weight 3.0), browsing history (2.0), purchase history (1.5)</constraint>
+    <constraint>Performance requirement: Recommendation generation must complete within 200ms (NFR009)</constraint>
+    <constraint>Caching strategy: User-specific recommendations cached 5 minutes, fallback recommendations cached 15 minutes</constraint>
+    <constraint>Activity tracking: Cookie-based for anonymous users (30-day TTL), optional database tracking for authenticated users</constraint>
+    <constraint>Cookie security: httpOnly, secure, sameSite flags required for activity tracking cookies</constraint>
+    <constraint>Garage item exclusion: Recommendations must filter out items already in user's garage (AC #8)</constraint>
+    <constraint>Mixed content recommendations: Show both vehicles AND parts when user has both types in garage (AC #5)</constraint>
+    <constraint>Fallback for new users: Show popular/featured items when no user activity or garage data available (AC #7)</constraint>
+    <constraint>Recommendation limit: Default 4-6 items per request, configurable via API parameter</constraint>
+    <constraint>Extend existing patterns: Build on lib/shared/recommendations.ts (Story 4.4) cross-discovery logic</constraint>
+    <constraint>Reuse existing components: Use VehicleCard and ProductGridItems for rendering, SearchResultCard for polymorphic pattern</constraint>
+    <constraint>Database operations: Use Prisma for UserFavorite queries, NextAuth session for user identification</constraint>
+    <constraint>API design: RESTful endpoint at /api/recommendations with query params (userId, limit, type)</constraint>
+    <constraint>Rate limiting: 100 requests/min per user for recommendations API (same as search API)</constraint>
+    <constraint>Error handling: Graceful degradation - show fallback recommendations if personalized scoring fails</constraint>
+    <constraint>Testing requirement: Vitest unit tests with 80%+ coverage, test performance meets 200ms target</constraint>
+    <constraint>Documentation: JSDoc comments for all exported functions, README for recommendation system architecture</constraint>
+    <constraint>Future upgrade path: Design algorithm to support collaborative filtering in future iterations</constraint>
+  </constraints>
+  <interfaces>
+    <interface>
+      <name>UserActivity</name>
+      <kind>TypeScript interface</kind>
+      <signature>{ vehicles: string[], products: string[], searches: string[], timestamp: Date }</signature>
+      <path>types/recommendations.ts</path>
+    </interface>
+    <interface>
+      <name>RecommendationScore</name>
+      <kind>TypeScript interface</kind>
+      <signature>{ item: VehicleListItem | Product, score: number, reason: string, type: 'vehicle' | 'product' }</signature>
+      <path>types/recommendations.ts</path>
+    </interface>
+    <interface>
+      <name>RecommendationOptions</name>
+      <kind>TypeScript interface</kind>
+      <signature>{ userId?: string, limit?: number, type?: 'vehicles' | 'parts' | 'all', excludeGarage?: boolean }</signature>
+      <path>types/recommendations.ts</path>
+    </interface>
+    <interface>
+      <name>RecommendationResult</name>
+      <kind>TypeScript interface</kind>
+      <signature>{ items: Array&lt;VehicleListItem | Product&gt;, type: 'personalized' | 'fallback', generatedAt: string, userId?: string }</signature>
+      <path>types/recommendations.ts</path>
+    </interface>
+    <interface>
+      <name>getRecommendationsForUser</name>
+      <kind>Function signature</kind>
+      <signature>async function getRecommendationsForUser(userId?: string, options?: RecommendationOptions): Promise&lt;RecommendationResult&gt;</signature>
+      <path>lib/recommendations/engine.ts</path>
+    </interface>
+    <interface>
+      <name>trackVehicleView</name>
+      <kind>Function signature</kind>
+      <signature>function trackVehicleView(vehicleId: string, userId?: string): void</signature>
+      <path>lib/recommendations/tracking.ts</path>
+    </interface>
+    <interface>
+      <name>trackProductView</name>
+      <kind>Function signature</kind>
+      <signature>function trackProductView(productHandle: string, userId?: string): void</signature>
+      <path>lib/recommendations/tracking.ts</path>
+    </interface>
+    <interface>
+      <name>getUserActivity</name>
+      <kind>Function signature</kind>
+      <signature>async function getUserActivity(userId?: string): Promise&lt;UserActivity&gt;</signature>
+      <path>lib/recommendations/tracking.ts</path>
+    </interface>
+    <interface>
+      <name>getPopularVehicles</name>
+      <kind>Function signature</kind>
+      <signature>async function getPopularVehicles(limit?: number): Promise&lt;VehicleListItem[]&gt;</signature>
+      <path>lib/recommendations/fallback.ts</path>
+    </interface>
+    <interface>
+      <name>getPopularParts</name>
+      <kind>Function signature</kind>
+      <signature>async function getPopularParts(limit?: number): Promise&lt;Product[]&gt;</signature>
+      <path>lib/recommendations/fallback.ts</path>
+    </interface>
+    <interface>
+      <name>GET /api/recommendations</name>
+      <kind>REST API endpoint</kind>
+      <signature>Query params: userId (optional), limit (default 6, max 20), type (vehicles|parts|all). Returns JSON: { recommendations: Array&lt;Vehicle | Product&gt;, type: string, isFallback: boolean, generatedAt: string }</signature>
+      <path>app/api/recommendations/route.ts</path>
+    </interface>
+    <interface>
+      <name>RecommendationCarousel</name>
+      <kind>React Component</kind>
+      <signature>Props: { userId?: string, title?: string, limit?: number, type?: 'vehicles' | 'parts' | 'all' }</signature>
+      <path>components/recommendations/RecommendationCarousel.tsx</path>
+    </interface>
+    <interface>
+      <name>UserFavorite (Prisma model)</name>
+      <kind>Database model</kind>
+      <signature>{ id: string, userId: string, itemType: string, itemId: string, itemHandle: string, createdAt: DateTime }</signature>
+      <path>prisma/schema.prisma (lines 70-82)</path>
+    </interface>
+  </interfaces>
+  <tests>
+    <standards>
+Testing framework: Vitest with React Testing Library for component tests, Happy DOM for DOM simulation. All tests in __tests__ directories alongside source files. Target 80%+ code coverage. Performance tests must validate &lt;200ms recommendation generation time (NFR009). Mock external dependencies (Prisma, Sanity, Shopify clients) using vi.mock(). Test data fixtures for UserFavorite, vehicles, products, and activity tracking. Integration tests for API routes using supertest patterns from Story 6.1. E2E tests using Playwright for RecommendationCarousel rendering and user interactions.
+    </standards>
+    <locations>
+      <location>lib/recommendations/__tests__/ - Unit tests for engine, tracking, fallback modules</location>
+      <location>app/api/recommendations/__tests__/ - API route tests</location>
+      <location>components/recommendations/__tests__/ - Component tests for RecommendationCarousel</location>
+      <location>types/__tests__/ - Type validation tests</location>
+    </locations>
+    <ideas>
+      <idea ac="1">Test activity tracking: Cookie creation with correct structure and security flags (httpOnly, secure, sameSite)</idea>
+      <idea ac="1">Test activity tracking: Cookie expiration set to 30 days from creation</idea>
+      <idea ac="1">Test activity tracking: trackVehicleView adds vehicle ID to cookie array without duplicates</idea>
+      <idea ac="1">Test activity tracking: trackProductView adds product handle to cookie array without duplicates</idea>
+      <idea ac="1">Test activity tracking: getUserActivity retrieves activity from cookies for anonymous users</idea>
+      <idea ac="1">Test activity tracking: getUserActivity retrieves activity from database for authenticated users (if implemented)</idea>
+      <idea ac="1">Test activity tracking: Activity persists across page loads via cookie</idea>
+      <idea ac="1">Test activity tracking: Integration with vehicle/product detail pages</idea>
+
+      <idea ac="2">Test garage-based recommendations: Scoring prioritizes items matching garage vehicle chassis (weight 3.0)</idea>
+      <idea ac="2">Test garage-based recommendations: Multiple garage items contribute to candidate pool</idea>
+      <idea ac="2">Test garage-based recommendations: Vehicle with E46 in garage receives E46 parts recommendations</idea>
+      <idea ac="2">Test garage-based recommendations: Parts in garage trigger related vehicle recommendations</idea>
+      <idea ac="2">Test garage-based recommendations: Empty garage returns fallback recommendations</idea>
+      <idea ac="2">Test garage-based recommendations: Mixed garage (vehicles + parts) returns mixed recommendations</idea>
+
+      <idea ac="3">Test purchase history: Shopify customer API integration retrieves past purchases</idea>
+      <idea ac="3">Test purchase history: Purchase history contributes to scoring (weight 1.5)</idea>
+      <idea ac="3">Test purchase history: Similar products to purchased items ranked higher</idea>
+      <idea ac="3">Test purchase history: Handles missing purchase history gracefully (no Shopify customer ID)</idea>
+      <idea ac="3">Test purchase history: API errors don't break recommendation generation</idea>
+
+      <idea ac="4">Test multi-location display: RecommendationCarousel renders on homepage</idea>
+      <idea ac="4">Test multi-location display: RecommendationCarousel renders on user dashboard with correct user ID</idea>
+      <idea ac="4">Test multi-location display: Optional integration on vehicle detail pages</idea>
+      <idea ac="4">Test multi-location display: Optional integration on product detail pages</idea>
+      <idea ac="4">Test multi-location display: Title changes based on location (Homepage: "Recommended for You", Dashboard: "Based on Your Garage")</idea>
+
+      <idea ac="5">Test mixed content: User with vehicles and parts in garage receives both types in recommendations</idea>
+      <idea ac="5">Test mixed content: Polymorphic rendering handles VehicleCard and ProductCard correctly</idea>
+      <idea ac="5">Test mixed content: Visual distinction between vehicle and part recommendations (icons)</idea>
+      <idea ac="5">Test mixed content: Ratio of vehicles to parts reflects garage composition</idea>
+
+      <idea ac="6">Test performance: Recommendation generation completes within 200ms with realistic data (10 garage items, 20 recent views)</idea>
+      <idea ac="6">Test performance: Caching reduces subsequent requests to &lt;20ms (cache hit)</idea>
+      <idea ac="6">Test performance: User-specific cache TTL set to 5 minutes</idea>
+      <idea ac="6">Test performance: Fallback cache TTL set to 15 minutes</idea>
+      <idea ac="6">Test performance: Cache key uniqueness per user prevents cross-user data leakage</idea>
+      <idea ac="6">Test performance: Performance monitoring logs execution time</idea>
+
+      <idea ac="7">Test fallback: New user with no garage or activity receives popular items</idea>
+      <idea ac="7">Test fallback: Fallback returns mix of popular vehicles and parts</idea>
+      <idea ac="7">Test fallback: Popular vehicles query returns 4 most recent "Current Inventory" vehicles from Sanity</idea>
+      <idea ac="7">Test fallback: Popular parts query returns 4 featured/best-selling products from Shopify</idea>
+      <idea ac="7">Test fallback: Fallback recommendations cached globally (15min TTL)</idea>
+      <idea ac="7">Test fallback: Anonymous users receive fallback with "Popular Items" title</idea>
+
+      <idea ac="8">Test smart exclusions: Items already in user's garage excluded from recommendations</idea>
+      <idea ac="8">Test smart exclusions: Exclusion works for both vehicles and parts</idea>
+      <idea ac="8">Test smart exclusions: Recommendations list doesn't contain duplicate garage items</idea>
+      <idea ac="8">Test smart exclusions: Exclusion can be disabled via excludeGarage option (for testing)</idea>
+
+      <idea ac="all">Test recommendation scoring: Algorithm correctly weights garage (3.0), browsing (2.0), purchase (1.5)</idea>
+      <idea ac="all">Test recommendation scoring: Top 4-6 highest scored items returned</idea>
+      <idea ac="all">Test recommendation scoring: Sorting by score descending</idea>
+      <idea ac="all">Test recommendation scoring: Score calculation with multiple factors combined</idea>
+
+      <idea ac="all">Test API route: GET /api/recommendations validates query parameters</idea>
+      <idea ac="all">Test API route: Returns 400 for invalid limit (&lt;1 or &gt;20)</idea>
+      <idea ac="all">Test API route: Returns 400 for invalid type (not vehicles/parts/all)</idea>
+      <idea ac="all">Test API route: Returns JSON with correct structure (recommendations, type, isFallback, generatedAt)</idea>
+      <idea ac="all">Test API route: Rate limiting enforces 100 requests/min per user</idea>
+      <idea ac="all">Test API route: Cache-Control header set to private, max-age=300</idea>
+      <idea ac="all">Test API route: Error handling returns 500 with graceful fallback</idea>
+
+      <idea ac="all">Test RecommendationCarousel: Component renders loading skeleton initially</idea>
+      <idea ac="all">Test RecommendationCarousel: Component renders recommendation cards after data fetch</idea>
+      <idea ac="all">Test RecommendationCarousel: Component handles empty state (no recommendations)</idea>
+      <idea ac="all">Test RecommendationCarousel: Component accepts userId, title, limit props</idea>
+      <idea ac="all">Test RecommendationCarousel: Responsive layout (horizontal scroll desktop, vertical mobile)</idea>
+      <idea ac="all">Test RecommendationCarousel: Accessibility (ARIA labels, keyboard navigation)</idea>
+
+      <idea ac="all">Test types: TypeScript compilation passes with strict mode</idea>
+      <idea ac="all">Test types: Zod schemas validate recommendation options and results</idea>
+
+      <idea ac="all">E2E test: User browses vehicle, sees recommendations on homepage</idea>
+      <idea ac="all">E2E test: User adds item to garage, recommendations update to exclude it</idea>
+      <idea ac="all">E2E test: Anonymous user sees "Popular Items" fallback recommendations</idea>
+    </ideas>
+  </tests>
+</story-context>

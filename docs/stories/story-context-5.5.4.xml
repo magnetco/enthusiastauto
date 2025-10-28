@@ -1,0 +1,430 @@
+<story-context id="bmad/bmm/workflows/4-implementation/story-context/template" v="1.0">
+  <metadata>
+    <epicId>5</epicId>
+    <storyId>5.4</storyId>
+    <title>"My Garage" - Save Favorite Vehicles & Parts</title>
+    <status>Draft</status>
+    <generatedAt>2025-10-24</generatedAt>
+    <generator>BMAD Story Context Workflow</generator>
+    <sourceStoryPath>docs/stories/story-5.4.md</sourceStoryPath>
+  </metadata>
+
+  <story>
+    <asA>registered user</asA>
+    <iWant>save favorite vehicles and parts to "My Garage"</iWant>
+    <soThat>I can easily return to items I'm interested in and track products I'm considering purchasing</soThat>
+    <tasks>
+- Task 1: Create UserFavorite Database Table and API Routes (AC: 6, 8)
+- Task 2: Build "Add to Garage" Button Component (AC: 1, 2)
+- Task 3: Integrate FavoriteButton on Vehicle Detail Pages (AC: 1)
+- Task 4: Integrate FavoriteButton on Product Detail Pages (AC: 2)
+- Task 5: Create My Garage Page (AC: 3, 4, 7)
+- Task 6: Create Garage Item Card Component (AC: 3, 5)
+- Task 7: Implement Garage Limit UI and Feedback (AC: 8)
+- Task 8: Optimize Performance and Caching (AC: 6)
+- Task 9: Testing and QA (AC: all)
+    </tasks>
+  </story>
+
+  <acceptanceCriteria>
+AC1: "Add to Garage" Button on Vehicle Detail Pages - Heart icon button on vehicle pages with filled/outline states, optimistic UI updates, authentication requirement, loading/success/error states, keyboard accessibility
+
+AC2: "Add to Favorites" Button on Product Detail Pages - Heart icon button on product pages with same functionality as AC1
+
+AC3: My Garage Page at /account/garage - Protected route displaying all saved items, responsive grid layout, breadcrumb navigation, sorting options, loading states
+
+AC4: Separate Tabs/Sections for "Saved Vehicles" and "Saved Parts" - Tab navigation (All/Vehicles/Parts) with ShadCN Tabs, counts, URL state preservation, keyboard navigation
+
+AC5: Remove Items from Garage with Confirmation - Heart icon toggles removal with confirmation dialog, optimistic UI, error handling, optional bulk delete/undo
+
+AC6: Garage Persists Across Sessions and Devices - Database storage (UserFavorite table), synced across devices, no localStorage
+
+AC7: Empty State When No Saved Items - Empty states per tab with illustrations, CTAs, ShadCN styling
+
+AC8: Limit of 50 Saved Items Per User - Configurable limit, disabled buttons at capacity, warning at 80%, count display, error toasts
+  </acceptanceCriteria>
+
+  <artifacts>
+    <docs>
+      <doc>
+        <path>docs/PRD.md</path>
+        <title>Product Requirements Document</title>
+        <section>FR017 - Favorites/Garage Requirement</section>
+        <snippet>Authenticated users shall be able to save favorite vehicles and parts to their personal garage/wishlist for later viewing</snippet>
+      </doc>
+      <doc>
+        <path>docs/PRD.md</path>
+        <title>Product Requirements Document</title>
+        <section>NFR008 - Data Integrity and Reliability</section>
+        <snippet>User favorites and garage data shall persist reliably with 99.9% uptime SLA</snippet>
+      </doc>
+      <doc>
+        <path>docs/PRD.md</path>
+        <title>Product Requirements Document</title>
+        <section>FR022 - Personalized Recommendations</section>
+        <snippet>The system shall provide personalized recommendations for vehicles and parts based on user browsing history and saved favorites</snippet>
+      </doc>
+      <doc>
+        <path>docs/PRD.md</path>
+        <title>Product Requirements Document</title>
+        <section>Phase 2 User Journey - Save to Garage</section>
+        <snippet>Adds E46 M3 to "My Garage" favorites list, browses compatible parts section, returns later to see saved vehicle in garage with persistent user state across sessions</snippet>
+      </doc>
+      <doc>
+        <path>docs/epic-stories.md</path>
+        <title>Epic Stories Document</title>
+        <section>Story 5.4 - My Garage Requirements</section>
+        <snippet>Heart icon buttons on vehicle/product pages, My Garage page at /account/garage with tabs, 50-item limit, optimistic UI, cross-device persistence. 8 points.</snippet>
+      </doc>
+      <doc>
+        <path>docs/epic-stories.md</path>
+        <title>Epic Stories Document</title>
+        <section>Epic 5 - User Management System</section>
+        <snippet>Goal: Implement user authentication and personalized features including favorites, garage, and account management. Story 5.4 builds on auth foundation from Stories 5.1-5.3.</snippet>
+      </doc>
+      <doc>
+        <path>docs/epic-stories.md</path>
+        <title>Epic Stories Document</title>
+        <section>Epic 5 Success Metrics</section>
+        <snippet>Target: 25%+ user registration rate within 3 months, 40%+ of registered users save items to My Garage, 35%+ increase in returning user rate</snippet>
+      </doc>
+      <doc>
+        <path>docs/solution-architecture.md</path>
+        <title>Solution Architecture Document</title>
+        <section>UserFavorite Table Schema (lines 469-475)</section>
+        <snippet>UserFavorite model with userId, itemType ('vehicle' | 'product'), itemId (Sanity _id or Shopify id), @@unique([userId, itemType, itemId]), @@index([userId])</snippet>
+      </doc>
+      <doc>
+        <path>docs/solution-architecture.md</path>
+        <title>Solution Architecture Document</title>
+        <section>Server Actions - Favorites (lines 848-928)</section>
+        <snippet>addToGarage and removeFromGarage server actions with session validation, revalidatePath('/dashboard/garage'), Prisma operations</snippet>
+      </doc>
+      <doc>
+        <path>docs/stories/story-5.1.md</path>
+        <title>Story 5.1 - User Authentication</title>
+        <section>Predecessor Story - Auth Foundation</section>
+        <snippet>NextAuth.js v5 implementation with Prisma adapter, User model with UserFavorite relation, protected routes middleware, session management</snippet>
+      </doc>
+      <doc>
+        <path>docs/stories/story-5.2.md</path>
+        <title>Story 5.2 - Social Login Integration</title>
+        <section>Predecessor Story - OAuth Support</section>
+        <snippet>Google OAuth integration with NextAuth, favorites work seamlessly for all authenticated users (email/password or OAuth)</snippet>
+      </doc>
+      <doc>
+        <path>docs/stories/story-5.3.md</path>
+        <title>Story 5.3 - User Profile</title>
+        <section>Predecessor Story - Account Management Patterns</section>
+        <snippet>User profile page patterns, ShadCN component usage (Tabs, AlertDialog, Card), API route structure, optimistic UI updates, form validation</snippet>
+      </doc>
+    </docs>
+    <code>
+      <artifact>
+        <path>prisma/schema.prisma</path>
+        <kind>database schema</kind>
+        <symbol>User model</symbol>
+        <lines>17-31</lines>
+        <reason>User model with NextAuth integration - UserFavorite relation will be added here, already has addresses JSON field pattern from Story 5.3</reason>
+      </artifact>
+      <artifact>
+        <path>middleware.ts</path>
+        <kind>middleware</kind>
+        <symbol>middleware function</symbol>
+        <lines>1-76</lines>
+        <reason>Protected route middleware - /account and /api/favorites routes already configured for authentication enforcement from Story 5.1</reason>
+      </artifact>
+      <artifact>
+        <path>lib/auth/session.ts</path>
+        <kind>utility</kind>
+        <symbol>getServerSession, getCurrentUser</symbol>
+        <lines>1-31</lines>
+        <reason>Server-side session utilities for authenticating API routes and server components - pattern to use in favorites API routes</reason>
+      </artifact>
+      <artifact>
+        <path>app/api/user/profile/route.ts</path>
+        <kind>api route</kind>
+        <symbol>PATCH handler</symbol>
+        <lines>1-64</lines>
+        <reason>Example API route pattern from Story 5.3 - shows session validation, Prisma operations, Zod validation, error handling to replicate for favorites routes</reason>
+      </artifact>
+      <artifact>
+        <path>components/ui/button.tsx</path>
+        <kind>component</kind>
+        <symbol>Button</symbol>
+        <lines>-</lines>
+        <reason>ShadCN Button component for FavoriteButton - already integrated with variant prop support</reason>
+      </artifact>
+      <artifact>
+        <path>components/ui/card.tsx</path>
+        <kind>component</kind>
+        <symbol>Card</symbol>
+        <lines>-</lines>
+        <reason>ShadCN Card component for GarageItemCard display - already integrated</reason>
+      </artifact>
+      <artifact>
+        <path>components/ui/badge.tsx</path>
+        <kind>component</kind>
+        <symbol>Badge</symbol>
+        <lines>-</lines>
+        <reason>ShadCN Badge component for item count display in My Garage - already integrated</reason>
+      </artifact>
+      <artifact>
+        <path>components/ui/dialog.tsx</path>
+        <kind>component</kind>
+        <symbol>AlertDialog</symbol>
+        <lines>-</lines>
+        <reason>ShadCN Dialog/AlertDialog component for removal confirmation - already integrated</reason>
+      </artifact>
+      <artifact>
+        <path>lib/cache/memory.ts</path>
+        <kind>utility</kind>
+        <symbol>MemoryCache class</symbol>
+        <lines>1-132</lines>
+        <reason>In-memory caching utility from Story 4.4 - can be used for caching garage item counts to reduce database queries</reason>
+      </artifact>
+      <artifact>
+        <path>app/account/profile/page.tsx</path>
+        <kind>page</kind>
+        <symbol>ProfilePage</symbol>
+        <lines>-</lines>
+        <reason>Example /account/* page pattern from Story 5.3 - shows server component with session, breadcrumbs, protected route structure to replicate for /account/garage</reason>
+      </artifact>
+      <artifact>
+        <path>app/account/layout.tsx</path>
+        <kind>layout</kind>
+        <symbol>AccountLayout</symbol>
+        <lines>-</lines>
+        <reason>Account section layout - My Garage will inherit this layout with sidebar navigation</reason>
+      </artifact>
+    </code>
+    <dependencies>
+      <ecosystem name="Node.js">
+        <package name="next" version="15.3.0-canary.13">Core framework - already installed</package>
+        <package name="react" version="19.0.0">UI library - already installed</package>
+        <package name="react-dom" version="19.0.0">React DOM - already installed</package>
+        <package name="next-auth" version="5.0.0-beta.29">Authentication - already installed from Story 5.1</package>
+        <package name="@auth/prisma-adapter" version="^2.11.0">Prisma adapter for NextAuth - already installed</package>
+        <package name="@prisma/client" version="^6.18.0">Prisma ORM client - already installed</package>
+        <package name="@vercel/postgres" version="^0.10.0">Vercel Postgres - already installed</package>
+        <package name="zod" version="^3.25.76">Schema validation - already installed</package>
+        <package name="lucide-react" version="^0.545.0">Icons including Heart icon - already installed</package>
+        <package name="sonner" version="^2.0.1">Toast notifications - already installed</package>
+        <package name="@radix-ui/react-dialog" version="^1.1.15">ShadCN AlertDialog - already installed</package>
+        <package name="@radix-ui/react-label" version="^2.1.7">ShadCN form labels - already installed</package>
+        <package name="@radix-ui/react-slot" version="^1.2.3">ShadCN slot component - already installed</package>
+        <package name="@radix-ui/react-tooltip" version="^1.2.8">Tooltip component - already installed</package>
+        <package name="class-variance-authority" version="^0.7.1">CVA for component variants - already installed</package>
+        <package name="clsx" version="^2.1.1">Classname utility - already installed</package>
+        <package name="tailwind-merge" version="^3.3.1">Tailwind class merging - already installed</package>
+        <package name="@sanity/client" version="^7.12.0">Sanity CMS client for vehicle data - already installed</package>
+        <package name="typescript" version="5.8.2">TypeScript - already installed</package>
+      </ecosystem>
+      <ecosystem name="DevDependencies">
+        <package name="prisma" version="^6.18.0">Prisma CLI - already installed</package>
+        <package name="vitest" version="^4.0.1">Testing framework - already installed</package>
+        <package name="@testing-library/react" version="^16.3.0">React testing utilities - already installed</package>
+        <package name="@testing-library/jest-dom" version="^6.9.1">Jest DOM matchers - already installed</package>
+        <package name="@playwright/test" version="^1.56.0">E2E testing - already installed</package>
+      </ecosystem>
+      <note>All required dependencies already installed from Stories 5.1-5.3 and Phase 1. No new packages needed.</note>
+      <note>Optional: @tanstack/react-query or swr for client-side data fetching - evaluate during implementation</note>
+    </dependencies>
+  </artifacts>
+
+  <constraints>
+- NextAuth v5 patterns: Use getServerSession() for authentication in API routes and server components, session.user.email or session.user.id for userId
+- Prisma operations: Use prisma.userFavorite.create/delete/findMany with proper where clauses, include userId validation in all queries
+- Protected routes: /account/garage must be server component with session check, API routes must return 401 if unauthenticated
+- UserFavorite table: Add model to schema.prisma with userId, itemType, itemId, createdAt, @@unique([userId, itemType, itemId]), @@index([userId])
+- No migration needed: UserFavorite table ready to add (Story 5.4 Dev Notes confirm), but verify migration exists or create new one
+- Optimistic UI pattern: Client component updates state immediately on user action, API call in background, revert if error with toast
+- Database as single source of truth: No localStorage, all favorites persisted in Postgres, synced across devices
+- Polymorphic favorites: itemType discriminator ('vehicle' | 'product'), itemId stores Sanity _id or Shopify id as string
+- API route structure: Follow /api/user/* pattern from Story 5.3 (profile, addresses), use NextRequest/NextResponse, Zod validation
+- Error handling: Comprehensive try/catch, user-friendly error messages, proper HTTP status codes (200, 400, 401, 404, 500)
+- Revalidation: Use revalidatePath('/account/garage') after favorites mutations to update cache
+- 50-item limit enforcement: Check count before allowing add in API route, return 400 if exceeded, make limit configurable via env var
+- ShadCN components: Use Tabs for navigation, Card for item cards, Badge for counts, AlertDialog for confirmation, Button with variants
+- Responsive design: Grid layout 1 column (mobile), 2 columns (tablet), 3-4 columns (desktop), horizontal scroll for tabs on mobile
+- Accessibility: ARIA labels on buttons, keyboard navigation (Enter for save/remove, arrow keys for tabs), screen reader support
+- Performance: Add @@index([userId]) to UserFavorite table, use Prisma select to fetch only needed fields, cache garage count in React state
+- Testing standards: 80%+ test coverage, unit tests for components, integration tests for API routes, E2E for full flow
+- TypeScript strict mode: All code must pass TypeScript strict mode compilation, define interfaces for props and API responses
+- Security: Validate userId matches session.user.id in API routes (users can only modify their own favorites), cascade delete on User deletion
+- Integration: Link from /account/profile or dashboard to /account/garage, add nav item in account layout sidebar
+  </constraints>
+  <interfaces>
+    <interface>
+      <name>UserFavorite Prisma Model</name>
+      <kind>database model</kind>
+      <signature>model UserFavorite { id: String @id @default(cuid()), userId: String, itemType: String, itemId: String, createdAt: DateTime @default(now()), user: User @relation(fields: [userId], references: [id], onDelete: Cascade), @@unique([userId, itemType, itemId]), @@index([userId]) }</signature>
+      <path>prisma/schema.prisma (to be added)</path>
+    </interface>
+    <interface>
+      <name>POST /api/user/favorites</name>
+      <kind>REST endpoint</kind>
+      <signature>Request: { itemId: string, itemType: 'vehicle' | 'product' } | Response: { success: boolean, favorite: UserFavorite } | Errors: 400 (limit reached), 401 (unauthorized), 409 (duplicate)</signature>
+      <path>app/api/user/favorites/route.ts (to be created)</path>
+    </interface>
+    <interface>
+      <name>DELETE /api/user/favorites</name>
+      <kind>REST endpoint</kind>
+      <signature>Request: { itemId: string, itemType: 'vehicle' | 'product' } | Response: { success: boolean } | Errors: 401 (unauthorized), 404 (not found)</signature>
+      <path>app/api/user/favorites/route.ts (to be created)</path>
+    </interface>
+    <interface>
+      <name>GET /api/user/favorites</name>
+      <kind>REST endpoint</kind>
+      <signature>Query: ?itemType=vehicle|product (optional) | Response: { favorites: UserFavorite[] } | Errors: 401 (unauthorized)</signature>
+      <path>app/api/user/favorites/route.ts (to be created)</path>
+    </interface>
+    <interface>
+      <name>FavoriteButton Component</name>
+      <kind>client component</kind>
+      <signature>interface FavoriteButtonProps { itemId: string, itemType: 'vehicle' | 'product', initialIsSaved: boolean, onToggle?: (isSaved: boolean) =&gt; void, variant?: 'default' | 'minimal' }</signature>
+      <path>components/favorites/FavoriteButton.tsx (to be created)</path>
+    </interface>
+    <interface>
+      <name>GarageItemCard Component</name>
+      <kind>client component</kind>
+      <signature>interface GarageItemCardProps { item: Vehicle | Product, itemType: 'vehicle' | 'product', onRemove: (itemId: string) =&gt; Promise&lt;void&gt; }</signature>
+      <path>components/favorites/GarageItemCard.tsx (to be created)</path>
+    </interface>
+    <interface>
+      <name>getServerSession</name>
+      <kind>function</kind>
+      <signature>async function getServerSession(): Promise&lt;Session | null&gt;</signature>
+      <path>lib/auth/session.ts (existing)</path>
+    </interface>
+    <interface>
+      <name>User.favorites relation</name>
+      <kind>database relation</kind>
+      <signature>User model: favorites UserFavorite[] (add to existing User model)</signature>
+      <path>prisma/schema.prisma (to be modified)</path>
+    </interface>
+  </interfaces>
+  <tests>
+    <standards>
+Testing framework: Vitest v4.0.1 for unit and integration tests, Playwright v1.56.0 for E2E tests, @testing-library/react v16.3.0 for component testing. Target 80%+ test coverage across all new code. Use TypeScript strict mode for all test files. Follow AAA pattern (Arrange, Act, Assert). Mock external dependencies (Prisma, NextAuth, Sanity, Shopify) in unit tests. Use happy-dom for DOM testing. Test file naming: *.test.ts or *.test.tsx in __tests__/ directories adjacent to implementation files. Run tests with: npm test (run once), npm run test:watch (watch mode), npm run test:coverage (coverage report). E2E tests in tests/ directory using Playwright. Accessibility testing with @testing-library/jest-dom matchers and Playwright accessibility checks.
+    </standards>
+    <locations>
+- components/favorites/__tests__/FavoriteButton.test.tsx
+- components/favorites/__tests__/GarageItemCard.test.tsx
+- app/api/user/favorites/__tests__/route.test.ts
+- app/account/garage/__tests__/page.test.tsx
+- lib/favorites/__tests__/utils.test.ts (if utility functions created)
+- tests/e2e/favorites.spec.ts (E2E tests)
+    </locations>
+    <ideas>
+**AC1: "Add to Garage" Button on Vehicle Detail Pages**
+- Test 1.1: FavoriteButton renders with outline heart icon when not saved (initialIsSaved=false)
+- Test 1.2: FavoriteButton renders with filled heart icon when saved (initialIsSaved=true)
+- Test 1.3: Click toggles icon from outline to filled with optimistic UI update
+- Test 1.4: Tooltip shows "Add to Garage" on hover when not saved
+- Test 1.5: Tooltip shows "Remove from Garage" on hover when saved
+- Test 1.6: Button disabled for unauthenticated users with tooltip "Sign in to save vehicles"
+- Test 1.7: Click while unauthenticated redirects to signin page with returnUrl
+- Test 1.8: Loading spinner shown during API request
+- Test 1.9: Success animation plays on successful toggle
+- Test 1.10: Optimistic update reverts if API call fails with error toast
+- Test 1.11: Button accessible via Enter key (keyboard navigation)
+- Test 1.12: ARIA label "Add [item] to garage" or "Remove [item] from garage" present
+
+**AC2: "Add to Favorites" Button on Product Detail Pages**
+- Test 2.1: FavoriteButton works identically on product pages (itemType="product")
+- Test 2.2: Product favorites stored with correct itemType discriminator
+- Test 2.3: API call includes itemType="product" in request body
+
+**AC3: My Garage Page at /account/garage**
+- Test 3.1: Garage page renders with title "My Garage" and count badge
+- Test 3.2: Breadcrumb navigation displays "Dashboard > My Garage"
+- Test 3.3: Responsive grid layout (1 col mobile, 2 tablet, 3-4 desktop)
+- Test 3.4: Each item card displays image, title, price, key specs
+- Test 3.5: Heart icon on each card for quick removal
+- Test 3.6: Click card navigates to item detail page
+- Test 3.7: Loading skeleton cards shown while fetching garage items
+- Test 3.8: Sort dropdown with options: Date Added, Price (low/high)
+- Test 3.9: Items sorted correctly by selected option
+
+**AC4: Separate Tabs/Sections for "Saved Vehicles" and "Saved Parts"**
+- Test 4.1: Tab navigation renders with "All", "Vehicles", "Parts" tabs
+- Test 4.2: "All" tab shows mixed content (vehicles + parts)
+- Test 4.3: "Vehicles" tab filters to show only vehicles
+- Test 4.4: "Parts" tab filters to show only parts
+- Test 4.5: Tab counts display correct item counts: "Vehicles (5)", "Parts (7)"
+- Test 4.6: Active tab highlighted with correct styling
+- Test 4.7: Tab state preserved in URL query parameter (?tab=vehicles)
+- Test 4.8: Arrow keys navigate between tabs (keyboard navigation)
+- Test 4.9: Enter key selects tab
+
+**AC5: Remove Items from Garage with Confirmation**
+- Test 5.1: Click heart icon opens confirmation AlertDialog
+- Test 5.2: Confirmation dialog shows item image and title
+- Test 5.3: Dialog has "Cancel" and "Remove" buttons (Remove destructive)
+- Test 5.4: Click "Cancel" closes dialog without removing item
+- Test 5.5: Click "Remove" triggers DELETE API call with optimistic UI (item fades out)
+- Test 5.6: If API fails, item reappears with error toast
+- Test 5.7: Error toast shows "Failed to remove item. Please try again."
+
+**AC6: Garage Persists Across Sessions and Devices**
+- Test 6.1: Favorites stored in database (UserFavorite table), not localStorage
+- Test 6.2: API GET /api/user/favorites returns favorites for authenticated user
+- Test 6.3: Garage state loads from database on page mount
+- Test 6.4: No localStorage reads or writes (ensure no localStorage.getItem/setItem)
+
+**AC7: Empty State When No Saved Items**
+- Test 7.1: Empty state shown when garage has 0 items
+- Test 7.2: Empty state includes illustration/icon and heading "Your garage is empty"
+- Test 7.3: Call-to-action buttons "Browse Vehicles" and "Shop Parts" present
+- Test 7.4: "Vehicles" tab shows "No saved vehicles yet" when no vehicles
+- Test 7.5: "Parts" tab shows "No saved parts yet" when no parts
+- Test 7.6: Empty state centered and responsive
+
+**AC8: Limit of 50 Saved Items Per User**
+- Test 8.1: API POST /api/user/favorites returns 400 when count >= 50
+- Test 8.2: FavoriteButton disabled when garage count is 50
+- Test 8.3: Tooltip shows "Garage is full (50 items max)" when disabled
+- Test 8.4: Warning banner shows at 40+ items: "Your garage is almost full (40/50)"
+- Test 8.5: Error toast when attempting to add at limit: "Cannot add item. Remove items from your garage to continue."
+- Test 8.6: Count display shows "45 / 50 items saved"
+- Test 8.7: Limit applies to all item types combined (vehicles + parts)
+- Test 8.8: Limit configurable via environment variable GARAGE_ITEM_LIMIT
+
+**API Route Tests**
+- Test 9.1: POST /api/user/favorites creates UserFavorite record for authenticated user
+- Test 9.2: POST returns 401 if unauthenticated
+- Test 9.3: POST returns 400 if garage count >= limit
+- Test 9.4: POST returns 409 if duplicate favorite (unique constraint)
+- Test 9.5: DELETE /api/user/favorites deletes UserFavorite record
+- Test 9.6: DELETE returns 401 if unauthenticated
+- Test 9.7: DELETE returns 404 if favorite not found
+- Test 9.8: GET /api/user/favorites returns all favorites for user
+- Test 9.9: GET with ?itemType=vehicle filters to vehicles only
+- Test 9.10: GET returns 401 if unauthenticated
+
+**Integration Tests**
+- Test 10.1: Full flow: User adds vehicle to garage, navigates to /account/garage, sees vehicle, removes vehicle
+- Test 10.2: Garage count updates correctly after add/remove operations
+- Test 10.3: Optimistic UI updates work correctly with API success/failure scenarios
+
+**E2E Tests (Playwright)**
+- Test 11.1: E2E flow: Login, browse vehicle, add to garage, view garage, remove item
+- Test 11.2: Cross-device persistence: Add on browser A, verify on browser B (different session)
+- Test 11.3: Accessibility: Keyboard navigation through garage page, screen reader compatibility
+- Test 11.4: Performance: Garage page loads in &lt;1s with 50 items
+
+**Accessibility Tests**
+- Test 12.1: All buttons have ARIA labels
+- Test 12.2: Keyboard navigation works (Tab, Enter, arrow keys)
+- Test 12.3: Screen reader announces "Add to garage" and "Remove from garage"
+- Test 12.4: Focus indicators visible on all interactive elements
+- Test 12.5: Color contrast meets WCAG AA standards
+
+**Performance Tests**
+- Test 13.1: Garage page loads &lt;1s with 50 items (measure with Lighthouse)
+- Test 13.2: Lazy loading works for garage item images
+- Test 13.3: Database query optimized with userId index (measure query time)
+    </ideas>
+  </tests>
+</story-context>

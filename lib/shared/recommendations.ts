@@ -130,20 +130,90 @@ export function generateVehicleCompatibilityTags(
 }
 
 /**
- * Extract unique models from product tags array
- * Returns array of chassis codes (e.g., ["E46", "E90"])
+ * Model name to chassis code mapping for modern BMWs
+ */
+const MODEL_TO_CHASSIS_MAP: Record<string, string[]> = {
+  // G-series (2018+)
+  M2: ["G87"], // 2023+ M2
+  M3: ["G80"], // 2021+ M3
+  M4: ["G82"], // 2021+ M4 Coupe, G83 Convertible
+  M5: ["F90"], // 2018+ M5
+  M8: ["F91", "F92", "F93"], // M8 Gran Coupe, Coupe, Convertible
+  "330i": ["G20"], // 3 Series sedan
+  "340i": ["G20"],
+  "M340i": ["G20"],
+  "430i": ["G22"], // 4 Series coupe
+  "440i": ["G22"],
+  "M440i": ["G22"],
+  // F-series (2011-2020)
+  "335i": ["F30"], // 2012-2015 3 Series
+  "340i-F30": ["F30"], // 2016-2019 (overlap with G20)
+  M235i: ["F22"], // 2 Series
+  M240i: ["F22"],
+  "435i": ["F32"], // 4 Series
+  "440i-F32": ["F32"],
+  M3F80: ["F80"], // 2014-2020 M3
+  M4F82: ["F82"], // 2014-2020 M4 Coupe
+  // E-series (older)
+  M5E39: ["E39"], // 2000-2003 M5
+  M3E46: ["E46"], // 2001-2006 M3
+  M3E90: ["E90"], // 2008-2013 M3 Sedan
+  M3E92: ["E92"], // 2008-2013 M3 Coupe
+};
+
+/**
+ * Extract chassis codes from product tags
+ * Handles both explicit chassis codes (e.g., "BMW E46") and model names (e.g., "BMW M4 Base 2023")
  */
 export function extractModelsFromTags(tags: string[]): string[] {
-  const models = new Set<string>();
+  const chassis = new Set<string>();
 
   tags.forEach((tag) => {
+    // Try to extract explicit chassis code first (e.g., "BMW E46", "BMW G82")
     const fitment = parseFitmentTag(tag);
     if (fitment.model) {
-      models.add(fitment.model);
+      chassis.add(fitment.model);
+      return;
+    }
+
+    // If no chassis code, try to extract model name and map to chassis
+    // Examples: "BMW M4 Base 2023", "BMW M3 Competition 2021"
+    const modelMatch = tag.match(
+      /BMW\s+(M\d|[1-7]\d{2}[A-Za-z]{0,2}|X[1-7]|Z\d)/i,
+    );
+    if (modelMatch && modelMatch[1]) {
+      const modelName = modelMatch[1].toUpperCase();
+
+      // Look up chassis codes for this model
+      const chassisCodes = MODEL_TO_CHASSIS_MAP[modelName];
+      if (chassisCodes) {
+        chassisCodes.forEach((code) => chassis.add(code));
+      } else {
+        // If not in map, try some default mappings based on generation detection
+        // For M3/M4, detect generation by year if present
+        const yearMatch = tag.match(/\b(20\d{2})\b/);
+        if (yearMatch && yearMatch[1]) {
+          const year = parseInt(yearMatch[1], 10);
+          if (modelName === "M3") {
+            if (year >= 2021) chassis.add("G80"); // G80 M3
+            else if (year >= 2014) chassis.add("F80"); // F80 M3
+            else if (year >= 2008) chassis.add("E90"); // E90/E92 M3
+            else if (year >= 2001) chassis.add("E46"); // E46 M3
+          } else if (modelName === "M4") {
+            if (year >= 2021) chassis.add("G82"); // G82 M4
+            else if (year >= 2014) chassis.add("F82"); // F82 M4
+          } else if (modelName === "M5") {
+            if (year >= 2018) chassis.add("F90"); // F90 M5
+            else if (year >= 2011) chassis.add("F10"); // F10 M5
+            else if (year >= 2005) chassis.add("E60"); // E60 M5
+            else if (year >= 2000) chassis.add("E39"); // E39 M5
+          }
+        }
+      }
     }
   });
 
-  return Array.from(models);
+  return Array.from(chassis);
 }
 
 /**
@@ -346,10 +416,21 @@ export async function getVehiclesWithPart(
   }
 
   try {
+    // Log for debugging
+    console.log(
+      `[Recommendations] Finding vehicles for product: ${productHandle}`,
+    );
+    console.log(`[Recommendations] Product tags:`, productTags);
+
     // Extract chassis models from product tags
     const models = extractModelsFromTags(productTags);
 
+    console.log(`[Recommendations] Extracted chassis models:`, models);
+
     if (models.length === 0) {
+      console.log(
+        `[Recommendations] No chassis models found in tags, returning empty`,
+      );
       return [];
     }
 
@@ -372,7 +453,14 @@ export async function getVehiclesWithPart(
       }
     `;
 
+    console.log(`[Recommendations] GROQ query:`, query);
+    console.log(`[Recommendations] Query params:`, { models });
+
     const vehicles = await client.fetch<VehicleListItem[]>(query, { models });
+
+    console.log(
+      `[Recommendations] Found ${vehicles.length} matching vehicles`,
+    );
 
     // Cache the results for 5 minutes
     memoryCache.set(cacheKey, vehicles, 300000);

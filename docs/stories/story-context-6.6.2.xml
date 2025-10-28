@@ -1,0 +1,449 @@
+<story-context id="bmad/bmm/workflows/4-implementation/story-context/template" v="1.0">
+  <metadata>
+    <epicId>6</epicId>
+    <storyId>6.2</storyId>
+    <title>Unified Search UI & Results Page</title>
+    <status>Ready</status>
+    <generatedAt>2025-10-24</generatedAt>
+    <generator>BMAD Story Context Workflow</generator>
+    <sourceStoryPath>docs/stories/story-6.2.md</sourceStoryPath>
+  </metadata>
+
+  <story>
+    <asA>user</asA>
+    <iWant>to search for vehicles or parts from a single search bar with autocomplete suggestions and view results on a dedicated search page</iWant>
+    <soThat>I can quickly find what I'm looking for across both vehicle inventory and parts catalog</soThat>
+    <tasks>
+      <task id="1" title="Create unified search bar component" acs="1,2">
+        <subtasks>8 subtasks: SearchBar.tsx component, search icon, controlled input, keyboard navigation, ShadCN styling, accessibility, loading indicator, export</subtasks>
+      </task>
+      <task id="2" title="Implement autocomplete functionality" acs="2">
+        <subtasks>9 subtasks: SearchAutocomplete.tsx dropdown, 300ms debounce, fetch from /api/search, display top 5 results, type icons, keyboard nav, click outside, no suggestions state, view all link</subtasks>
+      </task>
+      <task id="3" title="Integrate search bar into navigation header" acs="1">
+        <subtasks>7 subtasks: Update desktop-navbar, center positioning, update mobile-navbar, mobile search overlay, responsive design, test visibility, verify no conflicts</subtasks>
+      </task>
+      <task id="4" title="Create search results page" acs="3,4,5">
+        <subtasks>9 subtasks: app/search/page.tsx, accept query params (q/type/page), fetch from /api/search, page title, result count, type filter tabs, URL updates, loading states, error handling</subtasks>
+      </task>
+      <task id="5" title="Build search result card components" acs="5,8">
+        <subtasks>9 subtasks: SearchResultCard.tsx polymorphic, thumbnail image (150x150), title with truncation, price display, relevance snippet, visual distinction (icons), click navigation, ShadCN Card styling, accessibility</subtasks>
+      </task>
+      <task id="6" title="Implement query term highlighting" acs="8">
+        <subtasks>8 subtasks: lib/search/highlight.ts utility, parse query terms, regex patterns, replace with mark tags, sanitize HTML, Highlight component, apply to cards, test edge cases</subtasks>
+      </task>
+      <task id="7" title="Add pagination or infinite scroll" acs="6">
+        <subtasks>9 subtasks: Decide approach (pagination recommended), SearchPagination.tsx, calculate pages, render page numbers, update URL params, scroll to top, disable buttons, alternative infinite scroll with Observer, loading indicator</subtasks>
+      </task>
+      <task id="8" title="Create empty state component" acs="7">
+        <subtasks>7 subtasks: SearchEmptyState.tsx, friendly message, helpful suggestions list (spelling/keywords/browse), popular search terms links, ShadCN Alert styling, illustration/icon</subtasks>
+      </task>
+      <task id="9" title="Add SEO metadata and analytics" acs="3">
+        <subtasks>7 subtasks: Next.js metadata, dynamic title, meta description, canonical URL, noindex for empty queries, analytics tracking, schema.org SearchAction</subtasks>
+      </task>
+      <task id="10" title="Write unit and E2E tests" acs="all">
+        <subtasks>12 subtasks: Unit tests for SearchBar/Autocomplete/ResultCard/highlight, E2E tests for visibility/autocomplete/navigation/results/filters/pagination/empty state/highlighting</subtasks>
+      </task>
+      <task id="11" title="Accessibility and mobile optimization" acs="1,2">
+        <subtasks>8 subtasks: Screen reader testing, keyboard navigation, mobile autocomplete, mobile modal, responsive results page, touch targets 44x44px, test various devices, Lighthouse audit 95+</subtasks>
+      </task>
+    </tasks>
+  </story>
+
+  <acceptanceCriteria>
+    <criterion id="1" title="Search Bar in Header">
+      Search bar prominently placed in unified navigation header, accessible on all pages with consistent positioning
+    </criterion>
+    <criterion id="2" title="Autocomplete Suggestions">
+      Search autocomplete shows relevant suggestions as user types (debounced 300ms), displaying both vehicles and parts
+    </criterion>
+    <criterion id="3" title="Search Results Page">
+      Dedicated search results page at /search displays unified results from both Sanity (vehicles) and Shopify (parts)
+    </criterion>
+    <criterion id="4" title="Result Type Filtering">
+      Users can filter results by type using tabs/buttons: "All", "Vehicles", "Parts" with result counts per type
+    </criterion>
+    <criterion id="5" title="Result Display Format">
+      Each result shows thumbnail image, title, price, and relevance snippet with clear visual distinction between vehicles and parts
+    </criterion>
+    <criterion id="6" title="Pagination/Infinite Scroll">
+      Large result sets support pagination or infinite scroll to handle 20+ results per query
+    </criterion>
+    <criterion id="7" title="Empty State Handling">
+      No results state displays helpful suggestions (clear filters, browse categories, check spelling) with links to popular pages
+    </criterion>
+    <criterion id="8" title="Query Term Highlighting">
+      Search highlights matching query terms within result titles and descriptions for easy scanning
+    </criterion>
+  </acceptanceCriteria>
+
+  <artifacts>
+    <docs>
+      <doc>
+        <path>docs/PRD.md</path>
+        <title>Product Requirements Document</title>
+        <section>FR019 - Unified Search</section>
+        <snippet>The system shall provide a unified search experience that returns results from both vehicle inventory and parts catalog</snippet>
+      </doc>
+      <doc>
+        <path>docs/PRD.md</path>
+        <title>Product Requirements Document</title>
+        <section>NFR009 - Search Performance</section>
+        <snippet>Unified search queries shall return results within 300ms for 95th percentile. Search results shall rank by relevance using configurable weights (exact match, partial match, metadata)</snippet>
+      </doc>
+      <doc>
+        <path>docs/PRD.md</path>
+        <title>Product Requirements Document</title>
+        <section>Epic 6 - Advanced Search & Discovery</section>
+        <snippet>Enable intelligent unified search across vehicles and parts with recommendation engine and cross-discovery features</snippet>
+      </doc>
+      <doc>
+        <path>docs/epic-stories.md</path>
+        <title>Epic Stories Breakdown</title>
+        <section>Story 6.2 - Unified Search UI & Results Page</section>
+        <snippet>User wants to search for vehicles or parts from a single search bar. 8 point estimate with detailed AC coverage for search bar, autocomplete, results page, filtering, highlighting</snippet>
+      </doc>
+      <doc>
+        <path>docs/solution-architecture.md</path>
+        <title>Solution Architecture Document</title>
+        <section>Section 1.1 - Technology Stack</section>
+        <snippet>Client-side Fuse.js v7.0.0 for search (Phase 2a) with future upgrade path to Meilisearch. ShadCN UI for component library (WCAG AA compliance)</snippet>
+      </doc>
+      <doc>
+        <path>docs/solution-architecture.md</path>
+        <title>Solution Architecture Document</title>
+        <section>Section 2.3 - Routing Structure</section>
+        <snippet>/search page for unified search results (Client + SSR hybrid). Search results page structure documented</snippet>
+      </doc>
+      <doc>
+        <path>docs/solution-architecture.md</path>
+        <title>Solution Architecture Document</title>
+        <section>Section 4 - UI Components</section>
+        <snippet>components/search/ for search UI (SearchResults.tsx, RecommendationCarousel.tsx). ShadCN components: button, card, tabs, input</snippet>
+      </doc>
+      <doc>
+        <path>docs/solution-architecture.md</path>
+        <title>Solution Architecture Document</title>
+        <section>ADR-005 - Search Strategy</section>
+        <snippet>Fuse.js client-side search for MVP (<500 items, <300ms NFR009). Clear upgrade path to Meilisearch when inventory >200 items. Zero cost, instant filtering UX</snippet>
+      </doc>
+      <doc>
+        <path>docs/solution-architecture.md</path>
+        <title>Solution Architecture Document</title>
+        <section>Section 11.1 - Business Logic Layer</section>
+        <snippet>Search Service handles unified search orchestration (lib/search/unified.ts, fuse.ts). Debounce search input 300ms per UX spec</snippet>
+      </doc>
+      <doc>
+        <path>docs/stories/story-6.1.md</path>
+        <title>Story 6.1 - Unified Search Infrastructure</title>
+        <section>Dev Notes - Architecture Context</section>
+        <snippet>Search API: GET /api/search?q={query}&type={vehicles|parts|all}&limit={20}. Response: { results: SearchResult[], totalResults: number, searchTime: number }. Performance <300ms achieved via multi-layer caching</snippet>
+      </doc>
+      <doc>
+        <path>docs/stories/story-6.1.md</path>
+        <title>Story 6.1 - Unified Search Infrastructure</title>
+        <section>Implementation Complete</section>
+        <snippet>Unified search infrastructure with Fuse.js v7.1.0. Dual-CMS indexing (Sanity + Shopify), relevance ranking with field weights, fuzzy matching (0.3 threshold), multi-layer caching (15min index, 5min results), 43 passing tests</snippet>
+      </doc>
+      <doc>
+        <path>docs/design-system.md</path>
+        <title>Design System</title>
+        <section>ShadCN Component Usage</section>
+        <snippet>Accessibility standards, Tailwind utilities, existing ShadCN components to reuse (Input, Card, Button, Tabs, Alert)</snippet>
+      </doc>
+    </docs>
+    <code>
+      <artifact>
+        <path>types/search.ts</path>
+        <kind>type definitions</kind>
+        <symbol>SearchResult, SearchQuery, SearchResponse, SearchableVehicle, SearchableProduct</symbol>
+        <lines>1-77</lines>
+        <reason>Core search types for unified search - use these interfaces for all search operations. SearchResult provides type discrimination for vehicle vs product results</reason>
+      </artifact>
+      <artifact>
+        <path>lib/search/unified.ts</path>
+        <kind>service</kind>
+        <symbol>searchAll()</symbol>
+        <lines>1-50</lines>
+        <reason>Main search orchestration service - call searchAll() from API route and components. Handles caching and merging of vehicle/product results</reason>
+      </artifact>
+      <artifact>
+        <path>app/api/search/route.ts</path>
+        <kind>API route</kind>
+        <symbol>GET handler</symbol>
+        <lines>78-214</lines>
+        <reason>Existing search API endpoint - already implements rate limiting, validation, caching headers. This is the API your search UI will call</reason>
+      </artifact>
+      <artifact>
+        <path>components/layout/desktop-navbar.tsx</path>
+        <kind>component</kind>
+        <symbol>DesktopNavbar</symbol>
+        <lines>1-80</lines>
+        <reason>Navigation header where search bar must be integrated - currently has logo, nav items, and user account section. Add SearchBar component here</reason>
+      </artifact>
+      <artifact>
+        <path>components/vehicles/VehicleCard.tsx</path>
+        <kind>component</kind>
+        <symbol>VehicleCard</symbol>
+        <lines>1-60</lines>
+        <reason>Reference pattern for vehicle cards - shows proper Next.js Image usage, Card component styling, Badge for status. Adapt for SearchResultCard vehicle variant</reason>
+      </artifact>
+      <artifact>
+        <path>components/layout/product-grid-items.tsx</path>
+        <kind>component</kind>
+        <symbol>ProductGridItems</symbol>
+        <lines>full file</lines>
+        <reason>Reference pattern for product cards - shows Shopify product rendering, image optimization, price formatting. Adapt for SearchResultCard product variant</reason>
+      </artifact>
+      <artifact>
+        <path>components/ui/input.tsx</path>
+        <kind>ShadCN component</kind>
+        <symbol>Input</symbol>
+        <lines>full file</lines>
+        <reason>ShadCN Input component for search bar - already styled with Tailwind, accessible, supports all input props</reason>
+      </artifact>
+      <artifact>
+        <path>components/ui/card.tsx</path>
+        <kind>ShadCN component</kind>
+        <symbol>Card, CardContent, CardHeader, CardTitle</symbol>
+        <lines>full file</lines>
+        <reason>ShadCN Card components for result cards - consistent styling across site, hover states, responsive design</reason>
+      </artifact>
+      <artifact>
+        <path>components/ui/button.tsx</path>
+        <kind>ShadCN component</kind>
+        <symbol>Button</symbol>
+        <lines>full file</lines>
+        <reason>ShadCN Button component for pagination, clear button, filter tabs - multiple variants available (default, outline, ghost)</reason>
+      </artifact>
+      <artifact>
+        <path>components/ui/tabs.tsx</path>
+        <kind>ShadCN component</kind>
+        <symbol>Tabs, TabsList, TabsTrigger, TabsContent</symbol>
+        <lines>full file</lines>
+        <reason>ShadCN Tabs component for type filtering (All/Vehicles/Parts) - accessible, keyboard navigation, active state styling</reason>
+      </artifact>
+      <artifact>
+        <path>components/ui/alert.tsx</path>
+        <kind>ShadCN component</kind>
+        <symbol>Alert, AlertTitle, AlertDescription</symbol>
+        <lines>full file</lines>
+        <reason>ShadCN Alert component for empty state - multiple variants (default, destructive, info), supports icons and descriptions</reason>
+      </artifact>
+      <artifact>
+        <path>lib/utils/format.ts</path>
+        <kind>utility</kind>
+        <symbol>formatCurrency, formatMileage</symbol>
+        <lines>full file</lines>
+        <reason>Formatting utilities for displaying prices and mileage in search results - consistent formatting across site</reason>
+      </artifact>
+      <artifact>
+        <path>lib/cache/memory.ts</path>
+        <kind>utility</kind>
+        <symbol>memoryCache</symbol>
+        <lines>full file</lines>
+        <reason>In-memory caching utility used by search service - 5min TTL for results, 15min for indexes</reason>
+      </artifact>
+    </code>
+    <dependencies>
+      <ecosystem name="node">
+        <package name="fuse.js" version="7.1.0" installed="true" reason="Already installed by Story 6.1 - client-side fuzzy search library used by search API" />
+        <package name="lucide-react" version="0.468.0" installed="true" reason="Icon library for search icon, clear button, result type badges" />
+        <package name="@headlessui/react" version="latest" installed="true" reason="Accessible UI components for mobile search modal/overlay" />
+        <package name="next" version="15.0.3" installed="true" reason="Next.js framework - App Router, Image component, metadata API" />
+        <package name="react" version="19.0.0" installed="true" reason="React for components, hooks (useState, useEffect, useCallback)" />
+        <package name="tailwindcss" version="4.0.14" installed="true" reason="Utility-first CSS for styling search components" />
+        <package name="class-variance-authority" version="latest" installed="true" reason="Used by ShadCN components for variant styling" />
+        <package name="clsx" version="latest" installed="true" reason="Utility for conditionally joining classNames" />
+      </ecosystem>
+    </dependencies>
+  </artifacts>
+
+  <constraints>
+    <constraint>**Architecture Pattern:** Use App Router (app directory) for search results page. Server Components by default, 'use client' only when needed (interactions, state)</constraint>
+    <constraint>**Search API Integration:** Call GET /api/search?q={query}&amp;type={vehicles|parts|all}&amp;limit={20}. API already handles rate limiting (100/min), validation (2-100 chars), and caching (5min)</constraint>
+    <constraint>**Type Safety:** Use SearchResult&lt;T&gt; interface from types/search.ts for all search operations. TypeScript strict mode enforced - no implicit any</constraint>
+    <constraint>**Component Library:** Use ShadCN UI components exclusively (Input, Card, Button, Tabs, Alert). Do not create custom unstyled components - leverage existing ShadCN primitives</constraint>
+    <constraint>**Styling:** Tailwind CSS utility-first approach. Use design tokens from globals.css. Mobile-first responsive design (320px to 2560px breakpoints)</constraint>
+    <constraint>**Image Optimization:** Use Next.js Image component for all images (thumbnails, result cards). Specify width, height, alt text. Use loading="lazy" except first 6 results</constraint>
+    <constraint>**Performance:** Debounce autocomplete input 300ms (per UX spec). Target <300ms API response time (NFR009). Use skeleton loaders during loading states</constraint>
+    <constraint>**Accessibility:** WCAG 2.1 AA compliance required. Keyboard navigation for autocomplete (arrow keys, Enter, Escape). Screen reader labels (ARIA). Focus management</constraint>
+    <constraint>**URL State Management:** Search results page uses URL query params (q, type, page). Update URL on filter/page changes. Allow direct linking and browser back/forward</constraint>
+    <constraint>**Client-Side State:** Use React hooks (useState, useEffect) for component state. No global state management needed - search state is URL-driven</constraint>
+    <constraint>**Error Handling:** Display user-friendly error messages. Handle API errors (400/429/500). Show offline state if network unavailable. Log errors to console</constraint>
+    <constraint>**Caching Strategy:** API responses cached 5 minutes (Cache-Control headers set). No client-side caching beyond browser cache. Index refresh every 15 minutes</constraint>
+    <constraint>**Security:** XSS prevention in query term highlighting - sanitize HTML before rendering. Validate all user input. Rate limiting enforced at API level</constraint>
+    <constraint>**Mobile Optimization:** Mobile search uses full-screen overlay/modal (not inline). Touch targets 44x44px minimum. Autocomplete dropdown touch-friendly</constraint>
+    <constraint>**Navigation Integration:** Search bar must not conflict with existing cart/user menu in desktop-navbar. Center positioning between nav links and user section</constraint>
+    <constraint>**Testing Requirements:** Unit tests with Vitest for all components. E2E tests with Playwright for search flows. Accessibility tests with axe-core. Visual regression tests for cards</constraint>
+    <constraint>**SEO Optimization:** Dynamic metadata (title, description) based on query. Canonical URLs for search pages. Noindex meta tag for empty queries (prevent SEO pollution)</constraint>
+    <constraint>**Analytics:** Track search events (query submitted, result clicked, empty results). Use existing analytics infrastructure. Include query term, result count, clicked result ID</constraint>
+    <constraint>**Code Quality:** Follow existing patterns from VehicleCard and ProductGridItems. Consistent naming conventions. JSDoc comments for exported functions. ESLint and Prettier formatting</constraint>
+    <constraint>**Story Dependencies:** Builds on Story 6.1 (search infrastructure) and Story 4.1 (unified navigation). Search results link to vehicle pages (Story 3.3/3.4) and product pages (Story 1.5)</constraint>
+  </constraints>
+  <interfaces>
+    <interface>
+      <name>SearchResult&lt;T&gt;</name>
+      <kind>TypeScript interface</kind>
+      <signature>interface SearchResult&lt;T = VehicleListItem | Product&gt; { type: "vehicle" | "product"; item: T; score: number; }</signature>
+      <path>types/search.ts:8-12</path>
+    </interface>
+    <interface>
+      <name>SearchQuery</name>
+      <kind>TypeScript interface</kind>
+      <signature>interface SearchQuery { q: string; type?: "vehicles" | "parts" | "all"; limit?: number; }</signature>
+      <path>types/search.ts:17-21</path>
+    </interface>
+    <interface>
+      <name>SearchResponse</name>
+      <kind>TypeScript interface</kind>
+      <signature>interface SearchResponse { results: SearchResult[]; totalResults: number; searchTime: number; }</signature>
+      <path>types/search.ts:26-30</path>
+    </interface>
+    <interface>
+      <name>GET /api/search</name>
+      <kind>REST API endpoint</kind>
+      <signature>GET /api/search?q={query}&amp;type={vehicles|parts|all}&amp;limit={20} → SearchResponse</signature>
+      <path>app/api/search/route.ts:95-214</path>
+    </interface>
+    <interface>
+      <name>searchAll()</name>
+      <kind>Function signature</kind>
+      <signature>async function searchAll(query: string, type: "vehicles" | "parts" | "all", limit: number): Promise&lt;SearchResult[]&gt;</signature>
+      <path>lib/search/unified.ts</path>
+    </interface>
+    <interface>
+      <name>ShadCN Input</name>
+      <kind>React component</kind>
+      <signature>&lt;Input type="search" placeholder="..." value={value} onChange={onChange} className="..." /&gt;</signature>
+      <path>components/ui/input.tsx</path>
+    </interface>
+    <interface>
+      <name>ShadCN Card</name>
+      <kind>React component</kind>
+      <signature>&lt;Card&gt;&lt;CardContent&gt;...&lt;/CardContent&gt;&lt;/Card&gt;</signature>
+      <path>components/ui/card.tsx</path>
+    </interface>
+    <interface>
+      <name>ShadCN Tabs</name>
+      <kind>React component</kind>
+      <signature>&lt;Tabs value={activeTab}&gt;&lt;TabsList&gt;&lt;TabsTrigger value="all"&gt;All&lt;/TabsTrigger&gt;...&lt;/TabsList&gt;&lt;/Tabs&gt;</signature>
+      <path>components/ui/tabs.tsx</path>
+    </interface>
+    <interface>
+      <name>Next.js Image</name>
+      <kind>React component</kind>
+      <signature>&lt;Image src={url} alt={title} width={150} height={150} className="..." loading="lazy" /&gt;</signature>
+      <path>next/image</path>
+    </interface>
+    <interface>
+      <name>Next.js Metadata</name>
+      <kind>Function export</kind>
+      <signature>export async function generateMetadata({ searchParams }): Promise&lt;Metadata&gt; { return { title: `Search Results for '${q}'`, ... }; }</signature>
+      <path>app/search/page.tsx</path>
+    </interface>
+  </interfaces>
+  <tests>
+    <standards>Unit tests with Vitest for all search components (SearchBar, SearchAutocomplete, SearchResultCard, highlight utility). E2E tests with Playwright for complete search flows (autocomplete, navigation, results display, filtering, pagination). Accessibility tests with axe-core for WCAG 2.1 AA compliance. Visual regression tests for result cards. Test coverage target: 80%+ for new code. Mock API responses in unit tests. Use real API in E2E tests against local dev server.</standards>
+    <locations>components/search/__tests__/ for component unit tests, lib/search/__tests__/highlight.test.ts for utility tests, e2e/search/ for Playwright E2E tests, app/search/__tests__/ for page tests</locations>
+    <ideas>
+      <test ac="1" id="1.1">SearchBar component renders with search icon and placeholder text</test>
+      <test ac="1" id="1.2">SearchBar controlled input updates value on change</test>
+      <test ac="1" id="1.3">SearchBar clear button appears when input has value and clears on click</test>
+      <test ac="1" id="1.4">SearchBar Enter key submits search and navigates to results page</test>
+      <test ac="1" id="1.5">SearchBar Escape key clears input and closes autocomplete</test>
+      <test ac="1" id="1.6">SearchBar has proper ARIA labels for accessibility</test>
+      <test ac="1" id="1.7">SearchBar keyboard navigation works (Tab, Shift+Tab)</test>
+      <test ac="1" id="1.8">E2E: SearchBar visible on all pages (homepage, vehicles, products, vehicle detail, product detail)</test>
+
+      <test ac="2" id="2.1">SearchAutocomplete debounces input changes by 300ms</test>
+      <test ac="2" id="2.2">SearchAutocomplete fetches suggestions from /api/search with limit=5</test>
+      <test ac="2" id="2.3">SearchAutocomplete displays top 5 results with correct formatting</test>
+      <test ac="2" id="2.4">SearchAutocomplete shows vehicle icon/badge for vehicle results</test>
+      <test ac="2" id="2.5">SearchAutocomplete shows product icon/badge for product results</test>
+      <test ac="2" id="2.6">SearchAutocomplete keyboard navigation (ArrowDown, ArrowUp, Enter to select)</test>
+      <test ac="2" id="2.7">SearchAutocomplete closes on click outside dropdown</test>
+      <test ac="2" id="2.8">SearchAutocomplete shows "No suggestions" state when query has no matches</test>
+      <test ac="2" id="2.9">SearchAutocomplete "View all results" link navigates to /search page</test>
+      <test ac="2" id="2.10">SearchAutocomplete loading indicator shows while fetching</test>
+      <test ac="2" id="2.11">E2E: Autocomplete suggestions appear as user types</test>
+      <test ac="2" id="2.12">E2E: Clicking autocomplete suggestion navigates to detail page</test>
+
+      <test ac="3" id="3.1">Search results page renders with query from URL param</test>
+      <test ac="3" id="3.2">Search results page displays page title "Search Results for '{query}'"</test>
+      <test ac="3" id="3.3">Search results page fetches from /api/search with correct params</test>
+      <test ac="3" id="3.4">Search results page shows result count "Found X results"</test>
+      <test ac="3" id="3.5">Search results page handles loading state with skeleton loaders</test>
+      <test ac="3" id="3.6">Search results page handles error state with user-friendly message</test>
+      <test ac="3" id="3.7">Search results page generates dynamic metadata (title, description)</test>
+      <test ac="3" id="3.8">Search results page has canonical URL</test>
+      <test ac="3" id="3.9">Search results page has noindex for empty queries</test>
+      <test ac="3" id="3.10">E2E: Search results page accessible via URL /search?q=BMW</test>
+
+      <test ac="4" id="4.1">Type filter tabs render (All, Vehicles, Parts)</test>
+      <test ac="4" id="4.2">Type filter tabs show result counts per type</test>
+      <test ac="4" id="4.3">Type filter tabs update URL param on click (type=vehicles|parts|all)</test>
+      <test ac="4" id="4.4">Type filter tabs update results on change</test>
+      <test ac="4" id="4.5">Type filter tabs show active state correctly</test>
+      <test ac="4" id="4.6">Type filter tabs keyboard accessible (Tab, Enter)</test>
+      <test ac="4" id="4.7">E2E: Clicking "Vehicles" tab filters to vehicle results only</test>
+      <test ac="4" id="4.8">E2E: Clicking "Parts" tab filters to product results only</test>
+
+      <test ac="5" id="5.1">SearchResultCard renders vehicle result with correct data</test>
+      <test ac="5" id="5.2">SearchResultCard renders product result with correct data</test>
+      <test ac="5" id="5.3">SearchResultCard displays thumbnail image (150x150) optimized</test>
+      <test ac="5" id="5.4">SearchResultCard shows title truncated to 2 lines</test>
+      <test ac="5" id="5.5">SearchResultCard displays price formatted with currency</test>
+      <test ac="5" id="5.6">SearchResultCard shows relevance snippet (1-2 lines)</test>
+      <test ac="5" id="5.7">SearchResultCard has visual distinction (car icon for vehicles, parts icon for products)</test>
+      <test ac="5" id="5.8">SearchResultCard navigates to correct detail page on click</test>
+      <test ac="5" id="5.9">SearchResultCard has hover state styling</test>
+      <test ac="5" id="5.10">SearchResultCard is keyboard accessible (Tab, Enter)</test>
+      <test ac="5" id="5.11">SearchResultCard has proper ARIA labels</test>
+      <test ac="5" id="5.12">E2E: Result cards render correctly in grid layout</test>
+
+      <test ac="6" id="6.1">Pagination component renders when results > 20</test>
+      <test ac="6" id="6.2">Pagination calculates total pages correctly</test>
+      <test ac="6" id="6.3">Pagination renders page numbers with prev/next buttons</test>
+      <test ac="6" id="6.4">Pagination updates URL param on page change (page=2)</test>
+      <test ac="6" id="6.5">Pagination scrolls to top of results on page change</test>
+      <test ac="6" id="6.6">Pagination disables prev button on first page</test>
+      <test ac="6" id="6.7">Pagination disables next button on last page</test>
+      <test ac="6" id="6.8">Pagination keyboard accessible (Tab, Enter)</test>
+      <test ac="6" id="6.9">E2E: Pagination changes pages correctly</test>
+      <test ac="6" id="6.10">E2E: URL updates when page changes</test>
+
+      <test ac="7" id="7.1">Empty state component renders when no results</test>
+      <test ac="7" id="7.2">Empty state displays friendly message "No results found for '{query}'"</test>
+      <test ac="7" id="7.3">Empty state shows helpful suggestions list</test>
+      <test ac="7" id="7.4">Empty state has links to browse vehicles and products</test>
+      <test ac="7" id="7.5">Empty state displays popular search terms as clickable links</test>
+      <test ac="7" id="7.6">Empty state styled with ShadCN Alert component</test>
+      <test ac="7" id="7.7">E2E: Empty state displays for query with no matches</test>
+
+      <test ac="8" id="8.1">Highlight utility parses query string into terms</test>
+      <test ac="8" id="8.2">Highlight utility creates case-insensitive regex patterns</test>
+      <test ac="8" id="8.3">Highlight utility replaces matches with &lt;mark&gt; tags</test>
+      <test ac="8" id="8.4">Highlight utility sanitizes HTML to prevent XSS</test>
+      <test ac="8" id="8.5">Highlight utility handles special characters in query</test>
+      <test ac="8" id="8.6">Highlight component renders highlighted text safely</test>
+      <test ac="8" id="8.7">E2E: Query terms highlighted in result titles</test>
+      <test ac="8" id="8.8">E2E: Query terms highlighted in result descriptions</test>
+
+      <test ac="all" id="9.1">Integration: Complete search flow from input to results</test>
+      <test ac="all" id="9.2">Integration: Autocomplete → Result page navigation</test>
+      <test ac="all" id="9.3">Integration: Filter change → Results update</test>
+      <test ac="all" id="9.4">Integration: Pagination → New results load</test>
+      <test ac="all" id="9.5">Accessibility: Lighthouse audit score 95+ for search page</test>
+      <test ac="all" id="9.6">Accessibility: Keyboard-only navigation complete flow</test>
+      <test ac="all" id="9.7">Accessibility: Screen reader announces search results count</test>
+      <test ac="all" id="9.8">Mobile: Search modal opens on mobile devices</test>
+      <test ac="all" id="9.9">Mobile: Touch targets meet 44x44px minimum</test>
+      <test ac="all" id="9.10">Mobile: Autocomplete dropdown touch-friendly</test>
+      <test ac="all" id="9.11">Performance: Search API responds within 300ms</test>
+      <test ac="all" id="9.12">Performance: Debounce reduces API calls during typing</test>
+      <test ac="all" id="9.13">Visual regression: SearchResultCard matches design</test>
+      <test ac="all" id="9.14">Visual regression: Search page layout consistent across breakpoints</test>
+    </ideas>
+  </tests>
+</story-context>
