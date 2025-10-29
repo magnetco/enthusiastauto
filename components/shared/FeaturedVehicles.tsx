@@ -15,7 +15,7 @@ export async function FeaturedVehicles() {
 
   return (
     <section
-      className="mx-auto max-w-screen-2xl px-4 py-12 sm:px-5 sm:py-16 lg:px-6"
+      className="mx-auto max-w-screen-2xl px-4 py-8 sm:px-6 sm:py-12 lg:px-8 lg:py-16"
       aria-labelledby="featured-vehicles-heading"
     >
       {/* Section Header */}
@@ -46,7 +46,7 @@ export async function FeaturedVehicles() {
       </div>
 
       {/* Vehicle Grid */}
-      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 lg:gap-8 xl:grid-cols-4">
         {vehicles.map((vehicle, index) => (
           <VehicleCard
             key={vehicle._id}

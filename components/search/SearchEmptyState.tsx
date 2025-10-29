@@ -46,7 +46,7 @@ export function SearchEmptyState({ query }: SearchEmptyStateProps) {
         </div>
 
         {/* Browse Categories */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-8 lg:gap-8">
           <Link href="/vehicles">
             <Button variant="outline" size="lg" className="h-auto py-4 w-full">
               <div className="text-center w-full">

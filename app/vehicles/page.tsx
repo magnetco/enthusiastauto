@@ -71,7 +71,7 @@ async function VehiclesContent({ searchParams }: VehiclesPageProps) {
     (filters.status !== undefined && filters.status !== "all");
 
   return (
-    <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+    <div className="mx-auto max-w-screen-2xl px-4 py-8 sm:px-6 sm:py-12 lg:px-8 lg:py-16">
       {/* Breadcrumb Navigation */}
       <Breadcrumbs />
 
@@ -97,7 +97,7 @@ async function VehiclesContent({ searchParams }: VehiclesPageProps) {
       </div>
 
       {/* Desktop Filters Sidebar + Vehicle Grid */}
-      <div className="gap-8 md:grid md:grid-cols-[280px_1fr]">
+      <div className="gap-6 md:grid md:grid-cols-[280px_1fr] lg:gap-8">
         {/* Desktop Sidebar Filters */}
         <aside className="hidden md:block">
           <div className="sticky top-4">

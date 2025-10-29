@@ -17,7 +17,7 @@ export default async function SearchPage(props: SearchPageProps) {
   const page = parseInt((searchParams?.page as string) || "1", 10);
 
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="container mx-auto max-w-screen-2xl px-4 py-8 sm:px-6 sm:py-12 lg:px-8 lg:py-16">
       <SearchResults query={query} type={type} page={page} />
     </div>
   );

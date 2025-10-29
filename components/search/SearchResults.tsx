@@ -90,7 +90,7 @@ export function SearchResults({ query, type, page }: SearchResultsProps) {
           <div className="h-10 w-24 bg-muted rounded" />
           <div className="h-10 w-24 bg-muted rounded" />
         </div>
-        <div className="grid grid-cols-1 gap-4">
+        <div className="grid grid-cols-1 gap-6">
           {[...Array(3)].map((_, i) => (
             <div key={i} className="border rounded-lg p-4">
               <div className="flex gap-4">
@@ -157,7 +157,7 @@ export function SearchResults({ query, type, page }: SearchResultsProps) {
       </Tabs>
 
       {/* Results Grid */}
-      <div className="grid grid-cols-1 gap-4 mb-8">
+      <div className="grid grid-cols-1 gap-6 mb-8">
         {results.map((result, index) => {
           const isVehicle = result.type === 'vehicle';
           const key = isVehicle && 'slug' in result.item

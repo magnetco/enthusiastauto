@@ -31,7 +31,7 @@ export default function ServicesPage() {
       <ServiceHero />
 
       {/* Main Content Container */}
-      <div className="mx-auto max-w-screen-2xl px-4 py-12 sm:px-5 sm:py-16 lg:px-6">
+      <div className="mx-auto max-w-screen-2xl px-4 py-8 sm:px-6 sm:py-12 lg:px-8 lg:py-16">
         {/* Service Cards Section */}
         <section className="mb-16">
           <div className="mb-12 text-center">

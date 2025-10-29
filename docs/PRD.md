@@ -2,11 +2,11 @@
 
 **Author:** Mike
 **Date Created:** 2025-10-14
-**Last Updated:** 2025-10-21 (Unified Platform Expansion)
+**Last Updated:** 2025-10-28 (Epic 10: Design System Unification Added)
 **Project Level:** 3 (Complex system - subsystems and integrations)
 **Project Type:** Web Application
 **Target Scale:** 12-40 stories, 2-5 epics, full PRD + architect handoff
-**Status:** Phase 1 Complete (BMW Parts E-commerce) | Phase 2 Planning (Unified Platform Expansion)
+**Status:** Phase 1 Complete (BMW Parts E-commerce) | Phase 2 In Progress (Epic 10 Prioritized)
 
 ---
 
@@ -115,6 +115,8 @@ By integrating Sanity CMS for vehicle content management and creating a unified 
 
 **FR024:** The platform shall provide unified navigation that allows seamless switching between vehicle browsing and parts shopping experiences
 
+**FR025:** The platform shall implement a cohesive design system with consistent typography, colors, spacing, and component styling across all pages (Epic 10)
+
 ### Non-Functional Requirements
 
 **NFR001: Performance**
@@ -182,6 +184,16 @@ By integrating Sanity CMS for vehicle content management and creating a unified 
 - All pages shall achieve Lighthouse SEO score of 95+ with proper meta tags, headings, and semantic HTML
 - The platform shall generate dynamic sitemaps for both vehicle and parts content
 - Image galleries shall implement lazy loading and proper alt text for accessibility and SEO
+
+**NFR011: Accessibility & Design System Compliance (Epic 10)**
+
+- All pages shall meet WCAG 2.1 AA accessibility standards with minimum 4.5:1 color contrast for text and 3:1 for UI components
+- All interactive elements shall have visible focus indicators and keyboard navigation support
+- Typography hierarchy shall be consistent across all pages using documented design tokens
+- Component visual design shall be unified with consistent padding, spacing, border-radius, and elevation shadows
+- Design system documentation (design-system.md) shall accurately reflect implementation with 100% accuracy
+- Lighthouse accessibility score shall be 95+ across all page types
+- Profile and garage pages shall have no color contrast violations that impair usability
 
 ## User Journeys
 

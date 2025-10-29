@@ -179,7 +179,7 @@ export function GarageContent({
 
         <TabsContent value="all" className="mt-6">
           {sortedItems.length > 0 ? (
-            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 lg:gap-8 xl:grid-cols-4">
               {sortedItems.map((item) => (
                 <GarageItemCard
                   key={item.id}
@@ -196,7 +196,7 @@ export function GarageContent({
 
         <TabsContent value="vehicles" className="mt-6">
           {sortedItems.length > 0 ? (
-            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 lg:gap-8 xl:grid-cols-4">
               {sortedItems.map((item) => (
                 <GarageItemCard
                   key={item.id}
@@ -213,7 +213,7 @@ export function GarageContent({
 
         <TabsContent value="products" className="mt-6">
           {sortedItems.length > 0 ? (
-            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 lg:gap-8 xl:grid-cols-4">
               {sortedItems.map((item) => (
                 <GarageItemCard
                   key={item.id}

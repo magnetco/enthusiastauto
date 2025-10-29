@@ -22,7 +22,7 @@ export async function PopularParts() {
 
   return (
     <section
-      className="mx-auto max-w-screen-2xl px-4 py-12 sm:px-5 sm:py-16 lg:px-6"
+      className="mx-auto max-w-screen-2xl px-4 py-8 sm:px-6 sm:py-12 lg:px-8 lg:py-16"
       aria-labelledby="popular-parts-heading"
     >
       {/* Section Header */}
@@ -50,7 +50,7 @@ export async function PopularParts() {
       </div>
 
       {/* Product Grid */}
-      <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4 xl:gap-6">
+      <div className="grid grid-cols-2 gap-6 sm:grid-cols-3 lg:grid-cols-4 lg:gap-8">
         {featuredProducts.map((product) => (
           <ProductCard key={product.id} product={product} />
         ))}

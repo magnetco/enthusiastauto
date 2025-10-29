@@ -111,18 +111,38 @@ The typography system uses paired values (font-size + line-height + letter-spaci
 By default, headings (h1-h6) use the font-sans family with medium-to-semibold weights.
 
 **Uppercase Transform:**
-- Currently applied globally to ALL headings via `text-transform: uppercase` (globals.css line 335)
-- **Recommendation:** Remove global uppercase; apply selectively via utility class for hero sections
-- **Status:** To be addressed in Story 10.2 (Typography System Consistency)
+- Global uppercase transform removed (Story 10.2)
+- Use `.heading-uppercase` utility class for selective uppercase application
+- **Usage Pattern:** Apply uppercase only to hero headings for maximum impact
+- **Rationale:** Improves readability for long headings while maintaining emphasis where needed
 
-**Usage:**
+**Typography Utility Classes (Story 10.2):**
+
+Custom semantic classes that map directly to design tokens:
+
 ```tsx
-// Good - uses design token via Tailwind
-<h1 className="text-3xl font-bold text-foreground">
+// Hero sections
+<h1 className="text-hero heading-uppercase">Large Display</h1>
+<h1 className="text-title-1 sm:text-hero">Responsive Hero</h1>
 
-// Better - if custom classes created
-<h1 className="text-title-1 font-medium text-foreground">
+// Page and section headings
+<h2 className="text-title-2">Page Heading</h2>
+<h3 className="text-title-3">Section Heading</h3>
+
+// Body text variations
+<p className="text-body-xl">Extra large body</p>
+<p className="text-body-large">Large body</p>
+<p className="text-body-base">Base body (14px default)</p>
+<p className="text-body-small">Small text</p>
+<p className="text-body-mini">Labels</p>
+<p className="text-body-micro">Metadata</p>
 ```
+
+**Best Practices:**
+- ✅ Use semantic classes (`.text-title-2`, `.text-body-large`) for consistent typography
+- ✅ Apply `.heading-uppercase` only to hero headings
+- ❌ Avoid hardcoded Tailwind sizes (`text-3xl`, `text-4xl`) - use design token classes instead
+- ✅ Ensure line-height and letter-spacing are paired (automatically handled by semantic classes)
 
 ---
 
@@ -218,6 +238,160 @@ The spacing system follows Linear's tight, consistent approach:
   Quick hover effect
 </button>
 ```
+
+---
+
+## Layout Patterns
+
+**Last Updated:** 2025-10-29 (Story 10.5 - Layout & Spacing Consistency)
+
+### Container Widths
+
+The design system uses content-appropriate container widths to optimize readability and visual hierarchy:
+
+| Page Type | Max Width | Tailwind Class | Use Cases |
+|-----------|-----------|----------------|-----------|
+| **Wide Listing Pages** | 1536px | `max-w-screen-2xl` | Homepage sections, vehicles, parts, search, garage, services |
+| **Content Pages** | 1152px | `max-w-6xl` | Vehicle detail, product detail pages |
+| **Narrow Forms** | 896px | `max-w-4xl` | Profile, account settings, login |
+
+**Implementation Pattern:**
+```tsx
+// Wide listing pages (homepage, vehicles, search, garage, services)
+<div className="container mx-auto max-w-screen-2xl px-4 sm:px-6 lg:px-8">
+
+// Narrow form pages (profile, account settings)
+<div className="container mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
+```
+
+### Horizontal Padding (Consistent Across All Pages)
+
+**Standard Pattern:** `px-4 sm:px-6 lg:px-8` (16px → 24px → 32px)
+
+- **Mobile (<640px):** `px-4` (16px)
+- **Tablet (640px-1024px):** `sm:px-6` (24px)
+- **Desktop (1024px+):** `lg:px-8` (32px)
+
+### Section Spacing (Vertical Rhythm)
+
+**Progressive Scaling Pattern:** `py-8 sm:py-12 lg:py-16` (32px → 48px → 64px)
+
+- **Mobile (<640px):** `py-8` (32px)
+- **Tablet (640px-1024px):** `sm:py-12` (48px)
+- **Desktop (1024px+):** `lg:py-16` (64px)
+
+**Example:**
+```tsx
+<section className="mx-auto max-w-screen-2xl px-4 py-8 sm:px-6 sm:py-12 lg:px-8 lg:py-16">
+  {/* Section content */}
+</section>
+```
+
+### Grid Gaps (Card Layouts)
+
+**Standard Pattern:** `gap-6 lg:gap-8` (24px → 32px)
+
+- **Mobile/Tablet:** `gap-6` (24px)
+- **Desktop (1024px+):** `lg:gap-8` (32px)
+
+**Grid Examples:**
+
+```tsx
+// Vehicle/product grids (responsive columns)
+<div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 lg:gap-8 xl:grid-cols-4">
+  {items.map(item => <Card key={item.id} {...item} />)}
+</div>
+
+// Search results (single column, stacked)
+<div className="grid grid-cols-1 gap-6">
+  {results.map(result => <SearchResultCard key={result.id} {...result} />)}
+</div>
+```
+
+### Layout Pattern Templates
+
+**Wide Listing Page (Vehicles, Products, Search, Garage, Services):**
+```tsx
+<div className="container mx-auto max-w-screen-2xl px-4 py-8 sm:px-6 sm:py-12 lg:px-8 lg:py-16">
+  <h1 className="text-title-2 font-bold text-foreground">
+    Page Title
+  </h1>
+  <p className="mt-2 text-body-base text-muted-foreground">
+    Page description
+  </p>
+
+  <div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 lg:gap-8 xl:grid-cols-4">
+    {/* Cards */}
+  </div>
+</div>
+```
+
+**Narrow Form Page (Profile, Account Settings):**
+```tsx
+<div className="container mx-auto max-w-4xl px-4 py-8 sm:px-6 sm:py-12 lg:px-8 lg:py-16 space-y-6">
+  <h1 className="text-title-2 font-bold">Profile</h1>
+  <p className="text-muted-foreground">
+    Manage your account settings
+  </p>
+
+  <Card>
+    <CardHeader>
+      <CardTitle>Account Information</CardTitle>
+    </CardHeader>
+    <CardContent>
+      {/* Form fields */}
+    </CardContent>
+  </Card>
+</div>
+```
+
+**Section Pattern (Homepage Components):**
+```tsx
+<section className="mx-auto max-w-screen-2xl px-4 py-8 sm:px-6 sm:py-12 lg:px-8 lg:py-16">
+  <div className="mb-8 flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
+    <div>
+      <h2 className="text-title-2 font-bold text-foreground">
+        Section Title
+      </h2>
+      <p className="mt-2 text-body-base text-muted-foreground sm:text-body-large">
+        Section description
+      </p>
+    </div>
+  </div>
+
+  <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 lg:gap-8 xl:grid-cols-4">
+    {/* Cards */}
+  </div>
+</section>
+```
+
+### Intentional Layout Differences
+
+**Container Widths:**
+- **Wide listing pages** (`max-w-screen-2xl`, 1536px): Maximize card visibility for vehicles, products, search results
+- **Narrow form pages** (`max-w-4xl`, 896px): Optimize form readability and reduce line length
+- **Rationale:** Content-driven decision, not an inconsistency
+
+**Responsive Behavior:**
+- All containers maintain consistent horizontal padding across breakpoints
+- Section spacing scales progressively to maintain vertical rhythm
+- Grid gaps increase on desktop for better card separation
+
+### Best Practices
+
+✅ **DO:**
+- Use `max-w-screen-2xl` for listing pages (vehicles, products, search, garage)
+- Use `max-w-4xl` for form-heavy pages (profile, account settings)
+- Apply standard padding: `px-4 sm:px-6 lg:px-8`
+- Apply progressive section spacing: `py-8 sm:py-12 lg:py-16`
+- Use standard grid gaps: `gap-6 lg:gap-8`
+- Maintain 4px spacing grid for all layout spacing
+
+❌ **DON'T:**
+- Use arbitrary max-widths like `max-w-5xl` or `max-w-6xl` without justification
+- Use inconsistent padding patterns (e.g., `px-4 sm:px-5 lg:px-6`)
+- Skip responsive spacing modifiers (always scale from mobile to desktop)
+- Use arbitrary gap values (stick to 6/8 pattern)
 
 ---
 
@@ -379,8 +553,19 @@ The services page (`app/services/page.tsx`) demonstrates **excellent design toke
 - Added do's/don'ts and best practices
 - Added reference to services page as gold standard
 
-**Next Updates:**
-- Story 10.2: Typography refinements (uppercase heading decision)
-- Story 10.3: Accessibility fixes documented
-- Story 10.4: Component visual unification
-- Story 10.5: Layout and spacing polish
+**2025-10-29 - Story 10.5 Layout & Spacing Consistency:**
+- Added comprehensive Layout Patterns section
+- Documented standard container widths (max-w-screen-2xl for listings, max-w-4xl for forms)
+- Standardized horizontal padding pattern (px-4 sm:px-6 lg:px-8)
+- Standardized section spacing pattern (py-8 sm:py-12 lg:py-16)
+- Standardized grid gap pattern (gap-6 lg:gap-8)
+- Added layout pattern templates for different page types
+- Documented intentional layout differences with rationale
+- Added best practices for layout consistency
+
+**Completed Stories:**
+- ✅ Story 10.1: Design System Audit & Documentation Sync
+- ✅ Story 10.2: Typography System Consistency
+- ✅ Story 10.3: Color System & Critical Accessibility Fixes
+- ✅ Story 10.4: Component Visual Unification
+- ✅ Story 10.5: Layout & Spacing Consistency

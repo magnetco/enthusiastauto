@@ -77,7 +77,7 @@ export default async function ProfilePage() {
   const displayImage = user.image;
 
   return (
-    <div className="container mx-auto max-w-4xl py-8 px-4 space-y-6">
+    <div className="container mx-auto max-w-4xl px-4 py-8 sm:px-6 sm:py-12 lg:px-8 lg:py-16 space-y-6">
       {/* Breadcrumb Navigation */}
       <nav className="text-sm text-muted-foreground">
         <ol className="flex items-center gap-2">

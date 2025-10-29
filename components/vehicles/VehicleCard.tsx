@@ -27,7 +27,7 @@ export function VehicleCard({ vehicle, priority = false }: VehicleCardProps) {
         isSold ? "opacity-70" : ""
       }`}
     >
-      <Card className="h-full overflow-hidden border transition-shadow duration-200 hover:shadow-lg">
+      <Card className="h-full overflow-hidden rounded-lg border transition-shadow duration-100">
         {/* Image Container */}
         <div className="relative aspect-[4/3] w-full overflow-hidden bg-gray-100">
           <Image
@@ -51,10 +51,7 @@ export function VehicleCard({ vehicle, priority = false }: VehicleCardProps) {
           {/* Status Badge */}
           {isSold && (
             <div className="absolute right-3 top-3">
-              <Badge
-                variant="destructive"
-                className="bg-red-600 text-white hover:bg-red-700"
-              >
+              <Badge variant="destructive">
                 SOLD
               </Badge>
             </div>
@@ -63,27 +60,29 @@ export function VehicleCard({ vehicle, priority = false }: VehicleCardProps) {
 
         {/* Card Content */}
         <CardContent className="p-4">
-          {/* Vehicle Title */}
-          <h3 className="mb-2 text-body-large font-semibold text-foreground group-hover:text-primary">
-            {vehicle.listingTitle}
-          </h3>
+          <div className="space-y-1.5">
+            {/* Vehicle Title */}
+            <h3 className="text-body-large font-semibold text-foreground group-hover:text-primary">
+              {vehicle.listingTitle}
+            </h3>
 
-          {/* Chassis Badge */}
-          <div className="mb-3">
-            <Badge
-              variant="outline"
-              className="text-xs text-muted-foreground"
-            >
-              {vehicle.chassis}
-            </Badge>
-          </div>
+            {/* Chassis Badge */}
+            <div>
+              <Badge
+                variant="outline"
+                className="text-xs text-muted-foreground"
+              >
+                {vehicle.chassis}
+              </Badge>
+            </div>
 
-          {/* Price and Mileage */}
-          <div className="space-y-1 text-sm">
-            <p className="font-semibold text-primary">
-              {formatCurrency(vehicle.listingPrice, vehicle.showCallForPrice)}
-            </p>
-            <p className="text-muted-foreground">{formatMileage(vehicle.mileage)}</p>
+            {/* Price and Mileage */}
+            <div className="space-y-1 text-sm">
+              <p className="font-semibold text-primary">
+                {formatCurrency(vehicle.listingPrice, vehicle.showCallForPrice)}
+              </p>
+              <p className="text-muted-foreground">{formatMileage(vehicle.mileage)}</p>
+            </div>
           </div>
         </CardContent>
       </Card>

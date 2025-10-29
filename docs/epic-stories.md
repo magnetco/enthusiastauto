@@ -2,10 +2,10 @@
 
 **Author:** Mike
 **Date Created:** 2025-10-14
-**Last Updated:** 2025-10-21 (Unified Platform Expansion)
+**Last Updated:** 2025-10-28 (Epic 10: Design System Unification Added)
 **Project Level:** 3 (Complex system - subsystems and integrations)
-**Target Scale:** 32-40 stories, 6 epics
-**Status:** Phase 1 Complete (Epics 1-2) | Phase 2 Planning (Epics 3-6)
+**Target Scale:** 37-45 stories, 7 epics
+**Status:** Phase 1 Complete (Epics 1-2) | Phase 2 In Progress (Epics 3-7)
 
 ---
 
@@ -25,27 +25,33 @@ This project has evolved from a BMW parts e-commerce platform (Phase 1) into a c
 - ✅ Implemented responsive design and mobile optimization
 - ⚠️ Story 1.11 (Webflow Devlink) removed during expansion planning
 
-**Phase 2 (📋 Planning - Estimated 22-30 stories, 100-140 points):**
+**Phase 2 (📋 In Progress - Estimated 27-35 stories, 129-169 points):**
 
-**Epic 3: Vehicle Inventory Integration** (6-8 stories, est. 35-45 points)
+**Epic 3: Vehicle Inventory Integration** (6 stories, 37 points)
 - Integrate Sanity CMS for vehicle content management
 - Create browsable vehicle inventory with rich media galleries
 - Enable vehicle status tracking and editor workflows
 
-**Epic 4: Unified Site Architecture** (4-6 stories, est. 20-30 points)
+**Epic 4: Unified Site Architecture** (4 stories, 26 points)
 - Create seamless unified navigation and routing
 - Redesign homepage for both vehicles and parts
 - Implement cross-content linking and discovery
 
-**Epic 5: User Management System** (7-9 stories, est. 30-40 points)
+**Epic 5: User Management System** (6 stories, 39 points)
 - Implement user authentication and registration
 - Build "My Garage" favorites system
 - Create user dashboard with personalized features
 
-**Epic 6: Advanced Search & Discovery** (5-7 stories, est. 25-35 points)
+**Epic 6: Advanced Search & Discovery** (4 stories, 39 points)
 - Build unified search across vehicles and parts
 - Implement recommendation engine
 - Create cross-discovery features (compatible parts, vehicles with part)
+
+**Epic 10: Design System Unification** (5 stories, 29 points) 🆕 **PRIORITY**
+- Establish cohesive design system with unified typography, colors, spacing
+- Fix critical accessibility violations (WCAG AA compliance)
+- Unify component visual design across all pages
+- Synchronize documentation with implementation
 
 ---
 
@@ -1034,21 +1040,195 @@ This project has evolved from a BMW parts e-commerce platform (Phase 1) into a c
 
 ---
 
+## Epic 10: Design System Unification (Phase 2 - PRIORITY)
+
+**Goal:** Establish a cohesive, accessible, and production-ready design system by unifying typography, colors, spacing, and components across all pages, fixing critical accessibility violations, and synchronizing documentation with implementation.
+
+**Priority:** **HIGH** - Blocking production readiness
+**Estimated Duration:** 4-5 sprints
+**Dependencies:** Should be completed BEFORE continuing Epic 5/6 implementation
+
+**Success Criteria:**
+- All pages use consistent design tokens
+- WCAG AA accessibility compliance (4.5:1 contrast minimum)
+- Profile/garage pages fully usable (no bg/text conflicts)
+- Parts cards and vehicle cards have unified visual design
+- design-system.md accurately reflects implementation
+- Typography hierarchy is clear and consistent
+- All components reference enthusiastauto.com aesthetic
+
+---
+
+### Story 10.1: Design System Audit & Documentation Sync
+
+**As a** developer maintaining the design system
+**I want to** audit all pages and synchronize design-system.md with the actual implementation
+**So that** we have a single source of truth for design decisions
+
+**Prerequisites:**
+- Existing design-system.md reviewed
+- globals.css @theme tokens analyzed
+
+**Acceptance Criteria:**
+
+1. Complete page-by-page audit documenting typography, color, spacing usage
+2. Identify all design token inconsistencies across pages
+3. Document all accessibility violations (contrast, color conflicts)
+4. Reconcile design-system.md with globals.css (decide: keep Figtree or switch to Inter/Outfit?)
+5. Update design-system.md to match chosen implementation
+6. Create design token usage inventory (which pages use which tokens)
+7. Document inconsistencies found: parts cards vs vehicle cards, profile/garage bg issues, search layout, parts display extra section
+8. Provide recommendations for Stories 10.2-10.5
+
+**Technical Notes:**
+- Review all pages: /, /products, /vehicles, /search, /account/profile, /account/garage, /services
+- Check globals.css @theme inline tokens vs actual component usage
+- Note: globals.css has text-transform: uppercase on all headings (line 335) - evaluate if desired
+- Reference enthusiastauto.com for design direction
+
+**Effort:** 3 points
+
+---
+
+### Story 10.2: Typography System Consistency
+
+**As a** user browsing the site
+**I want to** experience consistent typography hierarchy across all pages
+**So that** content is easier to read and the site feels cohesive
+
+**Prerequisites:**
+- Story 10.1 complete (audit complete, decisions documented)
+
+**Acceptance Criteria:**
+
+1. All headings (h1-h6) consistently use design token font sizes, weights, and letter-spacing
+2. All body text uses base typography tokens consistently
+3. Font family consistency verified: either all Figtree OR migrated to Inter/Outfit per docs
+4. Evaluate and standardize text-transform: uppercase on headings (keep or remove)
+5. Fix typography hierarchy issues identified in Story 10.1
+6. Ensure line-height and letter-spacing tokens applied across all text
+7. Mobile and desktop typography scales tested and verified
+8. Update design-system.md with finalized typography decisions
+
+**Technical Notes:**
+- globals.css defines comprehensive scale (micro to hero)
+- Currently using Figtree (var(--font-sans)) but docs say Inter/Outfit
+- All headings have uppercase transform - verify if this matches enthusiastauto.com
+- Severity: 3/5 per user assessment
+
+**Effort:** 5 points
+
+---
+
+### Story 10.3: Color System & Critical Accessibility Fixes
+
+**As a** user with visual needs
+**I want to** see proper color contrast on all pages
+**So that** I can read content and use features regardless of visual ability
+
+**Prerequisites:**
+- Story 10.1 complete (accessibility violations documented)
+
+**Acceptance Criteria:**
+
+1. **CRITICAL:** Fix identical background/text color issues on profile and garage pages
+2. Audit all color combinations for WCAG AA compliance (4.5:1 text, 3:1 UI components)
+3. Fix all contrast violations identified in Story 10.1
+4. Apply color tokens consistently across all pages (use CSS variables, not hardcoded values)
+5. Ensure semantic colors (success, warning, error) used consistently
+6. Fix background color inconsistencies between pages
+7. Document color usage patterns in design-system.md
+8. Verify all interactive elements have sufficient contrast in all states (default, hover, focus, disabled)
+
+**Technical Notes:**
+- globals.css has extensive color system (--color-text-*, --color-bg-*, --color-border-*)
+- Profile/garage pages reported as "unusable" due to color issues
+- Severity: **5/5** - CRITICAL accessibility failure
+- Use WCAG AA as minimum standard
+
+**Effort:** 8 points
+
+---
+
+### Story 10.4: Component Visual Unification
+
+**As a** user browsing vehicles and parts
+**I want to** see visually consistent cards and components
+**So that** the site feels polished and professional
+
+**Prerequisites:**
+- Story 10.3 complete (color system fixed)
+- Story 10.2 complete (typography consistent)
+
+**Acceptance Criteria:**
+
+1. Parts cards and vehicle cards have unified visual design (same padding, border-radius, shadows, hover states)
+2. Fix vertical padding inconsistencies on all cards
+3. Standardize button styles across all pages (primary, secondary, destructive)
+4. Unify form elements (inputs, selects, textareas) using consistent tokens
+5. Fix parts display page extra section that doesn't match design system
+6. Ensure all cards use elevation tokens (--shadow-tiny, --shadow-low, etc.)
+7. Standardize card spacing and grid layouts
+8. Apply consistent hover/focus states across all interactive components
+
+**Technical Notes:**
+- globals.css defines shadow elevations (--shadow-tiny to --shadow-high)
+- Border radius tokens defined (--radius-4 to --radius-32)
+- User noted parts cards "way different than vehicle cards"
+- Severity: 3/5 per user assessment
+
+**Effort:** 8 points
+
+---
+
+### Story 10.5: Layout & Spacing Consistency
+
+**As a** user navigating the site
+**I want to** see consistent layouts and spacing
+**So that** the experience feels unified across pages
+
+**Prerequisites:**
+- Story 10.4 complete (components unified)
+
+**Acceptance Criteria:**
+
+1. All pages use consistent container widths and max-widths
+2. Apply spacing tokens (4px grid system) consistently for margins/padding
+3. Fix search page layout issues identified in Story 10.1
+4. Standardize section spacing across all pages
+5. Ensure consistent grid gaps for card layouts
+6. Fix any container alignment issues between pages
+7. Verify responsive spacing works correctly on mobile, tablet, desktop
+8. Document layout patterns in design-system.md
+
+**Technical Notes:**
+- globals.css uses 4px spacing grid (comments at lines 177-188 define Linear spacing patterns)
+- Search page noted as needing layout work
+- Severity: 2/5 per user assessment
+- Reference enthusiastauto.com for layout patterns
+
+**Effort:** 5 points
+
+---
+
 ## Phase 2 Story Summary
 
 **Epic 3: Vehicle Inventory Integration** - 6 stories, 37 points
 **Epic 4: Unified Site Architecture** - 4 stories, 26 points
 **Epic 5: User Management System** - 6 stories, 39 points
 **Epic 6: Advanced Search & Discovery** - 4 stories, 39 points
+**Epic 10: Design System Unification** - 5 stories, 29 points 🆕 **PRIORITY**
 
-**Phase 2 Total:** 20 stories, 141 points
+**Phase 2 Total:** 25 stories, 170 points
 
 **Combined Project Total:**
 - **Phase 1:** 10 stories, 50 points (✅ Complete)
-- **Phase 2:** 20 stories, 141 points (📋 Planning)
-- **Grand Total:** 30 stories, 191 points
+- **Phase 2:** 25 stories, 170 points (📋 In Progress - Epic 10 prioritized)
+- **Grand Total:** 35 stories, 220 points
 
-Estimated Phase 2 delivery: 8-10 sprints (assuming 2-week sprints, team velocity 15-18 points)
+Estimated Phase 2 delivery: 10-12 sprints (assuming 2-week sprints, team velocity 15-18 points)
+
+**Note:** Epic 10 (Design System Unification) should be completed BEFORE continuing implementation of remaining Epic 5 and Epic 6 stories to ensure production-ready quality.
 
 ---
 
@@ -1081,6 +1261,14 @@ Estimated Phase 2 delivery: 8-10 sprints (assuming 2-week sprints, team velocity
 - Unified search used by 50%+ of visitors
 - Search result click-through rate >30%
 - Personalized recommendations drive 15%+ of discovery traffic
+
+**Epic 10 Success:**
+- All pages pass WCAG AA accessibility audit (4.5:1 contrast minimum)
+- Profile and garage pages fully usable with no color conflicts
+- Design system documentation matches implementation 100%
+- Lighthouse accessibility score 95+ across all pages
+- Visual consistency validated across all component types
+- Zero user-reported accessibility issues in first month post-launch
 
 ---
 

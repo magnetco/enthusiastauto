@@ -1,6 +1,7 @@
 "use client";
 
 import { Badge } from "@/components/ui/badge";
+import { Card, CardContent } from "@/components/ui/card";
 import { Product } from "@/lib/shopify/types";
 import { FitmentBadge } from "@/components/FitmentBadge";
 import { useFilters } from "@/contexts/FilterContext";
@@ -58,14 +59,13 @@ export function ProductCard({ product }: ProductCardProps) {
   };
 
   return (
-    <article className="group h-full" role="article" aria-labelledby={`product-title-${product.id}`}>
-      <Link
-        href={`/product/${product.handle}`}
-        className="block h-full"
-        aria-label={`View details for ${product.title}`}
-      >
-        <div className="h-full overflow-hidden">
-          <div className="relative aspect-square overflow-hidden bg-muted/10">
+    <Link
+      href={`/product/${product.handle}`}
+      className="group block h-full"
+      aria-label={`View details for ${product.title}`}
+    >
+      <Card className="h-full overflow-hidden rounded-lg border transition-shadow duration-100">
+        <div className="relative aspect-square overflow-hidden bg-muted/10">
             {imageUrl ? (
               <Image
                 src={imageUrl}
@@ -106,7 +106,8 @@ export function ProductCard({ product }: ProductCardProps) {
             )}
           </div>
 
-          <div className="space-y-1.5 pt-2.5">
+        <CardContent className="p-4">
+          <div className="space-y-1.5">
             {/* Product title - truncate to 2 lines */}
             <h3 id={`product-title-${product.id}`} className="line-clamp-2 text-sm font-medium leading-tight tracking-[-0.006em] text-foreground normal-case">
               {product.title}
@@ -142,8 +143,8 @@ export function ProductCard({ product }: ProductCardProps) {
               </div>
             )}
           </div>
-        </div>
-      </Link>
-    </article>
+        </CardContent>
+      </Card>
+    </Link>
   );
 }

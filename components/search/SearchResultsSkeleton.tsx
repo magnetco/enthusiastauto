@@ -15,7 +15,7 @@ export function SearchResultsSkeleton() {
       </div>
 
       {/* Results Skeleton */}
-      <div className="grid grid-cols-1 gap-4">
+      <div className="grid grid-cols-1 gap-6">
         {[...Array(5)].map((_, i) => (
           <div key={i} className="border rounded-lg p-4">
             <div className="flex gap-4">

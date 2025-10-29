@@ -104,7 +104,7 @@ export default async function GaragePage() {
     process.env.NEXT_PUBLIC_SITE_URL || "https://shop.enthusiastauto.com";
 
   return (
-    <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+    <div className="mx-auto max-w-screen-2xl px-4 py-8 sm:px-6 sm:py-12 lg:px-8 lg:py-16">
       <Breadcrumbs
         customItems={[
           { label: "Account", href: "/account/profile" },
