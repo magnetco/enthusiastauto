@@ -2,15 +2,15 @@
 
 **Project:** Enthusiast Auto Ecommerce Site
 **Created:** 2025-10-14
-**Last Updated:** 2025-10-23
+**Last Updated:** 2025-10-28
 
 ---
 
 ## Current Status
 
 **Current Phase:** 4-Implementation (Phase 2)
-**Current Workflow:** Course Correction Complete - Project Status Reconciled
-**Overall Progress:** Phase 1 Complete (10/10 stories, 50 points) | Phase 2 In Progress (14/20 stories complete, 88/141 points, 62.4%)
+**Current Workflow:** dev-story (Story 10.1) - Complete (Ready for Review)
+**Overall Progress:** Phase 1 Complete (10/10 stories, 50 points) | Phase 2 In Progress (15/25 stories complete, 91/170 points, 53.5%)
 
 **Project Level:** 3 (Complex system - subsystems and integrations)
 **Project Type:** Web Application
@@ -24,16 +24,32 @@
 - [x] **1-Analysis** - Documentation phase (Complete)
 - [x] **2-Plan** - Planning phase (PRD + UX Spec) (Complete)
 - [x] **3-Solutioning** - Architecture design (✅ COMPLETE 2025-10-21)
-- [ ] **4-Implementation** - Phase 2 development (In Progress - 14/20 stories complete, 88/141 points, 62.4%)
+- [ ] **4-Implementation** - Phase 2 development (In Progress - 15/25 stories complete, 91/170 points, 53.5%)
 
 ---
 
 ## Implementation Progress
 
 ### BACKLOG
-3 stories remaining (15 points):
+7 stories remaining (41 points):
+- **Epic 10: Design System Unification (4 stories, 26 points - PRIORITY)** 🆕
+  - Story 10.2: Typography System Consistency (5 points)
+  - Story 10.3: Color System & Critical Accessibility Fixes (8 points) - CRITICAL severity 5/5
+  - Story 10.4: Component Visual Unification (8 points)
+  - Story 10.5: Layout & Spacing Consistency (5 points)
 - Epic 5: User Management System (2 stories remaining, 10 points - Stories 5.5, 5.6)
 - Epic 6: Advanced Search & Discovery (1 story remaining, 5 points - Story 6.4 SEO)
+
+### TODO (Needs Drafting)
+
+**Story 10.2: Typography System Consistency**
+- **File:** `docs/stories/story-10.2.md` (not yet created)
+- **Epic:** 10 (Design System Unification - PRIORITY)
+- **Points:** 5
+- **Status:** Not created
+- **Description:** Consistent typography hierarchy across all pages with design token font sizes, weights, and letter-spacing
+- **Prerequisites:** Story 10.1 complete (audit provides font family decision and typography recommendations)
+- **Next Action:** Wait for Story 10.1 completion, then run create-story to draft Story 10.2
 
 ### TODO (Next to Implement)
 **Story 4.4: Cross-Content Linking Components**
@@ -48,9 +64,21 @@
 
 ### IN PROGRESS
 
-No stories currently in active development. Next: Fix Story 4.4 bug or continue Epic 5/6.
+**Story 10.3: Color System & Critical Accessibility Fixes** 🚨 NEXT
+- **File:** `docs/stories/story-10.3.md` (not yet created)
+- **Epic:** 10 (Design System Unification - PRIORITY)
+- **Points:** 8
+- **Status:** Not created (Story 10.1 audit complete - ready to draft)
+- **Description:** Fix CRITICAL accessibility violations (severity 5/5) on profile/garage pages, replace all hardcoded gray colors with semantic tokens, fix VehicleCard component colors
+- **Prerequisites:** Story 10.1 complete ✅ (audit provides specific violations to fix)
+- **Next Action:** Create Story 10.3 via create-story workflow OR begin implementation directly using audit findings from design-system-audit-2025-10-28.md
 
 ### RECENTLY COMPLETED (Stories from Course Correction Audit)
+
+**Story 10.1: Design System Audit & Documentation Sync** ✅
+- **Epic:** 10 (Design System Unification - PRIORITY) | **Points:** 3 | **Completed:** 2025-10-28
+- **Description:** Complete page audit documenting typography, color, spacing usage; identify design token inconsistencies and accessibility violations; reconcile design-system.md with implementation
+- **Implementation:** Created comprehensive design-system-audit-2025-10-28.md (400+ lines) with page-by-page analysis, WCAG violations (severity 5/5 on profile/garage), component comparison (ProductCard vs VehicleCard), design token usage matrix (services 95%, profile 35%), font family decision (KEEP Figtree). Completely rewrote design-system.md to match implementation (Figtree font, Linear typography, comprehensive color tokens, spacing patterns, shadow system, best practices). All 8 ACs met, all tasks complete. CRITICAL finding: Profile/garage pages have text-gray-900 on dark bg (1.05:1 contrast, virtually invisible). Recommendations for Stories 10.2-10.5 with effort estimates. Status: Ready for Review.
 
 **Story 7.1: Service Request Page & Form** ✅
 - **Epic:** 7 (Services) | **Points:** 5 | **Completed:** 2025-10-28
@@ -96,33 +124,48 @@ No stories currently in active development. Next: Fix Story 4.4 bug or continue 
 
 ## 🎯 Next Recommended Action
 
-**Action:** Fix Story 4.4 Bug OR Continue Epic 5/6
-**Status:** Course correction complete - accurate project tracking restored
+**Action:** BEGIN Epic 10: Design System Unification (PRIORITY)
+**Status:** Epic 10 added to PRD - blocking production readiness
 
-**Option 1 - Fix Story 4.4 Bug:**
-- **Story 4.4** has a known bug: "Vehicles in Stock" section not showing on product pages
-- Vehicle → Parts direction works ✅, Product → Vehicles broken ❌
-- Fix will complete Epic 4 (4/4 stories, 26/26 points) 🎉
+**RECOMMENDED: Epic 10 Design System Unification (29 points, 5 stories)**
+- **WHY PRIORITY:** Site has critical accessibility issues (severity 5/5) and visual inconsistencies blocking production
+- **IMPACT:** Profile/garage pages unusable due to color conflicts, parts/vehicle cards inconsistent
+- **SEQUENCE:** Complete Epic 10 BEFORE continuing Epic 5/6 implementation
+- **START WITH:** Story 10.1 - Design System Audit & Documentation Sync (3 points)
 
-**Option 2 - Continue Epic 5:**
-- **Story 5.5:** Purchase History Integration (5 points) - Requires Shopify Customer API
-- **Story 5.6:** User Dashboard with Recommendations (5 points) - Requires Epic 6 done (✅ almost there!)
+**Epic 10 Story Sequence:**
+1. **Story 10.1:** Design System Audit & Documentation Sync (3 points) - Foundation
+2. **Story 10.3:** Color System & Critical Accessibility Fixes (8 points) - CRITICAL severity 5/5
+3. **Story 10.2:** Typography System Consistency (5 points)
+4. **Story 10.4:** Component Visual Unification (8 points)
+5. **Story 10.5:** Layout & Spacing Consistency (5 points)
 
-**Option 3 - Complete Epic 6:**
-- **Story 6.4:** SEO Optimization & Schema Markup (5 points)
-- Will complete Epic 6 (4/4 stories, 39/39 points) 🎉
-- Prerequisites met: Epic 3 ✅ and Epic 4 mostly done
+**Alternative - Continue Previous Work (NOT RECOMMENDED until Epic 10 complete):**
+- Fix Story 4.4 bug (Vehicles in Stock section)
+- Story 5.5: Purchase History Integration (5 points)
+- Story 6.4: SEO Optimization & Schema Markup (5 points)
 
-**Progress Summary (CORRECTED):**
+**Progress Summary (UPDATED):**
 - Epic 3 (Vehicle Inventory): ✅ 6/6 stories complete (37/37 points, 100%)
 - Epic 4 (Unified Site Architecture): 3/4 stories (18/26 points, 69.2%) - Story 4.4 has bug
 - Epic 5 (User Management): ✅ 4/6 stories complete (29/39 points, 74.4%) - 5.1, 5.2, 5.3, 5.4 done
 - Epic 6 (Advanced Search): ✅ 3/4 stories complete (34/39 points, 87.2%) - 6.1, 6.2, 6.3 done
 - Epic 7 (Services): ✅ 1/1 story complete (5 points, 100%) - Story 7.1 done
+- **Epic 10 (Design System): 1/5 stories complete (3/29 points, 10.3%) - PRIORITY - Story 10.1 done**
 
 ---
 
 ## Decisions Log
+
+**2025-10-28 - Story 10.1 Complete (Design System Audit):** Completed dev-story for Story 10.1 (Design System Audit & Documentation Sync). All 8 tasks and 50+ subtasks checked off. Created comprehensive design-system-audit-2025-10-28.md (400+ lines) documenting: (1) Page-by-page audit of 7 pages with token usage scores (services 95% gold standard, profile 35% worst), (2) CRITICAL WCAG violations - Profile page has 6+ contrast failures with text-gray-900 on dark bg (#08090a on #141721 = 1.05:1 ratio, virtually invisible), garage page expected similar issues, (3) Component comparison - ProductCard vs VehicleCard dramatically different (aspect ratios 1:1 vs 4:3, padding 10px vs 16px, ProductCard uses semantic tokens ✅, VehicleCard hardcoded colors ❌), (4) Design token usage matrix showing hardcoded values in vehicles/profile pages, (5) Font family decision: KEEP Figtree (update docs) - rationale: already implemented, excellent readability, no user benefit to switch to Inter/Outfit, avoid performance/layout risks, (6) Uppercase transform on ALL headings (line 335 globals.css) flagged for removal in Story 10.2, (7) Detailed recommendations for Stories 10.2-10.5 with effort estimates (10.3 CRITICAL 8pts 6-8hrs, 10.2 medium 5pts 3-4hrs, 10.4 high 8pts 6-8hrs, 10.5 low 5pts 4-5hrs). Completely rewrote design-system.md to synchronize with implementation: updated font to Figtree, brand colors to blue primary, typography to Linear system (14px base), added comprehensive color token docs, spacing patterns, shadow system, animation timing, accessibility standards, best practices with services page as example. All 8 acceptance criteria met. Story status: Ready for Review. Progress: 53.5% (91/170 points, 15/25 stories complete). 🚨 CRITICAL BLOCKER: Profile/garage accessibility violations (severity 5/5) block production - must implement Story 10.3 IMMEDIATELY before any other Epic 10 work. Next: User reviews audit findings, then create/implement Story 10.3 (Color System & Critical Accessibility Fixes).
+
+**2025-10-28 - Story 10.1 Context Generated:** Completed story-context workflow for Story 10.1 (Design System Audit & Documentation Sync). Context file: `docs/stories/story-context-10.10.1.xml`. Comprehensive implementation guidance generated including: 8 acceptance criteria (page-by-page audit of 7 pages, design token inconsistencies, WCAG accessibility violations, font family reconciliation Figtree vs Inter/Outfit, design-system.md update, token usage matrix, document specific inconsistencies, provide recommendations for Stories 10.2-10.5), 8 tasks captured with 50+ subtasks, 5 documentation references (PRD FR025/NFR011, epic-stories Epic 10, design-system.md, solution-architecture, workflow status), 14 code artifacts (globals.css core tokens lines 37-349, theme definitions 237-306, all 7 page components to audit, ProductCard vs VehicleCard comparison, ShadCN UI base components, design-system.md documentation), complete dependency list (Tailwind CSS v4, Next.js 15, React 19, Radix UI, Figtree font), 15 architectural constraints (CRITICAL: profile/garage severity 5/5 color conflicts unusable, WCAG AA 4.5:1 text 3:1 UI required, font family decision needed, uppercase headings evaluation, component visual consistency, zero doc discrepancies, architecture patterns for tokens/spacing/typography/shadows), 4 interface definitions (CSS custom properties pattern, ShadCN theme system, Tailwind token classes, page component patterns), testing standards with 45 test ideas mapped to 8 ACs covering: automated tools (Lighthouse, axe DevTools, WAVE), manual contrast testing, visual regression, documentation validation, token usage analysis, component comparison, audit all 7 pages, WCAG violations report, font family decision rationale, design-system.md updates, token usage matrix creation, card component comparison, specific inconsistency documentation, recommendations for Epic 10 stories with effort estimates. Note: This is audit/documentation story - focus on validation and analysis, not code changes. Story establishes single source of truth foundation before implementing fixes in Stories 10.2-10.5. Progress: 51.8% (88/170 points). Next: DEV agent implements Story 10.1 via dev-story workflow to conduct comprehensive design system audit and documentation sync.
+
+**2025-10-28 - Story 10.1 Marked Ready:** Story 10.1 (Design System Audit & Documentation Sync) marked ready for development by SM agent. Story file status updated: Draft → Ready. Moved from TODO (Needs Drafting) → IN PROGRESS (Approved for Development). Next story 10.2 (Typography System Consistency) remains in BACKLOG until Story 10.1 completes (prerequisite dependency - audit provides font family decision and typography recommendations). Story 10.1 is foundation for Epic 10 (PRIORITY) - establishes single source of truth before implementing fixes. 3 points. Status: Ready for context generation and implementation. Next: Run story-context workflow to generate implementation context, then dev-story to implement the audit.
+
+**2025-10-28 - Story 10.1 Created:** Completed create-story workflow for Story 10.1 (Design System Audit & Documentation Sync). Story file created at docs/stories/story-10.1.md. Comprehensive story with 8 acceptance criteria covering: page-by-page audit of all pages (/, /products, /vehicles, /search, /account/profile, /account/garage, /services) documenting typography/color/spacing, identify design token inconsistencies, document accessibility violations (WCAG compliance), reconcile design-system.md with globals.css (Figtree vs Inter/Outfit decision), update design-system.md to match implementation, create design token usage inventory matrix, document specific known issues (parts vs vehicle cards, profile/garage color conflicts severity 5/5 CRITICAL, search layout, parts display section), provide recommendations for Stories 10.2-10.5 with effort estimates. 8 implementation tasks with 50+ subtasks covering: page audits (7 pages), WCAG accessibility audit (4.5:1 text, 3:1 UI), globals.css token audit, design-system.md comparison, token usage inventory matrix creation, document specific inconsistencies, update design-system.md, create recommendations for Epic 10 stories. Story is foundation for Epic 10 (PRIORITY) - establishes single source of truth before implementing fixes. 3 points. Status: Draft (needs review via story-ready workflow). Epic 10 progress: 1/5 stories drafted (0/29 points implemented). Next: Review Story 10.1 and approve for development context generation, then continue drafting Story 10.2 (Typography System Consistency) or Story 10.3 (Color System & Critical Accessibility Fixes).
+
+**2025-10-28 - EPIC 10 ADDED: Design System Unification:** Product Manager agent completed plan-project workflow to scope new Epic 10: Design System Unification (5 stories, 29 points). User identified critical design system issues blocking production readiness: (1) Critical accessibility violations (severity 5/5) - identical background/text colors on profile/garage pages making them unusable, (2) Typography inconsistency (severity 3/5) - Figtree vs documented Inter/Outfit, uppercase transform on all headings, (3) Component visual differences (severity 3/5) - parts cards vs vehicle cards dramatically different, vertical padding inconsistencies, (4) Color application inconsistencies - background colors vary across pages, (5) Spacing/layout issues (severity 2/5) - search page layout problems, non-uniform containers. Epic 10 stories defined: 10.1 Design System Audit & Documentation Sync (3pts - foundation), 10.2 Typography System Consistency (5pts), 10.3 Color System & Critical Accessibility Fixes (8pts - CRITICAL), 10.4 Component Visual Unification (8pts), 10.5 Layout & Spacing Consistency (5pts). Updated PRD.md with FR025 (design system requirement) and NFR011 (accessibility & design system compliance). Updated epic-stories.md with full Epic 10 breakdown including acceptance criteria, prerequisites, technical notes. Epic 10 designated PRIORITY - must complete BEFORE continuing Epic 5/6 implementation to ensure production-ready quality. Phase 2 scope updated: 25 stories (was 20), 170 points (was 141). Overall progress adjusted: 51.8% (was 62.4% - denominator increased). Design system reference: enthusiastauto.com aesthetic. Next action: Begin Story 10.1 (Design System Audit).
 
 **2025-10-28 - COURSE CORRECTION COMPLETE:** Comprehensive audit reconciled git commit 1faa217 (bulk save) with workflow tracking. Discovered significant untracked implementations: Epic 5 actually 4/6 complete (not 2/6), Epic 6 actually 3/4 complete (not 0/4 blocked), Epic 7 Story 7.1 complete (not tracked). Verified implementations against acceptance criteria: Story 6.1 (all 8 ACs met), Story 6.2 (complete), Story 6.3 (complete), Story 5.3 (complete), Story 5.4 (complete), Story 7.1 (complete). Updated Story 6.1 status: Draft → Done with completion notes. Corrected overall progress: Phase 2 from "11/20 stories, 78.7%" to **14/20 stories, 62.4%** (88/141 points). Percentage was inflated due to incomplete tracking. Epic 6 no longer blocked - 87.2% complete. Epic 5 now 74.4% complete. Added Epic 7 (Services) with Story 7.1 done. Updated workflow status file with corrected epic progress, accurate backlog (3 stories remaining), and realistic next actions. True remaining work: Story 4.4 bug fix, Stories 5.5-5.6, Story 6.4.
 
