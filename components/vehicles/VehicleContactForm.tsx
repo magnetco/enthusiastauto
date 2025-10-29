@@ -118,20 +118,20 @@ export function VehicleContactForm({
   // Show "sold" message instead of form
   if (status === 'sold') {
     return (
-      <div className="rounded-lg border border-gray-200 bg-gray-50 p-6">
+      <div className="rounded-lg border bg-card p-6">
         <div className="text-center">
           <div className="mb-2 inline-block rounded-full bg-red-100 px-3 py-1 text-sm font-semibold text-red-800">
             SOLD
           </div>
-          <p className="text-gray-600">This vehicle has been sold.</p>
+          <p className="text-muted-foreground">This vehicle has been sold.</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="rounded-lg border border-gray-200 bg-gray-50 p-6">
-      <h3 className="mb-6 text-sm font-bold uppercase tracking-wide text-gray-900">
+    <div className="rounded-lg border bg-card p-6">
+      <h3 className="mb-6 text-sm font-bold uppercase tracking-wide text-foreground">
         Message Seller
       </h3>
 
@@ -248,7 +248,7 @@ export function VehicleContactForm({
                 </FormControl>
                 <div className="flex items-center justify-between">
                   <FormMessage />
-                  <span className="text-xs text-gray-500">
+                  <span className="text-xs text-muted-foreground">
                     {messageLength} / 1000
                   </span>
                 </div>
@@ -317,13 +317,13 @@ export function VehicleContactForm({
           </Button>
 
           {/* Privacy disclaimer */}
-          <p className="text-xs text-gray-500">
+          <p className="text-xs text-muted-foreground">
             By submitting this form, you agree to our{' '}
-            <a href="/privacy" className="underline hover:text-gray-700">
+            <a href="/privacy" className="underline hover:text-foreground">
               Privacy Policy
             </a>{' '}
             and{' '}
-            <a href="/terms" className="underline hover:text-gray-700">
+            <a href="/terms" className="underline hover:text-foreground">
               Terms of Service
             </a>
             . We will use your contact information to respond to your inquiry.
