@@ -77,10 +77,10 @@ async function VehiclesContent({ searchParams }: VehiclesPageProps) {
 
       {/* Header */}
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900 sm:text-4xl">
+        <h1 className="text-title-2 font-bold text-foreground">
           Vehicle Inventory
         </h1>
-        <p className="mt-2 text-gray-600">
+        <p className="mt-2 text-body-base text-muted-foreground">
           Browse our curated selection of premium BMW vehicles
         </p>
       </div>
@@ -111,7 +111,7 @@ async function VehiclesContent({ searchParams }: VehiclesPageProps) {
             <EmptyState hasActiveFilters={hasActiveFilters} />
           ) : (
             <>
-              <div className="mb-4 text-sm text-gray-400">
+              <div className="mb-4 text-sm text-muted-foreground">
                 {vehicles.length} {vehicles.length === 1 ? "vehicle" : "vehicles"} found
               </div>
               <VehicleGrid vehicles={vehicles} />

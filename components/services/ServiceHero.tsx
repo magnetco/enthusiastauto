@@ -21,20 +21,20 @@ export function ServiceHero() {
       {/* Hero Content */}
       <div className="relative z-10 mx-auto max-w-screen-2xl px-4 py-20 sm:px-5 sm:py-24 lg:px-6 lg:py-28">
         {/* Main Heading */}
-        <h1 className="mb-4 max-w-[50rem] text-4xl font-bold leading-tight text-foreground sm:text-5xl lg:text-6xl">
+        <h1 className="heading-uppercase mb-4 max-w-[50rem] text-title-1 font-bold text-foreground sm:text-hero">
           Expert BMW Care
           <br />
           <span className="text-primary">From Touch-Ups to Total Restoration</span>
         </h1>
 
         {/* Subheadline */}
-        <p className="mb-6 max-w-[40rem] text-lg text-muted-foreground sm:text-xl lg:text-2xl">
+        <p className="mb-6 max-w-[40rem] text-body-large text-muted-foreground sm:text-body-xl">
           Whether you need cosmetic repairs, protective treatments, or complete
           restoration, we deliver factory-exceeding results.
         </p>
 
         {/* Key Benefits */}
-        <div className="mb-8 flex flex-wrap gap-4 text-sm font-medium text-muted-foreground">
+        <div className="mb-8 flex flex-wrap gap-4 text-body-small font-medium text-muted-foreground">
           <div className="flex items-center gap-2">
             <span className="text-primary">✓</span>
             <span>Genuine BMW Parts</span>

@@ -79,22 +79,22 @@ export default async function ProfilePage() {
   return (
     <div className="container mx-auto max-w-4xl py-8 px-4 space-y-6">
       {/* Breadcrumb Navigation */}
-      <nav className="text-sm text-gray-500">
+      <nav className="text-sm text-muted-foreground">
         <ol className="flex items-center gap-2">
           <li>
-            <a href="/account" className="hover:text-gray-700">
+            <a href="/account" className="hover:text-foreground">
               Dashboard
             </a>
           </li>
           <li>&gt;</li>
-          <li className="text-gray-900 font-medium">Profile</li>
+          <li className="text-foreground font-medium">Profile</li>
         </ol>
       </nav>
 
       {/* Page Header */}
       <div>
-        <h1 className="text-3xl font-bold">My Profile</h1>
-        <p className="text-gray-600 mt-1">
+        <h1 className="text-title-2 font-bold">My Profile</h1>
+        <p className="text-muted-foreground mt-1">
           Manage your profile information and account settings
         </p>
       </div>
@@ -107,7 +107,7 @@ export default async function ProfilePage() {
         <CardContent className="py-6">
           <div className="flex items-start gap-4">
             {/* Avatar */}
-            <div className="w-16 h-16 rounded-full bg-blue-600 flex items-center justify-center text-white text-xl font-bold overflow-hidden">
+            <div className="w-16 h-16 rounded-full bg-primary flex items-center justify-center text-primary-foreground text-xl font-bold overflow-hidden">
               {displayImage ? (
                 <img
                   src={displayImage}
@@ -121,10 +121,10 @@ export default async function ProfilePage() {
 
             {/* User Info */}
             <div className="flex-1">
-              <h2 className="text-xl font-semibold">
+              <h2 className="text-title-3 font-semibold">
                 {user.name || "Name not set"}
               </h2>
-              <p className="text-gray-600">{user.email}</p>
+              <p className="text-muted-foreground">{user.email}</p>
               <div className="flex gap-2 mt-2">
                 {authMethods.map((method) => (
                   <Badge key={method} variant="secondary">
@@ -132,7 +132,7 @@ export default async function ProfilePage() {
                   </Badge>
                 ))}
               </div>
-              <p className="text-sm text-gray-500 mt-2">
+              <p className="text-sm text-muted-foreground mt-2">
                 Member since{" "}
                 {new Date(user.createdAt).toLocaleDateString("en-US", {
                   month: "long",
@@ -140,7 +140,7 @@ export default async function ProfilePage() {
                 })}
               </p>
               {isOAuthAvatar && (
-                <p className="text-xs text-gray-400 mt-1">
+                <p className="text-xs text-muted-foreground mt-1">
                   Using {user.accounts.find(a => user.image?.includes(a.provider))?.provider || 'OAuth'} avatar (you can upload a custom one below)
                 </p>
               )}

@@ -40,7 +40,7 @@ export default function HomePage() {
       <Suspense
         fallback={
           <div className="mx-auto max-w-screen-2xl px-4 py-12 sm:px-5 sm:py-16 lg:px-6">
-            <h2 className="mb-8 text-3xl font-bold text-foreground sm:text-4xl">
+            <h2 className="mb-8 text-title-2 font-bold text-foreground">
               Featured Vehicles
             </h2>
             <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
@@ -58,7 +58,7 @@ export default function HomePage() {
       <Suspense
         fallback={
           <div className="mx-auto max-w-screen-2xl px-4 py-12 sm:px-5 sm:py-16 lg:px-6">
-            <h2 className="mb-8 text-3xl font-bold text-foreground sm:text-4xl">
+            <h2 className="mb-8 text-title-2 font-bold text-foreground">
               Popular Parts
             </h2>
             <ProductGridLoading />

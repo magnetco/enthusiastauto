@@ -30,11 +30,11 @@ export async function PopularParts() {
         <div>
           <h2
             id="popular-parts-heading"
-            className="text-3xl font-bold text-foreground sm:text-4xl"
+            className="text-title-2 font-bold text-foreground"
           >
             Popular Parts
           </h2>
-          <p className="mt-2 text-base text-muted-foreground sm:text-lg">
+          <p className="mt-2 text-body-base text-muted-foreground sm:text-body-large">
             Premium BMW parts and accessories
           </p>
         </div>

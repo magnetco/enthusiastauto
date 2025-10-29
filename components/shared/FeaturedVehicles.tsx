@@ -23,11 +23,11 @@ export async function FeaturedVehicles() {
         <div>
           <h2
             id="featured-vehicles-heading"
-            className="text-3xl font-bold text-foreground sm:text-4xl"
+            className="text-title-2 font-bold text-foreground"
           >
             Featured Vehicles
           </h2>
-          <p className="mt-2 text-base text-muted-foreground sm:text-lg">
+          <p className="mt-2 text-body-base text-muted-foreground sm:text-body-large">
             Hand-picked BMW vehicles from our current inventory
           </p>
         </div>

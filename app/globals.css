@@ -332,7 +332,7 @@ button {
   h5,
   h6 {
     font-family: var(--font-sans);
-    text-transform: uppercase;
+    /* text-transform: uppercase removed - apply selectively via .heading-uppercase utility */
   }
   h1 {
     font-size: var(--font-size-title-1); /* 32px */
@@ -390,6 +390,88 @@ button {
     clip: rect(0, 0, 0, 0) !important;
     white-space: nowrap !important;
     border-width: 0 !important;
+  }
+
+  /* ===== Typography Utility Classes ===== */
+  /* Selective uppercase utility for hero sections */
+  .heading-uppercase {
+    text-transform: uppercase;
+  }
+
+  /* Semantic typography classes that map to design tokens */
+  .text-hero {
+    font-size: var(--font-size-hero);
+    line-height: var(--line-height-hero);
+    letter-spacing: var(--letter-spacing-hero);
+  }
+
+  .text-title-1 {
+    font-size: var(--font-size-title-1);
+    line-height: var(--line-height-title-1);
+    letter-spacing: var(--letter-spacing-title-1);
+  }
+
+  .text-title-2 {
+    font-size: var(--font-size-title-2);
+    line-height: var(--line-height-title-2);
+    letter-spacing: var(--letter-spacing-title-2);
+  }
+
+  .text-title-3 {
+    font-size: var(--font-size-title-3);
+    line-height: var(--line-height-title-3);
+    letter-spacing: var(--letter-spacing-title-3);
+  }
+
+  .text-body-xl {
+    font-size: var(--font-size-xl);
+    line-height: var(--line-height-xl);
+    letter-spacing: var(--letter-spacing-xl);
+  }
+
+  .text-body-large {
+    font-size: var(--font-size-large);
+    line-height: var(--line-height-large);
+    letter-spacing: var(--letter-spacing-large);
+  }
+
+  .text-body-regular {
+    font-size: var(--font-size-regular);
+    line-height: var(--line-height-regular);
+    letter-spacing: var(--letter-spacing-regular);
+  }
+
+  .text-body-base {
+    font-size: var(--font-size-base);
+    line-height: var(--line-height-base);
+    letter-spacing: var(--letter-spacing-base);
+  }
+
+  .text-body-small {
+    font-size: var(--font-size-small);
+    line-height: var(--line-height-small);
+    letter-spacing: var(--letter-spacing-small);
+  }
+
+  .text-body-mini {
+    font-size: var(--font-size-mini);
+    line-height: var(--line-height-mini);
+    letter-spacing: var(--letter-spacing-mini);
+  }
+
+  .text-body-micro {
+    font-size: var(--font-size-micro);
+    line-height: var(--line-height-micro);
+    letter-spacing: var(--letter-spacing-micro);
+  }
+
+  /* Responsive typography utilities */
+  @media (min-width: 640px) {
+    .sm\:text-hero {
+      font-size: var(--font-size-hero);
+      line-height: var(--line-height-hero);
+      letter-spacing: var(--letter-spacing-hero);
+    }
   }
 }
 

@@ -121,7 +121,7 @@ export function GarageContent({
       {/* Header */}
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-white">
+          <h1 className="text-title-2 font-bold text-foreground">
             My Garage{" "}
             {totalCount > 0 && (
               <Badge variant="secondary" className="ml-2">
@@ -264,7 +264,7 @@ function EmptyState({ type }: { type: "all" | "vehicles" | "products" }) {
   return (
     <div className="flex min-h-[400px] flex-col items-center justify-center rounded-lg border border-dashed border-border p-8 text-center">
       <Icon className="mb-4 h-16 w-16 text-muted-foreground" />
-      <h3 className="mb-2 text-xl font-semibold text-white">{title}</h3>
+      <h3 className="mb-2 text-title-3 font-semibold text-foreground">{title}</h3>
       <p className="mb-6 max-w-md text-sm text-muted-foreground">
         {description}
       </p>

@@ -21,17 +21,17 @@ export function HeroSection() {
       {/* Hero Content */}
       <div className="relative z-10 mx-auto max-w-screen-2xl px-4 py-16 sm:px-5 sm:py-20 lg:px-6 lg:py-24">
         {/* Main Heading */}
-        <h1 className="mb-4 max-w-[50rem] text-4xl font-bold leading-tight text-foreground drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)] sm:text-5xl lg:text-6xl">
+        <h1 className="heading-uppercase mb-4 max-w-[50rem] text-title-1 font-bold text-foreground drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)] sm:text-hero">
           Your BMW Enthusiast Destination
         </h1>
 
         {/* Subheadline */}
-        <p className="mb-3 max-w-[40rem] text-lg text-muted-foreground drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)] sm:text-xl lg:text-2xl">
+        <p className="mb-3 max-w-[40rem] text-body-large text-muted-foreground drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)] sm:text-body-xl">
           Curated vehicles and premium parts for the ultimate driving machine
         </p>
 
         {/* Value Proposition */}
-        <p className="mb-8 max-w-[35rem] text-base text-muted-foreground/80 drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)] sm:mb-10 lg:mb-12">
+        <p className="mb-8 max-w-[35rem] text-body-base text-muted-foreground/80 drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)] sm:mb-10 lg:mb-12">
           Enthusiast Auto offers hand-picked BMW vehicles for sale alongside a
           comprehensive catalog of quality parts and accessories.
         </p>

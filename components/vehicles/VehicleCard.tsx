@@ -27,7 +27,7 @@ export function VehicleCard({ vehicle, priority = false }: VehicleCardProps) {
         isSold ? "opacity-70" : ""
       }`}
     >
-      <Card className="h-full overflow-hidden border-gray-200 transition-shadow duration-200 hover:shadow-lg">
+      <Card className="h-full overflow-hidden border transition-shadow duration-200 hover:shadow-lg">
         {/* Image Container */}
         <div className="relative aspect-[4/3] w-full overflow-hidden bg-gray-100">
           <Image
@@ -43,7 +43,7 @@ export function VehicleCard({ vehicle, priority = false }: VehicleCardProps) {
           {isSold && (
             <div className="absolute inset-0 flex items-center justify-center bg-black/30">
               <div className="rounded-md bg-white/90 px-6 py-3">
-                <span className="text-2xl font-bold text-gray-900">SOLD</span>
+                <span className="text-title-2 font-bold text-foreground">SOLD</span>
               </div>
             </div>
           )}
@@ -64,7 +64,7 @@ export function VehicleCard({ vehicle, priority = false }: VehicleCardProps) {
         {/* Card Content */}
         <CardContent className="p-4">
           {/* Vehicle Title */}
-          <h3 className="mb-2 text-lg font-semibold text-white group-hover:text-red-500">
+          <h3 className="mb-2 text-body-large font-semibold text-foreground group-hover:text-primary">
             {vehicle.listingTitle}
           </h3>
 
@@ -72,7 +72,7 @@ export function VehicleCard({ vehicle, priority = false }: VehicleCardProps) {
           <div className="mb-3">
             <Badge
               variant="outline"
-              className="border-gray-600 text-xs text-gray-300"
+              className="text-xs text-muted-foreground"
             >
               {vehicle.chassis}
             </Badge>
@@ -80,10 +80,10 @@ export function VehicleCard({ vehicle, priority = false }: VehicleCardProps) {
 
           {/* Price and Mileage */}
           <div className="space-y-1 text-sm">
-            <p className="font-semibold text-red-500">
+            <p className="font-semibold text-primary">
               {formatCurrency(vehicle.listingPrice, vehicle.showCallForPrice)}
             </p>
-            <p className="text-gray-400">{formatMileage(vehicle.mileage)}</p>
+            <p className="text-muted-foreground">{formatMileage(vehicle.mileage)}</p>
           </div>
         </CardContent>
       </Card>

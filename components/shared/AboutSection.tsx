@@ -9,13 +9,13 @@ export function AboutSection() {
           {/* Section Heading */}
           <h2
             id="about-heading"
-            className="mb-6 text-3xl font-bold text-foreground sm:text-4xl lg:text-5xl"
+            className="mb-6 text-title-2 font-bold text-foreground"
           >
             About Enthusiast Auto
           </h2>
 
           {/* Main Description */}
-          <p className="mb-6 text-lg leading-relaxed text-muted-foreground sm:text-xl">
+          <p className="mb-6 text-body-large text-muted-foreground sm:text-body-xl">
             Enthusiast Auto offers curated BMW vehicles for sale and premium
             parts for BMW enthusiasts. We understand the passion for the
             ultimate driving machine.
@@ -25,10 +25,10 @@ export function AboutSection() {
           <div className="grid gap-6 text-left sm:grid-cols-3 sm:gap-8">
             {/* Value Prop 1 */}
             <div>
-              <h3 className="mb-2 text-lg font-semibold text-foreground">
+              <h3 className="mb-2 text-body-large font-semibold text-foreground">
                 Quality Curation
               </h3>
-              <p className="text-sm leading-relaxed text-muted-foreground">
+              <p className="text-body-small text-muted-foreground">
                 Every vehicle is hand-selected and every part is carefully
                 chosen for quality and authenticity.
               </p>
@@ -36,10 +36,10 @@ export function AboutSection() {
 
             {/* Value Prop 2 */}
             <div>
-              <h3 className="mb-2 text-lg font-semibold text-foreground">
+              <h3 className="mb-2 text-body-large font-semibold text-foreground">
                 BMW Expertise
               </h3>
-              <p className="text-sm leading-relaxed text-muted-foreground">
+              <p className="text-body-small text-muted-foreground">
                 Decades of combined experience with BMW vehicles and parts
                 ensure you get the right fit.
               </p>
@@ -47,10 +47,10 @@ export function AboutSection() {
 
             {/* Value Prop 3 */}
             <div>
-              <h3 className="mb-2 text-lg font-semibold text-foreground">
+              <h3 className="mb-2 text-body-large font-semibold text-foreground">
                 Dual Offering
               </h3>
-              <p className="text-sm leading-relaxed text-muted-foreground">
+              <p className="text-body-small text-muted-foreground">
                 Whether you're buying your dream BMW or upgrading your current
                 one, we've got you covered.
               </p>

@@ -35,10 +35,10 @@ export default function ServicesPage() {
         {/* Service Cards Section */}
         <section className="mb-16">
           <div className="mb-12 text-center">
-            <h2 className="mb-4 text-3xl font-bold text-foreground sm:text-4xl">
+            <h2 className="mb-4 text-title-2 font-bold text-foreground">
               Our Services
             </h2>
-            <p className="mx-auto max-w-2xl text-lg text-muted-foreground">
+            <p className="mx-auto max-w-2xl text-body-large text-muted-foreground">
               Choose the service that best fits your BMW's needs. Not sure? Our
               team will help determine the right approach.
             </p>
@@ -49,10 +49,10 @@ export default function ServicesPage() {
         {/* Service Request Form Section */}
         <section id="request-form">
           <div className="mb-8 text-center">
-            <h2 className="mb-4 text-3xl font-bold text-foreground sm:text-4xl">
+            <h2 className="mb-4 text-title-2 font-bold text-foreground">
               Request a Service
             </h2>
-            <p className="mx-auto max-w-2xl text-lg text-muted-foreground">
+            <p className="mx-auto max-w-2xl text-body-large text-muted-foreground">
               Tell us about your BMW and what you'd like us to help with. We'll
               contact you to discuss your needs and schedule an assessment.
             </p>
@@ -70,14 +70,14 @@ export default function ServicesPage() {
 
         {/* Contact Information */}
         <section className="mt-16 rounded-lg border bg-card p-8 text-center">
-          <h3 className="mb-4 text-xl font-semibold">Have Questions?</h3>
-          <p className="mb-4 text-muted-foreground">
+          <h3 className="mb-4 text-title-3 font-semibold">Have Questions?</h3>
+          <p className="mb-4 text-body-base text-muted-foreground">
             Our BMW Service Professionals are here to help
           </p>
           <div className="flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
             <a
               href="tel:513-554-1269"
-              className="text-lg font-semibold text-primary hover:underline"
+              className="text-body-large font-semibold text-primary hover:underline"
             >
               513-554-1269
             </a>
