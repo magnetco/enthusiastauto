@@ -69,7 +69,7 @@
 **Story 10.3: Color System & Critical Accessibility Fixes** ✅ DONE
 - **Epic:** 10 (Design System Unification - PRIORITY) | **Points:** 8 | **Completed:** 2025-10-29
 - **Description:** Fix CRITICAL WCAG violations (1.05:1 contrast) on profile/garage pages, standardize color token usage
-- **Implementation:** Replaced 21 hardcoded color values with semantic design tokens across 4 files. Fixed CRITICAL accessibility violations (text-gray-900 1.05:1 → text-foreground ~13:1). Profile page: 8 replacements (breadcrumbs, avatar bg-primary + text-primary-foreground). Garage page: 2 replacements (text-white → text-foreground). Vehicles page: 3 replacements (heading, description, count). VehicleCard: 8 replacements (border, title, price text-primary, mileage, SOLD overlay). All 8 ACs met, all 6 tasks complete. Build successful. All text now meets WCAG AA standards (4.5:1 minimum). Profile/garage pages now usable in dark mode. **Status: DONE - Ready for Review.**
+- **Implementation:** Replaced 47+ hardcoded color values with semantic design tokens across 9 files in 4 commits. Fixed CRITICAL accessibility violations (text-gray-900 1.05:1 → text-foreground ~13:1, bg-gray-50 unreadable → bg-background). Profile/garage/vehicles pages: 21 replacements. Account layout/contact form/empty state: 19 replacements. Textarea component: 5 replacements for dark mode. Input component: 2 replacements for consistency. All 8 ACs met, all 6 tasks complete. Build successful. All text meets WCAG AA standards (4.5:1 minimum). All pages and forms fully accessible with consistent styling in both light and dark modes. **Status: DONE - Approved 2025-10-29.**
 
 ### RECENTLY COMPLETED (Stories from Course Correction Audit)
 
@@ -161,7 +161,7 @@
 
 ## Decisions Log
 
-**2025-10-29 - Story 10.3 Complete:** Completed dev-story for Story 10.3 (Color System & Critical Accessibility Fixes). All tasks complete, build passing. Fixed 21 hardcoded color values with semantic design tokens. Resolved CRITICAL WCAG violations on profile/garage pages (1.05:1 contrast → ~13:1). Modified 4 files (profile, garage, vehicles pages, VehicleCard component). All text now meets WCAG AA standards. Story status: Ready for Review. Epic 10 progress: 3/5 stories complete (16/29 points, 55.2%). Combined with Story 10.2 (Typography System) in single commit (commit 769f363). Next: Story 10.4 (Component Visual Unification) or Story 10.5 (Layout & Spacing Consistency).
+**2025-10-29 - Story 10.3 Approved:** Story 10.3 (Color System & Critical Accessibility Fixes) approved and marked done by DEV agent. Replaced 47+ hardcoded colors with semantic tokens across 9 files (4 commits: 769f363, e83e2f3, d52526d, bb0e736). Fixed CRITICAL WCAG violations (1.05:1 contrast → ~13:1), bg-gray-50 unreadable backgrounds, form input inconsistencies. All pages and forms now fully accessible in dark mode. Epic 10 progress: 3/5 stories complete (16/29 points, 55.2%). Next: Story 10.4 (Component Visual Unification - needs drafting).
 
 **2025-10-29 - Story 10.2 Approved and Done:** Story 10.2 (Typography System Consistency) approved and marked done by DEV agent via story-approved workflow. Moved from IN PROGRESS → DONE. Story 10.3 (Color System & Critical Accessibility Fixes) remains in IN PROGRESS (needs drafting). Next action: Load SM agent and run create-story workflow for Story 10.3.
 
