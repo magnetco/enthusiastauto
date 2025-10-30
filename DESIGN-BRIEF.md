@@ -3,6 +3,21 @@
 ### Purpose
 Deliver a cohesive, conversion-oriented multi-breakpoint design system and full set of high-fidelity page designs for Enthusiast Auto Group (EAG). Designs must support a premium motorsport aesthetic, emphasize trust and provenance, and streamline discovery across vehicles, parts, and services.
 
+### Context and Continuity
+- We are replatforming from Webflow to Next.js with Sanity CMS.
+- Maintain visual continuity with the current live site we recently launched—refine and systematize, don’t reinvent core brand visuals.
+- Content management: Sanity will power content pages and vehicle inventory (vehicle content management).
+- Ecommerce: Shopify Storefront will handle cart/checkout. Parts/merchandise catalog flows through Spark Shipping into Shopify; product detail routes use `/product/[handle]`.
+- Goal for designers: design with these systems in mind so our components map cleanly to implementation.
+
+### Quick Start for Designers
+1) Work in two Figma pages: “Concepts” (explorations) and “Designs” (final).
+2) On “Designs”, place master section components on the left (Components area) with variants for Desktop/Tablet/Mobile and creative layouts.
+3) Build each page (Desktop 1440, Tablet 768, Mobile 390) side-by-side using only instances of those master components.
+4) Use consistent tokens: color, type, spacing, grids. Prefer auto-layout everywhere.
+5) Cover loading/empty/error states as component variants.
+6) Keep changes aligned to the current site’s look; elevate clarity, hierarchy, and system consistency.
+
 ### Objectives
 - Elevate brand perception while preserving performance heritage credibility
 - Increase product and vehicle discovery via clear IA, filters, and search
@@ -166,7 +181,7 @@ Note: Each page frame must be assembled from the master section components above
   - Saved vehicles list; notes; reminders
   - Maintenance timeline component (concept)
 
-10) Account: Favorites (`/favorites`) if applicable
+10) Account: Favorites / Wishlist (`/favorites` or `/wishlist`)
 - Elements:
   - Favorited vehicles and parts grids; bulk actions; share
 
@@ -180,10 +195,14 @@ Note: Each page frame must be assembled from the master section components above
   - Mini-cart drawer (global component variant)
   - Full cart page: items, price summary, shipping est., upsells
 
-13) Content Pages (CMS-driven) (e.g., `/parts`, `/services`, editorial)
-- Elements:
-  - Rich text with media blocks; pull quotes; image grid
-  - SEO-friendly headers; breadcrumbs
+13) CMS Pages (Sanity-driven) (`/[page]`)
+- Named pages to design:
+  - Sell Your Car
+  - Under the Hood (Blog) — Index
+  - Under the Hood (Blog) — Article
+  - EAG Collection
+  - Merchandise (landing)
+  - Contact (CMS variant if applicable)
 
 14) Contact (`/contact`)
 - Elements:
@@ -193,6 +212,11 @@ Note: Each page frame must be assembled from the master section components above
 15) Error/Empty States
 - Elements:
   - 404, 500, empty search, empty cart; clear recovery CTAs
+
+16) Planned Account Pages (if included in scope)
+- Orders (`/account/orders`) and Order Detail (`/account/orders/[orderId]`)
+- Addresses (`/account/addresses`) with create/edit views
+- Note: design components should reuse global form, list, and detail patterns
 
 ---
 
