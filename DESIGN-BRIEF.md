@@ -195,25 +195,37 @@ Note: Each page frame must be assembled from the master section components above
   - Mini-cart drawer (global component variant)
   - Full cart page: items, price summary, shipping est., upsells
 
-13) CMS Pages (Sanity-driven) (`/[page]`)
-- Named pages to design:
-  - Sell Your Car
-  - Under the Hood (Blog) — Index
-  - Under the Hood (Blog) — Article
-  - EAG Collection
-  - Merchandise (landing)
-  - Contact (CMS variant if applicable)
+13) Sell Your Car (`/[page]` → `sell-your-car`)
+- Elements:
+  - Persuasive hero, credibility signals
+  - How it works (steps), required info checklist
+  - Lead capture form CTA
 
-14) Contact (`/contact`)
+14) Under the Hood (Blog)
+- Parent > child set:
+  - Index (`/[page]` → `under-the-hood`): article list, categories/tags, featured story
+  - Article (`/[page]` → `under-the-hood/[slug]`): hero image, byline/date, body content, related posts
+
+15) EAG Collection (`/[page]` → `eag-collection`)
+- Elements:
+  - Curated gallery/cards, collection story block
+  - Links to related vehicles/content
+
+16) Merchandise (Landing) (`/[page]` → `merchandise`)
+- Elements:
+  - Featured products, editorial blocks
+  - CTA to Parts index where applicable
+
+17) Contact (`/[page]` → `contact` or `/contact`)
 - Elements:
   - Contact form, map/location, hours
   - Department routing (sales, service, parts)
 
-15) Error/Empty States
+18) Error/Empty States
 - Elements:
   - 404, 500, empty search, empty cart; clear recovery CTAs
 
-16) Planned Account Pages (if included in scope)
+19) Planned Account Pages (if included in scope)
 - Orders (`/account/orders`) and Order Detail (`/account/orders/[orderId]`)
 - Addresses (`/account/addresses`) with create/edit views
 - Note: design components should reuse global form, list, and detail patterns
