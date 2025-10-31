@@ -9,8 +9,8 @@
 ## Current Status
 
 **Current Phase:** 4-Implementation (Phase 2)
-**Current Workflow:** story-approved (Story 10.5) - Complete
-**Overall Progress:** Phase 1 Complete (10/10 stories, 50 points) | Phase 2 In Progress (20/25 stories complete, 135/170 points, 79.4%)
+**Current Workflow:** create-story (Story 10.6) - Complete
+**Overall Progress:** Phase 1 Complete (10/10 stories, 50 points) | Phase 2 In Progress (20/26 stories complete, 135/175 points, 77.1%)
 
 **Project Level:** 3 (Complex system - subsystems and integrations)
 **Project Type:** Web Application
@@ -31,13 +31,21 @@
 ## Implementation Progress
 
 ### BACKLOG
-3 stories remaining (15 points):
+4 stories remaining (20 points):
 - Epic 5: User Management System (2 stories remaining, 10 points - Stories 5.5, 5.6)
 - Epic 6: Advanced Search & Discovery (1 story remaining, 5 points - Story 6.4 SEO)
+- Epic 10: Design System Unification (1 new story, 5 points - Story 10.6 Homepage Hero Enhancement 🆕)
 
 ### TODO (Needs Drafting)
 
-_All Epic 10 stories have been drafted. Remaining backlog stories not yet drafted._
+**Story 10.6: Homepage Hero Enhancement** 🆕
+- **File:** `docs/stories/story-10.6.md`
+- **Epic:** 10 (Design System Unification - Extension)
+- **Points:** 5
+- **Status:** Draft (needs review)
+- **Description:** Transform homepage hero to be more impactful with larger section, dramatic background, stronger headline emphasizing BMW specialization
+- **Reference:** User-provided screenshot showing full-height hero with "THE LEADING BMW PRESERVATION FACILITY"
+- **Next Action:** Review story and run `story-ready` to approve for development
 
 ### IN PROGRESS (Approved for Development)
 
@@ -124,23 +132,28 @@ _All Epic 10 stories have been drafted. Remaining backlog stories not yet drafte
 
 ## 🎯 Next Recommended Action
 
-**Action:** ✅ EPIC 10 COMPLETE! Design System Unification FINISHED
-**Status:** 5/5 stories complete (Stories 10.1 ✅, 10.2 ✅, 10.3 ✅, 10.4 ✅, 10.5 ✅ ALL DONE!)
+**Action:** 🆕 NEW STORY DRAFTED - Story 10.6 (Homepage Hero Enhancement)
+**Status:** Story 10.6 created and ready for review
 
-**🎉 EPIC 10 COMPLETE - Design System Unification (29/29 points, 100%)**
+**New Story:**
+- **Story 10.6:** Homepage Hero Enhancement (5 points) - DRAFT 🆕
+  - Transform homepage hero to be more impactful, dynamic, and engaging
+  - Reference design: Full-height hero with BMW specialization messaging
+  - Larger section, dramatic background, stronger headline
 
-**Epic 10 Story Sequence (All Complete):**
-1. **Story 10.1:** Design System Audit & Documentation Sync (3 points) ✅ DONE
-2. **Story 10.2:** Typography System Consistency (5 points) ✅ DONE
-3. **Story 10.3:** Color System & Critical Accessibility Fixes (8 points) ✅ DONE
-4. **Story 10.4:** Component Visual Unification (8 points) ✅ DONE
-5. **Story 10.5:** Layout & Spacing Consistency (5 points) ✅ DONE
+**NEXT STEPS:**
+1. **Review Story 10.6** - Check the drafted story in `docs/stories/story-10.6.md`
+2. **Approve for Development** - Run `story-ready` workflow when satisfied
+3. **Generate Context** - Run `story-context` to prepare implementation details
+4. **Implement** - Run `dev-story` to build the enhanced hero section
 
-**NEXT: Continue with Remaining Stories**
-- **ACTION:** Fix Story 4.4 bug (Vehicles in Stock section not showing on product pages)
-- **OR:** Start Story 5.5 (Purchase History Integration) or Story 6.4 (SEO Optimization)
+**OR: Continue with Other Priorities**
+- **Fix Story 4.4 bug** (Vehicles in Stock section not showing on product pages)
+- **Start Story 5.5** (Purchase History Integration)
+- **Start Story 6.4** (SEO Optimization)
 
-**Remaining Work (5 stories, 35 points - 20.6% remaining):**
+**Remaining Work (6 stories, 40 points - 22.9% remaining):**
+- Story 10.6: Homepage Hero Enhancement - 5 points 🆕 (DRAFT)
 - Fix Story 4.4 bug (Vehicles in Stock section) - 8 points
 - Story 5.5: Purchase History Integration - 5 points
 - Story 5.6: Wishlist & Notifications - 5 points
@@ -153,11 +166,13 @@ _All Epic 10 stories have been drafted. Remaining backlog stories not yet drafte
 - Epic 5 (User Management): ✅ 4/6 stories complete (29/39 points, 74.4%) - 5.1, 5.2, 5.3, 5.4 done
 - Epic 6 (Advanced Search): ✅ 3/4 stories complete (34/39 points, 87.2%) - 6.1, 6.2, 6.3 done
 - Epic 7 (Services): ✅ 1/1 story complete (5 points, 100%) - Story 7.1 done
-- **Epic 10 (Design System): ✅ 5/5 stories complete (29/29 points, 100%) - COMPLETE - All stories done! 🎉**
+- **Epic 10 (Design System): 5/6 stories drafted (29/34 points, 85.3%) - Stories 10.1-10.5 complete ✅, Story 10.6 in draft 🆕**
 
 ---
 
 ## Decisions Log
+
+**2025-10-29 - Story 10.6 Created (Epic 10 Extension):** Created Story 10.6 (Homepage Hero Enhancement) via create-story workflow. 5 points. Extension of Epic 10 beyond original 5 stories. User requested making homepage hero "more engaging, bigger, more dynamic" based on reference screenshot showing full-height hero with "THE LEADING BMW PRESERVATION FACILITY" headline. Story includes 8 ACs covering: increased hero height (70-90vh), stronger BMW specialization headline, enhanced background imagery (30-40% opacity), refined value proposition, clarified CTA hierarchy, larger typography scale, responsive behavior, and design token consistency. File: docs/stories/story-10.6.md. Status: Draft (needs review via story-ready). Phase 2 scope updated: 26 stories, 175 points (was 25 stories, 170 points). Next: Review story and run story-ready to approve for development.
 
 **2025-10-29 - 🎉 Story 10.5 APPROVED - Epic 10 Officially COMPLETE:** Story 10.5 (Layout & Spacing Consistency) approved and marked done by DEV agent via story-approved workflow. **EPIC 10 - DESIGN SYSTEM UNIFICATION IS NOW OFFICIALLY 100% COMPLETE AND APPROVED** (5/5 stories, 29/29 points). All Epic 10 stories: 10.1 (Audit), 10.2 (Typography), 10.3 (Colors/Accessibility), 10.4 (Component Unification), 10.5 (Layout/Spacing) - all approved and done. Design system is now fully unified with consistent tokens, typography, colors, components, layouts, and spacing. Overall Phase 2 progress: 20/25 stories complete (135/170 points, 79.4%). Remaining: 5 stories (Story 4.4 bug fix, Stories 5.5, 5.6, 6.4, 8.1). Next: Continue with Story 4.4 bug fix (Vehicles in Stock section debugging).
 

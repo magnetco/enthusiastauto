@@ -1,0 +1,66 @@
+# Notion Project Reporter Module Configuration
+# This file defines installation configuration and static values
+# Notion-specific setup (API token, database ID) happens via Setup Agent after installation
+
+code: notion-sync
+name: "Notion Project Reporter"
+default_selected: false  # User must explicitly choose this module
+
+# Welcome message shown during installation
+prompt:
+  - "Thank you for choosing Notion Project Reporter!"
+  - "This module provides automated synchronization of development project status to Notion databases."
+  - "After installation, run the Setup Agent to configure your Notion integration."
+
+# Core config values are automatically inherited from installer:
+## user_name
+## communication_language
+## document_output_language
+## output_folder
+
+# ============================================================================
+# STATIC CONFIGURATION FIELDS
+# These are hardcoded values that don't require user input during installation
+# ============================================================================
+
+# Module version
+module_version:
+  result: "1.0.0"
+
+# Data storage paths
+data_path:
+  result: "{project-root}/bmad/notion-sync/data"
+
+changelog_file:
+  result: "{project-root}/bmad/notion-sync/data/changelog.md"
+
+story_map_file:
+  result: "{project-root}/bmad/notion-sync/data/story-map.json"
+
+# Default status emoji mappings (can be customized in config.yaml after setup)
+status_mapping:
+  result:
+    "In Progress": "🚧 In Progress"
+    "Done": "✅ Done"
+    "Blocked": "🔴 Blocked"
+    "Code Review": "👀 Code Review"
+    "Testing": "🧪 Testing"
+    "Not Started": "⚪ Not Started"
+
+# ============================================================================
+# POST-INSTALLATION SETUP
+# ============================================================================
+#
+# After BMAD installation completes, users must run the Setup Agent to configure
+# Notion-specific settings:
+#
+# 1. Load Setup Agent: `agent setup`
+# 2. Run setup workflow: `*setup`
+# 3. Follow 12-step Mission Control sequence to configure:
+#    - Notion API token
+#    - Target database selection
+#    - Status block ID (optional)
+#    - Project name
+#
+# This creates bmad/notion-sync/config.yaml with Notion credentials
+# ============================================================================

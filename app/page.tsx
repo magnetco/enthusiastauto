@@ -59,7 +59,7 @@ export default function HomePage() {
         fallback={
           <div className="mx-auto max-w-screen-2xl px-4 py-8 sm:px-6 sm:py-12 lg:px-8 lg:py-16">
             <h2 className="mb-8 text-title-2 font-bold text-foreground">
-              Popular Parts
+              Popular Products
             </h2>
             <ProductGridLoading />
           </div>

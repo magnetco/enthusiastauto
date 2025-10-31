@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { ArrowDown } from "lucide-react";
+import Section from "@/components/layout/section";
 
 export function ServiceHero() {
   return (
@@ -19,7 +20,7 @@ export function ServiceHero() {
       </div>
 
       {/* Hero Content */}
-      <div className="relative z-10 mx-auto max-w-screen-2xl px-4 py-20 sm:px-5 sm:py-24 lg:px-6 lg:py-28">
+      <Section as="div" className="relative z-10 py-20 sm:py-24 lg:py-28">
         {/* Main Heading */}
         <h1 className="heading-uppercase mb-4 max-w-[50rem] text-title-1 font-bold text-foreground sm:text-hero">
           Expert BMW Care
@@ -67,7 +68,7 @@ export function ServiceHero() {
             </Button>
           </Link>
         </div>
-      </div>
+      </Section>
     </section>
   );
 }

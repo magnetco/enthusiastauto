@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useState } from "react";
+import { UserIcon } from "@heroicons/react/24/outline";
 import { BMWNavigation } from "./bmw-navigation";
 
 // Image constants from Figma
@@ -67,15 +68,7 @@ export function ExpandedNavbar() {
       {/* User Account Section */}
       <div className="absolute flex gap-4 items-center justify-end left-[calc(75%-26px)] top-[41px]">
         <div className="relative shrink-0 size-[32px]">
-          <div className="absolute inset-[-9.375%]">
-            <img 
-              alt="User avatar" 
-              className="block max-w-none size-full" 
-              height="38" 
-              src={imgEllipse3} 
-              width="38" 
-            />
-          </div>
+          <UserIcon className="block max-w-none size-full" />
         </div>
         <Link 
           href="/account"

@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useState } from "react";
+import { UserIcon } from "@heroicons/react/24/outline";
 import { BMWNavigation } from "./bmw-navigation";
 
 interface NavItem {
@@ -69,7 +70,7 @@ export function DesktopNavbar() {
 
         {/* User Account Section */}
         <div className="flex items-center space-x-4">
-          <div className="w-8 h-8 bg-muted rounded-full" />
+          <UserIcon className="w-8 h-8 text-muted-foreground" />
           <Link 
             href="/account"
             className="text-sm font-medium text-foreground transition-colors duration-200 hover:text-muted-foreground"

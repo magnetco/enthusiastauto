@@ -1,62 +1,62 @@
+import {
+	BreadcrumbItem,
+	BreadcrumbLink,
+	BreadcrumbList,
+	BreadcrumbPage,
+	BreadcrumbSeparator,
+	Breadcrumb as UiBreadcrumb,
+} from "@/components/ui/breadcrumb";
 import Link from "next/link";
-import { ChevronRight } from "lucide-react";
+import React from "react";
 
 interface BreadcrumbItem {
-  label: string;
-  href?: string;
+	label: string;
+	href?: string;
 }
 
 interface BreadcrumbProps {
-  items: BreadcrumbItem[];
+	items: BreadcrumbItem[];
 }
 
 export function Breadcrumb({ items }: BreadcrumbProps) {
-  return (
-    <nav aria-label="Breadcrumb" className="mb-6">
-      <ol className="flex items-center space-x-2 text-sm text-muted-foreground">
-        {items.map((item, index) => {
-          const isLast = index === items.length - 1;
-
-          return (
-            <li key={index} className="flex items-center">
-              {index > 0 && (
-                <ChevronRight className="mx-2 h-4 w-4" aria-hidden="true" />
-              )}
-              {item.href && !isLast ? (
-                <Link
-                  href={item.href}
-                  className="hover:text-foreground transition-colors"
-                >
-                  {item.label}
-                </Link>
-              ) : (
-                <span className={isLast ? "text-foreground font-medium" : ""}>
-                  {item.label}
-                </span>
-              )}
-            </li>
-          );
-        })}
-      </ol>
-    </nav>
-  );
+	return (
+		<UiBreadcrumb className="mb-6">
+			<BreadcrumbList>
+				{items.map((item, index) => {
+					const isLast = index === items.length - 1;
+					const key = `${item.href ?? "root"}-${item.label}-${index}`;
+					return (
+						<React.Fragment key={key}>
+							{index > 0 && <BreadcrumbSeparator />}
+							<BreadcrumbItem>
+								{item.href && !isLast ? (
+									<BreadcrumbLink asChild>
+										<Link href={item.href}>{item.label}</Link>
+									</BreadcrumbLink>
+								) : (
+									<BreadcrumbPage>{item.label}</BreadcrumbPage>
+								)}
+							</BreadcrumbItem>
+						</React.Fragment>
+					);
+				})}
+			</BreadcrumbList>
+		</UiBreadcrumb>
+	);
 }
 
 /**
  * Generates schema.org BreadcrumbList JSON-LD structured data
  */
-export function generateBreadcrumbSchema(
-  items: BreadcrumbItem[],
-  baseUrl: string,
-) {
-  return {
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    itemListElement: items.map((item, index) => ({
-      "@type": "ListItem",
-      position: index + 1,
-      name: item.label,
-      item: item.href ? `${baseUrl}${item.href}` : undefined,
-    })),
-  };
+export function generateBreadcrumbSchema(items: BreadcrumbItem[], baseUrl: string) {
+	return {
+		"@context": "https://schema.org",
+		"@type": "BreadcrumbList",
+		itemListElement: items.map((item, index) => ({
+			"@type": "ListItem",
+			position: index + 1,
+			name: item.label,
+			item: item.href ? `${baseUrl}${item.href}` : undefined,
+		})),
+	};
 }

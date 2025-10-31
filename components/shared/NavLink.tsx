@@ -29,7 +29,7 @@ export function NavLink({ href, children, className }: NavLinkProps) {
       href={href}
       prefetch={true}
       className={cn(
-        "font-medium transition-colors duration-200",
+        "font-medium transition-colors duration-200 h-full flex items-center",
         isActive
           ? "text-foreground underline decoration-2 underline-offset-4"
           : "text-muted-foreground hover:text-foreground",

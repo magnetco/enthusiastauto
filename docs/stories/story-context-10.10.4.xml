@@ -1,0 +1,264 @@
+<story-context id="bmad/bmm/workflows/4-implementation/story-context/template" v="1.0">
+  <metadata>
+    <epicId>10</epicId>
+    <storyId>10.4</storyId>
+    <title>Component Visual Unification</title>
+    <status>Ready</status>
+    <generatedAt>2025-10-29</generatedAt>
+    <generator>BMAD Story Context Workflow</generator>
+    <sourceStoryPath>docs/stories/story-10.4.md</sourceStoryPath>
+  </metadata>
+
+  <story>
+    <asA>user browsing both vehicles and parts</asA>
+    <iWant>visually consistent cards and components across all pages</iWant>
+    <soThat>the site feels polished, professional, and unified</soThat>
+    <tasks>
+      <taskGroup id="1" name="Audit Current Component State">
+        <task id="1.1">Re-read ProductCard component (components/product-card.tsx)</task>
+        <task id="1.2">Re-read VehicleCard component (components/vehicles/VehicleCard.tsx)</task>
+        <task id="1.3">Document specific inconsistencies (padding, spacing, hover states, shadows)</task>
+        <task id="1.4">Verify Story 10.3 color fixes are applied to VehicleCard</task>
+      </taskGroup>
+      <taskGroup id="2" name="Define Unified Card Design Pattern">
+        <task id="2.1">Choose card wrapper approach (ShadCN Card vs article/link for both)</task>
+        <task id="2.2">Define standard card padding (recommend: p-4 for both)</task>
+        <task id="2.3">Define standard content spacing (recommend: space-y-1.5 or space-y-2)</task>
+        <task id="2.4">Define standard border-radius (rounded-lg = --radius-8)</task>
+        <task id="2.5">Define standard shadow system (resting: shadow-[var(--shadow-low)], hover: shadow-[var(--shadow-medium)])</task>
+        <task id="2.6">Define unified hover behavior (image scale + shadow elevation)</task>
+        <task id="2.7">Document decisions in implementation notes</task>
+      </taskGroup>
+      <taskGroup id="3" name="Unify ProductCard Component">
+        <task id="3.1">Update card wrapper to use ShadCN Card component (if chosen)</task>
+        <task id="3.2">Standardize content padding to match design pattern</task>
+        <task id="3.3">Apply consistent spacing tokens between elements</task>
+        <task id="3.4">Ensure border-radius uses rounded-lg token</task>
+        <task id="3.5">Apply shadow elevation tokens (resting + hover states)</task>
+        <task id="3.6">Verify Add to Cart button uses design token styles</task>
+        <task id="3.7">Test hover states work correctly</task>
+        <task id="3.8">Verify accessibility (focus states, ARIA labels)</task>
+      </taskGroup>
+      <taskGroup id="4" name="Unify VehicleCard Component">
+        <task id="4.1">Verify ShadCN Card wrapper is used correctly</task>
+        <task id="4.2">Standardize content padding to match ProductCard pattern</task>
+        <task id="4.3">Apply consistent spacing tokens between elements</task>
+        <task id="4.4">Ensure border-radius uses rounded-lg token</task>
+        <task id="4.5">Apply shadow elevation tokens (resting + hover states)</task>
+        <task id="4.6">Remove any remaining hardcoded colors (verify Story 10.3 complete)</task>
+        <task id="4.7">Unify hover behavior with ProductCard (image scale + shadow)</task>
+        <task id="4.8">Verify SOLD overlay styling uses design tokens</task>
+        <task id="4.9">Test hover states work correctly</task>
+      </taskGroup>
+      <taskGroup id="5" name="Standardize Button Styles">
+        <task id="5.1">Review Add to Cart button styling in ProductCard</task>
+        <task id="5.2">Ensure buttons use semantic tokens (bg-accent, text-white, etc.)</task>
+        <task id="5.3">Apply consistent button padding and sizing</task>
+        <task id="5.4">Verify button hover states use design tokens</task>
+        <task id="5.5">Check button focus indicators meet accessibility standards</task>
+      </taskGroup>
+      <taskGroup id="6" name="Testing &amp; Validation">
+        <task id="6.1">Build project and verify no TypeScript errors</task>
+        <task id="6.2">Visually compare ProductCard and VehicleCard side-by-side</task>
+        <task id="6.3">Test hover states on both card types</task>
+        <task id="6.4">Test in both light and dark modes</task>
+        <task id="6.5">Verify responsive behavior on mobile, tablet, desktop</task>
+        <task id="6.6">Check accessibility (keyboard navigation, focus indicators)</task>
+        <task id="6.7">Document any intentional differences (aspect ratio, content structure)</task>
+      </taskGroup>
+    </tasks>
+  </story>
+
+  <acceptanceCriteria>
+    <criterion id="AC1">Both ProductCard and VehicleCard use consistent border-radius tokens (--radius-8 for cards)</criterion>
+    <criterion id="AC2">Both cards use consistent shadow elevations (resting state: --shadow-low, hover: --shadow-medium)</criterion>
+    <criterion id="AC3">Both cards use consistent content padding patterns (base: 16px or p-4, adjust for content density)</criterion>
+    <criterion id="AC4">Both cards use consistent vertical spacing between elements (space-y-1.5 or space-y-2)</criterion>
+    <criterion id="AC5">Both cards use unified hover state behavior (image scale + shadow elevation change)</criterion>
+    <criterion id="AC6">VehicleCard uses semantic color tokens (no hardcoded colors remain after Story 10.3)</criterion>
+    <criterion id="AC7">Both cards use ShadCN Card component wrapper for structural consistency</criterion>
+    <criterion id="AC8">All button styles across both cards use consistent design tokens</criterion>
+    <criterion id="AC9">TypeScript builds successfully with no new errors</criterion>
+    <criterion id="AC10">Visual regression testing confirms consistent appearance</criterion>
+  </acceptanceCriteria>
+
+  <artifacts>
+    <docs>
+      <doc>
+        <path>docs/design-system.md</path>
+        <title>Design System</title>
+        <section>Border Radius, Shadows, Spacing</section>
+        <snippet>Cards use rounded-lg (--radius-8 = 8px). Shadows: --shadow-low for resting state, --shadow-medium for hover. Card padding: p-4 (16px) or p-5 (20px) for consistent density.</snippet>
+      </doc>
+      <doc>
+        <path>docs/design-system.md</path>
+        <title>Design System</title>
+        <section>Shadow Elevation System</section>
+        <snippet>--shadow-tiny: subtle separation. --shadow-low: cards at rest (0px 2px 4px). --shadow-medium: cards on hover, dropdowns (0px 4px 24px). --shadow-high: modals, overlays (0px 7px 32px).</snippet>
+      </doc>
+      <doc>
+        <path>docs/design-system.md</path>
+        <title>Design System</title>
+        <section>Semantic Color Tokens</section>
+        <snippet>Always use semantic tokens: text-foreground, bg-card, border-border. Never hardcode colors. Use text-muted-foreground for secondary text, text-primary for links.</snippet>
+      </doc>
+      <doc>
+        <path>docs/design-system-audit-2025-10-28.md</path>
+        <title>Design System Audit Report</title>
+        <section>Component Comparison: ProductCard vs VehicleCard (lines 178-260)</section>
+        <snippet>CRITICAL inconsistencies found: ProductCard uses minimal wrapper with pt-2.5 padding and text-sm titles. VehicleCard uses ShadCN Card with p-4 padding and text-lg titles (60% more padding, 28% larger titles). Different aspect ratios (1:1 vs 4:3), different hover behaviors, and VehicleCard had hardcoded colors (fixed in Story 10.3). Severity 3/5: Significant visual inconsistency affecting brand perception.</snippet>
+      </doc>
+      <doc>
+        <path>docs/design-system-audit-2025-10-28.md</path>
+        <title>Design System Audit Report</title>
+        <section>Story 10.4 Recommendations (lines 969-1014)</section>
+        <snippet>Option A (Recommended): Unify around ProductCard minimalist style with semantic tokens, better performance. Both cards should use consistent border-radius, shadows (--shadow-low resting, --shadow-medium hover), padding (p-4), spacing (space-y-1.5), and unified hover behavior (image scale + shadow elevation). Keep intentional aspect ratio difference (products square 1:1, vehicles 4:3) due to content requirements.</snippet>
+      </doc>
+      <doc>
+        <path>docs/epic-stories.md</path>
+        <title>Epic Stories</title>
+        <section>Epic 10: Design System Unification (lines 1043-1092)</section>
+        <snippet>Story 10.4 goal: Make ProductCard and VehicleCard visually consistent. Fix wrapper differences, padding inconsistencies, title size discrepancies, color token usage, and hover state variations. Severity 3/5 issue affecting brand perception. Prerequisites: Stories 10.1, 10.2, 10.3 complete.</snippet>
+      </doc>
+    </docs>
+    <code>
+      <artifact>
+        <path>components/product-card.tsx</path>
+        <kind>component</kind>
+        <symbol>ProductCard</symbol>
+        <lines>1-150</lines>
+        <reason>Primary card component to unify. Uses minimal wrapper (article > Link), aspect-square, pt-2.5 padding, space-y-1.5 spacing, text-sm title, semantic color tokens, Add to Cart button overlay on hover, opacity-0 to opacity-100 transition, shadow-[var(--shadow-medium)] on button.</reason>
+      </artifact>
+      <artifact>
+        <path>components/vehicles/VehicleCard.tsx</path>
+        <kind>component</kind>
+        <symbol>VehicleCard</symbol>
+        <lines>1-93</lines>
+        <reason>Card component to unify with ProductCard. Uses ShadCN Card wrapper, aspect-[4/3], p-4 padding, text-body-large title (16px), semantic tokens added in Story 10.3, hover:shadow-lg, group-hover:scale-105, SOLD overlay styling needs token verification.</reason>
+      </artifact>
+      <artifact>
+        <path>components/ui/card.tsx</path>
+        <kind>component</kind>
+        <symbol>Card, CardContent</symbol>
+        <lines>5-72</lines>
+        <reason>ShadCN Card primitive. Default styling includes rounded-xl, border-border, shadow-[var(--shadow-low)], hover:shadow-[var(--shadow-medium)], transition-all duration-100. CardContent uses px-6 padding (not p-4). May need wrapper consistency decision or ProductCard migration to use this component.</reason>
+      </artifact>
+      <artifact>
+        <path>app/globals.css</path>
+        <kind>styles</kind>
+        <symbol>Design tokens</symbol>
+        <lines>37-136</lines>
+        <reason>Design token definitions. Border radius: --radius-8 (0.5rem/8px) for rounded-lg. Shadows: --shadow-low (0px 2px 4px) for resting, --shadow-medium (0px 4px 24px) for hover, --shadow-high for modals. Animation: --duration-quick (0.1s), --duration-base (0.25s). Colors: all semantic tokens defined. Card component uses these via shadow-[var(--token)].</reason>
+      </artifact>
+      <artifact>
+        <path>components/ui/badge.tsx</path>
+        <kind>component</kind>
+        <symbol>Badge</symbol>
+        <lines>N/A</lines>
+        <reason>Used in both cards for status/fitment badges. VehicleCard uses variant="outline" and variant="destructive" for chassis/sold badges. ProductCard uses variant="secondary" for out of stock. Verify consistent usage of design tokens in badge styling.</reason>
+      </artifact>
+    </code>
+    <dependencies>
+      <node>
+        <name>next/image</name>
+        <version>Next.js 14+</version>
+        <purpose>Image optimization with fill layout, aspect ratios, hover scale transforms</purpose>
+      </node>
+      <node>
+        <name>tailwindcss</name>
+        <version>3.x</version>
+        <purpose>Utility classes for spacing (p-4, space-y-1.5), shadows (shadow-lg), transitions, hover states</purpose>
+      </node>
+      <node>
+        <name>ShadCN UI Card</name>
+        <version>components/ui/card.tsx</version>
+        <purpose>Card primitive with built-in shadow elevation, border, and semantic token usage. VehicleCard uses this, ProductCard does not.</purpose>
+      </node>
+      <node>
+        <name>class-variance-authority (cva)</name>
+        <version>Likely present for ShadCN</version>
+        <purpose>Used by ShadCN components for variant styling (Badge variants, etc.)</purpose>
+      </node>
+    </dependencies>
+  </artifacts>
+
+  <constraints>
+    <constraint>Both cards must maintain existing functionality (ProductCard: Add to Cart, fitment badges; VehicleCard: SOLD overlay, status badges)</constraint>
+    <constraint>Aspect ratios remain intentionally different: ProductCard square (1:1) for parts, VehicleCard 4:3 for automotive photography</constraint>
+    <constraint>All colors must use semantic tokens (text-foreground, text-muted-foreground, text-primary, bg-card, border-border) - enforced by Story 10.3</constraint>
+    <constraint>Shadow elevations must use design tokens: shadow-[var(--shadow-low)] for resting, shadow-[var(--shadow-medium)] for hover</constraint>
+    <constraint>Border radius must use rounded-lg (maps to --radius-8 = 8px) for card containers</constraint>
+    <constraint>Transitions must use --duration-quick (0.1s) or --duration-base (0.25s) for consistency</constraint>
+    <constraint>Maintain accessibility: keyboard navigation, focus indicators (2px ring), ARIA labels, 44px touch targets</constraint>
+    <constraint>TypeScript must compile with no new errors - maintain existing type signatures</constraint>
+    <constraint>Both cards should use the same wrapper approach (decide: ShadCN Card for both OR minimal article/Link for both)</constraint>
+    <constraint>Content padding should be consistent (recommend p-4 = 16px for card density)</constraint>
+    <constraint>Vertical spacing between elements should be consistent (space-y-1.5 or space-y-2)</constraint>
+    <constraint>Hover behaviors should be unified: image scale (scale-105) + shadow elevation change</constraint>
+    <constraint>Button styles must use consistent tokens: bg-accent, text-white, hover:bg-accent/90</constraint>
+  </constraints>
+  <interfaces>
+    <interface>
+      <name>ProductCard Props</name>
+      <kind>React component interface</kind>
+      <signature>interface ProductCardProps { product: Product; }</signature>
+      <path>components/product-card.tsx:17-19</path>
+    </interface>
+    <interface>
+      <name>VehicleCard Props</name>
+      <kind>React component interface</kind>
+      <signature>interface VehicleCardProps { vehicle: VehicleListItem; priority?: boolean; }</signature>
+      <path>components/vehicles/VehicleCard.tsx:9-12</path>
+    </interface>
+    <interface>
+      <name>ShadCN Card</name>
+      <kind>React component</kind>
+      <signature>function Card({ className, ...props }: React.ComponentProps&lt;"div"&gt;)</signature>
+      <path>components/ui/card.tsx:5-15</path>
+    </interface>
+    <interface>
+      <name>ShadCN CardContent</name>
+      <kind>React component</kind>
+      <signature>function CardContent({ className, ...props }: React.ComponentProps&lt;"div"&gt;)</signature>
+      <path>components/ui/card.tsx:64-72</path>
+    </interface>
+    <interface>
+      <name>Design Token: Shadow Low</name>
+      <kind>CSS custom property</kind>
+      <signature>--shadow-low: 0px 2px 4px rgba(0, 0, 0, 0.1);</signature>
+      <path>app/globals.css:99</path>
+    </interface>
+    <interface>
+      <name>Design Token: Shadow Medium</name>
+      <kind>CSS custom property</kind>
+      <signature>--shadow-medium: 0px 4px 24px rgba(0, 0, 0, 0.2);</signature>
+      <path>app/globals.css:100</path>
+    </interface>
+    <interface>
+      <name>Design Token: Border Radius 8</name>
+      <kind>CSS custom property</kind>
+      <signature>--radius-8: 0.5rem; /* 8px */ | Tailwind: rounded-lg</signature>
+      <path>app/globals.css:41</path>
+    </interface>
+  </interfaces>
+  <tests>
+    <standards>Testing framework: Vitest for unit tests, React Testing Library for component tests. Pattern established in Story 10.2: Read globals.css to verify design token definitions, test component styling uses semantic tokens, verify no hardcoded values remain. Test files located in __tests__ directories adjacent to components or in project root __tests__/. Example: __tests__/typography-system.test.ts validates design tokens and utility classes.</standards>
+    <locations>
+      <location>__tests__/*.test.ts - Project-level design system tests</location>
+      <location>components/__tests__/*.test.tsx - Component unit tests</location>
+      <location>app/**/__tests__/*.test.tsx - Page-level tests</location>
+    </locations>
+    <ideas>
+      <idea ac="AC1">Test: Both ProductCard and VehicleCard apply rounded-lg class (maps to --radius-8). Verify computed border-radius = 8px.</idea>
+      <idea ac="AC2">Test: Cards at rest use shadow-[var(--shadow-low)]. On hover, shadow becomes shadow-[var(--shadow-medium)]. Verify shadow DOM values match globals.css token definitions.</idea>
+      <idea ac="AC3">Test: Both cards use p-4 padding (16px) on content wrapper. VehicleCard CardContent should override default px-6 with p-4. Verify computed padding-top/bottom/left/right = 16px.</idea>
+      <idea ac="AC4">Test: Both cards use space-y-1.5 for content vertical spacing. Verify gap between title, vendor/chassis, and price elements = 6px (0.375rem).</idea>
+      <idea ac="AC5">Test: Hover state triggers group-hover:scale-105 on image and shadow elevation change. Verify transform: scale(1.05) applied on hover and shadow transitions from --shadow-low to --shadow-medium.</idea>
+      <idea ac="AC6">Test: VehicleCard uses only semantic tokens (text-foreground, text-muted-foreground, text-primary, bg-card, border-border). Read VehicleCard.tsx source and assert no hardcoded colors (text-white, text-red-500, text-gray-*, bg-blue-*, etc.) remain after Story 10.3 fixes.</idea>
+      <idea ac="AC7">Test: Both cards use ShadCN Card component wrapper. ProductCard should import and use Card/CardContent after unification. Verify Card component renders with correct shadow and border tokens.</idea>
+      <idea ac="AC8">Test: ProductCard Add to Cart button uses bg-accent, text-white, hover:bg-accent/90. Verify no hardcoded button colors (bg-blue-600, etc.). Button should reference accent color token from theme.</idea>
+      <idea ac="AC9">Run TypeScript compiler: npx tsc --noEmit. Assert exit code 0 (no type errors). Verify ProductCard and VehicleCard type signatures unchanged.</idea>
+      <idea ac="AC10">Visual regression: Capture screenshots of ProductCard grid and VehicleCard grid side-by-side in both light and dark modes. Compare padding, shadows, spacing, and hover states. Verify cards feel like same design system while maintaining unique content (aspect ratio, button placement).</idea>
+    </ideas>
+  </tests>
+</story-context>

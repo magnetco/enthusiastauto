@@ -118,23 +118,6 @@ export function GarageContent({
 
   return (
     <div className="space-y-6">
-      {/* Header */}
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <div>
-          <h1 className="text-title-2 font-bold text-foreground">
-            My Garage{" "}
-            {totalCount > 0 && (
-              <Badge variant="secondary" className="ml-2">
-                {totalCount}
-              </Badge>
-            )}
-          </h1>
-          <p className="mt-2 text-sm text-muted-foreground">
-            {totalCount} / {garageLimit} items saved
-          </p>
-        </div>
-      </div>
-
       {/* Warning Banner */}
       {showWarning && (
         <div className="flex items-center gap-3 rounded-lg border border-yellow-500/50 bg-yellow-500/10 p-4 text-yellow-500">

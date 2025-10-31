@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import Section from "@/components/layout/section";
 
 export function HeroSection() {
   return (
@@ -19,7 +20,7 @@ export function HeroSection() {
       </div>
 
       {/* Hero Content */}
-      <div className="relative z-10 mx-auto max-w-screen-2xl px-4 py-16 sm:px-5 sm:py-20 lg:px-6 lg:py-24">
+      <Section as="div" className="relative z-10 py-16 sm:py-20 lg:py-24">
         {/* Main Heading */}
         <h1 className="heading-uppercase mb-4 max-w-[50rem] text-title-1 font-bold text-foreground drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)] sm:text-hero">
           Your BMW Enthusiast Destination
@@ -56,7 +57,7 @@ export function HeroSection() {
             Shop Parts
           </Link>
         </div>
-      </div>
+      </Section>
     </section>
   );
 }

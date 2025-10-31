@@ -1,5 +1,5 @@
 import CartModal from "components/cart/modal";
-import LogoSquare from "components/logo-square";
+import Logo from "components/logo";
 import { getMenu } from "lib/shopify";
 import Link from "next/link";
 import { Suspense } from "react";
@@ -11,82 +11,93 @@ import UserMenu from "./UserMenu";
 const { SITE_NAME } = process.env;
 
 export async function Navigation() {
-  const menu = await getMenu("next-js-frontend-header-menu");
+	const menu = await getMenu("next-js-frontend-header-menu");
 
-  return (
-    <nav className="sticky top-0 z-50 border-b border-border/50 bg-background/80 backdrop-blur-xl">
-      <div className="relative flex items-center justify-between p-4 lg:px-8 lg:py-5">
-        {/* Mobile Menu Button */}
-        <div className="block flex-none md:hidden">
-          <Suspense fallback={null}>
-            <MobileMenu menu={menu} />
-          </Suspense>
-        </div>
+	return (
+		<nav className="sticky top-0 z-50 border-b border-border/50 bg-background/80 backdrop-blur-xl">
+			<div className="relative">
+				{/* Mobile Menu Button */}
+				<div className="block flex-none md:hidden">
+					<Suspense fallback={null}>
+						<MobileMenu menu={menu} />
+					</Suspense>
+				</div>
 
-        {/* Main Content Container */}
-        <div className="flex w-full items-center">
-          {/* Logo and Desktop Navigation Links */}
-          <div className="flex w-full md:w-1/3">
-            <Link
-              href="/"
-              prefetch={true}
-              className="mr-2 flex w-full items-center justify-center transition-opacity duration-200 hover:opacity-80 md:w-auto lg:mr-8"
-            >
-              <LogoSquare />
-            </Link>
+				{/* Two-row layout */}
+				<div className="flex w-full flex-col">
+					{/* Top row: Logo left, Search + Cart right */}
+					<div className="flex items-center px-page-x py-4 border-b border-border/50">
+						<div className="mx-auto w-full max-w-[var(--container-max)] flex items-center">
+							<Link
+								href="/"
+								prefetch={true}
+								className="mr-2 flex items-center transition-opacity duration-200 hover:opacity-80 lg:mr-8"
+							>
+								<Logo />
+							</Link>
 
-            {/* Desktop Navigation Links */}
-            <ul className="hidden gap-8 text-sm md:flex md:items-center">
-              {/* Primary navigation links: Vehicles, Parts, About, Contact */}
-              <li>
-                <NavLink href="/vehicles">Vehicles</NavLink>
-              </li>
-              <li>
-                <NavLink href="/products">Parts</NavLink>
-              </li>
-              <li>
-                <NavLink href="/services">Services</NavLink>
-              </li>
-              <li>
-                <NavLink href="/about">About</NavLink>
-              </li>
-              <li>
-                <NavLink href="/contact">Contact</NavLink>
-              </li>
-              {/* Additional menu items from Shopify */}
-              {menu.length
-                ? menu
-                    .filter(
-                      (item) =>
-                        !["Vehicles", "Parts", "Services", "About", "Contact"].includes(
-                          item.title,
-                        ),
-                    )
-                    .map((item) => (
-                      <li key={item.title}>
-                        <NavLink href={item.path}>{item.title}</NavLink>
-                      </li>
-                    ))
-                : null}
-            </ul>
-          </div>
+							<div className="ml-auto flex items-center justify-end gap-4">
+								<div className="hidden md:block">
+									<Suspense fallback={<SearchBarSkeleton />}>
+										<SearchBar />
+									</Suspense>
+								</div>
+								<CartModal />
+							</div>
+						</div>
+					</div>
 
-          {/* Search Bar (Center) */}
-          <div className="hidden justify-center md:flex md:w-1/3">
-            <Suspense fallback={<SearchBarSkeleton />}>
-              <SearchBar />
-            </Suspense>
-          </div>
+					{/* Bottom row: Static links left, User menu right */}
+					<div className="flex items-center h-16 px-page-x">
+						<div className="mx-auto w-full h-full max-w-[var(--container-max)] flex items-center">
+							{/* Desktop Navigation Links */}
+							<ul className="hidden md:flex md:items-center gap-4 lg:gap-6 xl:gap-8 text-sm overflow-x-auto whitespace-nowrap no-scrollbar h-full">
+								{/* Primary navigation links: Vehicles, Parts, About, Contact */}
+								<li className="h-full">
+									<NavLink href="/vehicles">Vehicles</NavLink>
+								</li>
+								<li className="h-full">
+									<NavLink href="/products">Parts</NavLink>
+								</li>
+								<li className="h-full">
+									<NavLink href="/services">Services</NavLink>
+								</li>
+								<li className="h-full">
+									<NavLink href="/about">About</NavLink>
+								</li>
+								<li className="h-full">
+									<NavLink href="/contact">Contact</NavLink>
+								</li>
+								{/* Additional menu items from Shopify */}
+								{menu.length
+									? menu
+											.filter(
+												(item) =>
+													![
+														"Vehicles",
+														"Parts",
+														"Services",
+														"About",
+														"Contact",
+													].includes(item.title)
+											)
+											.map((item) => (
+												<li key={item.title} className="h-full">
+													<NavLink href={item.path}>{item.title}</NavLink>
+												</li>
+											))
+									: null}
+							</ul>
 
-          {/* User Menu and Cart (Right) */}
-          <div className="flex items-center justify-end gap-4 md:w-1/3">
-            <UserMenu />
-            <CartModal />
-          </div>
-        </div>
-      </div>
-    </nav>
-  );
+							<div className="ml-auto hidden md:flex items-stretch h-full">
+								<UserMenu />
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</nav>
+	);
 }
 
 function SearchBarSkeleton() {

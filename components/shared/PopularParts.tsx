@@ -3,6 +3,7 @@ import { buttonVariants } from "@/components/ui/button";
 import { ProductCard } from "@/components/product-card";
 import { getProducts } from "@/lib/shopify";
 import { cn } from "@/lib/utils";
+import Section from "@/components/layout/section";
 
 export async function PopularParts() {
   // Fetch products from Shopify (will be cached with 'days' cacheLife)
@@ -21,10 +22,7 @@ export async function PopularParts() {
   }
 
   return (
-    <section
-      className="mx-auto max-w-screen-2xl px-4 py-8 sm:px-6 sm:py-12 lg:px-8 lg:py-16"
-      aria-labelledby="popular-parts-heading"
-    >
+    <Section className="py-8 sm:py-12 lg:py-16" aria-labelledby="popular-parts-heading">
       {/* Section Header */}
       <div className="mb-8 flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
         <div>
@@ -32,7 +30,7 @@ export async function PopularParts() {
             id="popular-parts-heading"
             className="text-title-2 font-bold text-foreground"
           >
-            Popular Parts
+            Popular Products
           </h2>
           <p className="mt-2 text-body-base text-muted-foreground sm:text-body-large">
             Premium BMW parts and accessories
@@ -69,6 +67,6 @@ export async function PopularParts() {
           Shop All Parts
         </Link>
       </div>
-    </section>
+    </Section>
   );
 }

@@ -48,26 +48,16 @@ export default function UserMenu() {
     );
   }
 
-  // Authenticated state: Show profile dropdown
+  // Authenticated state: Show user dropdown with icon (matching unauthenticated state structure)
   if (session?.user) {
     return (
       <DropdownMenu>
         <DropdownMenuTrigger
-          className="flex h-8 w-8 items-center justify-center rounded-full bg-muted text-muted-foreground transition-colors hover:bg-muted/80 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
+          className="flex items-center gap-2 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground p-4 border-l border-border/50"
           aria-label="User menu"
         >
-          {session.user.image || session.user.email ? (
-            <img
-              src={
-                session.user.image ||
-                getGravatarUrl(session.user.email || "", 80)
-              }
-              alt={session.user.name || "User"}
-              className="h-8 w-8 rounded-full object-cover"
-            />
-          ) : (
-            <UserIcon className="h-5 w-5" />
-          )}
+          <UserIcon className="h-5 w-5" />
+          <span className="hidden lg:inline">{session.user.name || session.user.email || "Account"}</span>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end" className="w-56">
           <DropdownMenuLabel>
@@ -112,7 +102,7 @@ export default function UserMenu() {
   return (
     <Link
       href="/auth/signin"
-      className="flex items-center gap-2 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+      className="flex items-center gap-2 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground p-4 border-l border-border/50"
       aria-label="Sign in to your account"
     >
       <UserIcon className="h-5 w-5" />

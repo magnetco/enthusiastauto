@@ -133,7 +133,7 @@ export default function UnifiedSearch() {
           onFocus={handleFocus}
           aria-invalid={!!validationError}
           aria-describedby={validationError ? "search-error" : undefined}
-          className="pr-20"
+          className="w-full min-w-[320px] pr-20"
         />
         <div className="absolute right-0 top-0 mr-3 flex h-full items-center gap-2">
           {searchValue && (

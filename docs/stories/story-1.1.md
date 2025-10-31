@@ -41,6 +41,7 @@ so that I can browse the curated product catalog.
   - [x] Subtask 3.3: Display product title (truncate to 2 lines), price, and vendor
   - [x] Subtask 3.4: Add compatibility indicator placeholder (for future fitment filtering)
   - [x] Subtask 3.5: Show stock status badge (In Stock / Out of Stock)
+  - [ ] 
   - [x] Subtask 3.6: Implement hover states (shadow elevation, image zoom) for desktop
   - [x] Subtask 3.7: Add accessibility attributes (ARIA labels, alt text, semantic HTML)
 

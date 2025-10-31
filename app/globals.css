@@ -232,6 +232,14 @@ button {
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
+
+  /* ===== Layout Spacing Tokens ===== */
+  /* Page horizontal padding token */
+  --page-x: 1rem; /* 16px default page gutter */
+  /* Larger page gutter for wide screens */
+  --page-x-lg: 2rem; /* 32px */
+  /* Container max width token */
+  --container-max: 80rem; /* 1280px */
 }
 
 :root {
@@ -374,24 +382,6 @@ button {
     }
   }
 
-  /* Prevent Radix Portal from adding body padding during dropdown open */
-  body[style*="padding-right"] {
-    padding-right: 0 !important;
-  }
-
-  /* Prevent Radix focus guards from causing layout shift */
-  [data-radix-focus-guard] {
-    position: fixed !important;
-    width: 1px !important;
-    height: 1px !important;
-    padding: 0 !important;
-    margin: -1px !important;
-    overflow: hidden !important;
-    clip: rect(0, 0, 0, 0) !important;
-    white-space: nowrap !important;
-    border-width: 0 !important;
-  }
-
   /* ===== Typography Utility Classes ===== */
   /* Selective uppercase utility for hero sections */
   .heading-uppercase {
@@ -472,6 +462,13 @@ button {
       line-height: var(--line-height-hero);
       letter-spacing: var(--letter-spacing-hero);
     }
+  }
+
+  /* ===== Spacing Utility Classes ===== */
+  /* Horizontal page padding utility using design token */
+  .px-page-x {
+    padding-left: var(--page-x);
+    padding-right: var(--page-x);
   }
 }
 

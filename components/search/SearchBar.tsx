@@ -62,7 +62,7 @@ export function SearchBar({
           autoFocus={autoFocus}
           aria-label="Search vehicles and parts"
           aria-describedby="search-description"
-          className="h-10 w-full pl-10 pr-10"
+          className="h-10 w-full min-w-[320px] pl-10 pr-10"
           autoComplete="off"
           role="searchbox"
         />
