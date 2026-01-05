@@ -29,39 +29,73 @@ BMW enthusiast e-commerce platform combining headless Shopify (parts) with Sanit
 | **Testing** | Vitest + Playwright |
 | **Hosting** | Vercel |
 
-## Key Features
+## User Features
 
-### E-commerce
-- Headless Shopify storefront with product browsing and detail pages
-- Shopping cart with persistent state
-- Fitment-first filtering for BMW models (year/model/trim)
-- Product recommendations and related items
-- Variant selection (size, color, etc.)
+### Shopping & E-commerce
+**Browse and Purchase BMW Parts:**
+- Browse the complete catalog of BMW parts and accessories
+- View detailed product pages with high-resolution images and descriptions
+- Filter products by BMW fitment (year, model, trim) to find compatible parts
+- Select product variants (size, color, material, etc.)
+- Add items to shopping cart with quantity selection
+- Manage cart items (update quantities, remove items)
+- Proceed to secure checkout via Shopify
+- View product recommendations and related items
+
+**Guest Shopping:**
+- Browse and purchase without creating an account
+- Cart persists across sessions using cookies
 
 ### Vehicle Inventory
-- Sanity CMS-powered vehicle listings
-- Vehicle detail pages with galleries and specifications
-- Service history tracking
-- ISR (Incremental Static Regeneration) with webhook revalidation
-
-### User Features
-- User authentication (email/password, Google OAuth, Facebook OAuth)
-- User profiles with address management
-- **My Garage:** Save favorite vehicles and products
-- Service request forms
-- Account management (password changes, connected accounts)
+**Browse BMW Vehicles for Sale:**
+- View curated inventory of BMW vehicles
+- Browse vehicle listings with detailed specifications
+- View vehicle detail pages with photo galleries
+- See vehicle specifications (mileage, chassis, exterior color, etc.)
+- View service history and maintenance records
+- Filter vehicles by various criteria
 
 ### Search & Discovery
-- Unified search across vehicles and products
-- Filter panels and badge-based filtering
-- Search autocomplete
-- Collection-based browsing
+**Find What You're Looking For:**
+- Unified search across both vehicles and products
+- Search autocomplete with suggestions as you type
+- Filter results by category, vendor, price range, and more
+- Filter badges to quickly see and remove active filters
+- Browse products by collection/category
+- View featured vehicles and popular parts on homepage
 
-### Performance
-- Hybrid rendering (SSG, ISR, SSR) optimized per page type
-- Image optimization via Next.js Image component
-- Edge caching via Vercel CDN
-- Webhook-driven revalidation for real-time content updates
+### User Account & Authentication
+**Create and Manage Your Account:**
+- Sign up with email and password
+- Sign in with Google or Facebook OAuth
+- Reset forgotten passwords via email
+- Manage profile information (name, email, profile image)
+- Add and manage shipping addresses
+- Change account password
+- Connect or disconnect OAuth accounts
+- Delete account (with confirmation)
+
+### My Garage (Favorites)
+**Save Your Favorites:**
+- Save favorite vehicles to your garage (requires account)
+- Save favorite products to your garage (requires account)
+- View all saved items in one place at `/account/garage`
+- See up to 50 saved items (vehicles + products combined)
+- Remove items from your garage
+- Quick access to saved items with direct links
+
+### Services
+**Request BMW Services:**
+- View available services (cosmetic repairs, conditioning, rejuvenation)
+- Submit service request forms
+- Contact service team via phone or form
+- Learn about service offerings and pricing
+
+### General Features
+- Responsive design that works on desktop, tablet, and mobile
+- Fast page loads with optimized images and caching
+- SEO-optimized pages for better search engine visibility
+- Accessible interface following web standards
 
 ## Getting Started
 
