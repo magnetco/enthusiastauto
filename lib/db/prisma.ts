@@ -7,6 +7,14 @@ const prismaClientSingleton = () => {
   // return new PrismaClient({
   //   accelerateUrl: process.env.POSTGRES_PRISMA_URL,
   // });
+  
+  // Validate that the database URL is available
+  if (!process.env.POSTGRES_PRISMA_URL && !process.env.DATABASE_URL) {
+    throw new Error(
+      "Missing database connection string. Please ensure POSTGRES_PRISMA_URL or DATABASE_URL is set in your .env.local file."
+    );
+  }
+  
   return new PrismaClient();
 };
 
