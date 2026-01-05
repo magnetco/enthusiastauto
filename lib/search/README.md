@@ -247,7 +247,7 @@ When inventory exceeds 200 items or latency exceeds 300ms:
 3. Keep same API interface (transparent migration)
 4. Benefits: Better performance, typo tolerance, filters
 
-See ADR-005 in solution-architecture.md for migration strategy.
+See ADR-005 in architecture.md for migration strategy.
 
 ## Field Weighting Tuning
 
@@ -296,6 +296,6 @@ If users hit rate limits:
 ## Related Documentation
 
 - [PRD Epic 6: Advanced Search & Discovery](../../../docs/PRD.md)
-- [Solution Architecture ADR-005](../../../docs/solution-architecture.md)
+- [Architecture ADR-005](../../../context/architecture.md)
 - [Story 6.1: Unified Search Infrastructure](../../../docs/stories/story-6.1.md)
-- [NFR009: Search Performance](../../../docs/solution-architecture.md#nfr009)
+- [NFR009: Search Performance](../../../context/architecture.md#nfr009)

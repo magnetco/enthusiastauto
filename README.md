@@ -1,75 +1,227 @@
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fvercel%2Fcommerce&project-name=commerce&repo-name=commerce&demo-title=Next.js%20Commerce&demo-url=https%3A%2F%2Fdemo.vercel.store&demo-image=https%3A%2F%2Fbigcommerce-demo-asset-ksvtgfvnd.vercel.app%2Fbigcommerce.png&env=COMPANY_NAME,SHOPIFY_REVALIDATION_SECRET,SHOPIFY_STORE_DOMAIN,SHOPIFY_STOREFRONT_ACCESS_TOKEN,SITE_NAME)
+# Enthusiast Auto Platform
 
-# Next.js Commerce
+BMW enthusiast e-commerce platform combining headless Shopify (parts) with Sanity-powered vehicle inventory. Built on Next.js 15 with modern React patterns and a unified shopping experience.
 
-A high-performance, server-rendered Next.js App Router ecommerce application.
+## Status
 
-This template uses React Server Components, Server Actions, `Suspense`, `useOptimistic`, and more.
+**Current Phase:** Production-ready platform with core features implemented
 
-<h3 id="v1-note"></h3>
+- ✅ **Phase 1 Complete:** Parts e-commerce (Shopify), fitment filtering, cart/checkout
+- ✅ **Phase 2 Complete:** Vehicle inventory (Sanity), unified search, user accounts, favorites/garage
+- ✅ **Authentication:** NextAuth.js with email/password, Google, and Facebook OAuth
+- ✅ **User Features:** Profile management, garage (favorites), service requests
 
-> Note: Looking for Next.js Commerce v1? View the [code](https://github.com/vercel/commerce/tree/v1), [demo](https://commerce-v1.vercel.store), and [release notes](https://github.com/vercel/commerce/releases/tag/v1).
+## Tech Stack
 
-## Providers
+| Category | Technology |
+|----------|-----------|
+| **Framework** | Next.js 15.3.0 (App Router) |
+| **Language** | TypeScript 5.8.2 |
+| **UI Library** | React 19.0.0 |
+| **Styling** | Tailwind CSS 4.0.14 |
+| **Components** | ShadCN UI (Radix UI primitives) |
+| **E-commerce** | Shopify Storefront API (headless) |
+| **CMS (Vehicles)** | Sanity CMS 4.x |
+| **Database** | Vercel Postgres (via Prisma ORM) |
+| **Authentication** | NextAuth.js 5.0 (beta) |
+| **Email** | Resend |
+| **Search** | Fuse.js (client-side) |
+| **Testing** | Vitest + Playwright |
+| **Hosting** | Vercel |
 
-Vercel will only be actively maintaining a Shopify version [as outlined in our vision and strategy for Next.js Commerce](https://github.com/vercel/commerce/pull/966).
+## Key Features
 
-Vercel is happy to partner and work with any commerce provider to help them get a similar template up and running and listed below. Alternative providers should be able to fork this repository and swap out the `lib/shopify` file with their own implementation while leaving the rest of the template mostly unchanged.
+### E-commerce
+- Headless Shopify storefront with product browsing and detail pages
+- Shopping cart with persistent state
+- Fitment-first filtering for BMW models (year/model/trim)
+- Product recommendations and related items
+- Variant selection (size, color, etc.)
 
-- Shopify (this repository)
-- [BigCommerce](https://github.com/bigcommerce/nextjs-commerce) ([Demo](https://next-commerce-v2.vercel.app/))
-- [Ecwid by Lightspeed](https://github.com/Ecwid/ecwid-nextjs-commerce/) ([Demo](https://ecwid-nextjs-commerce.vercel.app/))
-- [Geins](https://github.com/geins-io/vercel-nextjs-commerce) ([Demo](https://geins-nextjs-commerce-starter.vercel.app/))
-- [Medusa](https://github.com/medusajs/vercel-commerce) ([Demo](https://medusa-nextjs-commerce.vercel.app/))
-- [Prodigy Commerce](https://github.com/prodigycommerce/nextjs-commerce) ([Demo](https://prodigy-nextjs-commerce.vercel.app/))
-- [Saleor](https://github.com/saleor/nextjs-commerce) ([Demo](https://saleor-commerce.vercel.app/))
-- [Shopware](https://github.com/shopwareLabs/vercel-commerce) ([Demo](https://shopware-vercel-commerce-react.vercel.app/))
-- [Swell](https://github.com/swellstores/verswell-commerce) ([Demo](https://verswell-commerce.vercel.app/))
-- [Umbraco](https://github.com/umbraco/Umbraco.VercelCommerce.Demo) ([Demo](https://vercel-commerce-demo.umbraco.com/))
-- [Wix](https://github.com/wix/headless-templates/tree/main/nextjs/commerce) ([Demo](https://wix-nextjs-commerce.vercel.app/))
-- [Fourthwall](https://github.com/FourthwallHQ/vercel-commerce) ([Demo](https://vercel-storefront.fourthwall.app/))
+### Vehicle Inventory
+- Sanity CMS-powered vehicle listings
+- Vehicle detail pages with galleries and specifications
+- Service history tracking
+- ISR (Incremental Static Regeneration) with webhook revalidation
 
-> Note: Providers, if you are looking to use similar products for your demo, you can [download these assets](https://drive.google.com/file/d/1q_bKerjrwZgHwCw0ovfUMW6He9VtepO_/view?usp=sharing).
+### User Features
+- User authentication (email/password, Google OAuth, Facebook OAuth)
+- User profiles with address management
+- **My Garage:** Save favorite vehicles and products
+- Service request forms
+- Account management (password changes, connected accounts)
 
-## Integrations
+### Search & Discovery
+- Unified search across vehicles and products
+- Filter panels and badge-based filtering
+- Search autocomplete
+- Collection-based browsing
 
-Integrations enable upgraded or additional functionality for Next.js Commerce
+### Performance
+- Hybrid rendering (SSG, ISR, SSR) optimized per page type
+- Image optimization via Next.js Image component
+- Edge caching via Vercel CDN
+- Webhook-driven revalidation for real-time content updates
 
-- [Orama](https://github.com/oramasearch/nextjs-commerce) ([Demo](https://vercel-commerce.oramasearch.com/))
+## Getting Started
 
-  - Upgrades search to include typeahead with dynamic re-rendering, vector-based similarity search, and JS-based configuration.
-  - Search runs entirely in the browser for smaller catalogs or on a CDN for larger.
+### Prerequisites
+- Node.js 18+ 
+- pnpm (recommended) or npm/yarn
+- Access to shared project credentials (database, API keys, etc.)
 
-- [React Bricks](https://github.com/ReactBricks/nextjs-commerce-rb) ([Demo](https://nextjs-commerce.reactbricks.com/))
-  - Edit pages, product details, and footer content visually using [React Bricks](https://www.reactbricks.com) visual headless CMS.
-
-## Running locally
-
-You will need to use the environment variables [defined in `.env.example`](.env.example) to run Next.js Commerce. It's recommended you use [Vercel Environment Variables](https://vercel.com/docs/concepts/projects/environment-variables) for this, but a `.env` file is all that is necessary.
-
-> Note: You should not commit your `.env` file or it will expose secrets that will allow others to control your Shopify store.
-
-1. Install Vercel CLI: `npm i -g vercel`
-2. Link local instance with Vercel and GitHub accounts (creates `.vercel` directory): `vercel link`
-3. Download your environment variables: `vercel env pull`
+### Installation
 
 ```bash
+# Install dependencies
 pnpm install
+
+# Generate Prisma Client (connects to shared database)
+pnpm prisma generate
+
+# Start development server
 pnpm dev
 ```
 
-Your app should now be running on [localhost:3000](http://localhost:3000/).
+Visit `http://localhost:3000` to see the application.
 
-<details>
-  <summary>Expand if you work at Vercel and want to run locally and / or contribute</summary>
+### Environment Variables
 
-1. Run `vc link`.
-1. Select the `Vercel Solutions` scope.
-1. Connect to the existing `commerce-shopify` project.
-1. Run `vc env pull` to get environment variables.
-1. Run `pnpm dev` to ensure everything is working correctly.
-</details>
+This project uses a **shared database and services**. Get the `.env` file from your team lead or shared credentials store. The environment variables connect to:
 
-## Vercel, Next.js Commerce, and Shopify Integration Guide
+- **Shared Vercel Postgres database** (all developers use the same database)
+- **Shared Shopify store** (Storefront API)
+- **Shared Sanity project** (vehicle content)
+- **Shared email service** (Resend)
+- **Shared authentication secrets** (NextAuth)
 
-You can use this comprehensive [integration guide](https://vercel.com/docs/integrations/ecommerce/shopify) with step-by-step instructions on how to configure Shopify as a headless CMS using Next.js Commerce as your headless Shopify storefront on Vercel.
+**Important:** Do not create your own database or run migrations. The database is already set up and shared by the team. Only run `pnpm prisma generate` to generate the Prisma Client for local development.
+
+If you need access to the `.env` file, contact your team lead.
+
+## Project Structure
+
+```
+enthusiastauto/
+├── app/                    # Next.js App Router pages
+│   ├── [page]/            # Dynamic CMS pages
+│   ├── account/           # User account pages (protected)
+│   │   ├── garage/        # My Garage (favorites)
+│   │   └── profile/       # User profile
+│   ├── auth/              # Authentication pages
+│   ├── product/           # Product detail pages
+│   ├── vehicles/          # Vehicle listing and detail
+│   ├── search/            # Unified search
+│   ├── services/          # Service request pages
+│   ├── api/               # API routes
+│   │   ├── auth/          # NextAuth endpoints
+│   │   ├── revalidate/    # ISR revalidation webhooks
+│   │   └── user/          # User API endpoints
+│   └── studio/            # Embedded Sanity Studio
+├── components/            # React components
+│   ├── account/           # Account management components
+│   ├── cart/              # Shopping cart components
+│   ├── favorites/         # Garage/favorites components
+│   ├── layout/            # Layout components (navbar, footer)
+│   ├── product/           # Product-specific components
+│   ├── search/            # Search components
+│   ├── services/          # Service request components
+│   ├── shared/            # Shared/reusable components
+│   ├── ui/                # ShadCN UI components
+│   └── vehicles/          # Vehicle-specific components
+├── lib/                   # Business logic and utilities
+│   ├── auth/              # Authentication configuration
+│   ├── db/                # Database client (Prisma)
+│   ├── favorites/         # Favorites/garage logic
+│   ├── profile/           # User profile logic
+│   ├── recommendations/   # Recommendation engine
+│   ├── sanity/            # Sanity client
+│   ├── search/            # Search implementation
+│   └── shopify/           # Shopify API integration
+├── prisma/                # Database schema and migrations
+│   ├── schema.prisma      # Prisma schema
+│   └── migrations/        # Database migrations
+├── sanity/                # Sanity CMS configuration
+│   ├── schemas/           # Sanity schema definitions
+│   └── lib/               # Sanity utilities
+├── scripts/               # Utility scripts
+│   └── import-vehicles.ts # Vehicle import script
+├── context/               # Project documentation
+│   └── architecture.md    # Detailed architecture docs
+└── emails/                # Email templates (React Email)
+```
+
+## Scripts
+
+```bash
+# Development
+pnpm dev              # Start dev server with Turbopack
+pnpm build            # Production build
+pnpm start            # Start production server
+
+# Database
+pnpm prisma generate  # Generate Prisma Client (connect to shared DB)
+pnpm prisma studio    # Open Prisma Studio (view shared database)
+# Note: Do not run migrations - database is managed centrally
+
+# Testing
+pnpm test             # Run tests
+pnpm test:watch       # Watch mode
+pnpm test:ui          # Vitest UI
+pnpm test:coverage    # Coverage report
+
+# Code Quality
+pnpm prettier         # Format code
+pnpm prettier:check   # Check formatting
+
+# Utilities
+pnpm import:vehicles  # Import vehicles from CSV
+```
+
+## Documentation
+
+### Architecture Documentation
+See `/context/architecture.md` for comprehensive architecture documentation including:
+- System architecture and design decisions
+- Data models and relationships
+- API design
+- Rendering strategies (SSG/ISR/SSR)
+- Security considerations
+- Performance optimization strategies
+
+### Sanity CMS
+- Studio embedded at `/studio`
+- Schema definitions in `sanity/schemas/`
+
+### Database Schema
+- Prisma schema in `prisma/schema.prisma`
+- Run `pnpm prisma studio` to explore the shared database
+- All developers connect to the same shared database
+
+## Deployment
+
+**Vercel Auto-deployment:** Vercel automatically deploys from the main branch with:
+- Preview deployments for pull requests
+- Production deployments for main branch commits
+- Automatic ISR revalidation via webhooks
+
+## Development Guidelines
+
+### Component Patterns
+- **Server Components by default:** Only use `'use client'` when needed (interactivity, hooks, browser APIs)
+- **TypeScript:** Strict mode enabled, type everything
+- **Styling:** Tailwind CSS with ShadCN UI components
+- **Forms:** React Hook Form with Zod validation
+
+### Code Style
+- Prettier configured for automatic formatting
+- ESLint for linting (if configured)
+- Component naming: PascalCase
+- File naming: kebab-case for routes, PascalCase for components
+
+## Contributing
+
+1. Create a feature branch
+2. Make your changes
+3. Format code: `pnpm prettier`
+4. Submit a pull request

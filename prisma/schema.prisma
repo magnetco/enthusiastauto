@@ -6,9 +6,7 @@ generator client {
 }
 
 datasource db {
-  provider  = "postgresql"
-  url       = env("POSTGRES_PRISMA_URL") // uses connection pooling
-  directUrl = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
+  provider = "postgresql"
 }
 
 // NextAuth.js Models
@@ -21,6 +19,7 @@ model User {
   emailVerified DateTime?
   password      String?         // For credentials login
   image         String?
+  addresses     Json?           @db.JsonB
   accounts      Account[]
   sessions      Session[]
   favorites     UserFavorite[]
@@ -78,4 +77,26 @@ model UserFavorite {
 
   @@unique([userId, itemId, itemType])
   @@index([userId])
+}
+
+// Service Requests
+model ServiceRequest {
+  id              String   @id @default(cuid())
+  serviceType     String
+  name            String
+  email           String
+  phone           String
+  vehicleYear     String
+  vehicleMake     String
+  vehicleModel    String
+  vin             String?
+  description     String
+  existingCustomer Boolean  @default(false)
+  status          String   @default("pending")
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@index([email])
+  @@index([status])
+  @@index([createdAt])
 }

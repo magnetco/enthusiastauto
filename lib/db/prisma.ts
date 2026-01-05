@@ -1,6 +1,12 @@
 import { PrismaClient } from "@prisma/client";
 
 const prismaClientSingleton = () => {
+  // Note: In Prisma 7+, connection URL should be passed here via accelerateUrl or adapter
+  // For Prisma 6, the URL is read from schema.prisma
+  // When upgrading to Prisma 7, remove url from schema.prisma and uncomment below:
+  // return new PrismaClient({
+  //   accelerateUrl: process.env.POSTGRES_PRISMA_URL,
+  // });
   return new PrismaClient();
 };
 

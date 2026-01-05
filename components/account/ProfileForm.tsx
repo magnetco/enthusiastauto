@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { profileUpdateSchema, type ProfileUpdateInput } from "@/lib/profile/types";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 
@@ -22,13 +22,14 @@ interface ProfileFormProps {
 export function ProfileForm({ user, onUpdate }: ProfileFormProps) {
   const [isEditing, setIsEditing] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [selectedFileName, setSelectedFileName] = useState<string | null>(null);
+  const imageFileRef = useRef<HTMLInputElement>(null);
 
   const {
     register,
     handleSubmit,
     formState: { errors },
     reset,
-    watch,
   } = useForm<ProfileUpdateInput>({
     resolver: zodResolver(profileUpdateSchema),
     defaultValues: {
@@ -37,16 +38,18 @@ export function ProfileForm({ user, onUpdate }: ProfileFormProps) {
     },
   });
 
-  const imageFile = watch("imageFile");
-
   const onSubmit = async (data: ProfileUpdateInput) => {
     setIsLoading(true);
     try {
       const formData = new FormData();
       formData.append("name", data.name);
       
-      if (data.imageFile && data.imageFile.length > 0) {
-        formData.append("imageFile", data.imageFile[0]);
+      const fileInput = imageFileRef.current;
+      if (fileInput?.files && fileInput.files.length > 0) {
+        const file = fileInput.files[0];
+        if (file) {
+          formData.append("imageFile", file);
+        }
       } else if (data.image === "") {
         formData.append("removeImage", "true");
       }
@@ -80,6 +83,10 @@ export function ProfileForm({ user, onUpdate }: ProfileFormProps) {
       name: user.name || "",
       image: user.image || "",
     });
+    setSelectedFileName(null);
+    if (imageFileRef.current) {
+      imageFileRef.current.value = "";
+    }
     setIsEditing(false);
   };
 
@@ -127,12 +134,20 @@ export function ProfileForm({ user, onUpdate }: ProfileFormProps) {
                 id="image"
                 type="file"
                 accept="image/*"
-                {...register("imageFile")}
+                ref={imageFileRef}
                 disabled={isLoading}
+                onChange={(e) => {
+                  const files = e.target.files;
+                  if (files && files.length > 0 && files[0]) {
+                    setSelectedFileName(files[0].name);
+                  } else {
+                    setSelectedFileName(null);
+                  }
+                }}
               />
-              {imageFile && imageFile.length > 0 && (
+              {selectedFileName && (
                 <p className="text-xs text-gray-500">
-                  Selected: {imageFile[0].name}
+                  Selected: {selectedFileName}
                 </p>
               )}
               <p className="text-xs text-gray-500">

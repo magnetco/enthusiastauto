@@ -117,13 +117,11 @@ export async function POST(request: NextRequest) {
     }
 
     // Check if already favorited
-    const existing = await prisma.userFavorite.findUnique({
+    const existing = await prisma.userFavorite.findFirst({
       where: {
-        userId_itemType_itemId: {
-          userId: session.user.id,
-          itemType,
-          itemId,
-        },
+        userId: session.user.id,
+        itemType,
+        itemId,
       },
     });
 

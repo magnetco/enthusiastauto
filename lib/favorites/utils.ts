@@ -15,13 +15,11 @@ export async function isItemFavorited(
     return false;
   }
 
-  const favorite = await prisma.userFavorite.findUnique({
+  const favorite = await prisma.userFavorite.findFirst({
     where: {
-      userId_itemType_itemId: {
-        userId: session.user.id,
-        itemType,
-        itemId,
-      },
+      userId: session.user.id,
+      itemType,
+      itemId,
     },
   });
 
