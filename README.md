@@ -1,6 +1,6 @@
 # Enthusiast Auto Platform
 
-BMW enthusiast e-commerce platform combining headless Shopify (parts) with Sanity-powered vehicle inventory. Built on Next.js 15 with modern React patterns and a unified shopping experience.
+BMW enthusiast e-commerce platform combining headless Shopify (parts) with Sanity-powered vehicle inventory. Built on Next.js 15 with modern React patterns and a unified online shopping experience.
 
 ## Status
 
