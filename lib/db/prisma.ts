@@ -1,25 +1,26 @@
+import { PrismaPg } from "@prisma/adapter-pg";
 import { PrismaClient } from "@prisma/client";
 
 const prismaClientSingleton = () => {
-  // Note: In Prisma 7+, connection URL should be passed here via accelerateUrl or adapter
-  // For Prisma 6, the URL is read from schema.prisma
-  // When upgrading to Prisma 7, remove url from schema.prisma and uncomment below:
-  // return new PrismaClient({
-  //   accelerateUrl: process.env.POSTGRES_PRISMA_URL,
-  // });
-  
-  // Validate that the database URL is available
-  if (!process.env.POSTGRES_PRISMA_URL && !process.env.DATABASE_URL) {
-    throw new Error(
-      "Missing database connection string. Please ensure POSTGRES_PRISMA_URL or DATABASE_URL is set in your .env.local file."
-    );
-  }
-  
-  return new PrismaClient();
+	// Prisma 7 requires a driver adapter to be passed at runtime
+	const url = process.env.POSTGRES_PRISMA_URL || process.env.DATABASE_URL;
+
+	if (!url) {
+		throw new Error(
+			"Missing database connection string. Please ensure POSTGRES_PRISMA_URL or DATABASE_URL is set in your .env.local file."
+		);
+	}
+
+	// Create the PostgreSQL adapter with the connection string
+	const adapter = new PrismaPg({
+		connectionString: url,
+	});
+
+	return new PrismaClient({ adapter });
 };
 
 declare const globalThis: {
-  prismaGlobal: ReturnType<typeof prismaClientSingleton>;
+	prismaGlobal: ReturnType<typeof prismaClientSingleton>;
 } & typeof global;
 
 const prisma = globalThis.prismaGlobal ?? prismaClientSingleton();
