@@ -1,0 +1,82 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #0a0a0b;
+  --foreground: #fafafa;
+  --muted: #27272a;
+  --muted-foreground: #a1a1aa;
+  --border: #27272a;
+  --accent: #ef4444;
+  --accent-foreground: #fafafa;
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--background);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--muted);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--muted-foreground);
+}
+
+/* Table styles */
+.data-table {
+  @apply w-full text-sm;
+}
+
+.data-table th {
+  @apply px-4 py-3 text-left font-medium text-zinc-400 bg-zinc-900/50 cursor-pointer select-none;
+  @apply border-b border-zinc-800 hover:bg-zinc-800/50 transition-colors;
+}
+
+.data-table th:hover {
+  @apply text-white;
+}
+
+.data-table td {
+  @apply px-4 py-3 border-b border-zinc-800/50;
+}
+
+.data-table tr:hover td {
+  @apply bg-zinc-900/30;
+}
+
+/* Editable cell */
+.editable-cell {
+  @apply cursor-pointer hover:bg-zinc-800/50 rounded px-2 py-1 -mx-2 -my-1 transition-colors;
+}
+
+.editable-cell:focus {
+  @apply outline-none ring-2 ring-red-500/50 bg-zinc-800;
+}
+
+/* Tab styles */
+.tab {
+  @apply px-4 py-2 text-sm font-medium text-zinc-400 border-b-2 border-transparent;
+  @apply hover:text-white hover:border-zinc-600 transition-all cursor-pointer;
+}
+
+.tab.active {
+  @apply text-white border-red-500;
+}
+

@@ -1,19 +1,35 @@
 # Architecture Document
 
 **Project:** Enthusiast Auto Ecommerce Platform
-**Date:** 2025-10-21
+**Updated:** January 2026
 
 ## Executive Summary
 
-This document defines the technical architecture for the Enthusiast Auto platform, a unified e-commerce site that integrates vehicle inventory and parts shopping. The platform combines Next.js 15, dual-CMS integration (Sanity for vehicles, Shopify for parts), and user management to provide a seamless shopping experience.
+This document defines the technical architecture for the Enthusiast Auto platform, a unified e-commerce site that integrates vehicle inventory and parts shopping. The platform is organized as three independent applications sharing a common database.
 
 **Key Architectural Decisions:**
-- **Architecture Pattern:** Next.js 15 application with dual-CMS integration (Sanity + Shopify)
+- **Architecture Pattern:** Multi-app structure with shared database
+- **Website:** Next.js 15 with dual-CMS integration (Sanity + Shopify)
+- **Studio:** Standalone Sanity CMS for vehicle content management
+- **Data:** Express + React admin dashboard for database viewing
 - **Rendering Strategy:** Hybrid SSR/SSG/ISR optimized per page type
-- **Database:** Vercel Postgres with Prisma ORM for user data, favorites, and sessions
-- **Authentication:** NextAuth.js with Google/Facebook OAuth and email/password
-- **Hosting:** Vercel with auto-deploy CI/CD and edge caching
+- **Database:** Vercel Postgres (Neon) with Prisma ORM
+- **Authentication:** NextAuth.js with Google OAuth and email/password
+- **Hosting:** Vercel (website), Sanity.io (studio)
 - **Search:** Client-side Fuse.js for unified search
+
+## Project Structure
+
+```
+enthusiastauto/
+├── website/     # Next.js 15 e-commerce platform (:3000)
+├── studio/      # Sanity CMS Studio (:3333)
+├── data/        # Admin CRUD dashboard (:4000)
+├── context/     # Documentation
+└── .env.local   # Shared environment variables
+```
+
+Each application is independent with its own package.json and can be developed/deployed separately.
 
 ## 1. Technology Stack
 
@@ -148,20 +164,20 @@ export async function POST(req: NextRequest, { params }: { params: { slug: strin
 
 ### 2.3 Page Routing and Navigation
 
-**Route Structure:**
+**Route Structure (website/):**
 
 ```
 /                           # Homepage (ISR)
 ├── /vehicles               # Vehicle listing (ISR, 60s)
 │   └── /[slug]            # Vehicle detail (ISR, 60s + webhook)
-├── /products              # Product listing (SSG)
-│   ├── /[handle]          # Product detail (SSG + ISR)
-│   └── /search            # Search results (Client)
+├── /parts                 # Parts landing page
+├── /product/[handle]      # Product detail (SSG + ISR)
 ├── /search                # Unified search (Client + SSR hybrid)
-├── /account                # User dashboard (SSR, protected)
+│   └── /[collection]      # Collection pages
+├── /services              # Service request page
+├── /account               # User dashboard (SSR, protected)
 │   ├── /profile           # User profile (SSR)
-│   ├── /garage            # My Garage favorites (SSR)
-│   └── /orders            # Order history (SSR, Shopify integration)
+│   └── /garage            # My Garage favorites (SSR)
 ├── /auth                  # Auth pages (SSG)
 │   ├── /signin            # Login (SSG)
 │   ├── /signup            # Register (SSG)
@@ -169,7 +185,8 @@ export async function POST(req: NextRequest, { params }: { params: { slug: strin
 └── /api                   # API routes
     ├── /auth/[...nextauth] # NextAuth endpoints
     ├── /revalidate/*       # Webhook endpoints
-    └── /webhooks/*         # Sanity/Shopify webhooks
+    ├── /user/*             # User management
+    └── /contact/*          # Contact form handlers
 ```
 
 ### 2.4 Data Fetching Approach
@@ -530,32 +547,38 @@ export function FilterProvider({ children }: Props) {
 
 ### 7.1 Component Structure
 
-**Component Organization:**
+**Component Organization (website/components/):**
 
 ```
 components/
 ├── shared/             # Shared components
-│   ├── Navigation.tsx
-│   ├── Footer.tsx
-│   ├── UnifiedSearchBar.tsx
-│   └── UserMenu.tsx
+│   ├── RecommendationCarousel.tsx
+│   └── ...
 ├── vehicles/           # Vehicle components
 │   ├── VehicleCard.tsx
 │   ├── VehicleGrid.tsx
-│   ├── VehicleDetail.tsx
-│   └── VehicleGallery.tsx
-├── products/           # Product components
-│   ├── ProductCard.tsx
-│   ├── ProductGrid.tsx
-│   └── FilterPanel.tsx
-├── account/            # User components
-│   ├── UserDashboard.tsx
-│   ├── MyGarage.tsx
-│   └── UserProfile.tsx
+│   ├── VehicleGallery.tsx
+│   └── VehicleFilters.tsx
+├── cart/               # Shopping cart
+│   ├── modal.tsx
+│   ├── add-to-cart.tsx
+│   └── cart-context.tsx
+├── favorites/          # Garage/favorites
+│   ├── FavoriteButton.tsx
+│   └── GarageItemCard.tsx
+├── account/            # User account
+│   ├── ProfileForm.tsx
+│   ├── ChangePassword.tsx
+│   └── AddressManager.tsx
 ├── search/             # Search components
+│   ├── SearchAutocomplete.tsx
 │   ├── SearchResults.tsx
-│   └── RecommendationCarousel.tsx
-└── ui/                 # ShadCN components
+│   └── SearchBar.tsx
+├── layout/             # Layout components
+│   ├── navbar/
+│   ├── footer.tsx
+│   └── breadcrumb.tsx
+└── ui/                 # ShadCN primitives
     ├── button.tsx
     ├── card.tsx
     └── ...
@@ -718,7 +741,7 @@ GitHub Repository (main branch)
 
 ### 11.2 Page Structure
 
-**App Router Structure:**
+**App Router Structure (website/app/):**
 
 ```
 app/
@@ -728,12 +751,17 @@ app/
 │   ├── page.tsx                 # Vehicle listing (ISR, 60s)
 │   └── [slug]/
 │       └── page.tsx             # Vehicle detail (ISR, 60s + webhook)
-├── products/
-│   ├── page.tsx                 # Product listing (SSG)
+├── product/
 │   └── [handle]/
 │       └── page.tsx             # Product detail (SSG + ISR)
+├── parts/
+│   └── page.tsx                 # Parts landing
 ├── search/
-│   └── page.tsx                 # Unified search (Client + SSR)
+│   ├── page.tsx                 # Unified search
+│   └── [collection]/
+│       └── page.tsx             # Collection pages
+├── services/
+│   └── page.tsx                 # Service request
 ├── account/
 │   ├── layout.tsx               # Protected layout
 │   ├── page.tsx                 # Dashboard home (SSR)
@@ -743,23 +771,17 @@ app/
 │       └── page.tsx             # User profile (SSR)
 ├── auth/
 │   ├── signin/
-│   │   └── page.tsx            # Sign in (SSG)
+│   │   └── page.tsx             # Sign in
 │   ├── signup/
-│   │   └── page.tsx             # Sign up (SSG)
+│   │   └── page.tsx             # Sign up
 │   └── reset-password/
-│       └── page.tsx             # Password reset (SSG)
+│       └── page.tsx             # Password reset
 └── api/
-    ├── auth/
-    │   └── [...nextauth]/
-    │       └── route.ts         # NextAuth endpoints
-    ├── revalidate/
-    │   └── vehicle/[slug]/
-    │       └── route.ts         # Sanity webhook (ISR revalidation)
-    └── favorites/
-        ├── add/
-        │   └── route.ts         # Add to garage (POST, protected)
-        └── remove/
-            └── route.ts         # Remove from garage (DELETE, protected)
+    ├── auth/                    # NextAuth endpoints
+    ├── revalidate/              # Webhook handlers
+    ├── user/                    # User management
+    ├── contact/                 # Contact forms
+    └── search/                  # Search API
 ```
 
 ### 11.3 Third-Party Integrations
@@ -822,6 +844,52 @@ export function verifyWebhookSignature(
 - Input validation (Zod schemas)
 - SQL injection prevention (Prisma parameterized queries)
 - XSS prevention (React auto-escapes)
+
+## 13. Data Migration Scripts
+
+### 13.1 Vehicle Import Script
+
+**Location:** `website/scripts/import-vehicles.ts`
+
+**Purpose:** Mass import vehicles from CSV to Sanity CMS. Used for initial inventory migration from previous CMS/database.
+
+**Usage:**
+```bash
+cd website
+npx tsx scripts/import-vehicles.ts
+```
+
+**Prerequisites:**
+- CSV file: `Enthusiast Auto - Inventories (1).csv` in website root
+- `SANITY_API_TOKEN` in `.env.local` (requires write permissions)
+
+**What it does:**
+1. Parses CSV file with vehicle data
+2. For each vehicle:
+   - Uploads signature shot and gallery images to Sanity CDN
+   - Converts HTML content (Overview, Highlights) to Portable Text
+   - Maps chassis codes, engine codes, colors to schema values
+   - Creates or replaces vehicle document in Sanity
+3. Tracks import progress with summary statistics
+
+**CSV Columns:**
+| Column | Description |
+|--------|-------------|
+| `Listing Title` | SEO-optimized title |
+| `Slug` | URL-friendly identifier |
+| `Stock Number` | Last 7 of VIN |
+| `VIN` | Full vehicle identification number |
+| `Chassis` | Chassis code (E30, E46, F87, etc.) |
+| `Mileage` | Odometer reading |
+| `Listing Price` | Sale price |
+| `Signature Shot` | Main image URL |
+| `Gallery Exterior/Interior` | Semicolon-separated image URLs |
+| `Overview`, `Highlights` | HTML content |
+| `Current or Sold Inventory?` | Inventory status |
+
+**Deduplication:** Vehicles are identified by `vehicle-${slug}`. If a vehicle with that ID exists, it's skipped (not overwritten) unless using `createOrReplace`.
+
+**UI Alternative:** The Data Manager app (`/data`) has a "Vehicle Import" tab for CSV-based imports with preview functionality.
 
 ---
 

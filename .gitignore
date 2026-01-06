@@ -1,30 +1,47 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # dependencies
-/node_modules
-/.pnp
+node_modules/
+.pnp
 .pnp.js
+.pnpm-store/
 
 # testing
-/coverage
-.playwright
+coverage/
+.playwright/
+playwright-report/
+test-results/
 
 # next.js
-/.next/
-/out/
+.next/
+out/
+
+# sanity
+.sanity/
 
 # production
-/build
+build/
+dist/
 
 # misc
 .DS_Store
 *.pem
+.turbo
+Thumbs.db
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
 
 # debug
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
+*.log
 
 # local env files
 .env*
@@ -36,6 +53,15 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
-.env*.local
 
-/generated/prisma
+# prisma
+generated/prisma
+
+# cache
+.cache/
+.eslintcache
+
+# screenshots (from browser testing)
+*.png
+!public/**/*.png
+!**/assets/**/*.png
