@@ -31,6 +31,12 @@ enthusiastauto/
 
 Each application is independent with its own package.json and can be developed/deployed separately.
 
+**Gitignored (not in repo):**
+- `*/node_modules/` — Install dependencies with `pnpm install`
+- `website/.next/` — Next.js build output (generated on build)
+- `studio/.sanity/` — Sanity Studio cache
+- `.env*` files — Environment secrets (use `.env.example` as template)
+
 ## 1. Technology Stack
 
 | Category | Technology | Version |
