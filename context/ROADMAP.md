@@ -53,6 +53,7 @@ What's shipped, in progress, and planned for the Enthusiast Auto platform.
 - [x] Separate Sanity Studio to /studio
 - [x] Context documentation (OVERVIEW, ARCHITECTURE, STACK, ROADMAP)
 - [x] Consolidated environment variables
+- [x] Git cleanup (remove accidentally tracked node_modules and .next)
 
 ### Phase 8: Data Admin App
 - [x] Create /data CRUD app for admins

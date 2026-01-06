@@ -191,3 +191,18 @@ npx tsx scripts/import-vehicles.ts
 - Create abstractions for one-time use
 - Use `'use client'` without good reason
 - Skip TypeScript types
+
+## Git Hygiene
+
+These directories are gitignored and should **never** be committed:
+
+- `node_modules/` — Dependencies (install with `pnpm install`)
+- `.next/` — Next.js build output
+- `.sanity/` — Sanity Studio cache
+- `.env*` — Environment variables (except `.env.example`)
+
+If you accidentally commit these, remove them from tracking:
+```bash
+git rm -r --cached path/to/directory
+git commit -m "Remove accidentally tracked files"
+```
