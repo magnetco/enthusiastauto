@@ -4,6 +4,7 @@ import { SessionProvider } from "lib/auth/SessionProvider";
 import { getCart } from "lib/shopify";
 import { baseUrl } from "lib/utils";
 import { Figtree } from "next/font/google";
+import localFont from "next/font/local";
 import { ReactNode, Suspense } from "react";
 import { Toaster } from "sonner";
 
@@ -11,13 +12,23 @@ import { Header } from "components/shared/Header";
 import { MobileMenuProvider } from "components/shared/MobileMenuContext";
 import { MobileMenu } from "components/shared/MobileMenu";
 import { ClientProviders } from "components/layout/ClientProviders";
+import { DevModePopout } from "components/dev/DevModePopout";
 import "./globals.css";
+
+const isDev = process.env.NODE_ENV === "development";
 
 // Load Figtree font with complete weight range
 const figtree = Figtree({
 	subsets: ["latin"],
 	weight: ["300", "400", "500", "600", "700", "800", "900"],
 	variable: "--font-figtree",
+	display: "swap",
+});
+
+// Load Chromatic Gothic for headlines
+const chromaticGothic = localFont({
+	src: "../fonts/chromatic-gothic-regular-trial.woff2",
+	variable: "--font-chromatic",
 	display: "swap",
 });
 
@@ -47,7 +58,7 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
 	const cart = getCart();
 
 	return (
-		<html lang="en" className={`dark ${figtree.variable}`}>
+		<html lang="en" className={`dark ${figtree.variable} ${chromaticGothic.variable}`}>
 			<body className="bg-background text-foreground selection:bg-accent/30 selection:text-accent-foreground antialiased">
 				{/* Skip to main content link for keyboard navigation */}
 				<a
@@ -67,6 +78,7 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
 										{children}
 										<Toaster closeButton />
 										<WelcomeToast />
+										{isDev && <DevModePopout />}
 									</main>
 								</MobileMenuProvider>
 							</ClientProviders>

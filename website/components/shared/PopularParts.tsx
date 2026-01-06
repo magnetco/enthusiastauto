@@ -4,7 +4,7 @@ import { ProductCard } from "@/components/product-card";
 import { getProducts } from "@/lib/shopify";
 import { cn } from "@/lib/utils";
 import { ArrowRightIcon } from "@heroicons/react/24/outline";
-import { BMWMStripesHorizontal } from "@/components/icons/bmw-m-stripes";
+import { TitleBlock } from "@/components/shared/TitleBlock";
 
 export async function PopularParts() {
   // #region agent log
@@ -32,49 +32,30 @@ export async function PopularParts() {
 
   return (
     <section
-      className="relative bg-background py-16 sm:py-20 lg:py-24"
+      className="relative bg-white py-16 sm:py-20 lg:py-24"
       aria-labelledby="popular-parts-heading"
     >
       <div className="mx-auto max-w-[var(--container-max)] px-page-x">
-        {/* Section Header - Matching the inventory style */}
-        <div className="mb-12 flex flex-col items-start justify-between gap-6 sm:flex-row sm:items-end lg:mb-16">
-          <div>
-            {/* Section Label */}
-            <div className="mb-4 flex items-center gap-3">
-              <span className="font-mono text-body-small font-medium text-muted-foreground">
-                //
-              </span>
-              <BMWMStripesHorizontal className="h-0.5 w-8" />
-            </div>
-
-            <h2
-              id="popular-parts-heading"
-              className="font-mono text-body-small font-medium uppercase tracking-[0.15em] text-muted-foreground"
-            >
-              // Parts
-            </h2>
-
-            <p className="mt-3 text-title-1 font-bold text-foreground sm:text-hero">
-              Popular Products
-            </p>
-
-            <p className="mt-3 max-w-md text-body-base text-muted-foreground sm:text-body-large">
-              Premium BMW parts and accessories from our catalog
-            </p>
-          </div>
-
-          {/* Shop All CTA - Desktop */}
-          <Link
-            href="/search"
-            aria-label="View all parts"
-            className={cn(
-              buttonVariants({ variant: "outline", size: "lg" }),
-              "hidden gap-2 sm:inline-flex"
-            )}
-          >
-            Shop All Parts
-            <ArrowRightIcon className="h-4 w-4" />
-          </Link>
+        {/* Section Header */}
+        <div className="mb-12 lg:mb-16">
+          <TitleBlock
+            title="Parts"
+            description="Premium BMW parts and accessories from our catalog"
+            id="popular-parts-heading"
+            action={
+              <Link
+                href="/search"
+                aria-label="View all parts"
+                className={cn(
+                  buttonVariants({ variant: "outline", size: "lg" }),
+                  "gap-2 border-neutral-300 text-neutral-900 hover:bg-neutral-100"
+                )}
+              >
+                Shop All Parts
+                <ArrowRightIcon className="h-4 w-4" />
+              </Link>
+            }
+          />
         </div>
 
         {/* Product Grid */}
@@ -91,7 +72,7 @@ export async function PopularParts() {
             aria-label="View all parts"
             className={cn(
               buttonVariants({ variant: "outline", size: "lg" }),
-              "w-full gap-2"
+              "w-full gap-2 border-neutral-300 text-neutral-900 hover:bg-neutral-100"
             )}
           >
             Shop All Parts

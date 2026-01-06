@@ -10,33 +10,33 @@ export function StickyAddToCart({ product }: { product: Product }) {
 
   useEffect(() => {
     const handleScroll = () => {
-      // Show sticky bar when user scrolls past 300px
-      setIsVisible(window.scrollY > 300);
+      // Show sticky bar when user scrolls past 400px
+      setIsVisible(window.scrollY > 400);
     };
 
-    window.addEventListener("scroll", handleScroll);
+    window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   return (
     <div
-      className={`fixed bottom-0 left-0 right-0 bg-white dark:bg-black border-t border-neutral-200 dark:border-neutral-800 p-4 lg:hidden transition-transform duration-300 z-50 ${
+      className={`fixed bottom-0 left-0 right-0 z-50 border-t border-neutral-200 bg-white/95 p-4 backdrop-blur-sm transition-transform duration-300 lg:hidden ${
         isVisible ? "translate-y-0" : "translate-y-full"
       }`}
     >
-      <div className="flex items-center justify-between gap-4 max-w-screen-xl mx-auto">
-        <div className="flex flex-col">
-          <h2 className="font-medium text-sm truncate max-w-[180px]">
+      <div className="mx-auto flex max-w-screen-xl items-center justify-between gap-4">
+        <div className="flex min-w-0 flex-col">
+          <h2 className="truncate text-sm font-medium text-neutral-900">
             {product.title}
           </h2>
-          <div className="text-lg font-bold text-blue-600">
+          <div className="text-lg font-bold text-neutral-900">
             <Price
               amount={product.priceRange.maxVariantPrice.amount}
               currencyCode={product.priceRange.maxVariantPrice.currencyCode}
             />
           </div>
         </div>
-        <div className="flex-shrink-0 w-40">
+        <div className="w-36 flex-shrink-0">
           <AddToCart product={product} />
         </div>
       </div>

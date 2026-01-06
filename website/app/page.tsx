@@ -40,19 +40,18 @@ export default function HomePage() {
       {/* Featured Vehicles Section - Server Component with Suspense */}
       <Suspense
         fallback={
-          <div className="mx-auto max-w-[var(--container-max)] px-page-x py-16 sm:py-20 lg:py-24">
-            <div className="mb-12 lg:mb-16">
-              <p className="font-mono text-body-small font-medium uppercase tracking-[0.15em] text-muted-foreground">
-                // Inventory
-              </p>
-              <h2 className="mt-3 text-title-1 font-bold text-foreground sm:text-hero">
-                Featured Vehicles
-              </h2>
-            </div>
-            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 lg:gap-8 xl:grid-cols-4">
-              {[...Array(4)].map((_, i) => (
-                <VehicleCardSkeleton key={i} />
-              ))}
+          <div className="bg-white py-16 sm:py-20 lg:py-24">
+            <div className="mx-auto max-w-[var(--container-max)] px-page-x">
+              <div className="mb-12 lg:mb-16">
+                <h2 className="font-headline text-title-2 text-neutral-900 sm:text-title-1">
+                  Inventory
+                </h2>
+              </div>
+              <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 lg:gap-8 xl:grid-cols-4">
+                {[...Array(4)].map((_, i) => (
+                  <VehicleCardSkeleton key={i} />
+                ))}
+              </div>
             </div>
           </div>
         }
@@ -66,16 +65,15 @@ export default function HomePage() {
       {/* Popular Parts Section - Server Component with Suspense */}
       <Suspense
         fallback={
-          <div className="mx-auto max-w-[var(--container-max)] px-page-x py-16 sm:py-20 lg:py-24">
-            <div className="mb-12 lg:mb-16">
-              <p className="font-mono text-body-small font-medium uppercase tracking-[0.15em] text-muted-foreground">
-                // Parts
-              </p>
-              <h2 className="mt-3 text-title-1 font-bold text-foreground sm:text-hero">
-                Popular Products
-              </h2>
+          <div className="bg-white py-16 sm:py-20 lg:py-24">
+            <div className="mx-auto max-w-[var(--container-max)] px-page-x">
+              <div className="mb-12 lg:mb-16">
+                <h2 className="font-headline text-title-2 text-neutral-900 sm:text-title-1">
+                  Parts
+                </h2>
+              </div>
+              <ProductGridLoading />
             </div>
-            <ProductGridLoading />
           </div>
         }
       >

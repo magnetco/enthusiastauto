@@ -23,5 +23,5 @@ export default function AccountLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return <div className="min-h-screen bg-background">{children}</div>;
+  return <div className="light-section min-h-screen">{children}</div>;
 }

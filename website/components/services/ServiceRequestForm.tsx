@@ -1,14 +1,16 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { Badge } from "@/components/ui/badge";
+import { Checkbox } from "@/components/ui/checkbox";
 import {
   Select,
   SelectContent,
@@ -17,13 +19,15 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { toast } from "sonner";
-import type { ServiceType } from "./ServiceCards";
+import { cn } from "@/lib/utils";
+import { useServiceSelection, type ServiceType } from "./ServiceSelectionContext";
+import { services } from "./ServiceCards";
+import { X } from "lucide-react";
 
-// Form validation schema
+// Form validation schema - now supports multiple services
 const serviceRequestSchema = z.object({
-  serviceType: z.enum(["conditioning", "rejuvenation", "mechanical", "cosmetic", "not-sure"], {
-    required_error: "Please select a service type",
-  }),
+  serviceTypes: z.array(z.enum(["conditioning", "rejuvenation", "mechanical", "cosmetic"])).min(1, "Please select at least one service"),
+  needsAdvice: z.boolean().optional(),
   name: z.string().min(2, "Name must be at least 2 characters"),
   email: z.string().email("Invalid email address"),
   phone: z.string().min(10, "Please enter a valid phone number"),
@@ -40,6 +44,7 @@ type ServiceRequestFormData = z.infer<typeof serviceRequestSchema>;
 export function ServiceRequestForm() {
   const [isLoading, setIsLoading] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const { selectedServices, toggleService, clearServices } = useServiceSelection();
 
   const {
     register,
@@ -51,32 +56,38 @@ export function ServiceRequestForm() {
   } = useForm<ServiceRequestFormData>({
     resolver: zodResolver(serviceRequestSchema),
     defaultValues: {
-      serviceType: undefined,
+      serviceTypes: selectedServices,
+      needsAdvice: false,
       existingCustomer: "no",
     },
   });
 
-  const selectedService = watch("serviceType");
+  // Sync context with form
+  const formServices = watch("serviceTypes") || [];
+  const needsAdvice = watch("needsAdvice");
 
-  // Listen for service selection from cards
-  useEffect(() => {
-    const handleServiceSelect = (event: CustomEvent<{ serviceType: ServiceType }>) => {
-      setValue("serviceType", event.detail.serviceType);
-    };
+  // Keep form in sync with context
+  if (JSON.stringify(formServices) !== JSON.stringify(selectedServices)) {
+    setValue("serviceTypes", selectedServices);
+  }
 
-    window.addEventListener("selectService", handleServiceSelect as EventListener);
-    return () => {
-      window.removeEventListener("selectService", handleServiceSelect as EventListener);
-    };
-  }, [setValue]);
+  const handleToggleService = (service: ServiceType) => {
+    toggleService(service);
+  };
 
   const onSubmit = async (data: ServiceRequestFormData) => {
     setIsLoading(true);
     try {
+      // Convert to API format (supports both single and multiple services)
+      const payload = {
+        ...data,
+        serviceType: data.needsAdvice ? "not-sure" : data.serviceTypes.join(","),
+      };
+
       const response = await fetch("/api/services/request", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
+        body: JSON.stringify(payload),
       });
 
       if (!response.ok) {
@@ -89,6 +100,7 @@ export function ServiceRequestForm() {
         { duration: 5000 }
       );
       setIsSubmitted(true);
+      clearServices();
       reset();
     } catch (error) {
       toast.error(
@@ -103,9 +115,11 @@ export function ServiceRequestForm() {
 
   if (isSubmitted) {
     return (
-      <Card className="mx-auto max-w-3xl">
+      <Card className="mx-auto max-w-3xl border-0 bg-neutral-50">
         <CardContent className="py-12 text-center">
-          <div className="mb-4 text-6xl">✓</div>
+          <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-primary text-3xl text-white">
+            ✓
+          </div>
           <h3 className="mb-2 text-2xl font-bold text-foreground">
             Request Submitted Successfully!
           </h3>
@@ -113,7 +127,7 @@ export function ServiceRequestForm() {
             Thank you for your interest. A BMW Service Professional will contact you
             within 1 business day to discuss your needs and schedule an assessment.
           </p>
-          <div className="rounded-lg bg-muted p-4">
+          <div className="rounded-lg bg-white p-4 shadow-sm">
             <p className="text-sm font-medium">Need immediate assistance?</p>
             <a
               href="tel:513-554-1269"
@@ -136,46 +150,76 @@ export function ServiceRequestForm() {
   }
 
   return (
-    <Card className="mx-auto max-w-3xl">
-      <CardHeader>
-        <CardTitle>Service Request Form</CardTitle>
-        <CardDescription>
-          Fill out the form below and we'll get back to you within 1 business day
-        </CardDescription>
-      </CardHeader>
-      <CardContent>
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-          {/* Service Type Selection */}
-          <div className="space-y-2">
-            <Label htmlFor="serviceType">
-              Service Type <span className="text-red-500">*</span>
-            </Label>
-            <Select
-              value={selectedService}
-              onValueChange={(value) =>
-                setValue("serviceType", value as ServiceRequestFormData["serviceType"])
-              }
-              disabled={isLoading}
-            >
-              <SelectTrigger id="serviceType">
-                <SelectValue placeholder="Select a service" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="conditioning">Conditioning & Protection</SelectItem>
-                <SelectItem value="rejuvenation">Full Rejuvenation</SelectItem>
-                <SelectItem value="mechanical">Mechanical Services</SelectItem>
-                <SelectItem value="cosmetic">Cosmetic Repairs</SelectItem>
-                <SelectItem value="not-sure">Not Sure / Need Advice</SelectItem>
-              </SelectContent>
-            </Select>
-            {errors.serviceType && (
-              <p className="text-sm text-red-600">{errors.serviceType.message}</p>
+    <Card className="mx-auto max-w-3xl border-0 bg-neutral-50">
+      <CardContent className="p-6 sm:p-8">
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
+          {/* Selected Services Display */}
+          <div className="space-y-4">
+            <div className="flex items-center justify-between">
+              <Label className="text-base font-semibold">
+                Selected Services <span className="text-red-500">*</span>
+              </Label>
+              {selectedServices.length > 0 && (
+                <button
+                  type="button"
+                  onClick={clearServices}
+                  className="text-xs text-muted-foreground hover:text-foreground"
+                >
+                  Clear all
+                </button>
+              )}
+            </div>
+
+            {/* Service selection chips */}
+            <div className="flex flex-wrap gap-2">
+              {services.map((service) => {
+                const isSelected = selectedServices.includes(service.id);
+                return (
+                  <button
+                    key={service.id}
+                    type="button"
+                    onClick={() => handleToggleService(service.id)}
+                    disabled={needsAdvice}
+                    className={cn(
+                      "inline-flex items-center gap-1.5 rounded-full border px-4 py-2 text-sm font-medium transition-all",
+                      isSelected
+                        ? "border-primary bg-primary text-white"
+                        : "border-neutral-300 bg-white text-neutral-700 hover:border-neutral-400 hover:bg-neutral-50",
+                      needsAdvice && "cursor-not-allowed opacity-50"
+                    )}
+                  >
+                    {service.title}
+                    {isSelected && <X className="h-3.5 w-3.5" />}
+                  </button>
+                );
+              })}
+            </div>
+
+            {/* Not sure option */}
+            <div className="flex items-center gap-2 pt-2">
+              <Checkbox
+                id="needsAdvice"
+                checked={needsAdvice}
+                onCheckedChange={(checked) => {
+                  setValue("needsAdvice", checked === true);
+                  if (checked) {
+                    clearServices();
+                  }
+                }}
+              />
+              <Label htmlFor="needsAdvice" className="cursor-pointer text-sm text-muted-foreground">
+                I'm not sure what I need — please advise me
+              </Label>
+            </div>
+
+            {errors.serviceTypes && !needsAdvice && (
+              <p className="text-sm text-red-600">{errors.serviceTypes.message}</p>
             )}
           </div>
 
           {/* Contact Information */}
           <div className="space-y-4">
-            <h3 className="text-lg font-semibold">Contact Information</h3>
+            <h3 className="text-base font-semibold">Contact Information</h3>
             <div className="grid gap-4 sm:grid-cols-2">
               <div className="space-y-2">
                 <Label htmlFor="name">
@@ -186,6 +230,7 @@ export function ServiceRequestForm() {
                   {...register("name")}
                   placeholder="John Doe"
                   disabled={isLoading}
+                  className="bg-white"
                 />
                 {errors.name && (
                   <p className="text-sm text-red-600">{errors.name.message}</p>
@@ -201,6 +246,7 @@ export function ServiceRequestForm() {
                   {...register("phone")}
                   placeholder="(513) 555-1234"
                   disabled={isLoading}
+                  className="bg-white"
                 />
                 {errors.phone && (
                   <p className="text-sm text-red-600">{errors.phone.message}</p>
@@ -218,6 +264,7 @@ export function ServiceRequestForm() {
                 {...register("email")}
                 placeholder="john@example.com"
                 disabled={isLoading}
+                className="bg-white"
               />
               {errors.email && (
                 <p className="text-sm text-red-600">{errors.email.message}</p>
@@ -227,7 +274,7 @@ export function ServiceRequestForm() {
 
           {/* Vehicle Information */}
           <div className="space-y-4">
-            <h3 className="text-lg font-semibold">Vehicle Information</h3>
+            <h3 className="text-base font-semibold">Vehicle Information</h3>
             <div className="grid gap-4 sm:grid-cols-3">
               <div className="space-y-2">
                 <Label htmlFor="vehicleYear">
@@ -238,6 +285,7 @@ export function ServiceRequestForm() {
                   {...register("vehicleYear")}
                   placeholder="2020"
                   disabled={isLoading}
+                  className="bg-white"
                 />
                 {errors.vehicleYear && (
                   <p className="text-sm text-red-600">{errors.vehicleYear.message}</p>
@@ -253,6 +301,7 @@ export function ServiceRequestForm() {
                   {...register("vehicleMake")}
                   placeholder="BMW"
                   disabled={isLoading}
+                  className="bg-white"
                 />
                 {errors.vehicleMake && (
                   <p className="text-sm text-red-600">{errors.vehicleMake.message}</p>
@@ -268,6 +317,7 @@ export function ServiceRequestForm() {
                   {...register("vehicleModel")}
                   placeholder="M3"
                   disabled={isLoading}
+                  className="bg-white"
                 />
                 {errors.vehicleModel && (
                   <p className="text-sm text-red-600">{errors.vehicleModel.message}</p>
@@ -282,6 +332,7 @@ export function ServiceRequestForm() {
                 {...register("vin")}
                 placeholder="WBSWD93508PX12345"
                 disabled={isLoading}
+                className="bg-white"
               />
               {errors.vin && (
                 <p className="text-sm text-red-600">{errors.vin.message}</p>
@@ -291,7 +342,7 @@ export function ServiceRequestForm() {
 
           {/* Service Details */}
           <div className="space-y-4">
-            <h3 className="text-lg font-semibold">Service Details</h3>
+            <h3 className="text-base font-semibold">Service Details</h3>
             <div className="space-y-2">
               <Label htmlFor="description">
                 Describe Your Needs <span className="text-red-500">*</span>
@@ -300,18 +351,23 @@ export function ServiceRequestForm() {
                 id="description"
                 {...register("description")}
                 placeholder={
-                  selectedService === "conditioning"
-                    ? "Tell us about your vehicle's current condition and protection goals..."
-                    : selectedService === "rejuvenation"
-                      ? "Share your restoration goals and vehicle history..."
-                      : selectedService === "mechanical"
-                        ? "Describe the maintenance or repairs needed, any symptoms, or performance concerns..."
-                        : selectedService === "cosmetic"
-                          ? "Describe any damage, dings, chips, or repairs needed..."
-                          : "Tell us what you're looking to achieve with your BMW..."
+                  needsAdvice
+                    ? "Tell us about your BMW and what you're hoping to achieve. We'll help determine the best services for your needs..."
+                    : selectedServices.length > 1
+                      ? "Tell us about your BMW and what you need help with across the selected services..."
+                      : selectedServices.includes("conditioning")
+                        ? "Tell us about your vehicle's current condition and protection goals..."
+                        : selectedServices.includes("rejuvenation")
+                          ? "Share your restoration goals and vehicle history..."
+                          : selectedServices.includes("mechanical")
+                            ? "Describe the maintenance or repairs needed, any symptoms, or performance concerns..."
+                            : selectedServices.includes("cosmetic")
+                              ? "Describe any damage, dings, chips, or repairs needed..."
+                              : "Tell us what you're looking to achieve with your BMW..."
                 }
-                rows={6}
+                rows={5}
                 disabled={isLoading}
+                className="bg-white"
               />
               {errors.description && (
                 <p className="text-sm text-red-600">{errors.description.message}</p>
@@ -332,7 +388,7 @@ export function ServiceRequestForm() {
               }
               disabled={isLoading}
             >
-              <SelectTrigger id="existingCustomer">
+              <SelectTrigger id="existingCustomer" className="bg-white">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
@@ -343,8 +399,13 @@ export function ServiceRequestForm() {
           </div>
 
           {/* Submit Button */}
-          <div className="flex flex-col gap-4">
-            <Button type="submit" size="lg" disabled={isLoading} className="w-full">
+          <div className="flex flex-col gap-4 pt-2">
+            <Button
+              type="submit"
+              size="lg"
+              disabled={isLoading || (selectedServices.length === 0 && !needsAdvice)}
+              className="w-full text-base"
+            >
               {isLoading ? "Submitting..." : "Submit Service Request"}
             </Button>
             <p className="text-center text-xs text-muted-foreground">

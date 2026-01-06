@@ -1,19 +1,16 @@
 import CartModal from "components/cart/modal";
 import Logo from "components/logo";
-import { getCurrentUser } from "lib/auth/session";
 import { getMenu } from "lib/shopify";
 import { Menu } from "lib/shopify/types";
 import Link from "next/link";
 import { Suspense } from "react";
-import { UserIcon } from "@heroicons/react/24/outline";
 import MobileMenu from "./mobile-menu";
 import UnifiedSearch, { UnifiedSearchSkeleton } from "./unified-search";
-
-const { SITE_NAME } = process.env;
+import { FavoritesBadge } from "@/components/shared/FavoritesBadge";
+import { HeaderUserSection } from "./header-user-section";
 
 export async function Navbar() {
 	const menu = await getMenu("next-js-frontend-header-menu");
-	const user = await getCurrentUser();
 
 	return (
 		<nav className="sticky top-0 z-50 border-b border-border/50 bg-background/80 backdrop-blur-xl">
@@ -25,7 +22,7 @@ export async function Navbar() {
 				</div>
 				{/* Two-row layout */}
 				<div className="flex w-full flex-col gap-3 md:gap-4">
-					{/* Top row: Logo left, Search + Cart right */}
+					{/* Top row: Logo left, Search + Favorites + Cart right */}
 					<div className="flex items-center border-b border-border/60 pb-3 md:pb-4 px-page-x">
 						<Link
 							href="/"
@@ -34,35 +31,21 @@ export async function Navbar() {
 						>
 							<Logo />
 						</Link>
-						<div className="ml-auto flex items-stretch justify-end gap-4 h-full">
+						<div className="ml-auto flex items-center justify-end gap-3 h-full">
+							{/* Search + Favorites + Cart in bordered containers */}
 							<div className="hidden md:block">
 								<Suspense fallback={<UnifiedSearchSkeleton />}>
 									<UnifiedSearch />
 								</Suspense>
 							</div>
-							{user ? (
-								<Link
-									href="/account"
-									prefetch={true}
-									className="inline-flex h-full items-center border-l border-border/60 px-3 md:px-4 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors duration-200"
-								>
-									<UserIcon className="mr-2 h-4 w-4" />
-									{user.name || user.email || "Account"}
-								</Link>
-							) : (
-								<Link
-									href="/auth/signin"
-									prefetch={true}
-									className="inline-flex h-full items-center border-l border-border/60 px-3 md:px-4 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors duration-200"
-								>
-									Log in
-								</Link>
-							)}
+							<Suspense fallback={null}>
+								<FavoritesBadge />
+							</Suspense>
 							<CartModal />
 						</div>
 					</div>
 
-					{/* Bottom row: Static links left, (reserve space on right if needed) */}
+					{/* Bottom row: Static links left, user section right */}
 					<div className="flex items-center border-b border-border/60 md:h-12 px-page-x">
 						{menu.length ? (
 							<ul className="hidden md:flex items-stretch gap-4 lg:gap-6 xl:gap-8 text-sm overflow-x-auto whitespace-nowrap no-scrollbar">
@@ -79,7 +62,9 @@ export async function Navbar() {
 								))}
 							</ul>
 						) : null}
-						<div className="ml-auto hidden md:flex items-center" />
+						<div className="ml-auto hidden md:flex items-center">
+							<HeaderUserSection />
+						</div>
 					</div>
 				</div>
 			</div>

@@ -23,13 +23,13 @@ export function HeaderSearch() {
 
   return (
     <form onSubmit={handleSubmit} className="relative">
-      <div className="flex h-10 w-64 items-center rounded-full border border-white/20 bg-white/5 pl-4 pr-3 transition-colors focus-within:border-white/40 hover:border-white/30">
+      <div className="flex h-10 w-80 items-center rounded-md border border-white/20 bg-transparent pl-4 pr-3 transition-colors focus-within:border-white/40 hover:border-white/30">
         <input
           type="text"
           placeholder="Search cars or parts"
           value={searchValue}
           onChange={(e) => setSearchValue(e.target.value)}
-          className="flex-1 bg-transparent text-sm text-white placeholder:text-white/40 focus:outline-none"
+          className="flex-1 bg-transparent text-sm text-white/70 placeholder:text-white/50 focus:outline-none"
         />
         <button
           type="submit"

@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Product } from "lib/shopify/types";
+import { ChevronRightIcon } from "@heroicons/react/20/solid";
 
 export function Breadcrumb({ product }: { product: Product }) {
   // Use productType as category (e.g., "Performance Parts", "Accessories")
@@ -45,27 +46,31 @@ export function Breadcrumb({ product }: { product: Product }) {
 
       {/* Visual breadcrumb navigation */}
       <nav className="mb-6" aria-label="Breadcrumb">
-        <ol className="flex items-center gap-2 text-sm text-neutral-600 dark:text-neutral-400">
+        <ol className="flex items-center gap-1 text-sm">
           <li>
             <Link
               href="/"
-              className="hover:text-neutral-900 dark:hover:text-neutral-100 transition-colors"
+              className="text-neutral-500 transition-colors hover:text-neutral-900"
             >
               Home
             </Link>
           </li>
-          <li aria-hidden="true">/</li>
+          <li aria-hidden="true">
+            <ChevronRightIcon className="h-4 w-4 text-neutral-400" />
+          </li>
           <li>
             <Link
               href={`/search/${categoryHandle}`}
-              className="hover:text-neutral-900 dark:hover:text-neutral-100 transition-colors"
+              className="text-neutral-500 transition-colors hover:text-neutral-900"
             >
               {category}
             </Link>
           </li>
-          <li aria-hidden="true">/</li>
+          <li aria-hidden="true">
+            <ChevronRightIcon className="h-4 w-4 text-neutral-400" />
+          </li>
           <li
-            className="text-neutral-900 dark:text-neutral-100 font-medium"
+            className="max-w-[200px] truncate font-medium text-neutral-900 sm:max-w-[300px]"
             aria-current="page"
           >
             {product.title}

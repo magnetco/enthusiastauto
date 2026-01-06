@@ -77,6 +77,19 @@ export const authConfig: NextAuthConfig = {
     error: "/auth/error",
   },
   callbacks: {
+    async redirect({ url, baseUrl }) {
+      // After sign-in, redirect to account page
+      // If the url is the sign-in page or base url, go to account
+      if (url === baseUrl || url.includes("/auth/signin")) {
+        return `${baseUrl}/account`;
+      }
+      // Allow callbacks to same origin
+      if (url.startsWith(baseUrl)) {
+        return url;
+      }
+      // Default to account page
+      return `${baseUrl}/account`;
+    },
     async signIn({ user, account, profile }) {
       // OAuth providers automatically create user via Prisma adapter
       if (account?.type === "oauth") {

@@ -178,25 +178,25 @@ export default async function ServiceDetailPage(props: {
 	return (
 		<>
 			{/* Hero Section */}
-			<section className="relative w-full overflow-hidden bg-background">
+			<section className="relative w-full overflow-hidden bg-[#141721]">
 				<div className="absolute inset-0 z-0">
 					<div
 						className="h-full w-full bg-cover bg-center bg-no-repeat opacity-30"
 						style={{ backgroundImage: `url('${service.heroImage}')` }}
 					/>
-					<div className="absolute inset-0 bg-gradient-to-b from-background/70 via-background/80 to-background" />
+					<div className="absolute inset-0 bg-gradient-to-b from-[#141721]/70 via-[#141721]/80 to-[#141721]" />
 				</div>
 
-				<Section as="div" className="relative z-10 py-20 sm:py-24 lg:py-28">
-					<h1 className="heading-uppercase mb-4 text-title-1 font-bold text-primary sm:text-hero">
+				<Section as="div" dark className="relative z-10 py-20 sm:py-24 lg:py-28">
+					<h1 className="heading-uppercase mb-4 text-title-1 font-bold text-blue-400 sm:text-hero">
 						{service.heroTitle}
 					</h1>
-					<p className="mb-8 max-w-[40rem] text-body-large text-foreground/90 sm:text-body-xl">
+					<p className="mb-8 max-w-[40rem] text-body-large text-white/90 sm:text-body-xl">
 						{service.description}
 					</p>
 					<a
 						href="#request-form"
-						className="inline-flex h-11 items-center justify-center rounded-md bg-primary px-8 text-sm font-medium text-primary-foreground ring-offset-background transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+						className="inline-flex h-11 items-center justify-center rounded-md bg-white px-8 text-sm font-medium text-black ring-offset-background transition-colors hover:bg-white/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
 					>
 						Schedule Now
 					</a>

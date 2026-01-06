@@ -4,7 +4,7 @@ import { VehicleCard } from "@/components/vehicles/VehicleCard";
 import { getFeaturedVehicles } from "@/lib/sanity/queries/vehicles";
 import { cn } from "@/lib/utils";
 import { ArrowRightIcon } from "@heroicons/react/24/outline";
-import { BMWMStripesHorizontal } from "@/components/icons/bmw-m-stripes";
+import { TitleBlock } from "@/components/shared/TitleBlock";
 
 export async function FeaturedVehicles() {
   // #region agent log
@@ -25,49 +25,30 @@ export async function FeaturedVehicles() {
 
   return (
     <section
-      className="relative bg-background py-16 sm:py-20 lg:py-24"
+      className="relative bg-white py-16 sm:py-20 lg:py-24"
       aria-labelledby="featured-vehicles-heading"
     >
       <div className="mx-auto max-w-[var(--container-max)] px-page-x">
-        {/* Section Header - Redesigned with // INVENTORY style */}
-        <div className="mb-12 flex flex-col items-start justify-between gap-6 sm:flex-row sm:items-end lg:mb-16">
-          <div>
-            {/* Section Label */}
-            <div className="mb-4 flex items-center gap-3">
-              <span className="font-mono text-body-small font-medium text-muted-foreground">
-                //
-              </span>
-              <BMWMStripesHorizontal className="h-0.5 w-8" />
-            </div>
-
-            <h2
-              id="featured-vehicles-heading"
-              className="font-mono text-body-small font-medium uppercase tracking-[0.15em] text-muted-foreground"
-            >
-              // Inventory
-            </h2>
-
-            <p className="mt-3 text-title-1 font-bold text-foreground sm:text-hero">
-              Featured Vehicles
-            </p>
-
-            <p className="mt-3 max-w-md text-body-base text-muted-foreground sm:text-body-large">
-              Hand-selected BMW automobiles from our current collection
-            </p>
-          </div>
-
-          {/* Browse All CTA - Desktop */}
-          <Link
-            href="/vehicles"
-            aria-label="View all vehicles"
-            className={cn(
-              buttonVariants({ variant: "outline", size: "lg" }),
-              "hidden gap-2 sm:inline-flex"
-            )}
-          >
-            View All Vehicles
-            <ArrowRightIcon className="h-4 w-4" />
-          </Link>
+        {/* Section Header */}
+        <div className="mb-12 lg:mb-16">
+          <TitleBlock
+            title="Inventory"
+            description="This is our carefully curated selection of cars available to purchase right now. Pin your favorites or ask a question."
+            id="featured-vehicles-heading"
+            action={
+              <Link
+                href="/vehicles"
+                aria-label="View all vehicles"
+                className={cn(
+                  buttonVariants({ variant: "outline", size: "lg" }),
+                  "gap-2 border-neutral-300 text-neutral-900 hover:bg-neutral-100"
+                )}
+              >
+                See all cars
+                <ArrowRightIcon className="h-4 w-4" />
+              </Link>
+            }
+          />
         </div>
 
         {/* Vehicle Grid */}
@@ -88,10 +69,10 @@ export async function FeaturedVehicles() {
             aria-label="View all vehicles"
             className={cn(
               buttonVariants({ variant: "outline", size: "lg" }),
-              "w-full gap-2"
+              "w-full gap-2 border-neutral-300 text-neutral-900 hover:bg-neutral-100"
             )}
           >
-            View All Vehicles
+            See all cars
             <ArrowRightIcon className="h-4 w-4" />
           </Link>
         </div>

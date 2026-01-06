@@ -1,25 +1,28 @@
 import { Product } from "@/lib/shopify/types";
 import { ProductCard } from "@/components/product-card";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Card, CardContent } from "@/components/ui/card";
 
 interface ProductGridProps {
   products: Product[];
   loading?: boolean;
 }
 
-// Skeleton loader for product cards
+// Skeleton loader for product cards - matches light mode card design with brand colors
 export function ProductCardSkeleton() {
   return (
-    <Card className="overflow-hidden">
-      <Skeleton className="aspect-square w-full" />
-      <CardContent className="space-y-1.5 p-2.5">
-        <Skeleton className="h-4 w-full" />
-        <Skeleton className="h-3 w-2/3" />
-        <Skeleton className="h-5 w-20" />
-        <Skeleton className="h-3 w-3/4" />
-      </CardContent>
-    </Card>
+    <div className="h-full flex flex-col bg-white rounded-2xl overflow-hidden border border-[#DFE5EA]">
+      {/* Image skeleton */}
+      <Skeleton className="aspect-[4/3] w-full bg-[#DFE5EA]" />
+      {/* Content skeleton */}
+      <div className="flex-1 p-4 flex flex-col">
+        <Skeleton className="h-3 w-16 mb-2 bg-[#DFE5EA]" />
+        <Skeleton className="h-4 w-full mb-1 bg-[#DFE5EA]" />
+        <Skeleton className="h-4 w-3/4 mb-auto bg-[#DFE5EA]" />
+        <div className="mt-3 pt-3 border-t border-[#DFE5EA]">
+          <Skeleton className="h-6 w-24 bg-[#DFE5EA]" />
+        </div>
+      </div>
+    </div>
   );
 }
 
@@ -34,12 +37,12 @@ export function ProductGridLoading() {
   );
 }
 
-// Empty state
+// Empty state - light mode design with brand colors
 export function ProductGridEmpty() {
   return (
-    <div className="flex min-h-[340px] flex-col items-center justify-center rounded-lg border border-dashed border-border/50 bg-muted/5">
+    <div className="flex min-h-[340px] flex-col items-center justify-center rounded-2xl border border-dashed border-[#CCCCCC] bg-[#f8f8f8]">
       <svg
-        className="mb-3 h-10 w-10 text-muted-foreground/40"
+        className="mb-3 h-12 w-12 text-[#CCCCCC]"
         fill="none"
         stroke="currentColor"
         viewBox="0 0 24 24"
@@ -52,10 +55,10 @@ export function ProductGridEmpty() {
           d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"
         />
       </svg>
-      <h3 className="mb-1.5 text-sm font-medium text-foreground">
+      <h3 className="mb-1.5 text-[15px] font-medium text-[#282a30]">
         No products found
       </h3>
-      <p className="text-xs text-muted-foreground">
+      <p className="text-sm text-[#6f6e77]">
         Check back soon for new BMW parts and accessories.
       </p>
     </div>

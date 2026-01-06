@@ -21,7 +21,7 @@ export default function PrivacyPage() {
 						Last updated: {lastUpdated}
 					</p>
 
-					<div className="prose prose-invert max-w-none prose-headings:text-foreground prose-p:text-muted-foreground prose-li:text-muted-foreground prose-strong:text-foreground">
+					<div className="prose max-w-none prose-headings:text-foreground prose-p:text-muted-foreground prose-li:text-muted-foreground prose-strong:text-foreground">
 						<h2>Introduction</h2>
 						<p>
 							Enthusiast Auto Group ("we," "our," or "us") respects your privacy

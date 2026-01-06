@@ -17,7 +17,6 @@ const mainNavItems: NavItem[] = [
   { title: "Services", href: "/services" },
   { title: "Sell your car", href: "/sell" },
   { title: "Under the hood", href: "/under-the-hood" },
-  { title: "EAG Collection", href: "/collection" },
   { title: "Parts", href: "/parts" },
   { title: "Merchandise", href: "/merchandise" },
   { title: "Contact", href: "/contact" },

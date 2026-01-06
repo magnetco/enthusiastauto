@@ -32,7 +32,6 @@ export const NAV_ITEMS: NavItem[] = [
   { title: "Services", href: "/services" },
   { title: "Sell your car", href: "/sell" },
   { title: "Under the hood", href: "/blog" },
-  { title: "EAG Collection", href: "/collection" },
   { title: "Parts", href: "/search" },
   { title: "Merchandise", href: "/merch" },
   { title: "Contact", href: "/contact" },

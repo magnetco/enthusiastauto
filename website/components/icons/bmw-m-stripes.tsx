@@ -51,6 +51,29 @@ export function BMWMStripesHorizontal({ className, ...props }: React.ComponentPr
 }
 
 /**
+ * BMW M Stripes Stacked - Three diagonal parallelograms slanting left
+ * Used for section title blocks (red, dark blue, light blue from left to right)
+ */
+export function BMWMStripesStacked({ className, ...props }: React.ComponentProps<"svg">) {
+  return (
+    <svg
+      viewBox="0 0 27 16"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      className={clsx("h-5 w-auto", className)}
+      {...props}
+    >
+      {/* Red stripe (left) - slants left */}
+      <polygon points="6,0 11,0 5,16 0,16" fill="#E32526" />
+      {/* Dark blue stripe (middle) - slants left */}
+      <polygon points="14,0 19,0 13,16 8,16" fill="#0066B1" />
+      {/* Light blue stripe (right) - slants left, 5 units wide to match others */}
+      <polygon points="22,0 27,0 21,16 16,16" fill="#6EB5E0" />
+    </svg>
+  );
+}
+
+/**
  * BMW M Badge - Full M badge with stripes
  */
 export function BMWMBadge({ className, ...props }: React.ComponentProps<"div">) {

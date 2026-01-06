@@ -105,9 +105,7 @@ export default function UnifiedSearch() {
     // Navigation is handled by SearchAutocomplete component
   };
 
-  const placeholderText = isMobile
-    ? "Search vehicles & parts..."
-    : "Search vehicles & parts... (⌘K)";
+  const placeholderText = "Search cars or parts";
 
   return (
     <div className="relative w-full">

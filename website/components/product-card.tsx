@@ -1,7 +1,5 @@
 "use client";
 
-import { Badge } from "@/components/ui/badge";
-import { Card, CardContent } from "@/components/ui/card";
 import { Product } from "@/lib/shopify/types";
 import { FitmentBadge } from "@/components/FitmentBadge";
 import { useFilters } from "@/contexts/FilterContext";
@@ -11,7 +9,7 @@ import { addItem } from "@/components/cart/actions";
 import Image from "next/image";
 import Link from "next/link";
 import Price from "@/components/price";
-import { ShoppingCartIcon } from "@heroicons/react/24/outline";
+import { ShoppingCartIcon, HeartIcon } from "@heroicons/react/24/outline";
 import { toast } from "sonner";
 import { startTransition } from "react";
 
@@ -38,20 +36,17 @@ export function ProductCard({ product }: ProductCardProps) {
 
   // Handle Add to Cart
   const handleAddToCart = async (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault(); // Prevent link navigation
-    e.stopPropagation(); // Prevent bubbling to parent link
+    e.preventDefault();
+    e.stopPropagation();
 
     if (!defaultVariant || !isInStock) return;
 
-    // Optimistic update wrapped in transition
     startTransition(() => {
       addCartItem(defaultVariant, product);
     });
 
-    // Server action for Shopify persistence
     await addItem(null, defaultVariant.id);
 
-    // Show success toast
     toast.success("Added to cart!", {
       description: product.title,
       duration: 3000,
@@ -64,72 +59,88 @@ export function ProductCard({ product }: ProductCardProps) {
       className="group block h-full"
       aria-label={`View details for ${product.title}`}
     >
-      <Card className="h-full overflow-hidden rounded-lg border transition-shadow duration-100">
-        <div className="relative aspect-square overflow-hidden bg-muted/10">
-            {imageUrl ? (
-              <Image
-                src={imageUrl}
-                alt={imageAlt}
-                fill
-                sizes="(min-width: 1024px) 25vw, (min-width: 768px) 33vw, (min-width: 640px) 50vw, 100vw"
-                className="object-cover transition-all duration-300 group-hover:scale-105"
-                loading="lazy"
-              />
-            ) : (
-              <div className="flex h-full w-full items-center justify-center text-muted-foreground">
-                No image
+      <article className="h-full flex flex-col bg-white rounded-2xl overflow-hidden transition-all duration-300 ease-out hover:shadow-[0_8px_30px_rgba(0,0,0,0.08)] border border-[#DFE5EA] hover:border-[#CCCCCC]">
+        {/* Image Container */}
+        <div className="relative aspect-[4/3] overflow-hidden bg-gradient-to-br from-[#f8f8f8] to-[#f0f0f0]">
+          {imageUrl ? (
+            <Image
+              src={imageUrl}
+              alt={imageAlt}
+              fill
+              sizes="(min-width: 1024px) 25vw, (min-width: 768px) 33vw, (min-width: 640px) 50vw, 100vw"
+              className="object-cover transition-transform duration-500 ease-out group-hover:scale-[1.03]"
+              loading="lazy"
+            />
+          ) : (
+            <div className="flex h-full w-full items-center justify-center">
+              <div className="text-[#CCCCCC]">
+                <svg className="w-12 h-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                </svg>
               </div>
-            )}
-
-            {/* Stock status badge - Only show if out of stock */}
-            {!isInStock && (
-              <div className="absolute right-2.5 top-2.5">
-                <Badge
-                  variant="secondary"
-                  className="bg-muted text-muted-foreground shadow-md text-xs px-2 py-0.5"
-                >
-                  Out of Stock
-                </Badge>
-              </div>
-            )}
-
-            {/* Add to Cart Button - Overlaid at bottom, shown on hover */}
-            {isInStock && (
-              <button
-                onClick={handleAddToCart}
-                aria-label={`Add ${product.title} to cart`}
-                className="absolute bottom-2.5 left-2.5 right-2.5 rounded-md bg-accent/95 backdrop-blur-sm py-2 px-3.5 text-xs font-medium text-white opacity-0 transition-all duration-100 group-hover:opacity-100 hover:bg-accent shadow-[var(--shadow-medium)] flex items-center justify-center gap-1.5"
-              >
-                <ShoppingCartIcon className="h-3.5 w-3.5" aria-hidden="true" />
-                Add to Cart
-              </button>
-            )}
-          </div>
-
-        <CardContent className="p-4">
-          <div className="space-y-1.5">
-            {/* Product title - truncate to 2 lines */}
-            <h3 id={`product-title-${product.id}`} className="line-clamp-2 text-sm font-medium leading-tight tracking-[-0.006em] text-foreground normal-case">
-              {product.title}
-            </h3>
-
-            {/* Vendor */}
-            <p className="text-xs font-medium text-muted-foreground">
-              {product.vendor}
-            </p>
-
-            {/* Price */}
-            <div>
-              <Price
-                amount={product.priceRange.minVariantPrice.amount}
-                currencyCode={product.priceRange.minVariantPrice.currencyCode}
-                className="text-sm font-semibold text-foreground"
-              />
             </div>
+          )}
 
-            {/* Fitment badge */}
+          {/* Gradient overlay for text readability on hover */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+
+          {/* Stock status badge */}
+          {!isInStock && (
+            <div className="absolute top-3 left-3">
+              <span className="inline-flex items-center px-2.5 py-1 rounded-full text-[10px] font-semibold uppercase tracking-wide bg-[#141721]/90 text-white backdrop-blur-sm">
+                Sold Out
+              </span>
+            </div>
+          )}
+
+          {/* Wishlist button */}
+          <button
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              toast("Added to wishlist", { duration: 2000 });
+            }}
+            className="absolute top-3 right-3 w-8 h-8 rounded-full bg-white/90 backdrop-blur-sm flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-200 hover:bg-white hover:scale-110 shadow-sm"
+            aria-label="Add to wishlist"
+          >
+            <HeartIcon className="w-4 h-4 text-[#6f6e77]" />
+          </button>
+
+          {/* Add to Cart - slides up on hover */}
+          {isInStock && (
+            <button
+              onClick={handleAddToCart}
+              aria-label={`Add ${product.title} to cart`}
+              className="absolute bottom-0 left-0 right-0 py-3 px-4 bg-[#141721] text-white text-sm font-medium flex items-center justify-center gap-2 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out hover:bg-[#1f2233]"
+            >
+              <ShoppingCartIcon className="w-4 h-4" aria-hidden="true" />
+              Add to Cart
+            </button>
+          )}
+        </div>
+
+        {/* Content */}
+        <div className="flex-1 p-4 flex flex-col">
+          {/* Vendor */}
+          <span className="text-[11px] font-semibold uppercase tracking-wider text-[#005A90] mb-1.5">
+            {product.vendor}
+          </span>
+
+          {/* Title */}
+          <h3 className="text-[15px] font-medium leading-snug text-[#1f2233] line-clamp-2 mb-auto group-hover:text-[#141721] transition-colors duration-200">
+            {product.title}
+          </h3>
+
+          {/* Price & Fitment */}
+          <div className="mt-3 pt-3 border-t border-[#DFE5EA] flex items-center justify-between gap-2">
+            <Price
+              amount={product.priceRange.minVariantPrice.amount}
+              currencyCode={product.priceRange.minVariantPrice.currencyCode}
+              className="text-lg font-bold text-[#1f2233] tabular-nums"
+            />
+
             {showFitmentBadge && (
-              <div className="pt-0">
+              <div className="shrink-0">
                 {fitmentStatus === "compatible" && (
                   <FitmentBadge
                     variant="compatible"
@@ -143,8 +154,8 @@ export function ProductCard({ product }: ProductCardProps) {
               </div>
             )}
           </div>
-        </CardContent>
-      </Card>
+        </div>
+      </article>
     </Link>
   );
 }

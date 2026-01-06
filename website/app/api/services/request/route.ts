@@ -3,9 +3,18 @@ import prisma from "@/lib/db/prisma";
 import { z } from "zod";
 import { sendServiceRequestNotification } from "@/lib/email/service-request";
 
-// Service request validation schema
+// Valid service types
+const validServiceTypes = ["conditioning", "rejuvenation", "mechanical", "cosmetic", "not-sure"] as const;
+
+// Service request validation schema - supports comma-separated multiple services
 const serviceRequestSchema = z.object({
-  serviceType: z.enum(["conditioning", "rejuvenation", "mechanical", "cosmetic", "not-sure"]),
+  serviceType: z.string().refine(
+    (val) => {
+      const types = val.split(",").map(t => t.trim());
+      return types.every(t => validServiceTypes.includes(t as typeof validServiceTypes[number]));
+    },
+    { message: "Invalid service type" }
+  ),
   name: z.string().min(2),
   email: z.string().email(),
   phone: z.string().min(10),

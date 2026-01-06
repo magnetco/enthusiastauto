@@ -17,26 +17,26 @@ export function QuantitySelector({
   };
 
   return (
-    <div className="mb-4">
+    <div>
       <label
         htmlFor="quantity"
-        className="text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-2 block"
+        className="mb-2 block text-sm font-medium text-neutral-900"
       >
         Quantity
       </label>
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-2">
         <button
           type="button"
           onClick={() => handleChange(quantity - 1)}
           disabled={quantity <= 1}
-          className="flex items-center justify-center h-10 w-10 rounded-md border border-neutral-300 dark:border-neutral-700 hover:bg-neutral-100 dark:hover:bg-neutral-800 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+          className="flex h-10 w-10 items-center justify-center rounded-lg border border-neutral-200 bg-white text-neutral-700 transition-all hover:bg-neutral-50 disabled:cursor-not-allowed disabled:opacity-40"
           aria-label="Decrease quantity"
         >
           <MinusIcon className="h-4 w-4" />
         </button>
         <span
           id="quantity"
-          className="w-16 text-center text-lg font-medium"
+          className="w-12 text-center text-lg font-semibold text-neutral-900"
           aria-live="polite"
         >
           {quantity}
@@ -44,7 +44,7 @@ export function QuantitySelector({
         <button
           type="button"
           onClick={() => handleChange(quantity + 1)}
-          className="flex items-center justify-center h-10 w-10 rounded-md border border-neutral-300 dark:border-neutral-700 hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors"
+          className="flex h-10 w-10 items-center justify-center rounded-lg border border-neutral-200 bg-white text-neutral-700 transition-all hover:bg-neutral-50"
           aria-label="Increase quantity"
         >
           <PlusIcon className="h-4 w-4" />

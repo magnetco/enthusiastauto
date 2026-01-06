@@ -159,7 +159,7 @@ export default async function VehicleDetailPage({
         dangerouslySetInnerHTML={{ __html: JSON.stringify(vehicleSchema) }}
       />
 
-      <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+      <div className="light-section mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
         {/* Breadcrumb Navigation with auto-generation and schema.org */}
         <Breadcrumbs
           customTitle={vehicle.listingTitle}
@@ -173,7 +173,7 @@ export default async function VehicleDetailPage({
             {/* Vehicle Title and SOLD Badge */}
             <div>
               <div className="mb-2 flex flex-wrap items-center gap-3">
-                <h1 className="text-3xl font-bold text-white sm:text-4xl">
+                <h1 className="text-3xl font-bold text-foreground sm:text-4xl">
                   {vehicle.listingTitle}
                 </h1>
                 {isSold && (
@@ -182,7 +182,7 @@ export default async function VehicleDetailPage({
                   </Badge>
                 )}
               </div>
-              <div className="flex flex-wrap gap-4 text-sm text-gray-400">
+              <div className="flex flex-wrap gap-4 text-sm text-muted-foreground">
                 <span>{vehicle.mileage.toLocaleString()} miles</span>
                 {vehicle.vin && <span>VIN: {vehicle.vin}</span>}
               </div>
@@ -195,7 +195,7 @@ export default async function VehicleDetailPage({
                 vehicleTitle={vehicle.listingTitle}
               />
             ) : (
-              <div className="flex aspect-video items-center justify-center rounded-lg bg-gray-800 text-gray-400">
+              <div className="flex aspect-video items-center justify-center rounded-lg bg-muted text-muted-foreground">
                 No images available
               </div>
             )}
@@ -203,8 +203,8 @@ export default async function VehicleDetailPage({
             {/* Vehicle Features */}
             {vehicle.listingThumbnailFeatures &&
               vehicle.listingThumbnailFeatures.length > 0 && (
-                <div className="rounded-lg border border-gray-800 bg-gray-900 p-6">
-                  <h2 className="mb-4 text-xl font-semibold text-white">
+                <div className="rounded-lg border border-border bg-card p-6">
+                  <h2 className="mb-4 text-xl font-semibold text-foreground">
                     Features
                   </h2>
                   <div className="flex flex-wrap gap-2">
@@ -227,32 +227,32 @@ export default async function VehicleDetailPage({
           {/* Sidebar (1/3 width on desktop, sticky) */}
           <div className="space-y-6 lg:sticky lg:top-8 lg:self-start">
             {/* Pricing Card */}
-            <div className="rounded-lg border border-gray-800 bg-gray-900 p-6">
+            <div className="rounded-lg border border-border bg-card p-6">
               <div className="mb-4">
                 {vehicle.showCallForPrice ? (
-                  <p className="text-2xl font-bold text-white">
+                  <p className="text-2xl font-bold text-foreground">
                     Call for Price
                   </p>
                 ) : vehicle.listingPrice ? (
-                  <p className="text-3xl font-bold text-white">
+                  <p className="text-3xl font-bold text-foreground">
                     ${vehicle.listingPrice.toLocaleString()}
                   </p>
                 ) : null}
               </div>
               <dl className="space-y-2 text-sm">
                 <div className="flex justify-between">
-                  <dt className="text-gray-400">Mileage</dt>
-                  <dd className="font-medium text-white">
+                  <dt className="text-muted-foreground">Mileage</dt>
+                  <dd className="font-medium text-foreground">
                     {vehicle.mileage.toLocaleString()} mi
                   </dd>
                 </div>
                 <div className="flex justify-between">
-                  <dt className="text-gray-400">Chassis</dt>
-                  <dd className="font-medium text-white">{vehicle.chassis}</dd>
+                  <dt className="text-muted-foreground">Chassis</dt>
+                  <dd className="font-medium text-foreground">{vehicle.chassis}</dd>
                 </div>
                 <div className="flex justify-between">
-                  <dt className="text-gray-400">Status</dt>
-                  <dd className="font-medium text-white">
+                  <dt className="text-muted-foreground">Status</dt>
+                  <dd className="font-medium text-foreground">
                     {vehicle.status === "sold" ? "SOLD" : "Available"}
                   </dd>
                 </div>
@@ -274,7 +274,7 @@ export default async function VehicleDetailPage({
             {/* Back to Inventory */}
             <Link
               href="/vehicles"
-              className="block rounded-lg border border-gray-800 bg-gray-900 p-4 text-center text-sm text-gray-300 transition-colors hover:bg-gray-800 hover:text-white"
+              className="block rounded-lg border border-border bg-card p-4 text-center text-sm text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
             >
               ← Back to Inventory
             </Link>

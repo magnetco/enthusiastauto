@@ -19,11 +19,12 @@ export function Gallery({
     imageIndex === 0 ? images.length - 1 : imageIndex - 1;
 
   const buttonClassName =
-    "h-full px-6 transition-all duration-200 ease-in-out hover:scale-110 hover:text-foreground flex items-center justify-center";
+    "h-full px-5 transition-all duration-200 ease-in-out hover:text-neutral-900 flex items-center justify-center text-neutral-500 hover:bg-neutral-100 active:scale-95";
 
   return (
     <form>
-      <div className="relative aspect-square h-full max-h-[600px] w-full overflow-hidden rounded-xl bg-muted/30">
+      {/* Main Image */}
+      <div className="relative aspect-square w-full overflow-hidden rounded-lg border border-neutral-200 bg-neutral-50">
         {images[imageIndex] && (
           <Image
             className="h-full w-full object-contain transition-opacity duration-300"
@@ -35,9 +36,10 @@ export function Gallery({
           />
         )}
 
+        {/* Navigation Arrows */}
         {images.length > 1 ? (
-          <div className="absolute bottom-6 flex w-full justify-center">
-            <div className="mx-auto flex h-12 items-center rounded-full border border-border/50 bg-background/90 text-muted-foreground shadow-lg backdrop-blur-md">
+          <div className="absolute bottom-4 flex w-full justify-center">
+            <div className="flex h-11 items-center overflow-hidden rounded-full border border-neutral-200 bg-white shadow-sm">
               <button
                 formAction={() => {
                   const newState = updateImage(previousImageIndex.toString());
@@ -46,9 +48,9 @@ export function Gallery({
                 aria-label="Previous product image"
                 className={buttonClassName}
               >
-                <ArrowLeftIcon className="h-5" />
+                <ArrowLeftIcon className="h-4 w-4" />
               </button>
-              <div className="mx-1 h-6 w-px bg-border"></div>
+              <div className="h-5 w-px bg-neutral-200" />
               <button
                 formAction={() => {
                   const newState = updateImage(nextImageIndex.toString());
@@ -57,20 +59,21 @@ export function Gallery({
                 aria-label="Next product image"
                 className={buttonClassName}
               >
-                <ArrowRightIcon className="h-5" />
+                <ArrowRightIcon className="h-4 w-4" />
               </button>
             </div>
           </div>
         ) : null}
       </div>
 
+      {/* Thumbnail Strip */}
       {images.length > 1 ? (
-        <ul className="my-8 flex items-center flex-wrap justify-center gap-3 overflow-auto py-1 lg:mb-0 lg:mt-6">
+        <ul className="mt-4 flex flex-wrap items-center justify-start gap-2 lg:mt-5">
           {images.map((image, index) => {
             const isActive = index === imageIndex;
 
             return (
-              <li key={image.src} className="h-20 w-20">
+              <li key={image.src} className="h-16 w-16 sm:h-18 sm:w-18">
                 <button
                   formAction={() => {
                     const newState = updateImage(index.toString());
@@ -79,12 +82,18 @@ export function Gallery({
                   aria-label="Select product image"
                   className="group h-full w-full"
                 >
-                  <div className={`overflow-hidden rounded-lg ring-2 transition-all duration-200 ${isActive ? 'ring-primary' : 'ring-transparent hover:ring-muted-foreground/30'}`}>
+                  <div
+                    className={`h-full w-full overflow-hidden rounded-lg border-2 transition-all duration-200 ${
+                      isActive
+                        ? "border-neutral-900"
+                        : "border-transparent hover:border-neutral-300"
+                    }`}
+                  >
                     <GridTileImage
                       alt={image.altText}
                       src={image.src}
-                      width={80}
-                      height={80}
+                      width={72}
+                      height={72}
                       active={isActive}
                     />
                   </div>

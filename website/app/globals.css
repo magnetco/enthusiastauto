@@ -6,6 +6,8 @@
 @plugin "@tailwindcss/container-queries";
 @plugin "@tailwindcss/typography";
 
+/* Chromatic Gothic loaded via next/font/local in layout.tsx */
+
 @layer base {
   *,
   ::after,
@@ -56,10 +58,12 @@ button {
   --color-orange: #fc7840;
   --color-yellow: #f2c94c;
 
-  /* Brand Colors (Enthusiast Auto blue) */
-  --color-brand-primary: #3b82f6; /* Primary brand blue */
-  --color-brand-accent: #2563eb; /* Darker blue */
-  --color-brand-accent-hover: #60a5fa; /* Lighter blue hover */
+  /* Brand Colors (Enthusiast Auto) */
+  --color-brand-red: #F90020; /* Primary brand red */
+  --color-brand-deep-blue: #005A90; /* Deep blue */
+  --color-brand-blue: #2E90FA; /* Blue accent */
+  --color-brand-gray-400: #CCCCCC; /* Gray 400 */
+  --color-brand-gray-200: #DFE5EA; /* Gray 200 */
 
   /* Text Hierarchy (4-tier system) */
   --color-text-primary: #ffffff; /* Pure white - highest emphasis */
@@ -90,7 +94,7 @@ button {
   --color-error-bg: rgba(235, 87, 87, 0.1);
 
   /* Focus Ring */
-  --color-focus-ring: #5e6ad2;
+  --color-focus-ring: #2E90FA;
   --focus-ring-width: 2px;
   --focus-ring-offset: 2px;
 
@@ -107,7 +111,8 @@ button {
   --duration-fade-out: 0.15s; /* Highlight fade */
   --ease-default: cubic-bezier(0.4, 0, 0.2, 1);
 
-  /* ===== Typography Scale (Linear-inspired) ===== */
+  /* ===== Typography Scale ===== */
+  --font-headline: var(--font-chromatic), var(--font-figtree), "Figtree", sans-serif;
   --font-sans: var(--font-figtree), "Figtree", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   --font-mono: ui-monospace, "SF Mono", "Menlo", "Consolas", monospace;
 
@@ -240,10 +245,12 @@ button {
   --page-x-lg: 2rem; /* 32px */
   /* Container max width token */
   --container-max: 80rem; /* 1280px */
+  /* Header height (top row + nav row + borders) on desktop */
+  --header-height: 138px; /* lg:h-20 (80px) + h-14 (56px) + 2px borders */
 }
 
 :root {
-  /* Light mode - Linear inspired (rarely used but available) */
+  /* Light mode - Enthusiast Auto brand colors */
   --radius: var(--radius-8);
   --background: #ffffff;
   --foreground: #282a30;
@@ -251,31 +258,31 @@ button {
   --card-foreground: #282a30;
   --popover: #ffffff;
   --popover-foreground: #282a30;
-  --primary: #5e6ad2;
+  --primary: #005A90; /* Brand deep blue */
   --primary-foreground: #ffffff;
   --secondary: #f4f4f4;
   --secondary-foreground: #3c4149;
-  --muted: #f0f0f0;
+  --muted: #DFE5EA; /* Brand gray 200 */
   --muted-foreground: #6f6e77;
-  --accent: #7170ff;
+  --accent: #2E90FA; /* Brand blue */
   --accent-foreground: #ffffff;
-  --destructive: #eb5757;
-  --border: #eaeaeb;
-  --input: #d4d4d6;
-  --ring: #5e6ad2;
-  --chart-1: #5e6ad2;
-  --chart-2: #7170ff;
-  --chart-3: #4ea7fc;
+  --destructive: #F90020; /* Brand red */
+  --border: #DFE5EA; /* Brand gray 200 */
+  --input: #CCCCCC; /* Brand gray 400 */
+  --ring: #2E90FA; /* Brand blue */
+  --chart-1: #2E90FA;
+  --chart-2: #005A90;
+  --chart-3: #F90020;
   --chart-4: #4cb782;
   --chart-5: #f2c94c;
   --sidebar: #f8f8f8;
   --sidebar-foreground: #282a30;
-  --sidebar-primary: #5e6ad2;
+  --sidebar-primary: #005A90;
   --sidebar-primary-foreground: #ffffff;
   --sidebar-accent: #f4f4f4;
   --sidebar-accent-foreground: #3c4149;
-  --sidebar-border: #eaeaeb;
-  --sidebar-ring: #5e6ad2;
+  --sidebar-border: #DFE5EA;
+  --sidebar-ring: #2E90FA;
 }
 
 .dark {
@@ -286,31 +293,58 @@ button {
   --card-foreground: #ffffff;
   --popover: #1f2233; /* Match card background */
   --popover-foreground: #ffffff;
-  --primary: #3b82f6; /* Blue accent */
+  --primary: #2E90FA; /* Brand blue accent */
   --primary-foreground: #ffffff;
   --secondary: #1a1d29; /* Slightly different navy */
   --secondary-foreground: #e5e7eb; /* Light gray text */
   --muted: #1a1d29; /* Muted navy background */
   --muted-foreground: #a8adb7; /* Medium gray text */
-  --accent: #2563eb; /* Darker blue accent */
+  --accent: #005A90; /* Deep blue accent */
   --accent-foreground: #ffffff;
-  --destructive: #ef4444; /* Red for destructive actions */
+  --destructive: #F90020; /* Brand red for destructive actions */
   --border: #2a2f3f; /* Subtle gray border */
   --input: #2a2f3f; /* Match border for inputs */
-  --ring: #3b82f6; /* Blue focus ring */
-  --chart-1: #3b82f6;
-  --chart-2: #2563eb;
-  --chart-3: #60a5fa;
+  --ring: #2E90FA; /* Brand blue focus ring */
+  --chart-1: #2E90FA;
+  --chart-2: #005A90;
+  --chart-3: #F90020;
   --chart-4: #34d399;
   --chart-5: #fbbf24;
   --sidebar: #1f2233;
   --sidebar-foreground: #ffffff;
-  --sidebar-primary: #3b82f6;
+  --sidebar-primary: #2E90FA;
   --sidebar-primary-foreground: #ffffff;
   --sidebar-accent: #1a1d29;
   --sidebar-accent-foreground: #e5e7eb;
   --sidebar-border: #2a2f3f;
-  --sidebar-ring: #3b82f6;
+  --sidebar-ring: #2E90FA;
+}
+
+/* ===== Light Section Override ===== */
+/* Use inside dark mode for light content areas (main content sections) */
+/* Header, Hero sections, and Footer remain dark; content sections use this */
+.light-section {
+  --background: #ffffff;
+  --foreground: #282a30;
+  --card: #f8f8f8;
+  --card-foreground: #282a30;
+  --popover: #ffffff;
+  --popover-foreground: #282a30;
+  --primary: #005A90; /* Brand deep blue for light sections */
+  --primary-foreground: #ffffff;
+  --secondary: #f4f4f4;
+  --secondary-foreground: #3c4149;
+  --muted: #DFE5EA; /* Brand gray 200 */
+  --muted-foreground: #6f6e77;
+  --accent: #2E90FA; /* Brand blue accent */
+  --accent-foreground: #ffffff;
+  --destructive: #F90020; /* Brand red */
+  --border: #DFE5EA; /* Brand gray 200 */
+  --input: #DFE5EA;
+  --ring: #2E90FA;
+
+  background-color: var(--background);
+  color: var(--foreground);
 }
 
 @layer base {
@@ -332,7 +366,7 @@ button {
     font-family: var(--font-sans);
     font-weight: var(--font-weight-normal);
   }
-  /* Linear-inspired headings with paired typography values */
+  /* Headings with paired typography values */
   h1,
   h2,
   h3,
@@ -340,7 +374,6 @@ button {
   h5,
   h6 {
     font-family: var(--font-sans);
-    /* text-transform: uppercase removed - apply selectively via .heading-uppercase utility */
   }
   h1 {
     font-size: var(--font-size-title-1); /* 32px */
@@ -380,6 +413,14 @@ button {
       line-height: var(--line-height-hero); /* 1.17 */
       letter-spacing: var(--letter-spacing-hero); /* -0.028em */
     }
+  }
+
+  /* ===== Headline Font Utility ===== */
+  /* Use Chromatic Gothic for section headlines - always uppercase */
+  .font-headline {
+    font-family: var(--font-headline);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
   }
 
   /* ===== Typography Utility Classes ===== */

@@ -1,6 +1,6 @@
 "use client";
 
-import { PlusIcon } from "@heroicons/react/24/outline";
+import { ShoppingCartIcon } from "@heroicons/react/24/outline";
 import clsx from "clsx";
 import { addItem } from "components/cart/actions";
 import { useProduct } from "components/product/product-context";
@@ -16,13 +16,18 @@ function SubmitButton({
   availableForSale: boolean;
   selectedVariantId: string | undefined;
 }) {
-  const buttonClasses =
-    "relative flex w-full items-center justify-center rounded-full bg-blue-600 p-4 tracking-wide text-white";
-  const disabledClasses = "cursor-not-allowed opacity-60 hover:opacity-60";
+  const baseClasses =
+    "relative flex w-full items-center justify-center gap-2 rounded-lg px-6 py-4 text-sm font-semibold tracking-wide transition-all duration-200";
 
   if (!availableForSale) {
     return (
-      <button disabled className={clsx(buttonClasses, disabledClasses)}>
+      <button
+        disabled
+        className={clsx(
+          baseClasses,
+          "cursor-not-allowed border border-neutral-200 bg-neutral-100 text-neutral-400"
+        )}
+      >
         Out Of Stock
       </button>
     );
@@ -33,12 +38,13 @@ function SubmitButton({
       <button
         aria-label="Please select an option"
         disabled
-        className={clsx(buttonClasses, disabledClasses)}
+        className={clsx(
+          baseClasses,
+          "cursor-not-allowed border border-neutral-200 bg-neutral-100 text-neutral-400"
+        )}
       >
-        <div className="absolute left-0 ml-4">
-          <PlusIcon className="h-5" />
-        </div>
-        Add To Cart
+        <ShoppingCartIcon className="h-5 w-5" />
+        Select Options
       </button>
     );
   }
@@ -46,13 +52,12 @@ function SubmitButton({
   return (
     <button
       aria-label="Add to cart"
-      className={clsx(buttonClasses, {
-        "hover:opacity-90": true,
-      })}
+      className={clsx(
+        baseClasses,
+        "bg-neutral-900 text-white hover:bg-neutral-800 active:scale-[0.98]"
+      )}
     >
-      <div className="absolute left-0 ml-4">
-        <PlusIcon className="h-5" />
-      </div>
+      <ShoppingCartIcon className="h-5 w-5" />
       Add To Cart
     </button>
   );
@@ -86,6 +91,7 @@ export function AddToCart({ product }: { product: Product }) {
         }
         addItemAction();
       }}
+      className="space-y-4"
     >
       <QuantitySelector onChange={setQuantity} />
       <SubmitButton

@@ -25,7 +25,6 @@ export function FitmentInfo({ product }: { product: Product }) {
     );
 
   // If no fitment tags, don't show fitment section at all
-  // (absence of tags doesn't mean universal fit - it means no fitment data available)
   if (fitmentTags.length === 0) {
     return null;
   }
@@ -43,8 +42,8 @@ export function FitmentInfo({ product }: { product: Product }) {
   );
 
   return (
-    <div className="mb-4">
-      <h3 className="text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-2">
+    <div className="mb-6 rounded-lg border border-neutral-200 bg-white p-4">
+      <h3 className="mb-3 text-sm font-medium text-neutral-900">
         Fitment Information
       </h3>
 
@@ -66,13 +65,16 @@ export function FitmentInfo({ product }: { product: Product }) {
 
       {/* Show other compatible vehicles as simple text list */}
       {otherFitments.length > 0 && (
-        <div className="text-sm text-neutral-600 dark:text-neutral-400">
-          <p className="mb-1 font-medium">
+        <div className="text-sm text-neutral-600">
+          <p className="mb-2 font-medium text-neutral-700">
             {matchingFitments.length > 0 ? "Also fits:" : "Compatible with:"}
           </p>
-          <div className="flex flex-wrap gap-x-3 gap-y-1">
+          <div className="flex flex-wrap gap-2">
             {otherFitments.map(({ tag, parsed }) => (
-              <span key={tag} className="text-xs">
+              <span
+                key={tag}
+                className="inline-flex rounded border border-neutral-200 bg-neutral-50 px-2 py-0.5 text-xs text-neutral-600"
+              >
                 {parsed.model} {parsed.year}
               </span>
             ))}

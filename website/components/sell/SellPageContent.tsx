@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import Section from "@/components/layout/section";
+import { PageHero } from "@/components/shared/PageHero";
 import { Button } from "@/components/ui/button";
 import {
 	Card,
@@ -222,33 +223,18 @@ export function SellPageContent() {
 
 	return (
 		<>
-			{/* Hero Section */}
-			<section className="relative w-full overflow-hidden bg-background">
-				<div className="absolute inset-0 z-0">
-					<div
-						className="h-full w-full bg-cover bg-center bg-no-repeat opacity-20"
-						style={{
-							backgroundImage:
-								"url('https://images.unsplash.com/photo-1555215695-3004980ad54e?q=80&w=2070&auto=format&fit=crop')",
-						}}
-					/>
-					<div className="absolute inset-0 bg-gradient-to-b from-background/80 via-background/85 to-background" />
-				</div>
-
-				<Section as="div" className="relative z-10 py-20 sm:py-24 lg:py-28">
-					<h1 className="heading-uppercase mb-4 max-w-[50rem] text-title-1 font-bold text-foreground sm:text-hero">
+			<PageHero
+				size="medium"
+				title={
+					<>
 						Allow EAG To
 						<br />
-						<span className="text-primary">Represent Your Car</span>
-					</h1>
-					<p className="mb-8 max-w-[40rem] text-body-large text-muted-foreground sm:text-body-xl">
-						At Enthusiast Auto Group, we understand that for many enthusiasts,
-						their cars are more than just vehicles—they're family members.
-						Parting with them can be a challenging decision, and we're here to
-						make that process as smooth as possible.
-					</p>
-				</Section>
-			</section>
+						<span className="text-blue-400">Represent Your Car</span>
+					</>
+				}
+				subtitle="At Enthusiast Auto Group, we understand that for many enthusiasts, their cars are more than just vehicles—they're family members. Parting with them can be a challenging decision, and we're here to make that process as smooth as possible."
+				backgroundImage="https://images.unsplash.com/photo-1555215695-3004980ad54e?q=80&w=2070&auto=format&fit=crop"
+			/>
 
 			{/* Sell Options Tabs */}
 			<Section className="py-8 sm:py-12 lg:py-16">

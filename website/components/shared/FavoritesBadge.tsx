@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 
 /**
  * Favorites badge component with count
- * Shows a star icon with the number of saved favorites
+ * Shows a star icon with the number of saved favorites in a bordered container
  */
 export function FavoritesBadge() {
   const { data: session } = useSession();
@@ -38,13 +38,11 @@ export function FavoritesBadge() {
   return (
     <Link
       href="/account/garage"
-      className="relative flex h-10 items-center gap-2 rounded-lg px-3 text-white/70 transition-colors hover:text-white"
+      className="flex h-10 items-center gap-2 rounded-md border border-white/20 bg-transparent px-4 text-white/70 transition-colors hover:border-white/40 hover:text-white"
       aria-label={`Favorites (${count} items)`}
     >
       <StarIcon className="h-5 w-5" />
-      {count > 0 && (
-        <span className="text-sm font-medium">{count}</span>
-      )}
+      <span className="text-sm font-medium">{count}</span>
     </Link>
   );
 }

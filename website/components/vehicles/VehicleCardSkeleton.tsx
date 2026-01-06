@@ -1,25 +1,24 @@
 import { Card, CardContent } from "@/components/ui/card";
-import { Skeleton } from "@/components/ui/skeleton";
 
 export function VehicleCardSkeleton() {
   return (
-    <Card className="h-full overflow-hidden border-gray-200">
+    <Card className="h-full overflow-hidden border-border bg-card">
       {/* Image Skeleton */}
-      <Skeleton className="aspect-[4/3] w-full" />
+      <div className="aspect-[4/3] w-full animate-pulse bg-muted" />
 
       {/* Content Skeleton */}
       <CardContent className="p-4">
         {/* Title */}
-        <Skeleton className="mb-2 h-6 w-3/4" />
+        <div className="mb-2 h-6 w-3/4 animate-pulse rounded bg-muted" />
 
         {/* Chassis Badge */}
-        <Skeleton className="mb-3 h-5 w-16" />
+        <div className="mb-3 h-5 w-16 animate-pulse rounded bg-muted" />
 
         {/* Price */}
-        <Skeleton className="mb-1 h-5 w-24" />
+        <div className="mb-1 h-5 w-24 animate-pulse rounded bg-muted" />
 
         {/* Mileage */}
-        <Skeleton className="h-4 w-32" />
+        <div className="h-4 w-32 animate-pulse rounded bg-muted" />
       </CardContent>
     </Card>
   );

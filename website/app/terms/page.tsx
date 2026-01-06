@@ -21,7 +21,7 @@ export default function TermsPage() {
 						Last updated: {lastUpdated}
 					</p>
 
-					<div className="prose prose-invert max-w-none prose-headings:text-foreground prose-p:text-muted-foreground prose-li:text-muted-foreground prose-strong:text-foreground">
+					<div className="prose max-w-none prose-headings:text-foreground prose-p:text-muted-foreground prose-li:text-muted-foreground prose-strong:text-foreground">
 						<h2>Agreement to Terms</h2>
 						<p>
 							By accessing or using the Enthusiast Auto Group website and

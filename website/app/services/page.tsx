@@ -1,10 +1,8 @@
 import Footer from "@/components/layout/footer";
 import Section from "@/components/layout/section";
-import { ServiceCards } from "@/components/services/ServiceCards";
 import { ServiceHero } from "@/components/services/ServiceHero";
-import { ServiceRequestForm } from "@/components/services/ServiceRequestForm";
+import { ServicesContent } from "@/components/services/ServicesContent";
 import type { Metadata } from "next";
-import { Suspense } from "react";
 
 export const revalidate = 3600; // Revalidate every hour
 
@@ -31,41 +29,8 @@ export default function ServicesPage() {
 			{/* Hero Section */}
 			<ServiceHero />
 
-			{/* Services Overview */}
-			<Section className="py-8 sm:py-12 lg:py-16">
-				<div className="mb-12 text-center">
-					<h2 className="mb-4 text-title-2 font-bold text-foreground">
-						Our Services
-					</h2>
-					<p className="mx-auto max-w-2xl text-body-large text-muted-foreground">
-						Choose the service that best fits your BMW's needs. Not sure? Our
-						team will help determine the right approach.
-					</p>
-				</div>
-				<ServiceCards />
-			</Section>
-
-			{/* Service Request Form */}
-			<Section id="request-form" className="py-8 sm:py-12 lg:py-16">
-				<div className="mb-8 text-center">
-					<h2 className="mb-4 text-title-2 font-bold text-foreground">
-						Request a Service
-					</h2>
-					<p className="mx-auto max-w-2xl text-body-large text-muted-foreground">
-						Tell us about your BMW and what you'd like us to help with. We'll
-						contact you to discuss your needs and schedule an assessment.
-					</p>
-				</div>
-				<Suspense
-					fallback={
-						<div className="mx-auto max-w-3xl">
-							<div className="h-[600px] animate-pulse rounded-lg bg-muted" />
-						</div>
-					}
-				>
-					<ServiceRequestForm />
-				</Suspense>
-			</Section>
+			{/* Services Content - Client component with shared state */}
+			<ServicesContent />
 
 			{/* Contact Information */}
 			<Section className="py-8 sm:py-12 lg:py-16">

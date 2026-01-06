@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import { useEffect, useRef } from "react";
-import { XMarkIcon } from "@heroicons/react/24/outline";
 import { cn } from "@/lib/utils";
 import { INVENTORY_MENU } from "@/lib/config/navigation";
 
@@ -51,59 +50,59 @@ export function InventoryMegaMenu({ isOpen, onClose }: InventoryMegaMenuProps) {
       ref={menuRef}
       onMouseLeave={onClose}
       className={cn(
-        "absolute left-0 top-full z-50 mt-2 origin-top-left transition-all duration-200",
+        "fixed left-0 right-0 top-[var(--header-height)] z-50 transition-all duration-200",
         isOpen
           ? "visible translate-y-0 opacity-100"
-          : "invisible -translate-y-2 opacity-0"
+          : "invisible -translate-y-2 opacity-0 pointer-events-none"
       )}
     >
-      {/* Arrow pointer */}
-      <div className="absolute -top-1 left-8 h-3 w-3 rotate-45 border-l border-t border-white/20 bg-[#0f0f0f]" />
+      {/* Full-width background */}
+      <div className="w-full border-y border-white/10 bg-[#0a0a0a] shadow-2xl">
+        {/* Content container - aligned with header */}
+        <div className="mx-auto max-w-[var(--container-max)] px-6">
+          <div className="flex py-6">
+            {/* Left column: Quick links */}
+            <div className="w-56 shrink-0 border-r border-white/10 pr-6">
+              <button
+                onClick={onClose}
+                className="mb-6 text-sm font-medium text-white/70 transition-colors hover:text-white"
+              >
+                Close
+              </button>
 
-      {/* Menu panel */}
-      <div className="overflow-hidden rounded-lg border border-white/10 bg-[#0f0f0f] shadow-2xl">
-        <div className="flex min-w-[700px]">
-          {/* Left column: Quick links */}
-          <div className="w-56 border-r border-white/10 p-6">
-            <button
-              onClick={onClose}
-              className="mb-6 text-sm font-medium text-white/70 transition-colors hover:text-white"
-            >
-              Close
-            </button>
+              <div className="h-px bg-white/10 mb-4" />
 
-            <div className="h-px bg-white/10 mb-4" />
-
-            <nav className="space-y-1">
-              {INVENTORY_MENU.quickLinks.map((link) => (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  onClick={onClose}
-                  className="block py-2 text-sm text-white/70 transition-colors hover:text-white"
-                >
-                  {link.title}
-                </Link>
-              ))}
-            </nav>
-          </div>
-
-          {/* Right section: Chassis codes in columns */}
-          <div className="flex flex-1 gap-8 p-6">
-            {INVENTORY_MENU.chassisCodes.map((column, columnIndex) => (
-              <div key={columnIndex} className="space-y-2">
-                {column.items.map((chassis) => (
+              <nav className="space-y-1">
+                {INVENTORY_MENU.quickLinks.map((link) => (
                   <Link
-                    key={chassis}
-                    href={`/vehicles?chassis=${chassis}`}
+                    key={link.href}
+                    href={link.href}
                     onClick={onClose}
-                    className="block py-1 text-sm text-white/70 transition-colors hover:text-white"
+                    className="block py-2 text-sm text-white/70 transition-colors hover:text-white"
                   >
-                    {chassis}
+                    {link.title}
                   </Link>
                 ))}
-              </div>
-            ))}
+              </nav>
+            </div>
+
+            {/* Right section: Chassis codes in columns */}
+            <div className="flex flex-1 justify-between pl-12">
+              {INVENTORY_MENU.chassisCodes.map((column, columnIndex) => (
+                <div key={columnIndex} className="flex flex-col gap-3">
+                  {column.items.map((chassis) => (
+                    <Link
+                      key={chassis}
+                      href={`/vehicles?chassis=${chassis}`}
+                      onClick={onClose}
+                      className="block py-1 text-sm font-medium text-white/70 transition-colors hover:text-white"
+                    >
+                      {chassis}
+                    </Link>
+                  ))}
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </div>

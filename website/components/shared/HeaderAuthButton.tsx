@@ -2,61 +2,92 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { useSession, signIn } from "next-auth/react";
+import { useSession, signIn, signOut } from "next-auth/react";
+import { toast } from "sonner";
 
 /**
  * Auth button for the header
- * Shows "Sign in with Google" when logged out
- * Shows "Account | Favorites" when logged in
+ * Shows "Log in" link when logged out
+ * Shows avatar + name + sign out link when logged in
  */
 export function HeaderAuthButton() {
   const { data: session, status } = useSession();
 
+  const handleSignOut = async () => {
+    try {
+      await signOut({ redirect: true, callbackUrl: "/" });
+      toast.success("You've been logged out");
+    } catch (error) {
+      toast.error("Failed to sign out. Please try again.");
+    }
+  };
+
   if (status === "loading") {
     return (
-      <div className="h-10 w-32 animate-pulse rounded-full bg-white/10" />
-    );
-  }
-
-  // Logged in: Show Account | Favorites
-  if (session?.user) {
-    return (
-      <div className="flex items-center gap-3 text-sm">
-        {session.user.image && (
-          <Image
-            src={session.user.image}
-            alt=""
-            width={32}
-            height={32}
-            className="rounded-full"
-          />
-        )}
-        <Link
-          href="/account"
-          className="text-white/70 transition-colors hover:text-white"
-        >
-          Account
-        </Link>
-        <span className="text-white/30">|</span>
-        <Link
-          href="/account/garage"
-          className="text-white/70 transition-colors hover:text-white"
-        >
-          Favorites
-        </Link>
+      <div className="flex items-center gap-3">
+        <div className="h-8 w-8 animate-pulse rounded-full bg-white/10" />
+        <div className="h-4 w-20 animate-pulse rounded bg-white/10" />
       </div>
     );
   }
 
-  // Logged out: Show Sign in with Google button
+  // Logged in: Show avatar + name + sign out link
+  if (session?.user) {
+    const displayName = session.user.name || session.user.email || "Account";
+    const initials = displayName
+      .split(" ")
+      .map((n) => n[0])
+      .join("")
+      .slice(0, 2)
+      .toUpperCase();
+
+    return (
+      <div className="flex items-center gap-3 text-sm">
+        {/* Avatar - shows user image if available, otherwise initials */}
+        <Link
+          href="/account"
+          className="flex h-8 w-8 items-center justify-center rounded-full bg-white/20 text-xs font-medium text-white transition-colors hover:bg-white/30 overflow-hidden"
+        >
+          {session.user.image ? (
+            <Image
+              src={session.user.image}
+              alt=""
+              width={32}
+              height={32}
+              className="h-full w-full object-cover"
+            />
+          ) : (
+            initials
+          )}
+        </Link>
+
+        {/* Name - links to account page */}
+        <Link
+          href="/account"
+          className="font-medium text-white transition-colors hover:text-white/70"
+        >
+          {displayName}
+        </Link>
+
+        {/* Sign out link */}
+        <button
+          onClick={handleSignOut}
+          className="text-white/50 transition-colors hover:text-white"
+        >
+          Sign out
+        </button>
+      </div>
+    );
+  }
+
+  // Logged out: Show Log in link
   return (
-    <button
-      onClick={() => signIn("google")}
-      className="flex h-10 items-center gap-2 rounded-full bg-white/10 px-4 text-sm font-medium text-white transition-colors hover:bg-white/20"
+    <Link
+      href="/auth/signin"
+      className="text-sm font-medium text-white/70 transition-colors hover:text-white"
     >
-      <GoogleIcon className="h-5 w-5" />
-      <span>Sign in with Google</span>
-    </button>
+      Log in
+    </Link>
   );
 }
 
