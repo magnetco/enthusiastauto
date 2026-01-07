@@ -83,9 +83,10 @@ Each app is independent with its own `package.json`. Shared environment via `.en
 ## Authentication
 
 - **Provider**: NextAuth.js v5 with database sessions
-- **Methods**: Email/password, Google OAuth
+- **Methods**: Email/password, Google OAuth, LinkedIn OAuth (planned)
 - **Protected routes**: `/account/*`, `/api/user/*` via middleware
 - **Session storage**: Vercel Postgres (revocable sessions)
+- **OAuth strategy**: Multi-provider support via PrismaAdapter with account linking
 
 ## Caching Strategy
 

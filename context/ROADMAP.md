@@ -78,6 +78,14 @@ What's shipped, in progress, and planned for the Enthusiast Auto platform.
 
 ## Planned
 
+### Authentication Enhancements
+- [ ] LinkedIn SSO integration (PROD-15287)
+  - Add LinkedIn as third OAuth provider alongside Google
+  - Enable one-click sign-in for professional users
+  - Target 10-15% adoption rate among new sign-ups
+  - Estimated effort: 8-10 hours
+  - See `/context/LINKEDIN_SSO_FEATURE_PLAN.md` for detailed implementation plan
+
 ### Data Admin Enhancements
 - [ ] View/manage favorites
 - [ ] View/manage service requests
