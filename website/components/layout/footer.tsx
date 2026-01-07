@@ -17,7 +17,7 @@ const footerLinks = {
 	shop: {
 		title: "Shop",
 		links: [
-			{ label: "All Parts", href: "/search" },
+			{ label: "All Parts", href: "/parts" },
 			{ label: "Merchandise", href: "/merchandise" },
 			{ label: "EAG Collection", href: "/collection" },
 		],

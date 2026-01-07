@@ -10,7 +10,15 @@ import { FavoritesBadge } from "@/components/shared/FavoritesBadge";
 import { HeaderAuthButton } from "@/components/shared/HeaderAuthButton";
 
 export async function Navbar() {
-	const menu = await getMenu("next-js-frontend-header-menu");
+	const rawMenu = await getMenu("next-js-frontend-header-menu");
+	
+	// Override Parts link to go to /parts instead of /search
+	const menu = rawMenu.map((item) => ({
+		...item,
+		path: item.title === "Parts" || item.title === "Part"
+			? "/parts" 
+			: item.path,
+	}));
 
 	return (
 		<nav className="sticky top-0 z-50 border-b border-border/50 bg-background/80 backdrop-blur-xl">

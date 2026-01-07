@@ -1,83 +1,71 @@
 'use client';
 
 import Link from 'next/link';
-import { Search, AlertCircle } from 'lucide-react';
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { Button } from '@/components/ui/button';
+import { Search, Car, Package, ArrowRight } from 'lucide-react';
 
 export interface SearchEmptyStateProps {
   query: string;
 }
 
 const popularSearchTerms = [
-  { term: 'BMW M3', href: '/search?q=BMW+M3' },
+  { term: 'M3', href: '/search?q=M3' },
   { term: 'E46', href: '/search?q=E46' },
-  { term: 'E92 M3', href: '/search?q=E92+M3' },
-  { term: 'Performance Parts', href: '/search?q=Performance+Parts' },
-  { term: 'M Parts', href: '/search?q=M+Parts' },
-  { term: 'Carbon Fiber', href: '/search?q=Carbon+Fiber' },
+  { term: 'Coilovers', href: '/search?q=Coilovers' },
+  { term: 'E92', href: '/search?q=E92' },
+  { term: 'KW', href: '/search?q=KW' },
+  { term: 'Bilstein', href: '/search?q=Bilstein' },
 ];
 
 export function SearchEmptyState({ query }: SearchEmptyStateProps) {
   return (
-    <div className="flex flex-col items-center justify-center py-12 px-4">
-      <div className="w-full max-w-2xl">
-        <Alert className="mb-8">
-          <AlertCircle className="h-4 w-4" />
-          <AlertTitle>No results found</AlertTitle>
-          <AlertDescription>
-            We couldn&apos;t find any vehicles or parts matching{' '}
-            <span className="font-semibold">&quot;{query}&quot;</span>
-          </AlertDescription>
-        </Alert>
-
-        <div className="text-center mb-8">
-          <Search
-            className="mx-auto h-16 w-16 text-muted-foreground mb-4"
-            aria-hidden="true"
-          />
-          <h2 className="text-2xl font-bold mb-4">Try these suggestions:</h2>
-          <ul className="text-left space-y-2 text-muted-foreground">
-            <li>• Check your spelling</li>
-            <li>• Try different keywords</li>
-            <li>• Use more general search terms</li>
-            <li>• Browse our categories below</li>
-          </ul>
+    <div className="flex flex-col items-center justify-center py-16 px-4">
+      <div className="w-full max-w-2xl text-center">
+        {/* Icon */}
+        <div className="w-20 h-20 rounded-full bg-muted flex items-center justify-center mx-auto mb-6">
+          <Search className="w-10 h-10 text-muted-foreground" />
         </div>
 
-        {/* Browse Categories */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-8 lg:gap-8">
-          <Link href="/vehicles">
-            <Button variant="outline" size="lg" className="h-auto py-4 w-full">
-              <div className="text-center w-full">
-                <div className="font-semibold">Browse All Vehicles</div>
-                <div className="text-sm text-muted-foreground">
-                  Explore our BMW inventory
-                </div>
-              </div>
-            </Button>
+        {/* Message */}
+        <h2 className="text-2xl font-bold text-foreground mb-3">No results found</h2>
+        <p className="text-muted-foreground mb-8 max-w-md mx-auto">
+          We couldn&apos;t find any vehicles or parts matching{' '}
+          <span className="font-semibold text-foreground">&ldquo;{query}&rdquo;</span>.
+          Try adjusting your search or browse our catalog.
+        </p>
+
+        {/* Browse Buttons */}
+        <div className="flex flex-col sm:flex-row gap-3 justify-center mb-12">
+          <Link
+            href="/vehicles"
+            className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full bg-foreground text-background font-medium hover:opacity-90 transition-opacity"
+          >
+            <Car className="w-5 h-5" />
+            Browse Vehicles
+            <ArrowRight className="w-4 h-4" />
           </Link>
-          <Link href="/products">
-            <Button variant="outline" size="lg" className="h-auto py-4 w-full">
-              <div className="text-center w-full">
-                <div className="font-semibold">Shop All Parts</div>
-                <div className="text-sm text-muted-foreground">
-                  Browse our parts catalog
-                </div>
-              </div>
-            </Button>
+          <Link
+            href="/parts"
+            className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full border border-border bg-background text-foreground font-medium hover:bg-muted transition-colors"
+          >
+            <Package className="w-5 h-5" />
+            Shop Parts
+            <ArrowRight className="w-4 h-4" />
           </Link>
         </div>
 
-        {/* Popular Searches */}
-        <div>
-          <h3 className="text-lg font-semibold mb-4">Popular Searches:</h3>
-          <div className="flex flex-wrap gap-2">
+        {/* Suggestions */}
+        <div className="border-t border-border pt-8">
+          <h3 className="text-sm font-medium text-muted-foreground uppercase tracking-wider mb-4">
+            Try searching for
+          </h3>
+          <div className="flex flex-wrap gap-2 justify-center">
             {popularSearchTerms.map(({ term, href }) => (
-              <Link key={term} href={href}>
-                <Button variant="secondary" size="sm" className="rounded-full">
-                  {term}
-                </Button>
+              <Link
+                key={term}
+                href={href}
+                className="px-4 py-2 rounded-full bg-muted text-sm font-medium text-muted-foreground hover:bg-border hover:text-foreground transition-colors"
+              >
+                {term}
               </Link>
             ))}
           </div>

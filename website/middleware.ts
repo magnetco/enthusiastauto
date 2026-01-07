@@ -28,7 +28,7 @@ function isPublicRoute(pathname: string): boolean {
 }
 
 export async function middleware(request: NextRequest) {
-	const { pathname } = request.nextUrl;
+	const { pathname, searchParams } = request.nextUrl;
 
 	// #region agent log
 	fetch("http://127.0.0.1:7243/ingest/277d85c7-ac6c-45cc-89d6-a194307a4c56", {
@@ -45,6 +45,12 @@ export async function middleware(request: NextRequest) {
 		}),
 	}).catch(() => {});
 	// #endregion
+
+	// Redirect /search to /parts when accessed without a search query
+	// This handles the legacy Shopify menu link pointing to /search
+	if (pathname === "/search" && !searchParams.has("q")) {
+		return NextResponse.redirect(new URL("/parts", request.url));
+	}
 
 	// Skip middleware for NextAuth API routes
 	if (pathname.startsWith("/api/auth/")) {

@@ -9,7 +9,14 @@ import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import { Menu } from "lib/shopify/types";
 import Search, { SearchSkeleton } from "./search";
 
-export default function MobileMenu({ menu }: { menu: Menu[] }) {
+export default function MobileMenu({ menu: rawMenu }: { menu: Menu[] }) {
+  // Override Parts link to go to /parts instead of /search
+  const menu = rawMenu.map((item) => ({
+    ...item,
+    path: item.title === "Parts" || item.title === "Part"
+      ? "/parts" 
+      : item.path,
+  }));
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const [isOpen, setIsOpen] = useState(false);

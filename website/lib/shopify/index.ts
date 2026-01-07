@@ -382,13 +382,22 @@ export async function getMenu(handle: string): Promise<Menu[]> {
     });
 
     return (
-      res.body?.data?.menu?.items.map((item: { title: string; url: string }) => ({
-        title: item.title,
-        path: item.url
+      res.body?.data?.menu?.items.map((item: { title: string; url: string }) => {
+        let path = item.url
           .replace(domain, "")
           .replace("/collections", "/search")
-          .replace("/pages", ""),
-      })) || []
+          .replace("/pages", "");
+        
+        // Route "Parts" to the dedicated parts page instead of search
+        if (item.title === "Parts" || item.title.toLowerCase().includes("parts") || path === "/search" || path === "/search/") {
+          path = "/parts";
+        }
+        
+        return {
+          title: item.title,
+          path,
+        };
+      }) || []
     );
   } catch (error) {
     console.error(`Failed to fetch menu with handle "${handle}":`, error);
