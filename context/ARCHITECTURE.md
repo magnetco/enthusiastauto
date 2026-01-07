@@ -115,6 +115,17 @@ components/
 - `'use client'` only when needed (interactivity, hooks)
 - Composition over props drilling
 
+## DNS
+
+Managed by **hostgator.com**
+
+| Subdomain | Purpose |
+|-----------|---------|
+| www.enthusiastauto.com | Primary domain (Webflow - legacy) |
+| staging.enthusiastauto.com | New website staging (Vercel) |
+| data.enthusiastauto.com | Admin dashboard for Neon database |
+| shopify.com | Store orders, inventory management |
+
 ## Deployment
 
 - **Hosting**: Vercel (website), Sanity.io (studio)

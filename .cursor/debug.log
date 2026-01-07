@@ -40,3 +40,6 @@
 {"location":"PopularParts.tsx:9","message":"PopularParts start","data":{},"timestamp":1767806268732,"sessionId":"debug-session","runId":"run1","hypothesisId":"H7"}
 {"location":"PopularParts.tsx:20","message":"PopularParts success","data":{"count":100},"timestamp":1767806268770,"sessionId":"debug-session","runId":"run1","hypothesisId":"H7"}
 {"location":"FeaturedVehicles.tsx:16","message":"FeaturedVehicles success","data":{"count":0},"timestamp":1767806268983,"sessionId":"debug-session","runId":"run1","hypothesisId":"H6"}
+{"location":"middleware.ts:30","message":"Middleware entry","data":{"pathname":"/","isAuthRoute":false},"timestamp":1767808029629,"sessionId":"debug-session","runId":"run1","hypothesisId":"H1"}
+{"location":"middleware.ts:30","message":"Middleware entry","data":{"pathname":"/","isAuthRoute":false},"timestamp":1767808033958,"sessionId":"debug-session","runId":"run1","hypothesisId":"H1"}
+{"location":"middleware.ts:30","message":"Middleware entry","data":{"pathname":"/","isAuthRoute":false},"timestamp":1767808034380,"sessionId":"debug-session","runId":"run1","hypothesisId":"H1"}
