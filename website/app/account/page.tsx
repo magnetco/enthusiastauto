@@ -6,6 +6,7 @@ import { redirect } from "next/navigation";
 import { getVehicleDetail } from "@/lib/sanity/queries/vehicles";
 import { getProduct } from "@/lib/shopify";
 import { RecentFavorites } from "@/components/account";
+import { SectionHeading } from "@/components/shared/SectionHeading";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Warehouse,
@@ -213,12 +214,7 @@ export default async function AccountDashboardPage() {
 
       {/* Recent Favorites Section */}
       <div>
-        <div className="mb-6 flex items-center gap-3">
-          <span className="text-brand-red font-semibold">///</span>
-          <h2 className="text-title-3 font-semibold text-foreground">
-            Recent Favorites
-          </h2>
-        </div>
+        <SectionHeading title="Recent Favorites" className="mb-6" />
         <RecentFavorites items={validFavorites} maxItems={4} />
       </div>
     </div>

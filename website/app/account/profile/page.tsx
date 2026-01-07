@@ -6,6 +6,7 @@ import {
   ProfileCard,
   ProfileForm,
 } from "@/components/account";
+import { SectionHeading } from "@/components/shared/SectionHeading";
 import { getServerSession } from "@/lib/auth/session";
 import prisma from "@/lib/db/prisma";
 import { Metadata } from "next";
@@ -56,12 +57,7 @@ export default async function ProfilePage() {
     <div className="space-y-12">
       {/* Account Overview Section */}
       <section>
-        <div className="mb-6 flex items-center gap-3">
-          <span className="text-brand-red font-semibold">///</span>
-          <h2 className="text-title-3 font-semibold text-foreground">
-            Account Overview
-          </h2>
-        </div>
+        <SectionHeading title="Account Overview" className="mb-6" />
         <ProfileCard
           user={{
             name: user.name,
@@ -76,12 +72,7 @@ export default async function ProfilePage() {
 
       {/* Profile Information Section */}
       <section>
-        <div className="mb-6 flex items-center gap-3">
-          <span className="text-brand-red font-semibold">///</span>
-          <h2 className="text-title-3 font-semibold text-foreground">
-            Profile Information
-          </h2>
-        </div>
+        <SectionHeading title="Profile Information" className="mb-6" />
         <ProfileForm
           user={{
             name: user.name,
@@ -93,12 +84,7 @@ export default async function ProfilePage() {
 
       {/* Security Section */}
       <section>
-        <div className="mb-6 flex items-center gap-3">
-          <span className="text-brand-red font-semibold">///</span>
-          <h2 className="text-title-3 font-semibold text-foreground">
-            Security
-          </h2>
-        </div>
+        <SectionHeading title="Security" className="mb-6" />
         <div className="space-y-6">
           <ChangePassword hasPassword={hasPassword} />
           <ConnectedAccounts accounts={user.accounts} hasPassword={hasPassword} />
@@ -107,23 +93,13 @@ export default async function ProfilePage() {
 
       {/* Addresses Section */}
       <section>
-        <div className="mb-6 flex items-center gap-3">
-          <span className="text-brand-red font-semibold">///</span>
-          <h2 className="text-title-3 font-semibold text-foreground">
-            Addresses
-          </h2>
-        </div>
+        <SectionHeading title="Addresses" className="mb-6" />
         <AddressManager />
       </section>
 
       {/* Danger Zone Section */}
       <section>
-        <div className="mb-6 flex items-center gap-3">
-          <span className="text-destructive font-semibold">///</span>
-          <h2 className="text-title-3 font-semibold text-foreground">
-            Danger Zone
-          </h2>
-        </div>
+        <SectionHeading title="Danger Zone" variant="destructive" className="mb-6" />
         <DeleteAccount />
       </section>
     </div>

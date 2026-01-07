@@ -20,9 +20,3 @@ cd data && pnpm install && pnpm dev       # localhost:4000
 | [STANDARDS.md](context/STANDARDS.md) | How to build correctly | Code conventions, design tokens, launch checklist |
 | [ROUTES.md](context/ROUTES.md) | Where things are | All pages, API endpoints, components |
 | [ROADMAP.md](context/ROADMAP.md) | What's happening | Shipped, in progress, planned, known issues |
-
-Cursor
-
-Rocks
-
-Andrew

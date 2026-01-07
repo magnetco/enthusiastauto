@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { SectionHeading } from "@/components/shared/SectionHeading";
 import { Card, CardContent } from "@/components/ui/card";
 import { ArrowRight, Heart, Car, Package } from "lucide-react";
 
@@ -63,12 +64,7 @@ export function RecentFavorites({ items, maxItems = 4, showHeader = false }: Rec
       {/* Optional Header */}
       {showHeader && (
         <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <span className="text-brand-red font-semibold">///</span>
-            <h2 className="text-title-3 font-semibold text-foreground">
-              Recent Favorites
-            </h2>
-          </div>
+          <SectionHeading title="Recent Favorites" />
           <Link
             href="/account/garage"
             className="inline-flex items-center gap-1 text-body-small font-medium text-primary hover:underline"

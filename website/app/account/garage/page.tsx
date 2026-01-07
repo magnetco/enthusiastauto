@@ -1,4 +1,5 @@
 import { getServerSession } from "@/lib/auth/session";
+import { SectionHeading } from "@/components/shared/SectionHeading";
 import prisma from "@/lib/db/prisma";
 import { getVehicleDetail } from "@/lib/sanity/queries/vehicles";
 import { getProduct } from "@/lib/shopify";
@@ -88,12 +89,7 @@ export default async function GaragePage() {
     <div className="space-y-8">
       {/* Header */}
       <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-        <div className="flex items-center gap-3">
-          <span className="text-brand-red font-semibold">///</span>
-          <h2 className="text-title-3 font-semibold text-foreground">
-            Saved Items
-          </h2>
-        </div>
+        <SectionHeading title="Saved Items" />
         <p className="text-body-base text-muted-foreground">
           {favorites.length} of {garageLimit} items saved
         </p>
