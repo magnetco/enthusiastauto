@@ -22,3 +22,5 @@ cd data && pnpm install && pnpm dev       # localhost:4000
 | [ROADMAP.md](context/ROADMAP.md) | What's happening | Shipped, in progress, planned, known issues |
 
 Cursor
+
+Rocks
