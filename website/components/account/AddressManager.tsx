@@ -4,8 +4,10 @@ import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Badge } from "@/components/ui/badge";
 import {
   Dialog,
   DialogContent,
@@ -16,7 +18,7 @@ import {
 import { addressSchema, type Address, type AddressInput } from "@/lib/profile/types";
 import { toast } from "sonner";
 import { Checkbox } from "@/components/ui/checkbox";
-import { MapPin } from "lucide-react";
+import { MapPin, Plus } from "lucide-react";
 
 export function AddressManager() {
   const [addresses, setAddresses] = useState<Address[]>([]);
@@ -98,15 +100,11 @@ export function AddressManager() {
         throw new Error(errorData.error || "Failed to save address");
       }
 
-      toast.success(
-        editingAddress ? "Address updated" : "Address added"
-      );
+      toast.success(editingAddress ? "Address updated" : "Address added");
       setIsDialogOpen(false);
       fetchAddresses();
     } catch (error) {
-      toast.error(
-        error instanceof Error ? error.message : "Something went wrong"
-      );
+      toast.error(error instanceof Error ? error.message : "Something went wrong");
     } finally {
       setIsLoading(false);
     }
@@ -140,66 +138,72 @@ export function AddressManager() {
 
   return (
     <>
-      <div className="rounded-lg border border-border">
+      <Card>
         {addresses.length === 0 ? (
-          <div className="p-8 text-center">
-            <div className="mx-auto w-12 h-12 rounded-full bg-muted flex items-center justify-center mb-4">
-              <MapPin className="h-5 w-5 text-muted-foreground" />
+          <CardContent className="flex flex-col items-center justify-center py-12 text-center">
+            <div className="mb-4 inline-flex h-14 w-14 items-center justify-center rounded-full bg-muted">
+              <MapPin className="h-6 w-6 text-muted-foreground" />
             </div>
-            <p className="text-sm font-medium text-foreground mb-1">
+            <h3 className="text-body-large font-semibold text-foreground mb-1">
               No saved addresses
-            </p>
-            <p className="text-sm text-muted-foreground mb-4">
+            </h3>
+            <p className="text-body-base text-muted-foreground mb-6">
               Add an address to speed up checkout.
             </p>
-            <Button variant="outline" size="sm" onClick={openAddDialog}>
+            <Button onClick={openAddDialog}>
+              <Plus className="h-4 w-4 mr-2" />
               Add Address
             </Button>
-          </div>
+          </CardContent>
         ) : (
-          <div className="divide-y divide-border">
+          <CardContent className="divide-y divide-border p-0">
             {addresses.map((address) => (
-              <div key={address.id} className="p-4 flex items-start justify-between gap-4">
+              <div key={address.id} className="flex items-start justify-between gap-4 p-5">
                 <div className="min-w-0 flex-1">
                   <div className="flex items-center gap-2 mb-1">
-                    <p className="text-sm font-medium text-foreground">
+                    <p className="text-body-base font-medium text-foreground">
                       {address.label}
                     </p>
                     {address.isDefault && (
-                      <span className="text-xs bg-muted text-muted-foreground px-1.5 py-0.5 rounded">
+                      <Badge variant="secondary" className="text-body-mini">
                         Default
-                      </span>
+                      </Badge>
                     )}
                   </div>
-                  <p className="text-sm text-muted-foreground">
+                  <p className="text-body-small text-muted-foreground">
                     {address.street}, {address.city}, {address.state} {address.postalCode}
                   </p>
                 </div>
-                <div className="flex items-center gap-2 shrink-0">
-                  <button
+                <div className="flex items-center gap-3 shrink-0">
+                  <Button
+                    variant="ghost"
+                    size="sm"
                     onClick={() => openEditDialog(address)}
-                    className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+                    className="text-muted-foreground hover:text-foreground"
                   >
                     Edit
-                  </button>
-                  <button
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    size="sm"
                     onClick={() => handleDelete(address.id)}
                     disabled={isLoading}
-                    className="text-sm text-red-600 hover:text-red-700 transition-colors"
+                    className="text-destructive hover:text-destructive hover:bg-destructive/10"
                   >
                     {deleteConfirm === address.id ? "Confirm?" : "Delete"}
-                  </button>
+                  </Button>
                 </div>
               </div>
             ))}
-            <div className="p-4">
-              <Button variant="outline" size="sm" onClick={openAddDialog}>
+            <div className="p-5">
+              <Button variant="outline" onClick={openAddDialog}>
+                <Plus className="h-4 w-4 mr-2" />
                 Add Address
               </Button>
             </div>
-          </div>
+          </CardContent>
         )}
-      </div>
+      </Card>
 
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
         <DialogContent className="max-w-md">
@@ -218,7 +222,7 @@ export function AddressManager() {
                 disabled={isLoading}
               />
               {errors.label && (
-                <p className="text-sm text-red-600">{errors.label.message}</p>
+                <p className="text-body-small text-destructive">{errors.label.message}</p>
               )}
             </div>
 
@@ -231,7 +235,7 @@ export function AddressManager() {
                 disabled={isLoading}
               />
               {errors.street && (
-                <p className="text-sm text-red-600">{errors.street.message}</p>
+                <p className="text-body-small text-destructive">{errors.street.message}</p>
               )}
             </div>
 
@@ -240,14 +244,14 @@ export function AddressManager() {
                 <Label htmlFor="city">City</Label>
                 <Input id="city" {...register("city")} disabled={isLoading} />
                 {errors.city && (
-                  <p className="text-sm text-red-600">{errors.city.message}</p>
+                  <p className="text-body-small text-destructive">{errors.city.message}</p>
                 )}
               </div>
               <div className="space-y-2">
                 <Label htmlFor="state">State</Label>
                 <Input id="state" {...register("state")} disabled={isLoading} />
                 {errors.state && (
-                  <p className="text-sm text-red-600">{errors.state.message}</p>
+                  <p className="text-body-small text-destructive">{errors.state.message}</p>
                 )}
               </div>
             </div>
@@ -257,7 +261,7 @@ export function AddressManager() {
                 <Label htmlFor="postalCode">Postal Code</Label>
                 <Input id="postalCode" {...register("postalCode")} disabled={isLoading} />
                 {errors.postalCode && (
-                  <p className="text-sm text-red-600">{errors.postalCode.message}</p>
+                  <p className="text-body-small text-destructive">{errors.postalCode.message}</p>
                 )}
               </div>
               <div className="space-y-2">
@@ -283,7 +287,7 @@ export function AddressManager() {
                 onCheckedChange={(checked) => setValue("isDefault", checked as boolean)}
                 disabled={isLoading}
               />
-              <Label htmlFor="isDefault" className="text-sm cursor-pointer">
+              <Label htmlFor="isDefault" className="text-body-base cursor-pointer">
                 Set as default address
               </Label>
             </div>

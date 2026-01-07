@@ -1,12 +1,9 @@
+import { Card, CardContent } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import * as React from "react";
 
 interface ProfileCardProps extends React.HTMLAttributes<HTMLDivElement> {
-  title?: string;
-  description?: string;
-  action?: React.ReactNode;
-  variant?: "default" | "danger";
-  children?: React.ReactNode;
   user?: {
     name?: string | null;
     email: string;
@@ -28,31 +25,21 @@ function getInitials(name?: string | null): string {
 }
 
 export function ProfileCard({
-  title,
-  description,
-  action,
-  variant = "default",
   className,
-  children,
   user,
   hasPassword,
   authMethods,
   isOAuthAvatar,
   ...props
 }: ProfileCardProps) {
-  // User overview card
-  if (user) {
-    return (
-      <div
-        className={cn(
-          "rounded-lg border border-border p-6",
-          className
-        )}
-        {...props}
-      >
-        <div className="flex items-start gap-4">
+  if (!user) return null;
+
+  return (
+    <Card className={cn("overflow-hidden", className)} {...props}>
+      <CardContent className="p-6">
+        <div className="flex items-start gap-5">
           {/* Avatar */}
-          <div className="w-14 h-14 rounded-full bg-foreground flex items-center justify-center text-background text-lg font-medium overflow-hidden shrink-0">
+          <div className="w-16 h-16 rounded-full bg-primary flex items-center justify-center text-primary-foreground text-xl font-semibold overflow-hidden shrink-0">
             {user.image ? (
               <img
                 src={user.image}
@@ -66,66 +53,29 @@ export function ProfileCard({
 
           {/* User Info */}
           <div className="flex-1 min-w-0">
-            <h3 className="text-base font-semibold text-foreground">
+            <h3 className="text-body-large font-semibold text-foreground">
               {user.name || "Name not set"}
             </h3>
-            <p className="text-sm text-muted-foreground mt-0.5">{user.email}</p>
+            <p className="text-body-base text-muted-foreground mt-0.5">
+              {user.email}
+            </p>
             {authMethods && authMethods.length > 0 && (
               <div className="flex flex-wrap gap-2 mt-3">
                 {authMethods.map((method) => (
-                  <span
-                    key={method}
-                    className="inline-flex items-center px-2 py-0.5 text-xs font-medium bg-muted text-muted-foreground rounded"
-                  >
+                  <Badge key={method} variant="secondary" className="font-medium">
                     {method}
-                  </span>
+                  </Badge>
                 ))}
+                {hasPassword && (
+                  <Badge variant="secondary" className="font-medium">
+                    Password
+                  </Badge>
+                )}
               </div>
             )}
           </div>
         </div>
-      </div>
-    );
-  }
-
-  // Generic section card
-  return (
-    <div
-      className={cn(
-        "rounded-lg border p-6",
-        variant === "danger" ? "border-red-200 bg-red-50/50" : "border-border",
-        className
-      )}
-      {...props}
-    >
-      {(title || description || action) && (
-        <div className="flex items-start justify-between mb-4">
-          <div>
-            {title && (
-              <h3
-                className={cn(
-                  "text-base font-semibold",
-                  variant === "danger" ? "text-red-900" : "text-foreground"
-                )}
-              >
-                {title}
-              </h3>
-            )}
-            {description && (
-              <p
-                className={cn(
-                  "text-sm mt-0.5",
-                  variant === "danger" ? "text-red-700" : "text-muted-foreground"
-                )}
-              >
-                {description}
-              </p>
-            )}
-          </div>
-          {action && <div>{action}</div>}
-        </div>
-      )}
-      {children}
-    </div>
+      </CardContent>
+    </Card>
   );
 }

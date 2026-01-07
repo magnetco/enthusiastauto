@@ -54,21 +54,11 @@ export default async function ProfilePage() {
 
   return (
     <div className="space-y-12">
-      {/* Header */}
-      <div>
-        <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground mb-2">
-          Account Settings
-        </p>
-        <h1 className="text-2xl font-semibold text-foreground sm:text-3xl">
-          Profile
-        </h1>
-      </div>
-
-      {/* Account Overview */}
+      {/* Account Overview Section */}
       <section>
-        <div className="flex items-center gap-3 mb-6">
-          <span className="text-brand-red font-medium">///</span>
-          <h2 className="text-lg font-semibold text-foreground">
+        <div className="mb-6 flex items-center gap-3">
+          <span className="text-brand-red font-semibold">///</span>
+          <h2 className="text-title-3 font-semibold text-foreground">
             Account Overview
           </h2>
         </div>
@@ -84,11 +74,11 @@ export default async function ProfilePage() {
         />
       </section>
 
-      {/* Profile Information */}
+      {/* Profile Information Section */}
       <section>
-        <div className="flex items-center gap-3 mb-6">
-          <span className="text-brand-red font-medium">///</span>
-          <h2 className="text-lg font-semibold text-foreground">
+        <div className="mb-6 flex items-center gap-3">
+          <span className="text-brand-red font-semibold">///</span>
+          <h2 className="text-title-3 font-semibold text-foreground">
             Profile Information
           </h2>
         </div>
@@ -101,11 +91,11 @@ export default async function ProfilePage() {
         />
       </section>
 
-      {/* Security */}
+      {/* Security Section */}
       <section>
-        <div className="flex items-center gap-3 mb-6">
-          <span className="text-brand-red font-medium">///</span>
-          <h2 className="text-lg font-semibold text-foreground">
+        <div className="mb-6 flex items-center gap-3">
+          <span className="text-brand-red font-semibold">///</span>
+          <h2 className="text-title-3 font-semibold text-foreground">
             Security
           </h2>
         </div>
@@ -115,22 +105,22 @@ export default async function ProfilePage() {
         </div>
       </section>
 
-      {/* Addresses */}
+      {/* Addresses Section */}
       <section>
-        <div className="flex items-center gap-3 mb-6">
-          <span className="text-brand-red font-medium">///</span>
-          <h2 className="text-lg font-semibold text-foreground">
+        <div className="mb-6 flex items-center gap-3">
+          <span className="text-brand-red font-semibold">///</span>
+          <h2 className="text-title-3 font-semibold text-foreground">
             Addresses
           </h2>
         </div>
         <AddressManager />
       </section>
 
-      {/* Danger Zone */}
+      {/* Danger Zone Section */}
       <section>
-        <div className="flex items-center gap-3 mb-6">
-          <span className="text-red-500 font-medium">///</span>
-          <h2 className="text-lg font-semibold text-foreground">
+        <div className="mb-6 flex items-center gap-3">
+          <span className="text-destructive font-semibold">///</span>
+          <h2 className="text-title-3 font-semibold text-foreground">
             Danger Zone
           </h2>
         </div>

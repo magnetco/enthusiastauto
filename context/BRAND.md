@@ -1,141 +1,140 @@
-# Enthusiast Auto Brand Guidelines
+# Brand
 
-## Color System
-
-Enthusiast Auto uses a cohesive color palette with a dark navy header/footer and light content sections. All colors should be drawn from this palette to maintain brand consistency.
-
-### Primary Brand Colors
-
-| Color | Hex | CSS Variable | Usage |
-|-------|-----|--------------|-------|
-| **Red** | `#F90020` | `--color-brand-red` | Primary brand accent, CTAs, destructive actions |
-| **Deep Blue** | `#005A90` | `--color-brand-deep-blue` | Primary accent on light backgrounds, vendor labels |
-| **Blue** | `#2E90FA` | `--color-brand-blue` | Secondary accent, focus rings, interactive elements |
-| **Gray 400** | `#CCCCCC` | `--color-brand-gray-400` | Borders, input fields, muted elements |
-| **Gray 200** | `#DFE5EA` | `--color-brand-gray-200` | Light backgrounds, dividers, subtle borders |
-
-### Dark Theme Colors (Header/Footer)
-
-| Color | Hex | Usage |
-|-------|-----|-------|
-| **Navy Primary** | `#141721` | Dark backgrounds (header, footer, hero sections) |
-| **Navy Secondary** | `#1f2233` | Elevated surfaces, cards in dark mode, buttons on light |
-| **Navy Tertiary** | `#1a1d29` | Subtle elevation, secondary backgrounds |
-| **Navy Quaternary** | `#252936` | Higher elevation |
-| **Navy Quinary** | `#2a2f3f` | Highest elevation, inputs, borders in dark mode |
-
-### Text Colors
-
-#### Dark Mode (on navy backgrounds)
-| Color | Hex | Usage |
-|-------|-----|-------|
-| **Text Primary** | `#ffffff` | Headings, important text |
-| **Text Secondary** | `#e5e7eb` | Body text, descriptions |
-| **Text Tertiary** | `#a8adb7` | Muted text, metadata |
-| **Text Quaternary** | `#6b7280` | Disabled, placeholder text |
-
-#### Light Mode (on white backgrounds)
-| Color | Hex | Usage |
-|-------|-----|-------|
-| **Text Primary** | `#282a30` | Headings, important text |
-| **Text Secondary** | `#3c4149` | Body text |
-| **Text Tertiary** | `#6f6e77` | Muted text, metadata, captions |
-
-### Background Colors
-
-#### Light Sections
-| Color | Hex | Usage |
-|-------|-----|-------|
-| **White** | `#ffffff` | Primary light background |
-| **Off-White** | `#f8f8f8` | Cards, subtle backgrounds |
-| **Light Gray** | `#f4f4f4` | Secondary surfaces |
-| **Muted** | `#f0f0f0` | Muted backgrounds |
-| **Brand Gray 200** | `#DFE5EA` | Dividers, borders, input backgrounds |
+Voice, tone, messaging, and visual identity guidelines.
 
 ---
 
-## Usage Guidelines
+## Brand Positioning
 
-### DO ✓
+**Enthusiast Auto Group** is the leading BMW preservation facility — not a generic used car dealer. We specialize in enthusiast-grade BMWs that are well-maintained, properly documented, and ready to enjoy.
 
-- Use `#005A90` (Deep Blue) for accent text, vendor labels, links on light backgrounds
-- Use `#2E90FA` (Blue) for focus rings, hover states, interactive elements
-- Use `#F90020` (Red) for primary CTAs, destructive actions, important alerts
-- Use `#141721` (Navy Primary) for dark backgrounds matching header/footer
-- Use `#1f2233` (Navy Secondary) for buttons and hover states on light backgrounds
-- Use `#282a30` or `#1f2233` for primary text on light backgrounds
-- Use `#6f6e77` for muted/tertiary text on light backgrounds
-- Use `#DFE5EA` (Gray 200) for borders and dividers on light backgrounds
+**Tagline:** *The Leading BMW Preservation Facility*
 
-### DON'T ✗
+## Brand Voice
 
-- **Never use Tailwind blue classes** (`text-blue-*`, `bg-blue-*`) — use brand blues instead
-- **Never use purple colors** — we don't have purple in our brand palette
-- **Never use arbitrary colors** not in this document
-- **Never mix color systems** — stick to the defined palette
+Our voice is **knowledgeable, enthusiast-first, and confident** — never salesy or generic.
 
-### Component-Specific Colors
+| Attribute | What It Means |
+|-----------|---------------|
+| **Knowledgeable** | We know BMWs deeply. Speak with authority about specs, history, and care. |
+| **Enthusiast-First** | We speak to fellow enthusiasts, not just buyers. Share the passion. |
+| **Confident** | We stand behind our vehicles and services. No hedging or overselling. |
+| **Approachable** | Expert but not elitist. Welcoming to all BMW enthusiasts. |
 
-#### Product Cards (Light Mode)
-```
-Background:      #ffffff
-Border:          #DFE5EA → #CCCCCC (hover)
-Image BG:        gradient from #f8f8f8 to #f0f0f0
-Vendor Label:    #005A90 (Deep Blue)
-Title:           #1f2233 → #141721 (hover)
-Price:           #1f2233
-Divider:         #DFE5EA
-Badge BG:        #141721/90
-Button BG:       #141721 → #1f2233 (hover)
-```
+## Tone by Context
 
-#### Header/Footer (Dark Mode)
-```
-Background:      #141721
-Text Primary:    #ffffff
-Text Secondary:  #a8adb7
-Border:          #2a2f3f
-Accent:          #2E90FA
-```
+| Context | Tone | Example |
+|---------|------|---------|
+| **Marketing/Hero** | Bold, aspirational | "The finest BMWs, preserved for enthusiasts." |
+| **Product/Vehicle** | Detailed, authoritative | "Factory ZCP package with competition brakes and suspension." |
+| **Transactional** | Clear, helpful | "Your inquiry has been received. We'll respond within 24 hours." |
+| **Error/Support** | Calm, reassuring | "Something went wrong. Please try again or contact us." |
 
-#### Focus States
-```
-Focus Ring:      #2E90FA (Blue)
-Focus Offset:    2px
-Focus Width:     2px
-```
+## Messaging Pillars
+
+### 1. Preservation
+We don't just sell cars — we preserve automotive heritage. Every vehicle is maintained to exacting standards with documented service history.
+
+### 2. Expertise
+Decades of BMW specialization. Our team knows every chassis code, every quirk, every best practice for maintaining these machines.
+
+### 3. Community
+We're enthusiasts ourselves. We attend events, participate in forums, and build relationships with owners who share our passion.
+
+### 4. Trust
+Transparent pricing, honest assessments, and a reputation built on integrity. No games, no pressure.
 
 ---
 
-## CSS Variables Reference
+## Visual Identity
 
-These CSS custom properties are defined in `globals.css`:
+### Logo Usage
+- Primary: EAG wordmark
+- Icon: BMW M-inspired stripes for accent use
+- Always maintain clear space around logo
+- Never stretch, rotate, or alter colors
 
-```css
-/* Brand Colors */
---color-brand-red: #F90020;
---color-brand-deep-blue: #005A90;
---color-brand-blue: #2E90FA;
---color-brand-gray-400: #CCCCCC;
---color-brand-gray-200: #DFE5EA;
+### Color Palette
 
-/* Dark theme */
---background: #141721;
---foreground: #ffffff;
---card: #1f2233;
---primary: #2E90FA;
---accent: #005A90;
---destructive: #F90020;
---border: #2a2f3f;
---ring: #2E90FA;
+| Color | Hex | Usage |
+|-------|-----|-------|
+| **Brand Red** | `#F90020` | Primary CTAs, accents, alerts |
+| **Deep Blue** | `#005A90` | Links on light backgrounds, headers |
+| **Blue** | `#2E90FA` | Focus rings, interactive elements |
+| **Navy Primary** | `#141721` | Dark backgrounds (header, footer) |
+| **Navy Secondary** | `#1f2233` | Cards, elevated surfaces |
+| **White** | `#FFFFFF` | Light backgrounds, text on dark |
+| **Gray 200** | `#DFE5EA` | Borders, dividers |
+| **Gray 400** | `#CCCCCC` | Muted elements, inputs |
 
-/* Light sections */
---background: #ffffff;
---foreground: #282a30;
---card: #f8f8f8;
---primary: #005A90;
---accent: #2E90FA;
---muted: #DFE5EA;
---muted-foreground: #6f6e77;
---border: #DFE5EA;
-```
+### Typography
+
+| Use | Font | Weight |
+|-----|------|--------|
+| **Headlines** | Chromatic Gothic | Regular (uppercase) |
+| **Body** | Figtree | 400, 500, 600 |
+| **Mono** | System mono | 400 |
+
+### Photography Style
+- Clean, well-lit vehicle photography
+- Focus on details that enthusiasts appreciate (engine bay, interior, badges)
+- Natural lighting preferred over heavy post-processing
+- Lifestyle shots showing vehicles in use, not just static
+
+### Iconography
+- Lucide React icon library
+- Consistent stroke width
+- Simple, recognizable shapes
+
+---
+
+## Content Guidelines
+
+### Writing Style
+- Use active voice
+- Be specific, not vague ("1998 E36 M3" not "classic BMW")
+- Include relevant specs and details
+- Avoid superlatives without substance ("best" needs proof)
+
+### Vehicle Descriptions
+- Lead with year, model, and key differentiator
+- Include mileage, transmission, notable options
+- Mention service history and condition
+- Be honest about any issues or modifications
+
+### CTAs
+- Clear, action-oriented
+- Primary: "Inquire Now", "Add to Cart", "Submit Request"
+- Secondary: "View Details", "Learn More", "Browse Inventory"
+
+### DO
+- Speak with authority on BMW topics
+- Use proper BMW terminology (chassis codes, option packages)
+- Highlight what makes each vehicle special
+- Be transparent about pricing and condition
+
+### DON'T
+- Use generic car-dealer language ("don't miss out!", "priced to sell!")
+- Oversell or make unsubstantiated claims
+- Use excessive punctuation or ALL CAPS
+- Ignore the enthusiast audience
+
+---
+
+## Brand Applications
+
+### Email
+- Subject lines: Clear, specific, not clickbait
+- Tone: Professional but warm
+- Always include contact information
+
+### Social Media
+- Platform-appropriate formatting
+- Behind-the-scenes content welcome
+- Engage authentically with community
+
+### Print/Signage
+- Maintain brand colors and typography
+- Clean layouts with ample white space
+- Quality materials that reflect brand positioning
+

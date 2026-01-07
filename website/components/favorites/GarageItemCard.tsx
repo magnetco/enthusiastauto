@@ -4,6 +4,7 @@ import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Heart, Car, Package } from "lucide-react";
+import { Card } from "@/components/ui/card";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -69,7 +70,7 @@ export function GarageItemCard({
 
   return (
     <>
-      <div className="group relative rounded-lg border border-border overflow-hidden transition-colors hover:border-foreground/20">
+      <Card className="group relative overflow-hidden transition-all hover:border-primary/50 hover:shadow-lg">
         <Link href={item.href} className="block">
           {/* Image */}
           <div className="relative aspect-[4/3] w-full overflow-hidden bg-muted">
@@ -84,24 +85,27 @@ export function GarageItemCard({
             ) : (
               <div className="flex h-full items-center justify-center">
                 {itemType === "vehicle" ? (
-                  <Car className="h-8 w-8 text-muted-foreground/50" />
+                  <Car className="h-10 w-10 text-muted-foreground/40" />
                 ) : (
-                  <Package className="h-8 w-8 text-muted-foreground/50" />
+                  <Package className="h-10 w-10 text-muted-foreground/40" />
                 )}
               </div>
             )}
           </div>
 
           {/* Content */}
-          <div className="p-4">
-            <h3 className="font-medium text-foreground line-clamp-2 mb-1 group-hover:text-primary transition-colors">
+          <div className="p-5">
+            <span className="text-body-mini font-medium uppercase tracking-wide text-muted-foreground mb-1 block">
+              {itemType}
+            </span>
+            <h3 className="text-body-base font-semibold text-foreground line-clamp-2 mb-2 group-hover:text-primary transition-colors">
               {item.title}
             </h3>
-            <p className="text-sm font-semibold text-foreground">
+            <p className="text-body-large font-bold text-foreground">
               {priceDisplay}
             </p>
             {item.specs && item.specs.length > 0 && (
-              <p className="text-xs text-muted-foreground mt-2 line-clamp-1">
+              <p className="text-body-small text-muted-foreground mt-2 line-clamp-1">
                 {item.specs.join(" · ")}
               </p>
             )}
@@ -116,22 +120,23 @@ export function GarageItemCard({
             setShowDialog(true);
           }}
           className={cn(
-            "absolute right-2 top-2 z-10 p-2 rounded-full",
-            "bg-background/80 backdrop-blur-sm",
-            "text-red-500 hover:text-red-600 hover:bg-background transition-colors"
+            "absolute right-3 top-3 z-10 p-2.5 rounded-full",
+            "bg-background/90 backdrop-blur-sm shadow-sm",
+            "text-destructive hover:bg-background transition-colors"
           )}
           aria-label={`Remove ${item.title} from garage`}
         >
-          <Heart className="h-4 w-4 fill-current" />
+          <Heart className="h-5 w-5 fill-current" />
         </button>
-      </div>
+      </Card>
 
       <AlertDialog open={showDialog} onOpenChange={setShowDialog}>
         <AlertDialogContent className="max-w-sm">
           <AlertDialogHeader>
             <AlertDialogTitle>Remove from garage?</AlertDialogTitle>
             <AlertDialogDescription>
-              Remove <span className="font-medium text-foreground">{item.title}</span> from your garage?
+              Remove <span className="font-medium text-foreground">{item.title}</span> from
+              your garage?
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
@@ -139,7 +144,7 @@ export function GarageItemCard({
             <AlertDialogAction
               onClick={handleRemove}
               disabled={isRemoving}
-              className="bg-red-600 text-white hover:bg-red-700"
+              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
             >
               {isRemoving ? "Removing..." : "Remove"}
             </AlertDialogAction>

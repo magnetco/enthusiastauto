@@ -88,15 +88,13 @@ export default async function GaragePage() {
     <div className="space-y-8">
       {/* Header */}
       <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-        <div>
-          <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground mb-2">
-            My Account
-          </p>
-          <h1 className="text-2xl font-semibold text-foreground sm:text-3xl">
-            My Garage
-          </h1>
+        <div className="flex items-center gap-3">
+          <span className="text-brand-red font-semibold">///</span>
+          <h2 className="text-title-3 font-semibold text-foreground">
+            Saved Items
+          </h2>
         </div>
-        <p className="text-sm text-muted-foreground">
+        <p className="text-body-base text-muted-foreground">
           {favorites.length} of {garageLimit} items saved
         </p>
       </div>

@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Dialog,
   DialogContent,
@@ -24,6 +25,11 @@ interface ConnectedAccountsProps {
   hasPassword: boolean;
   onUpdate?: () => void;
 }
+
+const providerIcons: Record<string, string> = {
+  google: "G",
+  github: "GH",
+};
 
 export function ConnectedAccounts({
   accounts,
@@ -67,53 +73,63 @@ export function ConnectedAccounts({
 
   if (accounts.length === 0) {
     return (
-      <div className="rounded-lg border border-border p-6">
-        <div className="text-center py-4">
-          <div className="mx-auto w-12 h-12 rounded-full bg-muted flex items-center justify-center mb-4">
-            <Link2 className="h-5 w-5 text-muted-foreground" />
+      <Card>
+        <CardContent className="flex flex-col items-center justify-center py-12 text-center">
+          <div className="mb-4 inline-flex h-14 w-14 items-center justify-center rounded-full bg-muted">
+            <Link2 className="h-6 w-6 text-muted-foreground" />
           </div>
-          <p className="text-sm text-muted-foreground">
+          <p className="text-body-base text-muted-foreground">
             No connected accounts. Link Google or GitHub for faster login.
           </p>
-        </div>
-      </div>
+        </CardContent>
+      </Card>
     );
   }
 
   return (
     <>
-      <div className="rounded-lg border border-border divide-y divide-border">
-        {accounts.map((account) => (
-          <div
-            key={account.id}
-            className="flex items-center justify-between p-4"
-          >
-            <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded bg-muted flex items-center justify-center">
-                <span className="text-sm font-medium text-muted-foreground">
-                  {account.provider[0].toUpperCase()}
-                </span>
-              </div>
-              <div>
-                <p className="text-sm font-medium text-foreground capitalize">
-                  {account.provider}
-                </p>
-                <p className="text-xs text-muted-foreground">Connected</p>
-              </div>
-            </div>
-            <button
-              onClick={() => setUnlinkConfirm(account.provider)}
-              disabled={!canUnlink || isLoading}
-              className="text-sm text-muted-foreground hover:text-foreground transition-colors disabled:opacity-50"
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-body-large">Connected Accounts</CardTitle>
+          <CardDescription>
+            Manage your linked authentication providers
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="divide-y divide-border">
+          {accounts.map((account) => (
+            <div
+              key={account.id}
+              className="flex items-center justify-between py-4 first:pt-0 last:pb-0"
             >
-              Unlink
-            </button>
-          </div>
-        ))}
-      </div>
+              <div className="flex items-center gap-4">
+                <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
+                  <span className="text-body-base font-semibold text-primary">
+                    {providerIcons[account.provider] || account.provider[0].toUpperCase()}
+                  </span>
+                </div>
+                <div>
+                  <p className="text-body-base font-medium text-foreground capitalize">
+                    {account.provider}
+                  </p>
+                  <p className="text-body-small text-muted-foreground">Connected</p>
+                </div>
+              </div>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setUnlinkConfirm(account.provider)}
+                disabled={!canUnlink || isLoading}
+                className="text-muted-foreground hover:text-foreground"
+              >
+                Unlink
+              </Button>
+            </div>
+          ))}
+        </CardContent>
+      </Card>
 
       {!canUnlink && (
-        <p className="text-xs text-muted-foreground mt-2">
+        <p className="text-body-small text-muted-foreground mt-2">
           Add a password before unlinking your only authentication method.
         </p>
       )}

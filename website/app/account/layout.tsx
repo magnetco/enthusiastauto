@@ -2,7 +2,8 @@ import { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { getServerSession } from "@/lib/auth/session";
 import prisma from "@/lib/db/prisma";
-import Container from "@/components/layout/container";
+import Section from "@/components/layout/section";
+import { PageHero } from "@/components/shared/PageHero";
 import { AccountNav, AccountNavMobile, AccountHeader } from "@/components/account";
 
 export const metadata: Metadata = {
@@ -40,46 +41,58 @@ export default async function AccountLayout({
   }
 
   return (
-    <div className="light-section min-h-screen">
-      <div className="px-page-x py-8 lg:py-12">
-        <Container>
-          {/* Mobile Header */}
-          <div className="mb-6 lg:hidden">
-            <AccountHeader
-              user={{
-                name: user.name,
-                email: user.email,
-                image: user.image,
-              }}
-              memberSince={user.createdAt}
-              className="mb-4"
-            />
-            <AccountNavMobile />
-          </div>
+    <>
+      {/* Hero Section */}
+      <PageHero
+        size="compact"
+        eyebrow="Enthusiast Auto Group"
+        title={
+          <>
+            My Account
+          </>
+        }
+        subtitle={`Welcome back${user.name ? `, ${user.name.split(" ")[0]}` : ""}. Manage your garage, profile, and preferences.`}
+        backgroundImage="https://images.unsplash.com/photo-1583121274602-3e2820c69888?q=80&w=2070&auto=format&fit=crop"
+      />
 
-          {/* Desktop Layout */}
-          <div className="flex gap-12 lg:gap-16">
-            {/* Sidebar */}
-            <aside className="hidden lg:block w-52 shrink-0">
-              <div className="sticky top-[calc(var(--header-height)+2rem)]">
-                <AccountHeader
-                  user={{
-                    name: user.name,
-                    email: user.email,
-                    image: user.image,
-                  }}
-                  memberSince={user.createdAt}
-                  className="mb-6 pb-6 border-b border-border"
-                />
-                <AccountNav />
-              </div>
-            </aside>
+      {/* Main Content */}
+      <Section className="py-12 lg:py-16">
+        {/* Mobile Header */}
+        <div className="mb-8 lg:hidden">
+          <AccountHeader
+            user={{
+              name: user.name,
+              email: user.email,
+              image: user.image,
+            }}
+            memberSince={user.createdAt}
+            className="mb-6"
+          />
+          <AccountNavMobile />
+        </div>
 
-            {/* Main Content */}
-            <main className="min-w-0 flex-1">{children}</main>
-          </div>
-        </Container>
-      </div>
-    </div>
+        {/* Desktop Layout */}
+        <div className="flex gap-12 lg:gap-16">
+          {/* Sidebar */}
+          <aside className="hidden lg:block w-56 shrink-0">
+            <div className="sticky top-[calc(var(--header-height)+2rem)]">
+              <AccountHeader
+                user={{
+                  name: user.name,
+                  email: user.email,
+                  image: user.image,
+                }}
+                memberSince={user.createdAt}
+                className="mb-6 pb-6 border-b border-border"
+              />
+              <AccountNav />
+            </div>
+          </aside>
+
+          {/* Main Content */}
+          <main className="min-w-0 flex-1">{children}</main>
+        </div>
+      </Section>
+    </>
   );
 }

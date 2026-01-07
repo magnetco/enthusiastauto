@@ -1,6 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { profileUpdateSchema, type ProfileUpdateInput } from "@/lib/profile/types";
@@ -91,27 +92,27 @@ export function ProfileForm({ user, onUpdate }: ProfileFormProps) {
 
   if (!isEditing) {
     return (
-      <div className="rounded-lg border border-border p-6">
-        <div className="space-y-4">
+      <Card>
+        <CardContent className="p-6 space-y-5">
           <div>
-            <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide mb-1">
+            <p className="text-body-mini font-medium text-muted-foreground uppercase tracking-wide mb-1">
               Name
             </p>
-            <p className="text-sm font-medium text-foreground">
+            <p className="text-body-base font-medium text-foreground">
               {user.name || "Not set"}
             </p>
           </div>
           <div>
-            <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide mb-1">
+            <p className="text-body-mini font-medium text-muted-foreground uppercase tracking-wide mb-1">
               Email
             </p>
-            <p className="text-sm font-medium text-foreground">{user.email}</p>
-            <p className="text-xs text-muted-foreground mt-0.5">
+            <p className="text-body-base font-medium text-foreground">{user.email}</p>
+            <p className="text-body-small text-muted-foreground mt-0.5">
               Email cannot be changed
             </p>
           </div>
           <div>
-            <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide mb-1">
+            <p className="text-body-mini font-medium text-muted-foreground uppercase tracking-wide mb-1">
               Profile Picture
             </p>
             <div className="flex items-center gap-3">
@@ -123,91 +124,92 @@ export function ProfileForm({ user, onUpdate }: ProfileFormProps) {
                 />
               ) : (
                 <div className="w-10 h-10 rounded-full bg-muted flex items-center justify-center">
-                  <span className="text-xs text-muted-foreground">None</span>
+                  <span className="text-body-mini text-muted-foreground">None</span>
                 </div>
               )}
-              <p className="text-sm text-muted-foreground">
+              <p className="text-body-base text-muted-foreground">
                 {user.image ? "Profile picture set" : "No profile picture"}
               </p>
             </div>
           </div>
-        </div>
-        <div className="mt-6 pt-4 border-t border-border">
-          <Button variant="outline" size="sm" onClick={() => setIsEditing(true)}>
-            Edit Profile
-          </Button>
-        </div>
-      </div>
+          <div className="pt-4 border-t border-border">
+            <Button variant="outline" onClick={() => setIsEditing(true)}>
+              Edit Profile
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
     );
   }
 
   return (
-    <div className="rounded-lg border border-border p-6">
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-        <div className="space-y-2">
-          <Label htmlFor="name" className="text-xs font-medium uppercase tracking-wide">
-            Name
-          </Label>
-          <Input
-            id="name"
-            {...register("name")}
-            placeholder="Enter your name"
-            disabled={isLoading}
-          />
-          {errors.name && (
-            <p className="text-sm text-red-600">{errors.name.message}</p>
-          )}
-        </div>
+    <Card>
+      <CardContent className="p-6">
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+          <div className="space-y-2">
+            <Label htmlFor="name" className="text-body-small font-medium">
+              Name
+            </Label>
+            <Input
+              id="name"
+              {...register("name")}
+              placeholder="Enter your name"
+              disabled={isLoading}
+            />
+            {errors.name && (
+              <p className="text-body-small text-destructive">{errors.name.message}</p>
+            )}
+          </div>
 
-        <div className="space-y-2">
-          <Label htmlFor="email" className="text-xs font-medium uppercase tracking-wide">
-            Email
-          </Label>
-          <Input id="email" value={user.email} disabled className="bg-muted" />
-          <p className="text-xs text-muted-foreground">Email cannot be changed</p>
-        </div>
+          <div className="space-y-2">
+            <Label htmlFor="email" className="text-body-small font-medium">
+              Email
+            </Label>
+            <Input id="email" value={user.email} disabled className="bg-muted" />
+            <p className="text-body-small text-muted-foreground">Email cannot be changed</p>
+          </div>
 
-        <div className="space-y-2">
-          <Label htmlFor="image" className="text-xs font-medium uppercase tracking-wide">
-            Profile Picture
-          </Label>
-          <Input
-            id="image"
-            type="file"
-            accept="image/*"
-            ref={imageFileRef}
-            disabled={isLoading}
-            onChange={(e) => {
-              const files = e.target.files;
-              if (files && files.length > 0 && files[0]) {
-                setSelectedFileName(files[0].name);
-              } else {
-                setSelectedFileName(null);
-              }
-            }}
-          />
-          {selectedFileName && (
-            <p className="text-xs text-muted-foreground">
-              Selected: {selectedFileName}
-            </p>
-          )}
-        </div>
+          <div className="space-y-2">
+            <Label htmlFor="image" className="text-body-small font-medium">
+              Profile Picture
+            </Label>
+            <Input
+              id="image"
+              type="file"
+              accept="image/*"
+              ref={imageFileRef}
+              disabled={isLoading}
+              onChange={(e) => {
+                const files = e.target.files;
+                if (files && files.length > 0 && files[0]) {
+                  setSelectedFileName(files[0].name);
+                } else {
+                  setSelectedFileName(null);
+                }
+              }}
+            />
+            {selectedFileName && (
+              <p className="text-body-small text-muted-foreground">
+                Selected: {selectedFileName}
+              </p>
+            )}
+          </div>
 
-        <div className="flex gap-2 pt-4 border-t border-border">
-          <Button type="submit" size="sm" disabled={isLoading}>
-            {isLoading ? "Saving..." : "Save Changes"}
-          </Button>
-          <Button
-            type="button"
-            variant="outline"
-            size="sm"
-            onClick={handleCancel}
-            disabled={isLoading}
-          >
-            Cancel
-          </Button>
-        </div>
-      </form>
-    </div>
+          <div className="flex gap-3 pt-4 border-t border-border">
+            <Button type="submit" disabled={isLoading}>
+              {isLoading ? "Saving..." : "Save Changes"}
+            </Button>
+            <Button
+              type="button"
+              variant="outline"
+              onClick={handleCancel}
+              disabled={isLoading}
+            >
+              Cancel
+            </Button>
+          </div>
+        </form>
+      </CardContent>
+    </Card>
   );
 }

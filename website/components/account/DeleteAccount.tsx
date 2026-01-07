@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
@@ -18,6 +19,7 @@ import {
 import { Checkbox } from "@/components/ui/checkbox";
 import { accountDeletionSchema } from "@/lib/profile/types";
 import { toast } from "sonner";
+import { AlertTriangle } from "lucide-react";
 
 export function DeleteAccount() {
   const router = useRouter();
@@ -77,31 +79,40 @@ export function DeleteAccount() {
 
   return (
     <>
-      <div className="rounded-lg border border-red-200 bg-red-50/30 p-6">
-        <p className="text-sm text-foreground mb-1">
-          Permanently delete your account
-        </p>
-        <p className="text-sm text-muted-foreground mb-4">
-          This action cannot be undone. All your data will be removed.
-        </p>
-        <Button variant="destructive" size="sm" onClick={handleOpenDialog}>
-          Delete Account
-        </Button>
-      </div>
+      <Card className="border-destructive/20">
+        <CardHeader>
+          <div className="flex items-center gap-3">
+            <div className="rounded-lg bg-destructive/10 p-2">
+              <AlertTriangle className="h-5 w-5 text-destructive" />
+            </div>
+            <div>
+              <CardTitle className="text-body-large">Delete Account</CardTitle>
+              <CardDescription>
+                Permanently delete your account and all associated data
+              </CardDescription>
+            </div>
+          </div>
+        </CardHeader>
+        <CardContent>
+          <Button variant="destructive" onClick={handleOpenDialog}>
+            Delete Account
+          </Button>
+        </CardContent>
+      </Card>
 
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
         <DialogContent className="max-w-md">
           <DialogHeader>
-            <DialogTitle className="text-red-600">Delete Account?</DialogTitle>
+            <DialogTitle className="text-destructive">Delete Account?</DialogTitle>
             <DialogDescription>
-              This will permanently delete your account and all associated data.
+              This action cannot be undone. All your data will be permanently deleted.
             </DialogDescription>
           </DialogHeader>
 
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-            <div className="text-sm text-muted-foreground">
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+            <div className="text-body-base text-muted-foreground">
               <p className="font-medium text-foreground mb-2">What will be deleted:</p>
-              <ul className="list-disc list-inside space-y-1">
+              <ul className="list-disc list-inside space-y-1 text-body-small">
                 <li>Your profile information</li>
                 <li>Saved addresses</li>
                 <li>Garage favorites</li>
@@ -111,7 +122,7 @@ export function DeleteAccount() {
 
             <div className="space-y-2">
               <Label htmlFor="confirmation">
-                Type <span className="font-mono font-bold">DELETE</span> to confirm
+                Type <span className="font-mono font-bold text-destructive">DELETE</span> to confirm
               </Label>
               <Input
                 id="confirmation"
@@ -121,7 +132,7 @@ export function DeleteAccount() {
                 className="font-mono"
               />
               {errors.confirmation && (
-                <p className="text-sm text-red-600">{errors.confirmation.message}</p>
+                <p className="text-body-small text-destructive">{errors.confirmation.message}</p>
               )}
             </div>
 
@@ -132,12 +143,12 @@ export function DeleteAccount() {
                 onCheckedChange={(checked) => setValue("understood", checked as boolean)}
                 disabled={isLoading}
               />
-              <Label htmlFor="understood" className="text-sm cursor-pointer leading-tight">
-                I understand this action is permanent
+              <Label htmlFor="understood" className="text-body-base cursor-pointer leading-tight">
+                I understand this action is permanent and cannot be undone
               </Label>
             </div>
             {errors.understood && (
-              <p className="text-sm text-red-600">{errors.understood.message}</p>
+              <p className="text-body-small text-destructive">{errors.understood.message}</p>
             )}
 
             <DialogFooter className="gap-2">
