@@ -9,8 +9,26 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
 
+interface ServiceSection {
+  title: string;
+  content: string;
+}
+
+interface Service {
+  title: string;
+  heroTitle: string;
+  tagline: string;
+  description: string;
+  heroImage: string;
+  sections: ServiceSection[];
+  conclusion: string;
+  formTitle: string;
+  formDescription: string;
+  extendedDescription?: string;
+}
+
 // Service data - in the future, this will come from Sanity CMS
-const services = {
+const services: Record<string, Service> = {
   conditioning: {
     title: "Conditioning & Protection",
     heroTitle: "CONDITIONING",
@@ -170,9 +188,11 @@ Our goal is not just to make your BMW look new, but to preserve its character an
     formDescription:
       "Describe the cosmetic work needed and upload photos if available. Our team will review your request and contact you with next steps.",
   },
-} as const;
+};
 
-type ServiceSlug = keyof typeof services;
+function getService(slug: string): Service | undefined {
+  return services[slug];
+}
 
 export async function generateStaticParams() {
   return Object.keys(services).map((slug) => ({ slug }));
@@ -181,8 +201,8 @@ export async function generateStaticParams() {
 export async function generateMetadata(props: {
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
-  const params = await props.params;
-  const service = services[params.slug as ServiceSlug];
+  const { slug } = await props.params;
+  const service = getService(slug);
 
   if (!service) {
     return { title: "Service Not Found" };
@@ -203,11 +223,11 @@ export async function generateMetadata(props: {
 export default async function ServiceDetailPage(props: {
   params: Promise<{ slug: string }>;
 }) {
-  const params = await props.params;
-  const service = services[params.slug as ServiceSlug];
+  const { slug } = await props.params;
+  const service = getService(slug);
 
   if (!service) {
-    notFound();
+    return notFound();
   }
 
   return (
@@ -242,7 +262,7 @@ export default async function ServiceDetailPage(props: {
       {/* Service Overview Section */}
       <Section className="py-12 sm:py-16 lg:py-20">
         <TitleBlock
-          title={service.tagline || service.title}
+          title={service.tagline ?? service.title}
           description={service.description}
           className="mb-10 sm:mb-12"
         />

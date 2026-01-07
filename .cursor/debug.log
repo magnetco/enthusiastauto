@@ -825,3 +825,8 @@
 {"location":"middleware.ts:30","message":"Middleware entry","data":{"pathname":"/search","isAuthRoute":false},"timestamp":1767817491742,"sessionId":"debug-session","runId":"run1","hypothesisId":"H1"}
 {"location":"middleware.ts:30","message":"Middleware entry","data":{"pathname":"/api/search","isAuthRoute":false},"timestamp":1767817491800,"sessionId":"debug-session","runId":"run1","hypothesisId":"H1"}
 {"location":"middleware.ts:30","message":"Middleware entry","data":{"pathname":"/vehicles","isAuthRoute":false},"timestamp":1767817493239,"sessionId":"debug-session","runId":"run1","hypothesisId":"H1"}
+{"location":"middleware.ts:30","message":"Middleware entry","data":{"pathname":"/api/dev/status","isAuthRoute":false},"timestamp":1767817510617,"sessionId":"debug-session","runId":"run1","hypothesisId":"H1"}
+{"location":"middleware.ts:30","message":"Middleware entry","data":{"pathname":"/api/auth/session","isAuthRoute":true},"timestamp":1767817510623,"sessionId":"debug-session","runId":"run1","hypothesisId":"H1"}
+{"location":"middleware.ts:30","message":"Middleware entry","data":{"pathname":"/api/auth/session","isAuthRoute":true},"timestamp":1767817510876,"sessionId":"debug-session","runId":"run1","hypothesisId":"H1"}
+{"location":"middleware.ts:30","message":"Middleware entry","data":{"pathname":"/api/user/favorites","isAuthRoute":false},"timestamp":1767817510876,"sessionId":"debug-session","runId":"run1","hypothesisId":"H1"}
+{"location":"middleware.ts:30","message":"Middleware entry","data":{"pathname":"/api/user/favorites","isAuthRoute":false},"timestamp":1767817512070,"sessionId":"debug-session","runId":"run1","hypothesisId":"H1"}
