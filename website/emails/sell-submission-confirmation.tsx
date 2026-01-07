@@ -50,7 +50,10 @@ export const SellSubmissionConfirmationEmail = ({
   vin = "WBSWD93508PX12345",
   notes,
 }: SellSubmissionConfirmationEmailProps) => {
-  const optionInfo = SELL_OPTION_LABELS[sellOption] || SELL_OPTION_LABELS.sell;
+  const optionInfo = SELL_OPTION_LABELS[sellOption] ?? SELL_OPTION_LABELS.sell;
+  
+  // TypeScript guard
+  if (!optionInfo) return null;
 
   return (
     <Html>

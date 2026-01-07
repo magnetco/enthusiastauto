@@ -1,4 +1,5 @@
 import { client } from "../client";
+import type { PortableTextBlock } from "@portabletext/types";
 
 /**
  * Blog post category types
@@ -30,7 +31,7 @@ export interface PostListItem {
  * Full blog post detail with body content
  */
 export interface PostDetail extends PostListItem {
-  body: unknown[]; // Portable Text blocks
+  body: PortableTextBlock[]; // Portable Text blocks
 }
 
 /**

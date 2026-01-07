@@ -37,6 +37,9 @@ export function FeaturedCarousel({ posts }: FeaturedCarouselProps) {
   };
 
   const currentPost = posts[currentIndex];
+  
+  // TypeScript guard - we know posts.length > 0 from the check above
+  if (!currentPost) return null;
 
   const formattedDate = new Date(currentPost.publishedAt).toLocaleDateString(
     "en-US",

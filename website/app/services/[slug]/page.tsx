@@ -1,5 +1,6 @@
 import Section from "@/components/layout/section";
 import { ServiceRequestForm } from "@/components/services/ServiceRequestForm";
+import { ServiceSelectionProvider } from "@/components/services/ServiceSelectionContext";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
@@ -242,7 +243,9 @@ export default async function ServiceDetailPage(props: {
 						</div>
 					}
 				>
-					<ServiceRequestForm />
+					<ServiceSelectionProvider>
+						<ServiceRequestForm />
+					</ServiceSelectionProvider>
 				</Suspense>
 			</Section>
 		</>

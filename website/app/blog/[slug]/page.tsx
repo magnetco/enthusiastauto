@@ -42,6 +42,7 @@ const placeholderPosts = {
         _ref: "",
         url: "https://images.unsplash.com/photo-1555215695-3004980ad54e?q=80&w=2070&auto=format&fit=crop",
       },
+      alt: "BMW M car in dramatic lighting",
     },
     body: null,
     bodyText: `In 1972 BMW Motorsport GmbH was created with only 35 employees with an emphasis racing and to this day is the desire for all BMW enthusiasts. With over 50 years of evolution the most powerful letter has evolved drastically be it the powerplant for McLaren F1, the beacon when you open your garage and tackle that project vehicle, or the goal you have when hearing a new ///M model is coming to a local dealership near you.
@@ -74,6 +75,7 @@ So, what does BMW ///M mean to you? Is it your daily driver? A weekend warrior? 
         _ref: "",
         url: "https://images.unsplash.com/photo-1544636331-e26879cd4d9b?q=80&w=2070&auto=format&fit=crop",
       },
+      alt: "BMW E39 M5 sedan in silver",
     },
     body: null,
     bodyText: `Whether you're attempting to film a high-speed vehicle on camera in the salt flats or getting Madonna to her show, the E39 M5 captured the hearts of enthusiasts worldwide including ours, which is why it's a staple of EAG.
@@ -110,6 +112,7 @@ We've handled dozens of E39 M5s over the years, from low-mile time capsules to w
         _ref: "",
         url: "https://images.unsplash.com/photo-1580273916550-e323be2ae537?q=80&w=2070&auto=format&fit=crop",
       },
+      alt: "Low-mileage E39 M5 undergoing rejuvenation",
     },
     body: null,
     bodyText: `Over the past week we've celebrated the E39 M5 and the responses from enthusiasts worldwide have been wonderful.
@@ -153,6 +156,7 @@ After our rejuvenation process, this E39 M5 drives exactly as BMW intended—lik
         _ref: "",
         url: "https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?q=80&w=2083&auto=format&fit=crop",
       },
+      alt: "Cars gathered at EAG Open House 2024",
     },
     body: null,
     bodyText: `We started planning our open house months in advance, getting a killer assortment of cars together from our friends in the area, setting up some of our newly refurbished buildings for guests and organizing food trucks. We thought we had everything covered.

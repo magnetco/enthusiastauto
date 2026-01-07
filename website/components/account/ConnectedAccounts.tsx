@@ -104,7 +104,7 @@ export function ConnectedAccounts({
               <div className="flex items-center gap-4">
                 <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
                   <span className="text-body-base font-semibold text-primary">
-                    {providerIcons[account.provider] || account.provider[0].toUpperCase()}
+                    {providerIcons[account.provider] || account.provider?.[0]?.toUpperCase() || "?"}
                   </span>
                 </div>
                 <div>

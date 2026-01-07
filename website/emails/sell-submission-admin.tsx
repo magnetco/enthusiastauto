@@ -64,7 +64,10 @@ export const SellSubmissionAdminEmail = ({
   newsletter = false,
   submittedAt = "January 6, 2026 at 3:45 PM EST",
 }: SellSubmissionAdminEmailProps) => {
-  const optionInfo = SELL_OPTION_LABELS[sellOption] || SELL_OPTION_LABELS.sell;
+  const optionInfo = SELL_OPTION_LABELS[sellOption] ?? SELL_OPTION_LABELS.sell;
+  
+  // TypeScript guard
+  if (!optionInfo) return null;
 
   return (
     <Html>

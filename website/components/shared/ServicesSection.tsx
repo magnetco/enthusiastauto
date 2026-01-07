@@ -46,6 +46,9 @@ const services = [
 
 export function ServicesSection() {
   const [featured, ...secondaryServices] = services;
+  
+  // TypeScript guard - services array is always populated
+  if (!featured) return null;
 
   return (
     <section
