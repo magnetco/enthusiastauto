@@ -2,8 +2,6 @@
 
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { ProfileCard } from "@/components/account/ProfileCard";
-import { Badge } from "@/components/ui/badge";
 import {
   Dialog,
   DialogContent,
@@ -13,6 +11,7 @@ import {
   DialogFooter,
 } from "@/components/ui/dialog";
 import { toast } from "sonner";
+import { Link2 } from "lucide-react";
 
 interface Account {
   id: string;
@@ -38,9 +37,7 @@ export function ConnectedAccounts({
 
   const handleUnlink = async (provider: string) => {
     if (!canUnlink) {
-      toast.error(
-        "Cannot unlink your only authentication method. Please add a password first."
-      );
+      toast.error("Cannot unlink your only authentication method");
       return;
     }
 
@@ -56,105 +53,77 @@ export function ConnectedAccounts({
         throw new Error(data.error || "Failed to unlink account");
       }
 
-      toast.success(`${provider} account unlinked successfully`);
+      toast.success(`${provider} account unlinked`);
       setUnlinkConfirm(null);
       onUpdate?.();
     } catch (error) {
       toast.error(
-        error instanceof Error
-          ? error.message
-          : "Something went wrong. Please try again."
+        error instanceof Error ? error.message : "Something went wrong"
       );
     } finally {
       setIsLoading(false);
     }
   };
 
-  const getProviderIcon = (provider: string) => {
-    switch (provider.toLowerCase()) {
-      case "google":
-        return "🔵"; // In production, use actual Google icon
-      case "facebook":
-        return "🔷"; // In production, use actual Facebook icon
-      default:
-        return "🔗";
-    }
-  };
+  if (accounts.length === 0) {
+    return (
+      <div className="rounded-lg border border-border p-6">
+        <div className="text-center py-4">
+          <div className="mx-auto w-12 h-12 rounded-full bg-muted flex items-center justify-center mb-4">
+            <Link2 className="h-5 w-5 text-muted-foreground" />
+          </div>
+          <p className="text-sm text-muted-foreground">
+            No connected accounts. Link Google or GitHub for faster login.
+          </p>
+        </div>
+      </div>
+    );
+  }
 
   return (
-    <ProfileCard
-      title="Connected Accounts"
-      description="Manage your social login connections"
-    >
-      {accounts.length === 0 ? (
-        <div className="text-center py-8">
-          <p className="text-gray-500 mb-4">
-            No social accounts linked.
-          </p>
-          <p className="text-sm text-gray-400">
-            Link Google or Facebook for faster login.
-          </p>
-        </div>
-      ) : (
-        <div className="space-y-4">
-          {accounts.map((account) => (
-            <div
-              key={account.id}
-              className="flex items-center justify-between border rounded-lg p-4"
-            >
-              <div className="flex items-center gap-3">
-                <span className="text-2xl">
-                  {getProviderIcon(account.provider)}
+    <>
+      <div className="rounded-lg border border-border divide-y divide-border">
+        {accounts.map((account) => (
+          <div
+            key={account.id}
+            className="flex items-center justify-between p-4"
+          >
+            <div className="flex items-center gap-3">
+              <div className="w-8 h-8 rounded bg-muted flex items-center justify-center">
+                <span className="text-sm font-medium text-muted-foreground">
+                  {account.provider[0].toUpperCase()}
                 </span>
-                <div>
-                  <p className="font-semibold capitalize">
-                    {account.provider}
-                  </p>
-                  <p className="text-sm text-gray-500">
-                    Account ID: {account.providerAccountId.substring(0, 12)}...
-                  </p>
-                </div>
-                <Badge variant="secondary">Linked</Badge>
               </div>
-
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => setUnlinkConfirm(account.provider)}
-                disabled={!canUnlink || isLoading}
-                title={
-                  !canUnlink
-                    ? "Add a password before unlinking your only authentication method"
-                    : ""
-                }
-              >
-                Unlink
-              </Button>
+              <div>
+                <p className="text-sm font-medium text-foreground capitalize">
+                  {account.provider}
+                </p>
+                <p className="text-xs text-muted-foreground">Connected</p>
+              </div>
             </div>
-          ))}
-        </div>
+            <button
+              onClick={() => setUnlinkConfirm(account.provider)}
+              disabled={!canUnlink || isLoading}
+              className="text-sm text-muted-foreground hover:text-foreground transition-colors disabled:opacity-50"
+            >
+              Unlink
+            </button>
+          </div>
+        ))}
+      </div>
+
+      {!canUnlink && (
+        <p className="text-xs text-muted-foreground mt-2">
+          Add a password before unlinking your only authentication method.
+        </p>
       )}
 
-      {!canUnlink && accounts.length > 0 && (
-        <div className="mt-4 rounded-lg bg-yellow-50 border border-yellow-200 p-4 text-sm text-yellow-900">
-          <p className="font-medium mb-1">Cannot Unlink</p>
-          <p>
-            Add a password to your account before unlinking your only
-            authentication method.
-          </p>
-        </div>
-      )}
-
-      <Dialog
-        open={!!unlinkConfirm}
-        onOpenChange={() => setUnlinkConfirm(null)}
-      >
+      <Dialog open={!!unlinkConfirm} onOpenChange={() => setUnlinkConfirm(null)}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Unlink {unlinkConfirm} Account?</DialogTitle>
+            <DialogTitle>Unlink {unlinkConfirm}?</DialogTitle>
             <DialogDescription>
-              Are you sure you want to unlink your {unlinkConfirm} account?
-              You can re-link it at any time.
+              You can re-link this account at any time.
             </DialogDescription>
           </DialogHeader>
           <DialogFooter>
@@ -167,16 +136,14 @@ export function ConnectedAccounts({
             </Button>
             <Button
               variant="destructive"
-              onClick={() =>
-                unlinkConfirm && handleUnlink(unlinkConfirm)
-              }
+              onClick={() => unlinkConfirm && handleUnlink(unlinkConfirm)}
               disabled={isLoading}
             >
-              {isLoading ? "Unlinking..." : "Unlink Account"}
+              {isLoading ? "Unlinking..." : "Unlink"}
             </Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
-    </ProfileCard>
+    </>
   );
 }

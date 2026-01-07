@@ -2,19 +2,11 @@
 
 import { useState, useMemo } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { Badge } from "@/components/ui/badge";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { GarageItemCard } from "@/components/favorites/GarageItemCard";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { AlertCircle, Car, Package, ShoppingBag } from "lucide-react";
+import { Car, Package, ShoppingBag, ChevronDown } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 interface GarageItem {
   id: string;
@@ -48,6 +40,7 @@ export function GarageContent({
   const defaultTab = (searchParams.get("tab") || "all") as TabOption;
   const [activeTab, setActiveTab] = useState<TabOption>(defaultTab);
   const [sortBy, setSortBy] = useState<SortOption>("date-desc");
+  const [sortOpen, setSortOpen] = useState(false);
 
   // Filter items by tab
   const filteredItems = useMemo(() => {
@@ -85,8 +78,8 @@ export function GarageContent({
   const vehicleCount = items.filter((item) => item.type === "vehicle").length;
   const productCount = items.filter((item) => item.type === "product").length;
 
-  const handleTabChange = (value: string) => {
-    setActiveTab(value as TabOption);
+  const handleTabChange = (value: TabOption) => {
+    setActiveTab(value);
     const params = new URLSearchParams(searchParams);
     params.set("tab", value);
     router.push(`?${params.toString()}`, { scroll: false });
@@ -109,20 +102,30 @@ export function GarageContent({
       throw new Error("Failed to remove item");
     }
 
-    // Remove item from local state
     setItems((prev) => prev.filter((item) => item.id !== itemId));
   };
 
   const usagePercentage = (totalCount / garageLimit) * 100;
   const showWarning = usagePercentage >= 80;
 
+  const tabs = [
+    { value: "all" as const, label: "All", count: totalCount },
+    { value: "vehicles" as const, label: "Vehicles", count: vehicleCount, icon: Car },
+    { value: "products" as const, label: "Parts", count: productCount, icon: Package },
+  ];
+
+  const sortOptions = [
+    { value: "date-desc" as const, label: "Recently Added" },
+    { value: "price-asc" as const, label: "Price: Low to High" },
+    { value: "price-desc" as const, label: "Price: High to Low" },
+  ];
+
   return (
     <div className="space-y-6">
       {/* Warning Banner */}
       {showWarning && (
-        <div className="flex items-center gap-3 rounded-lg border border-yellow-500/50 bg-yellow-500/10 p-4 text-yellow-500">
-          <AlertCircle className="h-5 w-5 flex-shrink-0" />
-          <p className="text-sm">
+        <div className="border-l-2 border-amber-500 bg-amber-50/50 py-3 pl-4 pr-4">
+          <p className="text-sm text-amber-900">
             Your garage is {usagePercentage >= 100 ? "full" : "almost full"} (
             {totalCount}/{garageLimit}). Remove items to add more.
           </p>
@@ -130,87 +133,93 @@ export function GarageContent({
       )}
 
       {/* Tabs and Controls */}
-      <Tabs value={activeTab} onValueChange={handleTabChange}>
-        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-          <TabsList>
-            <TabsTrigger value="all">
-              All {totalCount > 0 && `(${totalCount})`}
-            </TabsTrigger>
-            <TabsTrigger value="vehicles">
-              <Car className="mr-2 h-4 w-4" />
-              Vehicles {vehicleCount > 0 && `(${vehicleCount})`}
-            </TabsTrigger>
-            <TabsTrigger value="products">
-              <Package className="mr-2 h-4 w-4" />
-              Parts {productCount > 0 && `(${productCount})`}
-            </TabsTrigger>
-          </TabsList>
-
-          {items.length > 0 && (
-            <Select value={sortBy} onValueChange={(v) => setSortBy(v as SortOption)}>
-              <SelectTrigger className="w-[180px]">
-                <SelectValue placeholder="Sort by" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="date-desc">Date Added</SelectItem>
-                <SelectItem value="price-asc">Price: Low to High</SelectItem>
-                <SelectItem value="price-desc">Price: High to Low</SelectItem>
-              </SelectContent>
-            </Select>
-          )}
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+        {/* Tabs */}
+        <div className="flex gap-1 border-b border-border sm:border-0">
+          {tabs.map((tab) => (
+            <button
+              key={tab.value}
+              onClick={() => handleTabChange(tab.value)}
+              className={cn(
+                "flex items-center gap-1.5 px-3 py-2 text-sm transition-colors border-b-2 -mb-px sm:mb-0 sm:border-0 sm:rounded-full",
+                activeTab === tab.value
+                  ? "border-foreground text-foreground sm:bg-foreground sm:text-background font-medium"
+                  : "border-transparent text-muted-foreground hover:text-foreground sm:hover:bg-muted"
+              )}
+            >
+              {tab.icon && <tab.icon className="h-4 w-4" />}
+              <span>{tab.label}</span>
+              {tab.count > 0 && (
+                <span className={cn(
+                  "text-xs",
+                  activeTab === tab.value ? "opacity-70" : "opacity-50"
+                )}>
+                  ({tab.count})
+                </span>
+              )}
+            </button>
+          ))}
         </div>
 
-        <TabsContent value="all" className="mt-6">
-          {sortedItems.length > 0 ? (
-            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 lg:gap-8 xl:grid-cols-4">
-              {sortedItems.map((item) => (
-                <GarageItemCard
-                  key={item.id}
-                  item={item}
-                  itemType={item.type}
-                  onRemove={handleRemove}
-                />
-              ))}
-            </div>
-          ) : (
-            <EmptyState type="all" />
-          )}
-        </TabsContent>
+        {/* Sort Dropdown */}
+        {items.length > 0 && (
+          <div className="relative">
+            <button
+              onClick={() => setSortOpen(!sortOpen)}
+              className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
+            >
+              <span>
+                {sortOptions.find((o) => o.value === sortBy)?.label || "Sort by"}
+              </span>
+              <ChevronDown className="h-4 w-4" />
+            </button>
 
-        <TabsContent value="vehicles" className="mt-6">
-          {sortedItems.length > 0 ? (
-            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 lg:gap-8 xl:grid-cols-4">
-              {sortedItems.map((item) => (
-                <GarageItemCard
-                  key={item.id}
-                  item={item}
-                  itemType={item.type}
-                  onRemove={handleRemove}
+            {sortOpen && (
+              <>
+                <div
+                  className="fixed inset-0 z-10"
+                  onClick={() => setSortOpen(false)}
                 />
-              ))}
-            </div>
-          ) : (
-            <EmptyState type="vehicles" />
-          )}
-        </TabsContent>
+                <div className="absolute right-0 top-full mt-2 z-20 min-w-[180px] rounded-lg border border-border bg-background py-1 shadow-lg">
+                  {sortOptions.map((option) => (
+                    <button
+                      key={option.value}
+                      onClick={() => {
+                        setSortBy(option.value);
+                        setSortOpen(false);
+                      }}
+                      className={cn(
+                        "block w-full px-4 py-2 text-left text-sm transition-colors",
+                        sortBy === option.value
+                          ? "bg-muted text-foreground"
+                          : "text-muted-foreground hover:bg-muted hover:text-foreground"
+                      )}
+                    >
+                      {option.label}
+                    </button>
+                  ))}
+                </div>
+              </>
+            )}
+          </div>
+        )}
+      </div>
 
-        <TabsContent value="products" className="mt-6">
-          {sortedItems.length > 0 ? (
-            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 lg:gap-8 xl:grid-cols-4">
-              {sortedItems.map((item) => (
-                <GarageItemCard
-                  key={item.id}
-                  item={item}
-                  itemType={item.type}
-                  onRemove={handleRemove}
-                />
-              ))}
-            </div>
-          ) : (
-            <EmptyState type="products" />
-          )}
-        </TabsContent>
-      </Tabs>
+      {/* Items Grid */}
+      {sortedItems.length > 0 ? (
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {sortedItems.map((item) => (
+            <GarageItemCard
+              key={item.id}
+              item={item}
+              itemType={item.type}
+              onRemove={handleRemove}
+            />
+          ))}
+        </div>
+      ) : (
+        <EmptyState type={activeTab} />
+      )}
     </div>
   );
 }
@@ -220,42 +229,49 @@ function EmptyState({ type }: { type: "all" | "vehicles" | "products" }) {
     all: {
       icon: ShoppingBag,
       title: "Your garage is empty",
-      description:
-        "Start saving your favorite vehicles and parts to easily find them later.",
+      description: "Save vehicles and parts to find them quickly later.",
       buttons: [
         { label: "Browse Vehicles", href: "/vehicles" },
-        { label: "Shop Parts", href: "/search" },
+        { label: "Shop Parts", href: "/parts" },
       ],
     },
     vehicles: {
       icon: Car,
-      title: "No saved vehicles yet",
-      description:
-        "Explore our inventory and save vehicles you're interested in.",
+      title: "No saved vehicles",
+      description: "Explore our inventory and save vehicles you're interested in.",
       buttons: [{ label: "Browse Vehicles", href: "/vehicles" }],
     },
     products: {
       icon: Package,
-      title: "No saved parts yet",
-      description: "Shop for parts and save your favorites to access them quickly.",
-      buttons: [{ label: "Shop Parts", href: "/search" }],
+      title: "No saved parts",
+      description: "Shop for parts and save your favorites.",
+      buttons: [{ label: "Shop Parts", href: "/parts" }],
     },
   };
 
   const { icon: Icon, title, description, buttons } = config[type];
 
   return (
-    <div className="flex min-h-[400px] flex-col items-center justify-center rounded-lg border border-dashed border-border p-8 text-center">
-      <Icon className="mb-4 h-16 w-16 text-muted-foreground" />
-      <h3 className="mb-2 text-title-3 font-semibold text-foreground">{title}</h3>
-      <p className="mb-6 max-w-md text-sm text-muted-foreground">
-        {description}
-      </p>
-      <div className="flex gap-3">
-        {buttons.map((button) => (
-          <Button key={button.href} asChild>
-            <Link href={button.href}>{button.label}</Link>
-          </Button>
+    <div className="flex min-h-[300px] flex-col items-center justify-center rounded-lg border border-dashed border-border p-8 text-center">
+      <div className="mx-auto w-12 h-12 rounded-full bg-muted flex items-center justify-center mb-4">
+        <Icon className="h-5 w-5 text-muted-foreground" />
+      </div>
+      <h3 className="text-base font-semibold text-foreground mb-1">{title}</h3>
+      <p className="text-sm text-muted-foreground max-w-sm mb-6">{description}</p>
+      <div className="flex items-center gap-3">
+        {buttons.map((button, index) => (
+          <Link
+            key={button.href}
+            href={button.href}
+            className={cn(
+              "text-sm font-medium transition-colors",
+              index === 0
+                ? "text-foreground hover:text-primary"
+                : "text-muted-foreground hover:text-foreground"
+            )}
+          >
+            {button.label}
+          </Link>
         ))}
       </div>
     </div>

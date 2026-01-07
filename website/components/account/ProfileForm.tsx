@@ -1,7 +1,6 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { ProfileCard } from "@/components/account/ProfileCard";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { profileUpdateSchema, type ProfileUpdateInput } from "@/lib/profile/types";
@@ -43,7 +42,7 @@ export function ProfileForm({ user, onUpdate }: ProfileFormProps) {
     try {
       const formData = new FormData();
       formData.append("name", data.name);
-      
+
       const fileInput = imageFileRef.current;
       if (fileInput?.files && fileInput.files.length > 0) {
         const file = fileInput.files[0];
@@ -90,114 +89,125 @@ export function ProfileForm({ user, onUpdate }: ProfileFormProps) {
     setIsEditing(false);
   };
 
-  const handleEditClick = (e: React.MouseEvent) => {
-    e.preventDefault();
-    setIsEditing(true);
-  };
-
-  return (
-    <ProfileCard
-      title="Profile Information"
-      description="Manage your personal information and profile picture"
-    >
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-        <div className="space-y-2">
-          <Label htmlFor="name">Name</Label>
-          {isEditing ? (
-            <>
-              <Input
-                id="name"
-                {...register("name")}
-                placeholder="Enter your name"
-                disabled={isLoading}
-              />
-              {errors.name && (
-                <p className="text-sm text-red-600">{errors.name.message}</p>
-              )}
-            </>
-          ) : (
-            <p className="text-sm font-medium">{user.name || "Not set"}</p>
-          )}
-        </div>
-
-        <div className="space-y-2">
-          <Label htmlFor="email">Email</Label>
-          <p className="text-sm font-medium text-gray-500">{user.email}</p>
-          <p className="text-xs text-gray-400">Email cannot be changed</p>
-        </div>
-
-        <div className="space-y-2">
-          <Label htmlFor="image">Profile Picture</Label>
-          {isEditing ? (
-            <div className="space-y-2">
-              <Input
-                id="image"
-                type="file"
-                accept="image/*"
-                ref={imageFileRef}
-                disabled={isLoading}
-                onChange={(e) => {
-                  const files = e.target.files;
-                  if (files && files.length > 0 && files[0]) {
-                    setSelectedFileName(files[0].name);
-                  } else {
-                    setSelectedFileName(null);
-                  }
-                }}
-              />
-              {selectedFileName && (
-                <p className="text-xs text-gray-500">
-                  Selected: {selectedFileName}
-                </p>
-              )}
-              <p className="text-xs text-gray-500">
-                Upload a new profile picture. Leave empty to keep current.
-              </p>
-            </div>
-          ) : (
-            <div className="flex items-center gap-4">
+  if (!isEditing) {
+    return (
+      <div className="rounded-lg border border-border p-6">
+        <div className="space-y-4">
+          <div>
+            <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide mb-1">
+              Name
+            </p>
+            <p className="text-sm font-medium text-foreground">
+              {user.name || "Not set"}
+            </p>
+          </div>
+          <div>
+            <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide mb-1">
+              Email
+            </p>
+            <p className="text-sm font-medium text-foreground">{user.email}</p>
+            <p className="text-xs text-muted-foreground mt-0.5">
+              Email cannot be changed
+            </p>
+          </div>
+          <div>
+            <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide mb-1">
+              Profile Picture
+            </p>
+            <div className="flex items-center gap-3">
               {user.image ? (
                 <img
                   src={user.image}
                   alt="Profile"
-                  className="w-16 h-16 rounded-full object-cover"
+                  className="w-10 h-10 rounded-full object-cover"
                 />
               ) : (
-                <div className="w-16 h-16 rounded-full bg-gray-200 flex items-center justify-center">
-                  <span className="text-gray-500">No image</span>
+                <div className="w-10 h-10 rounded-full bg-muted flex items-center justify-center">
+                  <span className="text-xs text-muted-foreground">None</span>
                 </div>
               )}
-              <div>
-                <p className="text-sm text-gray-600">
-                  {user.image ? "Profile picture set" : "No profile picture"}
-                </p>
-              </div>
+              <p className="text-sm text-muted-foreground">
+                {user.image ? "Profile picture set" : "No profile picture"}
+              </p>
             </div>
+          </div>
+        </div>
+        <div className="mt-6 pt-4 border-t border-border">
+          <Button variant="outline" size="sm" onClick={() => setIsEditing(true)}>
+            Edit Profile
+          </Button>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="rounded-lg border border-border p-6">
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+        <div className="space-y-2">
+          <Label htmlFor="name" className="text-xs font-medium uppercase tracking-wide">
+            Name
+          </Label>
+          <Input
+            id="name"
+            {...register("name")}
+            placeholder="Enter your name"
+            disabled={isLoading}
+          />
+          {errors.name && (
+            <p className="text-sm text-red-600">{errors.name.message}</p>
           )}
         </div>
 
-        <div className="flex gap-2 pt-2">
-          {isEditing ? (
-            <>
-              <Button type="submit" disabled={isLoading}>
-                {isLoading ? "Saving..." : "Save Changes"}
-              </Button>
-              <Button
-                type="button"
-                variant="outline"
-                onClick={handleCancel}
-                disabled={isLoading}
-              >
-                Cancel
-              </Button>
-            </>
-          ) : (
-            <Button type="button" onClick={handleEditClick}>
-              Edit Profile
-            </Button>
+        <div className="space-y-2">
+          <Label htmlFor="email" className="text-xs font-medium uppercase tracking-wide">
+            Email
+          </Label>
+          <Input id="email" value={user.email} disabled className="bg-muted" />
+          <p className="text-xs text-muted-foreground">Email cannot be changed</p>
+        </div>
+
+        <div className="space-y-2">
+          <Label htmlFor="image" className="text-xs font-medium uppercase tracking-wide">
+            Profile Picture
+          </Label>
+          <Input
+            id="image"
+            type="file"
+            accept="image/*"
+            ref={imageFileRef}
+            disabled={isLoading}
+            onChange={(e) => {
+              const files = e.target.files;
+              if (files && files.length > 0 && files[0]) {
+                setSelectedFileName(files[0].name);
+              } else {
+                setSelectedFileName(null);
+              }
+            }}
+          />
+          {selectedFileName && (
+            <p className="text-xs text-muted-foreground">
+              Selected: {selectedFileName}
+            </p>
           )}
         </div>
+
+        <div className="flex gap-2 pt-4 border-t border-border">
+          <Button type="submit" size="sm" disabled={isLoading}>
+            {isLoading ? "Saving..." : "Save Changes"}
+          </Button>
+          <Button
+            type="button"
+            variant="outline"
+            size="sm"
+            onClick={handleCancel}
+            disabled={isLoading}
+          >
+            Cancel
+          </Button>
+        </div>
       </form>
-    </ProfileCard>
+    </div>
   );
 }

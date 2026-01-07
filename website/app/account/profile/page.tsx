@@ -23,7 +23,6 @@ export default async function ProfilePage() {
     redirect("/auth/signin?callbackUrl=/account/profile");
   }
 
-  // Fetch user data with related accounts
   const user = await prisma.user.findUnique({
     where: { id: session.user.id },
     include: {
@@ -35,7 +34,6 @@ export default async function ProfilePage() {
     redirect("/auth/signin");
   }
 
-  // Check if user has password authentication
   const hasPassword = !!(await prisma.account.findFirst({
     where: {
       userId: user.id,
@@ -43,7 +41,6 @@ export default async function ProfilePage() {
     },
   }));
 
-  // Get authentication methods
   const authMethods = user.accounts.map((account) => {
     switch (account.provider) {
       case "google":
@@ -56,49 +53,89 @@ export default async function ProfilePage() {
   });
 
   return (
-    <div className="space-y-6">
-      {/* Page Header */}
+    <div className="space-y-12">
+      {/* Header */}
       <div>
-        <h1 className="text-title-2 font-bold text-foreground">
-          Profile Settings
-        </h1>
-        <p className="mt-1 text-muted-foreground">
-          Manage your personal information, security, and preferences
+        <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground mb-2">
+          Account Settings
         </p>
+        <h1 className="text-2xl font-semibold text-foreground sm:text-3xl">
+          Profile
+        </h1>
       </div>
 
-      {/* User Overview Card */}
-      <ProfileCard
-        user={{
-          name: user.name,
-          email: user.email,
-          image: user.image,
-        }}
-        hasPassword={hasPassword}
-        authMethods={authMethods}
-        isOAuthAvatar={!!user.image && !hasPassword}
-      />
+      {/* Account Overview */}
+      <section>
+        <div className="flex items-center gap-3 mb-6">
+          <span className="text-brand-red font-medium">///</span>
+          <h2 className="text-lg font-semibold text-foreground">
+            Account Overview
+          </h2>
+        </div>
+        <ProfileCard
+          user={{
+            name: user.name,
+            email: user.email,
+            image: user.image,
+          }}
+          hasPassword={hasPassword}
+          authMethods={authMethods}
+          isOAuthAvatar={!!user.image && !hasPassword}
+        />
+      </section>
 
-      {/* Profile Form */}
-      <ProfileForm
-        user={{
-          name: user.name,
-          email: user.email,
-          image: user.image,
-        }}
-      />
+      {/* Profile Information */}
+      <section>
+        <div className="flex items-center gap-3 mb-6">
+          <span className="text-brand-red font-medium">///</span>
+          <h2 className="text-lg font-semibold text-foreground">
+            Profile Information
+          </h2>
+        </div>
+        <ProfileForm
+          user={{
+            name: user.name,
+            email: user.email,
+            image: user.image,
+          }}
+        />
+      </section>
 
-      {/* Change Password */}
-      <ChangePassword hasPassword={hasPassword} />
+      {/* Security */}
+      <section>
+        <div className="flex items-center gap-3 mb-6">
+          <span className="text-brand-red font-medium">///</span>
+          <h2 className="text-lg font-semibold text-foreground">
+            Security
+          </h2>
+        </div>
+        <div className="space-y-6">
+          <ChangePassword hasPassword={hasPassword} />
+          <ConnectedAccounts accounts={user.accounts} hasPassword={hasPassword} />
+        </div>
+      </section>
 
-      {/* Address Manager */}
-      <AddressManager />
+      {/* Addresses */}
+      <section>
+        <div className="flex items-center gap-3 mb-6">
+          <span className="text-brand-red font-medium">///</span>
+          <h2 className="text-lg font-semibold text-foreground">
+            Addresses
+          </h2>
+        </div>
+        <AddressManager />
+      </section>
 
-      {/* Connected Accounts */}
-      <ConnectedAccounts accounts={user.accounts} hasPassword={hasPassword} />
-
-      {/* Delete Account - Danger Zone */}
-      <DeleteAccount />
+      {/* Danger Zone */}
+      <section>
+        <div className="flex items-center gap-3 mb-6">
+          <span className="text-red-500 font-medium">///</span>
+          <h2 className="text-lg font-semibold text-foreground">
+            Danger Zone
+          </h2>
+        </div>
+        <DeleteAccount />
+      </section>
     </div>
   );
 }

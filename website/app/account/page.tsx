@@ -1,28 +1,22 @@
 import { Metadata } from "next";
+import Link from "next/link";
 import { getServerSession } from "@/lib/auth/session";
 import prisma from "@/lib/db/prisma";
 import { redirect } from "next/navigation";
 import { getVehicleDetail } from "@/lib/sanity/queries/vehicles";
 import { getProduct } from "@/lib/shopify";
-import { QuickActionCard, RecentFavorites } from "@/components/account";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
+import { RecentFavorites } from "@/components/account";
 import {
   Warehouse,
   User,
-  MapPin,
-  Heart,
   Car,
-  Package,
-  ShieldCheck,
   ArrowRight,
+  ShieldCheck,
 } from "lucide-react";
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
 
 export const metadata: Metadata = {
   title: "Dashboard",
-  description: "Your Enthusiast Auto account dashboard - view your garage, manage your profile, and more.",
+  description: "Your Enthusiast Auto account dashboard",
 };
 
 export default async function AccountDashboardPage() {
@@ -32,7 +26,6 @@ export default async function AccountDashboardPage() {
     redirect("/auth/signin?callbackUrl=/account");
   }
 
-  // Fetch user data with counts
   const [user, favoritesData] = await Promise.all([
     prisma.user.findUnique({
       where: { id: session.user.id },
@@ -56,7 +49,7 @@ export default async function AccountDashboardPage() {
         createdAt: true,
       },
       orderBy: { createdAt: "desc" },
-      take: 6,
+      take: 4,
     }),
   ]);
 
@@ -64,17 +57,13 @@ export default async function AccountDashboardPage() {
     redirect("/auth/signin");
   }
 
-  // Count addresses from JSON field
-  const addressCount = Array.isArray(user.addresses) ? user.addresses.length : 0;
-
-  // Get total favorites count
   const totalFavorites = await prisma.userFavorite.count({
     where: { userId: session.user.id },
   });
 
-  // Hydrate recent favorites with full data
+  // Hydrate recent favorites
   const recentFavorites = await Promise.all(
-    favoritesData.slice(0, 4).map(async (favorite) => {
+    favoritesData.map(async (favorite) => {
       try {
         if (favorite.itemType === "vehicle") {
           const vehicleSlug = favorite.itemHandle || favorite.itemId;
@@ -117,168 +106,91 @@ export default async function AccountDashboardPage() {
   );
 
   const validFavorites = recentFavorites.filter((item) => item !== null);
-
-  const vehicleCount = favoritesData.filter(
-    (f) => f.itemType === "vehicle"
-  ).length;
-  const productCount = favoritesData.filter(
-    (f) => f.itemType === "product"
-  ).length;
-
   const garageLimit = parseInt(process.env.GARAGE_ITEM_LIMIT || "50", 10);
 
   return (
-    <div className="space-y-6">
-      {/* Welcome Section */}
-      <div className="rounded-xl border bg-gradient-to-br from-primary/5 via-accent/5 to-transparent p-6">
-        <h1 className="text-title-2 font-bold text-foreground">
-          Welcome back{user.name ? `, ${user.name.split(" ")[0]}` : ""}!
-        </h1>
-        <p className="mt-1 text-muted-foreground">
-          Manage your garage, profile, and preferences from your account dashboard.
-        </p>
-
-        {/* Email Verification Status */}
-        {!user.emailVerified && (
-          <div className="mt-4 flex items-center gap-2 rounded-lg border border-yellow-200 bg-yellow-50 px-4 py-3">
-            <ShieldCheck className="h-5 w-5 text-yellow-600" />
-            <div className="flex-1">
-              <p className="text-sm font-medium text-yellow-800">
-                Email not verified
-              </p>
-              <p className="text-xs text-yellow-700">
-                Verify your email to unlock all features
-              </p>
-            </div>
-            <Button size="sm" variant="outline" className="text-yellow-700 border-yellow-300 hover:bg-yellow-100">
-              Resend
-            </Button>
-          </div>
-        )}
-      </div>
-
-      {/* Quick Stats */}
-      <div className="grid gap-4 sm:grid-cols-3">
-        <Card className="relative overflow-hidden">
-          <CardContent className="flex items-center gap-4 py-4">
-            <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-blue-100 text-blue-600">
-              <Car className="h-6 w-6" />
-            </div>
-            <div>
-              <p className="text-2xl font-bold text-foreground">{vehicleCount}</p>
-              <p className="text-sm text-muted-foreground">Saved Vehicles</p>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card className="relative overflow-hidden">
-          <CardContent className="flex items-center gap-4 py-4">
-            <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-emerald-100 text-emerald-600">
-              <Package className="h-6 w-6" />
-            </div>
-            <div>
-              <p className="text-2xl font-bold text-foreground">{productCount}</p>
-              <p className="text-sm text-muted-foreground">Saved Parts</p>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card className="relative overflow-hidden">
-          <CardContent className="flex items-center gap-4 py-4">
-            <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-purple-100 text-purple-600">
-              <MapPin className="h-6 w-6" />
-            </div>
-            <div>
-              <p className="text-2xl font-bold text-foreground">{addressCount}</p>
-              <p className="text-sm text-muted-foreground">Saved Addresses</p>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
-
-      {/* Quick Actions */}
+    <div className="space-y-12">
+      {/* Header */}
       <div>
-        <h2 className="mb-4 text-lg font-semibold text-foreground">
-          Quick Actions
-        </h2>
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          <QuickActionCard
-            title="My Garage"
-            description="View and manage your saved vehicles and parts"
-            href="/account/garage"
-            icon={Warehouse}
-            stat={totalFavorites}
-            statLabel={`of ${garageLimit} slots used`}
-            variant="primary"
-          />
-          <QuickActionCard
-            title="Profile Settings"
-            description="Update your personal information and password"
-            href="/account/profile"
-            icon={User}
-          />
-          <QuickActionCard
-            title="Browse Inventory"
-            description="Explore our collection of M-Series BMWs"
-            href="/vehicles"
-            icon={Car}
-          />
+        <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground mb-2">
+          Account Dashboard
+        </p>
+        <h1 className="text-2xl font-semibold text-foreground sm:text-3xl">
+          Welcome back{user.name ? `, ${user.name.split(" ")[0]}` : ""}
+        </h1>
+      </div>
+
+      {/* Email Verification Notice */}
+      {!user.emailVerified && (
+        <div className="flex items-start gap-3 border-l-2 border-amber-500 bg-amber-50/50 py-3 pl-4 pr-4">
+          <ShieldCheck className="h-5 w-5 text-amber-600 shrink-0 mt-0.5" />
+          <div className="flex-1 min-w-0">
+            <p className="text-sm font-medium text-amber-900">
+              Email not verified
+            </p>
+            <p className="text-sm text-amber-700 mt-0.5">
+              Verify your email to unlock all features.
+            </p>
+          </div>
+          <button className="text-sm font-medium text-amber-700 hover:text-amber-900 transition-colors">
+            Resend
+          </button>
         </div>
+      )}
+
+      {/* Quick Links */}
+      <div className="grid gap-px bg-border rounded-lg overflow-hidden sm:grid-cols-3">
+        <Link
+          href="/account/garage"
+          className="group flex items-center justify-between bg-background p-5 transition-colors hover:bg-muted/50"
+        >
+          <div className="flex items-center gap-4">
+            <Warehouse className="h-5 w-5 text-muted-foreground" />
+            <div>
+              <p className="font-medium text-foreground">My Garage</p>
+              <p className="text-sm text-muted-foreground">
+                {totalFavorites} of {garageLimit} items
+              </p>
+            </div>
+          </div>
+          <ArrowRight className="h-4 w-4 text-muted-foreground opacity-0 -translate-x-2 transition-all group-hover:opacity-100 group-hover:translate-x-0" />
+        </Link>
+
+        <Link
+          href="/account/profile"
+          className="group flex items-center justify-between bg-background p-5 transition-colors hover:bg-muted/50"
+        >
+          <div className="flex items-center gap-4">
+            <User className="h-5 w-5 text-muted-foreground" />
+            <div>
+              <p className="font-medium text-foreground">Profile</p>
+              <p className="text-sm text-muted-foreground">
+                Manage your account
+              </p>
+            </div>
+          </div>
+          <ArrowRight className="h-4 w-4 text-muted-foreground opacity-0 -translate-x-2 transition-all group-hover:opacity-100 group-hover:translate-x-0" />
+        </Link>
+
+        <Link
+          href="/vehicles"
+          className="group flex items-center justify-between bg-background p-5 transition-colors hover:bg-muted/50"
+        >
+          <div className="flex items-center gap-4">
+            <Car className="h-5 w-5 text-muted-foreground" />
+            <div>
+              <p className="font-medium text-foreground">Inventory</p>
+              <p className="text-sm text-muted-foreground">
+                Browse vehicles
+              </p>
+            </div>
+          </div>
+          <ArrowRight className="h-4 w-4 text-muted-foreground opacity-0 -translate-x-2 transition-all group-hover:opacity-100 group-hover:translate-x-0" />
+        </Link>
       </div>
 
       {/* Recent Favorites */}
       <RecentFavorites items={validFavorites} maxItems={4} />
-
-      {/* Explore Section */}
-      <Card>
-        <CardHeader className="pb-3">
-          <CardTitle className="text-lg">Explore More</CardTitle>
-        </CardHeader>
-        <CardContent className="pt-0">
-          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-            <Link
-              href="/parts"
-              className="group flex items-center gap-3 rounded-lg border p-4 transition-all hover:border-primary/50 hover:shadow-sm"
-            >
-              <Package className="h-5 w-5 text-muted-foreground group-hover:text-primary" />
-              <span className="font-medium text-foreground group-hover:text-primary">
-                Shop Parts
-              </span>
-              <ArrowRight className="ml-auto h-4 w-4 text-muted-foreground opacity-0 transition-opacity group-hover:opacity-100" />
-            </Link>
-            <Link
-              href="/merchandise"
-              className="group flex items-center gap-3 rounded-lg border p-4 transition-all hover:border-primary/50 hover:shadow-sm"
-            >
-              <Heart className="h-5 w-5 text-muted-foreground group-hover:text-primary" />
-              <span className="font-medium text-foreground group-hover:text-primary">
-                Merchandise
-              </span>
-              <ArrowRight className="ml-auto h-4 w-4 text-muted-foreground opacity-0 transition-opacity group-hover:opacity-100" />
-            </Link>
-            <Link
-              href="/services"
-              className="group flex items-center gap-3 rounded-lg border p-4 transition-all hover:border-primary/50 hover:shadow-sm"
-            >
-              <ShieldCheck className="h-5 w-5 text-muted-foreground group-hover:text-primary" />
-              <span className="font-medium text-foreground group-hover:text-primary">
-                Services
-              </span>
-              <ArrowRight className="ml-auto h-4 w-4 text-muted-foreground opacity-0 transition-opacity group-hover:opacity-100" />
-            </Link>
-            <Link
-              href="/sell"
-              className="group flex items-center gap-3 rounded-lg border p-4 transition-all hover:border-primary/50 hover:shadow-sm"
-            >
-              <Car className="h-5 w-5 text-muted-foreground group-hover:text-primary" />
-              <span className="font-medium text-foreground group-hover:text-primary">
-                Sell Your BMW
-              </span>
-              <ArrowRight className="ml-auto h-4 w-4 text-muted-foreground opacity-0 transition-opacity group-hover:opacity-100" />
-            </Link>
-          </div>
-        </CardContent>
-      </Card>
     </div>
   );
 }

@@ -5,7 +5,6 @@ import { getProduct } from "@/lib/shopify";
 import { redirect } from "next/navigation";
 import { GarageContent } from "./GarageContent";
 import { Metadata } from "next";
-import { Badge } from "@/components/ui/badge";
 
 export const metadata: Metadata = {
   title: "My Garage",
@@ -19,7 +18,6 @@ export default async function GaragePage() {
     redirect("/auth/signin?callbackUrl=/account/garage");
   }
 
-  // Fetch user's favorites
   const favorites = await prisma.userFavorite.findMany({
     where: { userId: session.user.id },
     select: {
@@ -32,12 +30,10 @@ export default async function GaragePage() {
     orderBy: { createdAt: "desc" },
   });
 
-  // Hydrate full item data
   const items = await Promise.all(
     favorites.map(async (favorite) => {
       try {
         if (favorite.itemType === "vehicle") {
-          // Fetch vehicle from Sanity using itemHandle (slug) if available, otherwise itemId
           const vehicleSlug = favorite.itemHandle || favorite.itemId;
           const vehicle = await getVehicleDetail(vehicleSlug);
           if (!vehicle) return null;
@@ -62,14 +58,7 @@ export default async function GaragePage() {
             createdAt: favorite.createdAt,
           };
         } else {
-          // Fetch product from Shopify using itemHandle
-          if (!favorite.itemHandle) {
-            console.warn(
-              `Product favorite ${favorite.itemId} missing itemHandle`
-            );
-            return null;
-          }
-
+          if (!favorite.itemHandle) return null;
           const product = await getProduct(favorite.itemHandle);
           if (!product) return null;
 
@@ -86,47 +75,30 @@ export default async function GaragePage() {
           };
         }
       } catch (error) {
-        console.error(
-          `Failed to fetch ${favorite.itemType} ${favorite.itemId}:`,
-          error
-        );
+        console.error(`Failed to fetch ${favorite.itemType}:`, error);
         return null;
       }
     })
   );
 
-  // Filter out null items (failed fetches)
   const validItems = items.filter((item) => item !== null);
-
   const garageLimit = parseInt(process.env.GARAGE_ITEM_LIMIT || "50", 10);
-  const usagePercentage = (favorites.length / garageLimit) * 100;
 
   return (
-    <div className="space-y-6">
-      {/* Page Header */}
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+    <div className="space-y-8">
+      {/* Header */}
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <h1 className="text-title-2 font-bold text-foreground">My Garage</h1>
-          <p className="mt-1 text-muted-foreground">
-            Your saved vehicles and parts in one place
+          <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground mb-2">
+            My Account
           </p>
+          <h1 className="text-2xl font-semibold text-foreground sm:text-3xl">
+            My Garage
+          </h1>
         </div>
-
-        {/* Usage Badge */}
-        <div className="flex items-center gap-2">
-          <Badge
-            variant={usagePercentage >= 80 ? "destructive" : "secondary"}
-            className="text-sm"
-          >
-            {favorites.length} / {garageLimit} items
-          </Badge>
-          {usagePercentage >= 80 && usagePercentage < 100 && (
-            <span className="text-xs text-yellow-600">Almost full</span>
-          )}
-          {usagePercentage >= 100 && (
-            <span className="text-xs text-red-600">Full</span>
-          )}
-        </div>
+        <p className="text-sm text-muted-foreground">
+          {favorites.length} of {garageLimit} items saved
+        </p>
       </div>
 
       {/* Garage Content */}

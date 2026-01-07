@@ -18,15 +18,12 @@ export default async function AccountLayout({
 }: {
   children: React.ReactNode;
 }) {
-  // Get authenticated user session
   const session = await getServerSession();
 
-  // Redirect if not authenticated
   if (!session?.user?.id) {
     redirect("/auth/signin?callbackUrl=/account");
   }
 
-  // Fetch user data
   const user = await prisma.user.findUnique({
     where: { id: session.user.id },
     select: {
@@ -44,7 +41,7 @@ export default async function AccountLayout({
 
   return (
     <div className="light-section min-h-screen">
-      <div className="px-page-x py-6 lg:py-10">
+      <div className="px-page-x py-8 lg:py-12">
         <Container>
           {/* Mobile Header */}
           <div className="mb-6 lg:hidden">
@@ -55,18 +52,16 @@ export default async function AccountLayout({
                 image: user.image,
               }}
               memberSince={user.createdAt}
+              className="mb-4"
             />
-            <div className="mt-4">
-              <AccountNavMobile />
-            </div>
+            <AccountNavMobile />
           </div>
 
           {/* Desktop Layout */}
-          <div className="flex gap-8">
+          <div className="flex gap-12 lg:gap-16">
             {/* Sidebar */}
-            <aside className="hidden lg:block w-64 shrink-0">
+            <aside className="hidden lg:block w-52 shrink-0">
               <div className="sticky top-[calc(var(--header-height)+2rem)]">
-                {/* User Info */}
                 <AccountHeader
                   user={{
                     name: user.name,
@@ -74,13 +69,9 @@ export default async function AccountLayout({
                     image: user.image,
                   }}
                   memberSince={user.createdAt}
-                  className="mb-6 rounded-xl border bg-card p-4"
+                  className="mb-6 pb-6 border-b border-border"
                 />
-
-                {/* Navigation */}
-                <div className="rounded-xl border bg-card p-3">
-                  <AccountNav />
-                </div>
+                <AccountNav />
               </div>
             </aside>
 

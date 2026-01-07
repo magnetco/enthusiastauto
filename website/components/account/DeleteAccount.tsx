@@ -7,7 +7,6 @@ import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { ProfileCard } from "@/components/account/ProfileCard";
 import {
   Dialog,
   DialogContent,
@@ -17,10 +16,7 @@ import {
   DialogFooter,
 } from "@/components/ui/dialog";
 import { Checkbox } from "@/components/ui/checkbox";
-import {
-  accountDeletionSchema,
-  type AccountDeletionInput,
-} from "@/lib/profile/types";
+import { accountDeletionSchema } from "@/lib/profile/types";
 import { toast } from "sonner";
 
 export function DeleteAccount() {
@@ -61,17 +57,14 @@ export function DeleteAccount() {
         throw new Error(responseData.error || "Failed to delete account");
       }
 
-      toast.success("Your account has been deleted. We're sorry to see you go.");
+      toast.success("Account deleted. Goodbye.");
 
-      // Redirect to homepage after deletion
       setTimeout(() => {
         router.push("/");
       }, 2000);
     } catch (error) {
       toast.error(
-        error instanceof Error
-          ? error.message
-          : "Something went wrong. Please try again."
+        error instanceof Error ? error.message : "Something went wrong"
       );
       setIsLoading(false);
     }
@@ -83,60 +76,42 @@ export function DeleteAccount() {
   };
 
   return (
-    <ProfileCard
-      title="Danger Zone"
-      description="Permanently delete your account and all associated data"
-      variant="danger"
-    >
-      <div className="space-y-4">
-        <div className="rounded-lg bg-red-50 border border-red-200 p-4">
-          <p className="text-sm text-red-900 font-medium mb-2">
-            Delete Your Account
-          </p>
-          <p className="text-sm text-red-800">
-            Once you delete your account, there is no going back. This action
-            is permanent and cannot be undone.
-          </p>
-        </div>
-
-        <Button
-          variant="destructive"
-          onClick={handleOpenDialog}
-          className="w-full"
-        >
-          Delete My Account
+    <>
+      <div className="rounded-lg border border-red-200 bg-red-50/30 p-6">
+        <p className="text-sm text-foreground mb-1">
+          Permanently delete your account
+        </p>
+        <p className="text-sm text-muted-foreground mb-4">
+          This action cannot be undone. All your data will be removed.
+        </p>
+        <Button variant="destructive" size="sm" onClick={handleOpenDialog}>
+          Delete Account
         </Button>
       </div>
 
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
         <DialogContent className="max-w-md">
           <DialogHeader>
-            <DialogTitle className="text-red-600">
-              Delete Account Permanently?
-            </DialogTitle>
-            <DialogDescription className="text-red-800">
-              This will permanently delete your account, profile, favorites,
-              and all associated data. This action cannot be undone.
+            <DialogTitle className="text-red-600">Delete Account?</DialogTitle>
+            <DialogDescription>
+              This will permanently delete your account and all associated data.
             </DialogDescription>
           </DialogHeader>
 
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-            <div className="rounded-lg bg-red-50 border border-red-200 p-4 text-sm">
-              <p className="font-medium text-red-900 mb-2">
-                What will be deleted:
-              </p>
-              <ul className="list-disc list-inside text-red-800 space-y-1">
+            <div className="text-sm text-muted-foreground">
+              <p className="font-medium text-foreground mb-2">What will be deleted:</p>
+              <ul className="list-disc list-inside space-y-1">
                 <li>Your profile information</li>
                 <li>Saved addresses</li>
-                <li>Connected social accounts</li>
-                <li>All sessions (you'll be logged out)</li>
-                <li>Saved favorites (if any)</li>
+                <li>Garage favorites</li>
+                <li>All session data</li>
               </ul>
             </div>
 
             <div className="space-y-2">
               <Label htmlFor="confirmation">
-                Type <span className="font-bold">DELETE</span> to confirm
+                Type <span className="font-mono font-bold">DELETE</span> to confirm
               </Label>
               <Input
                 id="confirmation"
@@ -146,9 +121,7 @@ export function DeleteAccount() {
                 className="font-mono"
               />
               {errors.confirmation && (
-                <p className="text-sm text-red-600">
-                  {errors.confirmation.message}
-                </p>
+                <p className="text-sm text-red-600">{errors.confirmation.message}</p>
               )}
             </div>
 
@@ -156,22 +129,15 @@ export function DeleteAccount() {
               <Checkbox
                 id="understood"
                 checked={understood}
-                onCheckedChange={(checked) =>
-                  setValue("understood", checked as boolean)
-                }
+                onCheckedChange={(checked) => setValue("understood", checked as boolean)}
                 disabled={isLoading}
               />
-              <Label
-                htmlFor="understood"
-                className="text-sm cursor-pointer leading-tight"
-              >
-                I understand this action is permanent and cannot be undone
+              <Label htmlFor="understood" className="text-sm cursor-pointer leading-tight">
+                I understand this action is permanent
               </Label>
             </div>
             {errors.understood && (
-              <p className="text-sm text-red-600">
-                {errors.understood.message}
-              </p>
+              <p className="text-sm text-red-600">{errors.understood.message}</p>
             )}
 
             <DialogFooter className="gap-2">
@@ -186,18 +152,14 @@ export function DeleteAccount() {
               <Button
                 type="submit"
                 variant="destructive"
-                disabled={
-                  isLoading || !understood || confirmation !== "DELETE"
-                }
+                disabled={isLoading || !understood || confirmation !== "DELETE"}
               >
-                {isLoading
-                  ? "Deleting..."
-                  : "Permanently Delete Account"}
+                {isLoading ? "Deleting..." : "Delete Account"}
               </Button>
             </DialogFooter>
           </form>
         </DialogContent>
       </Dialog>
-    </ProfileCard>
+    </>
   );
 }
