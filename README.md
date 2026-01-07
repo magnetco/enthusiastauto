@@ -24,3 +24,5 @@ cd data && pnpm install && pnpm dev       # localhost:4000
 Cursor
 
 Rocks
+
+Andrew
