@@ -106,7 +106,7 @@ export default async function VehicleDetailPage({
 
   // Handle 404 for non-existent vehicles
   if (!vehicle) {
-    notFound();
+    return notFound();
   }
 
   const isSold = vehicle.status === "sold";
