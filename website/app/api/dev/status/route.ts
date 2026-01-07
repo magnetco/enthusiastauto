@@ -15,6 +15,11 @@ interface ServiceStatus {
     latency?: number;
     error?: string;
   };
+  googleOAuth: {
+    status: "configured" | "misconfigured" | "error";
+    clientId?: string;
+    error?: string;
+  };
 }
 
 export async function GET(): Promise<NextResponse<ServiceStatus>> {
@@ -22,12 +27,14 @@ export async function GET(): Promise<NextResponse<ServiceStatus>> {
     return NextResponse.json({
       sanity: { status: "stopped", error: "Not available in production" },
       shopify: { status: "disconnected", error: "Not available in production" },
+      googleOAuth: { status: "error", error: "Not available in production" },
     });
   }
 
   const status: ServiceStatus = {
     sanity: { status: "stopped" },
     shopify: { status: "disconnected" },
+    googleOAuth: { status: "misconfigured" },
   };
 
   // Check Sanity connection
@@ -85,6 +92,36 @@ export async function GET(): Promise<NextResponse<ServiceStatus>> {
     }
   } catch (error) {
     status.shopify = {
+      status: "error",
+      error: error instanceof Error ? error.message : "Unknown error",
+    };
+  }
+
+  // Check Google OAuth configuration
+  try {
+    const clientId = process.env.GOOGLE_CLIENT_ID;
+    const clientSecret = process.env.GOOGLE_CLIENT_SECRET;
+
+    if (!clientId || !clientSecret) {
+      const missing = [];
+      if (!clientId) missing.push("GOOGLE_CLIENT_ID");
+      if (!clientSecret) missing.push("GOOGLE_CLIENT_SECRET");
+      status.googleOAuth = {
+        status: "misconfigured",
+        error: `Missing: ${missing.join(", ")}`,
+      };
+    } else {
+      // Mask the client ID for display (show first 20 chars)
+      const maskedClientId = clientId.length > 20 
+        ? `${clientId.substring(0, 20)}...` 
+        : clientId;
+      status.googleOAuth = {
+        status: "configured",
+        clientId: maskedClientId,
+      };
+    }
+  } catch (error) {
+    status.googleOAuth = {
       status: "error",
       error: error instanceof Error ? error.message : "Unknown error",
     };
