@@ -1,4 +1,3 @@
-import Footer from "@/components/layout/footer";
 import Section from "@/components/layout/section";
 import { TextHero } from "@/components/shared/TextHero";
 import type { Metadata } from "next";
@@ -172,7 +171,6 @@ export default function PrivacyPage() {
 					</div>
 				</div>
 			</Section>
-			<Footer />
 		</>
 	);
 }

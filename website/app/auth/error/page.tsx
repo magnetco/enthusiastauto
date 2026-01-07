@@ -71,7 +71,7 @@ export default async function AuthErrorPage(props: {
 }) {
 	const searchParams = await props.searchParams;
 	const errorType = searchParams?.error || "Default";
-	const error = errorMessages[errorType] || errorMessages.Default;
+	const error = errorMessages[errorType] ?? errorMessages.Default!;
 
 	return (
 		<Section className="flex min-h-[60vh] items-center justify-center">

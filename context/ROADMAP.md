@@ -112,6 +112,11 @@ What's shipped, in progress, and planned for the Enthusiast Auto platform.
 - [ ] Conversion funnel analysis
 - [ ] A/B testing infrastructure
 
+### Google Maps Integration
+- [ ] Add interactive store location map to About/Visit page
+- [ ] Directions integration with Google Maps
+- [ ] Leverage existing Google Cloud account from legacy website (enthusiastauto.com)
+
 ## Technical Debt
 
 - [ ] Fix localStorage SSR error on homepage

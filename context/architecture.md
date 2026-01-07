@@ -802,6 +802,7 @@ app/
 | **NextAuth.js** | Authentication | Database adapter | Session cookie fallback, login redirect |
 | **Resend** | Transactional email | REST API | Queue failed emails, retry async |
 | **Sentry** | Error monitoring | SDK auto-capture | Non-blocking (errors logged locally if Sentry down) |
+| **Google Cloud** *(planned)* | Maps integration | Maps JavaScript API | Static map image fallback |
 
 **Webhook Security:**
 

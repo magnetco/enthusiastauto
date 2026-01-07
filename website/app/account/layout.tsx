@@ -1,27 +1,94 @@
 import { Metadata } from "next";
-
-/**
- * Account section layout
- * Part of Epic 4 routing architecture (Story 4.3)
- *
- * This layout will be expanded in Epic 5 to include:
- * - Navigation sidebar for account sections
- * - Auth protection middleware
- * - User profile context
- */
+import { redirect } from "next/navigation";
+import { getServerSession } from "@/lib/auth/session";
+import prisma from "@/lib/db/prisma";
+import Container from "@/components/layout/container";
+import { AccountNav, AccountNavMobile, AccountHeader } from "@/components/account";
 
 export const metadata: Metadata = {
   title: {
     template: "%s | My Account | Enthusiast Auto",
     default: "My Account | Enthusiast Auto",
   },
-  description: "Manage your Enthusiast Auto account and preferences",
+  description: "Manage your Enthusiast Auto account, garage, and profile settings",
 };
 
-export default function AccountLayout({
+export default async function AccountLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  return <div className="light-section min-h-screen">{children}</div>;
+  // Get authenticated user session
+  const session = await getServerSession();
+
+  // Redirect if not authenticated
+  if (!session?.user?.id) {
+    redirect("/auth/signin?callbackUrl=/account");
+  }
+
+  // Fetch user data
+  const user = await prisma.user.findUnique({
+    where: { id: session.user.id },
+    select: {
+      id: true,
+      name: true,
+      email: true,
+      image: true,
+      createdAt: true,
+    },
+  });
+
+  if (!user) {
+    redirect("/auth/signin");
+  }
+
+  return (
+    <div className="light-section min-h-screen">
+      <div className="px-page-x py-6 lg:py-10">
+        <Container>
+          {/* Mobile Header */}
+          <div className="mb-6 lg:hidden">
+            <AccountHeader
+              user={{
+                name: user.name,
+                email: user.email,
+                image: user.image,
+              }}
+              memberSince={user.createdAt}
+            />
+            <div className="mt-4">
+              <AccountNavMobile />
+            </div>
+          </div>
+
+          {/* Desktop Layout */}
+          <div className="flex gap-8">
+            {/* Sidebar */}
+            <aside className="hidden lg:block w-64 shrink-0">
+              <div className="sticky top-[calc(var(--header-height)+2rem)]">
+                {/* User Info */}
+                <AccountHeader
+                  user={{
+                    name: user.name,
+                    email: user.email,
+                    image: user.image,
+                  }}
+                  memberSince={user.createdAt}
+                  className="mb-6 rounded-xl border bg-card p-4"
+                />
+
+                {/* Navigation */}
+                <div className="rounded-xl border bg-card p-3">
+                  <AccountNav />
+                </div>
+              </div>
+            </aside>
+
+            {/* Main Content */}
+            <main className="min-w-0 flex-1">{children}</main>
+          </div>
+        </Container>
+      </div>
+    </div>
+  );
 }

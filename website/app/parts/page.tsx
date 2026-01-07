@@ -1,4 +1,3 @@
-import Footer from "@/components/layout/footer";
 import Section from "@/components/layout/section";
 import {
   PartsEmptyState,
@@ -258,9 +257,6 @@ export default async function PartsPage({ searchParams }: PartsPageProps) {
           </main>
         </div>
       </Section>
-
-      {/* Footer */}
-      <Footer />
     </>
   );
 }

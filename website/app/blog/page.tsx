@@ -1,4 +1,3 @@
-import Footer from "@/components/layout/footer";
 import Section from "@/components/layout/section";
 import { PageHero } from "@/components/shared/PageHero";
 import { BlogPageClient } from "@/components/blog/BlogPageClient";
@@ -195,7 +194,6 @@ export default async function BlogPage() {
           />
         </div>
       </Section>
-      <Footer />
     </>
   );
 }

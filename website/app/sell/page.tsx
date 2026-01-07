@@ -1,7 +1,7 @@
-import Footer from "@/components/layout/footer";
-import Section from "@/components/layout/section";
 import { SellPageContent } from "@/components/sell/SellPageContent";
 import type { Metadata } from "next";
+
+export const revalidate = 3600; // Revalidate every hour
 
 export const metadata: Metadata = {
 	title: "Sell Your BMW | Enthusiast Auto",
@@ -16,12 +16,10 @@ export const metadata: Metadata = {
 	},
 };
 
+/**
+ * Sell Page - Multi-step vehicle submission wizard
+ * Full-width, stage-by-stage form for sell/consign/auction submissions
+ */
 export default function SellPage() {
-	return (
-		<>
-			<SellPageContent />
-			<Footer />
-		</>
-	);
+	return <SellPageContent />;
 }
-

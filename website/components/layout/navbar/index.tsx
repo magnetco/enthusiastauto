@@ -7,7 +7,7 @@ import { Suspense } from "react";
 import MobileMenu from "./mobile-menu";
 import UnifiedSearch, { UnifiedSearchSkeleton } from "./unified-search";
 import { FavoritesBadge } from "@/components/shared/FavoritesBadge";
-import { HeaderUserSection } from "./header-user-section";
+import { HeaderAuthButton } from "@/components/shared/HeaderAuthButton";
 
 export async function Navbar() {
 	const menu = await getMenu("next-js-frontend-header-menu");
@@ -63,7 +63,9 @@ export async function Navbar() {
 							</ul>
 						) : null}
 						<div className="ml-auto hidden md:flex items-center">
-							<HeaderUserSection />
+							<Suspense fallback={null}>
+								<HeaderAuthButton />
+							</Suspense>
 						</div>
 					</div>
 				</div>

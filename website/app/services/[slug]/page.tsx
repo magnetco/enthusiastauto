@@ -1,4 +1,3 @@
-import Footer from "@/components/layout/footer";
 import Section from "@/components/layout/section";
 import { ServiceRequestForm } from "@/components/services/ServiceRequestForm";
 import type { Metadata } from "next";
@@ -246,8 +245,6 @@ export default async function ServiceDetailPage(props: {
 					<ServiceRequestForm />
 				</Suspense>
 			</Section>
-
-			<Footer />
 		</>
 	);
 }

@@ -6,7 +6,6 @@ import { ServicesSection } from "@/components/shared/ServicesSection";
 import { AboutSection } from "@/components/shared/AboutSection";
 import { VehicleCardSkeleton } from "@/components/vehicles/VehicleCardSkeleton";
 import { ProductGridLoading } from "@/components/product-grid";
-import Footer from "@/components/layout/footer";
 import type { Metadata } from "next";
 
 // ISR Configuration: Revalidate every 60 seconds
@@ -82,9 +81,6 @@ export default function HomePage() {
 
       {/* About Section */}
       <AboutSection />
-
-      {/* Footer */}
-      <Footer />
 
       {/* JSON-LD Schema.org Organization Markup for SEO */}
       <script

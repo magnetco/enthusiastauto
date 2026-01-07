@@ -64,6 +64,21 @@ function Button({
 }: ButtonProps) {
   const Comp = asChild ? Slot : "button";
 
+  // When using asChild, Slot expects exactly one child
+  // Wrap content in a fragment for regular buttons with loading state
+  if (asChild) {
+    return (
+      <Comp
+        data-slot="button"
+        className={cn(buttonVariants({ variant, size, className }))}
+        disabled={disabled || loading}
+        {...props}
+      >
+        {children}
+      </Comp>
+    );
+  }
+
   return (
     <Comp
       data-slot="button"

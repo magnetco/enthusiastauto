@@ -1,4 +1,3 @@
-import Footer from "@/components/layout/footer";
 import Section from "@/components/layout/section";
 import { Badge } from "@/components/ui/badge";
 import type { Metadata } from "next";
@@ -489,8 +488,6 @@ export default async function BlogPostPage(props: {
           </div>
         )}
       </Section>
-
-      <Footer />
     </>
   );
 }

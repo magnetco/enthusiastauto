@@ -119,6 +119,12 @@ Supported providers:
 | Sanity.io | Studio hosting |
 | GitHub | Source control |
 
+## Future/Planned Integrations
+
+| Service | Purpose | Status |
+|---------|---------|--------|
+| Google Cloud (Maps) | Interactive store location maps, directions | Planned — currently powers legacy website (enthusiastauto.com) |
+
 ## Rendering Strategies (Website)
 
 | Page Type | Strategy | Revalidation |

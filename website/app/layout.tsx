@@ -13,6 +13,7 @@ import { MobileMenuProvider } from "components/shared/MobileMenuContext";
 import { MobileMenu } from "components/shared/MobileMenu";
 import { ClientProviders } from "components/layout/ClientProviders";
 import { DevModePopout } from "components/dev/DevModePopout";
+import Footer from "components/layout/footer";
 import "./globals.css";
 
 const isDev = process.env.NODE_ENV === "development";
@@ -80,6 +81,7 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
 										<WelcomeToast />
 										{isDev && <DevModePopout />}
 									</main>
+									<Footer />
 								</MobileMenuProvider>
 							</ClientProviders>
 						</Suspense>

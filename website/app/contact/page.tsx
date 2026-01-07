@@ -1,4 +1,3 @@
-import Footer from "@/components/layout/footer";
 import Section from "@/components/layout/section";
 import { PageHero } from "@/components/shared/PageHero";
 import { ContactForm } from "@/components/contact/ContactForm";
@@ -424,8 +423,6 @@ export default function ContactPage() {
 					</div>
 				</div>
 			</Section>
-
-			<Footer />
 		</>
 	);
 }

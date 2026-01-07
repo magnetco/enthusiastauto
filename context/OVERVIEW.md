@@ -64,6 +64,15 @@ Admin dashboard for viewing database records:
 | Resend | Transactional emails |
 | Vercel | Hosting, CDN, serverless functions |
 | Google OAuth | Social login |
+| Google Cloud (planned) | Maps integration (see note below) |
+
+### Google Cloud / Maps
+
+Google Cloud powers the interactive maps on the **legacy Enthusiast Auto website** (enthusiastauto.com). This includes:
+- Store location map on the contact/visit page
+- Directions integration
+
+For this new platform (shop.enthusiastauto.com), Google Maps integration is planned for future implementation to maintain feature parity with the legacy site. The Google Cloud account and API keys are already established through the legacy website.
 
 ## Project Structure
 

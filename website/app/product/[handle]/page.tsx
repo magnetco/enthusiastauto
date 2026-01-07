@@ -4,7 +4,6 @@ import { Suspense } from "react";
 import Link from "next/link";
 import Image from "next/image";
 
-import Footer from "components/layout/footer";
 import Section from "components/layout/section";
 import { Breadcrumb } from "components/layout/breadcrumb";
 import { Gallery } from "components/product/gallery";
@@ -180,7 +179,6 @@ export default async function ProductPage(props: {
         </Suspense>
 
         <StickyAddToCart product={product} />
-        <Footer />
       </ProductProvider>
     </>
   );

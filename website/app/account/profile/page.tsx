@@ -1,135 +1,104 @@
-import { AddressManager } from "@/components/account/AddressManager";
-import { ChangePassword } from "@/components/account/ChangePassword";
-import { ConnectedAccounts } from "@/components/account/ConnectedAccounts";
-import { DeleteAccount } from "@/components/account/DeleteAccount";
-import { ProfileCard } from "@/components/account/ProfileCard";
-import { ProfileForm } from "@/components/account/ProfileForm";
-import Container from "@/components/layout/container";
-import Section from "@/components/layout/section";
-import { TextHero } from "@/components/shared/TextHero";
+import {
+  AddressManager,
+  ChangePassword,
+  ConnectedAccounts,
+  DeleteAccount,
+  ProfileCard,
+  ProfileForm,
+} from "@/components/account";
 import { getServerSession } from "@/lib/auth/session";
 import prisma from "@/lib/db/prisma";
 import { Metadata } from "next";
 import { redirect } from "next/navigation";
 
-/**
- * User Profile Page
- * Protected route - requires authentication (handled by middleware)
- * Displays user profile information, settings, and account management
- */
-
 export const metadata: Metadata = {
-	title: "My Profile",
-	description: "Manage your profile and account settings",
+  title: "Profile Settings",
+  description: "Manage your profile information and account settings",
 };
 
-// Helper to get initials for avatar fallback
-function getInitials(name?: string | null): string {
-	if (!name) return "U";
-
-	return name
-		.split(" ")
-		.map((n) => n[0])
-		.join("")
-		.toUpperCase()
-		.substring(0, 2);
-}
-
 export default async function ProfilePage() {
-	// Get authenticated user session
-	const session = await getServerSession();
+  const session = await getServerSession();
 
-	// Redirect if not authenticated
-	if (!session?.user?.id) {
-		redirect("/auth/signin");
-	}
+  if (!session?.user?.id) {
+    redirect("/auth/signin?callbackUrl=/account/profile");
+  }
 
-	// Fetch user data with related accounts
-	const user = await prisma.user.findUnique({
-		where: { id: session.user.id },
-		include: {
-			accounts: true,
-		},
-	});
+  // Fetch user data with related accounts
+  const user = await prisma.user.findUnique({
+    where: { id: session.user.id },
+    include: {
+      accounts: true,
+    },
+  });
 
-	// Redirect if user not found
-	if (!user) {
-		redirect("/auth/signin");
-	}
+  if (!user) {
+    redirect("/auth/signin");
+  }
 
-	// Check if user has password authentication
-	const hasPassword = !!(await prisma.account.findFirst({
-		where: {
-			userId: user.id,
-			type: "credentials",
-		},
-	}));
+  // Check if user has password authentication
+  const hasPassword = !!(await prisma.account.findFirst({
+    where: {
+      userId: user.id,
+      type: "credentials",
+    },
+  }));
 
-	// Get authentication methods
-	const authMethods = user.accounts.map((account) => {
-		switch (account.provider) {
-			case "google":
-				return "Google";
-			case "github":
-				return "GitHub";
-			default:
-				return account.provider;
-		}
-	});
+  // Get authentication methods
+  const authMethods = user.accounts.map((account) => {
+    switch (account.provider) {
+      case "google":
+        return "Google";
+      case "github":
+        return "GitHub";
+      default:
+        return account.provider;
+    }
+  });
 
-	// Check if avatar is from OAuth provider
-	const isOAuthAvatar = !!user.image && !hasPassword;
+  return (
+    <div className="space-y-6">
+      {/* Page Header */}
+      <div>
+        <h1 className="text-title-2 font-bold text-foreground">
+          Profile Settings
+        </h1>
+        <p className="mt-1 text-muted-foreground">
+          Manage your personal information, security, and preferences
+        </p>
+      </div>
 
-	const displayImage = user.image;
+      {/* User Overview Card */}
+      <ProfileCard
+        user={{
+          name: user.name,
+          email: user.email,
+          image: user.image,
+        }}
+        hasPassword={hasPassword}
+        authMethods={authMethods}
+        isOAuthAvatar={!!user.image && !hasPassword}
+      />
 
-	return (
-		<>
-			{/* Page Header with TextHero - Full Width Section */}
-			<Section>
-				<TextHero
-					title="My Profile"
-					subtitle="Manage your profile information and account settings"
-					breadcrumbs={{
-						customItems: [{ label: "Dashboard", href: "/account" }],
-					}}
-				/>
-			</Section>
+      {/* Profile Form */}
+      <ProfileForm
+        user={{
+          name: user.name,
+          email: user.email,
+          image: user.image,
+        }}
+      />
 
-			{/* Main Content Container */}
-			<Container className="space-y-6 pt-0">
-				{/* User Overview Card */}
-				<ProfileCard
-					user={{
-						name: user.name,
-						email: user.email,
-						image: user.image,
-					}}
-					hasPassword={hasPassword}
-					authMethods={authMethods}
-					isOAuthAvatar={isOAuthAvatar}
-				/>
+      {/* Change Password */}
+      <ChangePassword hasPassword={hasPassword} />
 
-				{/* Profile Form */}
-				<ProfileForm
-					user={{
-						name: user.name,
-						email: user.email,
-						image: user.image,
-					}}
-				/>
+      {/* Address Manager */}
+      <AddressManager />
 
-				{/* Change Password */}
-				<ChangePassword hasPassword={hasPassword} />
+      {/* Connected Accounts */}
+      <ConnectedAccounts accounts={user.accounts} hasPassword={hasPassword} />
 
-				{/* Address Manager */}
-				<AddressManager />
-
-				{/* Connected Accounts */}
-				<ConnectedAccounts accounts={user.accounts} hasPassword={hasPassword} />
-
-				{/* Delete Account - Danger Zone */}
-				<DeleteAccount />
-			</Container>
-		</>
-	);
+      {/* Delete Account - Danger Zone */}
+      <DeleteAccount />
+    </div>
+  );
 }

@@ -1,4 +1,3 @@
-import Footer from "@/components/layout/footer";
 import Section from "@/components/layout/section";
 import { TextHero } from "@/components/shared/TextHero";
 import { SearchProductsClient } from "components/SearchProductsClient";
@@ -74,7 +73,6 @@ export default async function MerchandisePage(props: {
 					</div>
 				)}
 			</Section>
-			<Footer />
 		</>
 	);
 }

@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/db/prisma";
 import { z } from "zod";
+import { sendSellSubmissionEmails } from "@/lib/email/sell-submission";
 
 // Sell submission validation schema
 const sellSubmissionSchema = z.object({
@@ -62,15 +63,43 @@ export async function POST(request: NextRequest) {
 			},
 		});
 
-		// TODO: Send email notification to sales team
-		// TODO: Subscribe to newsletter if newsletter === true
-
 		console.log("Sell submission created:", {
 			id: sellSubmission.id,
 			sellOption: sellSubmission.sellOption,
 			name: `${sellSubmission.firstName} ${sellSubmission.lastName}`,
 			vehicle: `${sellSubmission.year} ${sellSubmission.make} ${sellSubmission.model}`,
 		});
+
+		// Send confirmation emails (async, don't block response)
+		sendSellSubmissionEmails({
+			submissionId: sellSubmission.id,
+			firstName: data.firstName,
+			lastName: data.lastName,
+			email: data.email,
+			phone: data.phone,
+			sellOption: data.sellOption,
+			year: data.year,
+			make: data.make,
+			model: data.model,
+			mileage: data.mileage,
+			vin: data.vin.toUpperCase(),
+			notes: data.notes,
+			existingCustomer: data.existingCustomer,
+			newsletter: data.newsletter,
+		}).then((result) => {
+			if (result.success) {
+				console.log("Sell submission emails sent:", {
+					customerId: result.customerEmailId,
+					adminId: result.adminEmailId,
+				});
+			} else {
+				console.error("Failed to send sell submission emails:", result.error);
+			}
+		}).catch((err) => {
+			console.error("Email sending error:", err);
+		});
+
+		// TODO: Subscribe to newsletter if newsletter === true
 
 		return NextResponse.json({
 			success: true,
