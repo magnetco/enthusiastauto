@@ -1,5 +1,6 @@
 import Section from "@/components/layout/section";
 import { PageHero } from "@/components/shared/PageHero";
+import { TitleBlock } from "@/components/shared/TitleBlock";
 import { ContactForm } from "@/components/contact/ContactForm";
 import {
 	Card,
@@ -125,15 +126,11 @@ export default function ContactPage() {
 
 			{/* Quick Contact Cards - What Are You Looking For? */}
 			<Section className="py-12 sm:py-16 lg:py-20">
-				<div className="mb-10 text-center">
-					<h2 className="mb-3 text-title-2 font-bold text-foreground">
-						How Can We Help You Today?
-					</h2>
-					<p className="mx-auto max-w-2xl text-body-large text-muted-foreground">
-						Select the area you need assistance with, or scroll down to send us
-						a message.
-					</p>
-				</div>
+				<TitleBlock
+					title="How Can We Help?"
+					description="Select the area you need assistance with, or scroll down to send us a message."
+					className="mb-10"
+				/>
 
 				<div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
 					{quickContactCards.map((card) => (
@@ -293,14 +290,11 @@ export default function ContactPage() {
 
 			{/* Department-Specific Contact Section */}
 			<Section className="py-12 sm:py-16 lg:py-20">
-				<div className="mb-10 text-center">
-					<h2 className="mb-3 text-title-2 font-bold text-foreground">
-						Contact Our Teams Directly
-					</h2>
-					<p className="mx-auto max-w-2xl text-body-large text-muted-foreground">
-						Reach the right team for faster assistance
-					</p>
-				</div>
+				<TitleBlock
+					title="Contact Our Teams"
+					description="Reach the right team for faster assistance"
+					className="mb-10"
+				/>
 
 				<div className="grid gap-6 md:grid-cols-3">
 					{/* Sales Team */}

@@ -1,12 +1,15 @@
 /**
  * Navigation configuration for the header
- * Contains all nav items and inventory menu structure
+ * Contains all nav items and inventory/services menu structure
  */
+
+export type SubmenuType = "inventory" | "services";
 
 export interface NavItem {
   title: string;
   href: string;
   hasSubmenu?: boolean;
+  submenuType?: SubmenuType;
 }
 
 export interface InventoryQuickLink {
@@ -23,13 +26,25 @@ export interface InventoryMenuConfig {
   chassisCodes: ChassisColumn[];
 }
 
+export interface ServiceMenuItem {
+  title: string;
+  href: string;
+  description: string;
+  icon: "sparkles" | "refresh" | "settings" | "wrench";
+}
+
+export interface ServicesMenuConfig {
+  quickLinks: InventoryQuickLink[];
+  services: ServiceMenuItem[];
+}
+
 /**
  * Main navigation items for the header
  */
 export const NAV_ITEMS: NavItem[] = [
   { title: "About EAG", href: "/about" },
-  { title: "Inventory", href: "/vehicles", hasSubmenu: true },
-  { title: "Services", href: "/services" },
+  { title: "Inventory", href: "/vehicles", hasSubmenu: true, submenuType: "inventory" },
+  { title: "Services", href: "/services", hasSubmenu: true, submenuType: "services" },
   { title: "Sell your car", href: "/sell" },
   { title: "Under the hood", href: "/blog" },
   { title: "Parts", href: "/search" },
@@ -52,6 +67,41 @@ export const INVENTORY_MENU: InventoryMenuConfig = {
     { items: ["Z8", "F8X", "E39", "E28"] },
     { items: ["Z4", "E9X", "E36", "E24"] },
     { items: ["Z3", "E60", "E34"] },
+  ],
+};
+
+/**
+ * Services mega-menu configuration
+ */
+export const SERVICES_MENU: ServicesMenuConfig = {
+  quickLinks: [
+    { title: "All Services", href: "/services" },
+  ],
+  services: [
+    {
+      title: "Conditioning & Protection",
+      href: "/services/conditioning",
+      description: "Paint correction, ceramic coating, and preservation treatments",
+      icon: "sparkles",
+    },
+    {
+      title: "Full Rejuvenation",
+      href: "/services/rejuvenation",
+      description: "Complete restoration to better-than-factory condition",
+      icon: "refresh",
+    },
+    {
+      title: "Mechanical Services",
+      href: "/services/mechanical",
+      description: "Maintenance, repairs, and performance upgrades",
+      icon: "settings",
+    },
+    {
+      title: "Cosmetic Repairs",
+      href: "/services/cosmetic",
+      description: "Collision repair, paint matching, and dent removal",
+      icon: "wrench",
+    },
   ],
 };
 
@@ -85,3 +135,10 @@ export const MOBILE_INVENTORY_MENU = {
   ],
 };
 
+/**
+ * Mobile services menu configuration
+ */
+export const MOBILE_SERVICES_MENU = {
+  quickLinks: SERVICES_MENU.quickLinks,
+  services: SERVICES_MENU.services,
+};

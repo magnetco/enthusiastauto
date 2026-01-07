@@ -9,6 +9,9 @@ interface MobileMenuContextType {
   inventoryPanelOpen: boolean;
   openInventoryPanel: () => void;
   closeInventoryPanel: () => void;
+  servicesPanelOpen: boolean;
+  openServicesPanel: () => void;
+  closeServicesPanel: () => void;
 }
 
 const MobileMenuContext = createContext<MobileMenuContextType | undefined>(
@@ -18,15 +21,26 @@ const MobileMenuContext = createContext<MobileMenuContextType | undefined>(
 export function MobileMenuProvider({ children }: { children: ReactNode }) {
   const [isOpen, setIsOpen] = useState(false);
   const [inventoryPanelOpen, setInventoryPanelOpen] = useState(false);
+  const [servicesPanelOpen, setServicesPanelOpen] = useState(false);
 
   const openMenu = () => setIsOpen(true);
   const closeMenu = () => {
     setIsOpen(false);
     setInventoryPanelOpen(false);
+    setServicesPanelOpen(false);
   };
 
-  const openInventoryPanel = () => setInventoryPanelOpen(true);
+  const openInventoryPanel = () => {
+    setServicesPanelOpen(false);
+    setInventoryPanelOpen(true);
+  };
   const closeInventoryPanel = () => setInventoryPanelOpen(false);
+
+  const openServicesPanel = () => {
+    setInventoryPanelOpen(false);
+    setServicesPanelOpen(true);
+  };
+  const closeServicesPanel = () => setServicesPanelOpen(false);
 
   return (
     <MobileMenuContext.Provider
@@ -37,6 +51,9 @@ export function MobileMenuProvider({ children }: { children: ReactNode }) {
         inventoryPanelOpen,
         openInventoryPanel,
         closeInventoryPanel,
+        servicesPanelOpen,
+        openServicesPanel,
+        closeServicesPanel,
       }}
     >
       {children}
@@ -51,4 +68,3 @@ export function useMobileMenu() {
   }
   return context;
 }
-

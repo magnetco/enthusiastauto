@@ -61,61 +61,47 @@ What's shipped, in progress, and planned for the Enthusiast Auto platform.
 - [x] React + Vite frontend
 - [x] User management routes
 - [x] Account management routes
+- [x] Favorites management
+- [x] Service requests management
+- [x] Sell submissions management
+- [x] Vehicle import from CSV to Sanity
+- [x] Version history / change tracking
 
-## In Progress
-
-### Homepage UI Redesign
+### Phase 9: Homepage & UI Polish
 - [x] Dark header with white text and BMW M branding
-- [x] Full-height hero section (70-90vh) with "THE LEADING BMW PRESERVATION FACILITY" headline
-- [x] Redesigned inventory section with "// INVENTORY" heading
+- [x] Full-height hero section with "THE LEADING BMW PRESERVATION FACILITY" headline
 - [x] Homepage services section with numbered offerings (01-04)
 - [x] Expanded navigation with Inventory dropdown
 - [x] BMW M logo icon component
+
+### Phase 10: Compatible Parts & Recommendations
+- [x] Popular compatible parts on vehicle PDP (deferred loading with skeleton UI)
+- [x] Shopify BEST_SELLING sort for popularity ranking
+- [x] Compatible parts for viewed vehicles (async loading)
+
+### Phase 11: Blog
+- [x] Blog landing page with featured carousel
+- [x] Blog post detail pages
+- [x] Category filtering
+- [x] Sanity CMS integration for posts
+
+## In Progress
+
+_Nothing actively in development._
+
+## Planned
+
+### My Garage Enhancements
+- [ ] Garage vehicle cards with inline parts preview
+- [ ] Garage-based personalized homepage recommendations
 
 ### Sanity Studio Improvements
 - [ ] Preview mode for draft vehicles
 - [ ] Better image management workflow
 
-## Planned
-
-### Data Admin Enhancements
-- [ ] View/manage favorites
-- [ ] View/manage service requests
-- [ ] Database analytics dashboard
-- [ ] Activity logs
-
-### Enhanced Search
-- [ ] Server-side search for better performance
-- [ ] Search analytics
-- [ ] Popular searches
-
-### My Garage Enhancements
-- [x] Popular compatible parts on vehicle PDP (deferred loading with skeleton UI)
-- [x] Shopify BEST_SELLING sort for popularity ranking
-- [ ] Garage vehicle cards with inline parts preview (5-10 parts per saved vehicle)
-- [ ] "Parts for your garage" aggregated recommendations section
-- [ ] Garage-based personalized homepage recommendations
-- [ ] Saved vehicle fitment alerts (notify when compatible parts are added)
-
-### Recommendations
-- [ ] "You may also like" on vehicle pages
-- [x] Compatible parts for viewed vehicles (deferred async loading)
-- [ ] Recently viewed items
-
-### Performance
+### Performance & Analytics
 - [ ] Image optimization audit
 - [ ] Core Web Vitals improvements
-- [ ] Edge caching optimization
-
-### Analytics
-- [ ] User behavior tracking
-- [ ] Conversion funnel analysis
-- [ ] A/B testing infrastructure
-
-### Google Maps Integration
-- [ ] Add interactive store location map to About/Visit page
-- [ ] Directions integration with Google Maps
-- [ ] Leverage existing Google Cloud account from legacy website (enthusiastauto.com)
 
 ## Technical Debt
 
@@ -124,7 +110,6 @@ What's shipped, in progress, and planned for the Enthusiast Auto platform.
 - [ ] Migrate from deskTool to structureTool in Sanity
 - [ ] Add E2E tests with Playwright
 - [ ] Improve error boundaries
-- [ ] Add Sentry error monitoring
 
 ## Known Issues
 

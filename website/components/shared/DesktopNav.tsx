@@ -6,6 +6,7 @@ import { useState } from "react";
 import { cn } from "@/lib/utils";
 import { NavItem } from "@/lib/config/navigation";
 import { InventoryMegaMenu } from "./InventoryMegaMenu";
+import { ServicesMegaMenu } from "./ServicesMegaMenu";
 
 interface DesktopNavProps {
   items: NavItem[];
@@ -17,6 +18,12 @@ interface DesktopNavProps {
 export function DesktopNav({ items }: DesktopNavProps) {
   const pathname = usePathname();
   const [inventoryOpen, setInventoryOpen] = useState(false);
+  const [servicesOpen, setServicesOpen] = useState(false);
+
+  const closeAllMenus = () => {
+    setInventoryOpen(false);
+    setServicesOpen(false);
+  };
 
   return (
     <nav className="flex items-center">
@@ -27,12 +34,18 @@ export function DesktopNav({ items }: DesktopNavProps) {
               ? pathname === item.href
               : pathname.startsWith(item.href);
 
-          if (item.hasSubmenu) {
+          if (item.hasSubmenu && item.submenuType === "inventory") {
             return (
               <li key={item.title} className="relative">
                 <button
-                  onClick={() => setInventoryOpen(!inventoryOpen)}
-                  onMouseEnter={() => setInventoryOpen(true)}
+                  onClick={() => {
+                    closeAllMenus();
+                    setInventoryOpen(!inventoryOpen);
+                  }}
+                  onMouseEnter={() => {
+                    closeAllMenus();
+                    setInventoryOpen(true);
+                  }}
                   className={cn(
                     "px-4 py-2 text-sm font-medium transition-colors duration-200",
                     isActive || inventoryOpen
@@ -52,10 +65,50 @@ export function DesktopNav({ items }: DesktopNavProps) {
                   </span>
                 </button>
 
-                {/* Mega Menu */}
+                {/* Inventory Mega Menu */}
                 <InventoryMegaMenu
                   isOpen={inventoryOpen}
                   onClose={() => setInventoryOpen(false)}
+                />
+              </li>
+            );
+          }
+
+          if (item.hasSubmenu && item.submenuType === "services") {
+            return (
+              <li key={item.title} className="relative">
+                <button
+                  onClick={() => {
+                    closeAllMenus();
+                    setServicesOpen(!servicesOpen);
+                  }}
+                  onMouseEnter={() => {
+                    closeAllMenus();
+                    setServicesOpen(true);
+                  }}
+                  className={cn(
+                    "px-4 py-2 text-sm font-medium transition-colors duration-200",
+                    isActive || servicesOpen
+                      ? "text-white"
+                      : "text-white/70 hover:text-white"
+                  )}
+                >
+                  <span
+                    className={cn(
+                      "border-b-2 pb-1",
+                      isActive || servicesOpen
+                        ? "border-blue-500"
+                        : "border-transparent"
+                    )}
+                  >
+                    {item.title}
+                  </span>
+                </button>
+
+                {/* Services Mega Menu */}
+                <ServicesMegaMenu
+                  isOpen={servicesOpen}
+                  onClose={() => setServicesOpen(false)}
                 />
               </li>
             );
@@ -80,4 +133,3 @@ export function DesktopNav({ items }: DesktopNavProps) {
     </nav>
   );
 }
-

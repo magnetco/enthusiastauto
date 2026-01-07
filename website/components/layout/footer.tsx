@@ -26,9 +26,10 @@ const footerLinks = {
 		title: "Services",
 		links: [
 			{ label: "All Services", href: "/services" },
-			{ label: "Pre-Purchase Inspection", href: "/services/pre-purchase-inspection" },
-			{ label: "Performance Upgrades", href: "/services/performance-upgrades" },
-			{ label: "Maintenance", href: "/services/maintenance" },
+			{ label: "Conditioning", href: "/services/conditioning" },
+			{ label: "Rejuvenation", href: "/services/rejuvenation" },
+			{ label: "Mechanical", href: "/services/mechanical" },
+			{ label: "Cosmetic", href: "/services/cosmetic" },
 		],
 	},
 	company: {

@@ -9,18 +9,27 @@ import FlagIcon from "components/icons/flag";
 import { NAV_ITEMS } from "@/lib/config/navigation";
 import { useMobileMenu } from "./MobileMenuContext";
 import { MobileInventoryPanel } from "./MobileInventoryPanel";
+import { MobileServicesPanel } from "./MobileServicesPanel";
 
 /**
- * Mobile menu slide-over panel with nested inventory submenu
+ * Mobile menu slide-over panel with nested inventory and services submenus
  */
 export function MobileMenu() {
   const pathname = usePathname();
   const {
     isOpen,
     closeMenu,
-    inventoryPanelOpen,
     openInventoryPanel,
+    openServicesPanel,
   } = useMobileMenu();
+
+  const handleSubmenuClick = (submenuType?: string) => {
+    if (submenuType === "inventory") {
+      openInventoryPanel();
+    } else if (submenuType === "services") {
+      openServicesPanel();
+    }
+  };
 
   return (
     <>
@@ -72,7 +81,7 @@ export function MobileMenu() {
                       return (
                         <li key={item.title}>
                           <button
-                            onClick={openInventoryPanel}
+                            onClick={() => handleSubmenuClick(item.submenuType)}
                             className="flex w-full items-center justify-between py-3 text-base font-medium text-white/90 transition-colors hover:text-white"
                           >
                             <span>{item.title}</span>
@@ -135,8 +144,9 @@ export function MobileMenu() {
         </Dialog>
       </Transition>
 
-      {/* Inventory Sub-panel */}
+      {/* Sub-panels */}
       <MobileInventoryPanel />
+      <MobileServicesPanel />
     </>
   );
 }

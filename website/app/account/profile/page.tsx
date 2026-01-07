@@ -6,7 +6,7 @@ import {
   ProfileCard,
   ProfileForm,
 } from "@/components/account";
-import { SectionHeading } from "@/components/shared/SectionHeading";
+import { TitleBlock } from "@/components/shared/TitleBlock";
 import { getServerSession } from "@/lib/auth/session";
 import prisma from "@/lib/db/prisma";
 import { Metadata } from "next";
@@ -57,7 +57,7 @@ export default async function ProfilePage() {
     <div className="space-y-12">
       {/* Account Overview Section */}
       <section>
-        <SectionHeading title="Account Overview" className="mb-6" />
+        <TitleBlock title="Account Overview" className="mb-6" />
         <ProfileCard
           user={{
             name: user.name,
@@ -72,7 +72,7 @@ export default async function ProfilePage() {
 
       {/* Profile Information Section */}
       <section>
-        <SectionHeading title="Profile Information" className="mb-6" />
+        <TitleBlock title="Profile Information" className="mb-6" />
         <ProfileForm
           user={{
             name: user.name,
@@ -84,7 +84,7 @@ export default async function ProfilePage() {
 
       {/* Security Section */}
       <section>
-        <SectionHeading title="Security" className="mb-6" />
+        <TitleBlock title="Security" className="mb-6" />
         <div className="space-y-6">
           <ChangePassword hasPassword={hasPassword} />
           <ConnectedAccounts accounts={user.accounts} hasPassword={hasPassword} />
@@ -93,13 +93,13 @@ export default async function ProfilePage() {
 
       {/* Addresses Section */}
       <section>
-        <SectionHeading title="Addresses" className="mb-6" />
+        <TitleBlock title="Addresses" className="mb-6" />
         <AddressManager />
       </section>
 
       {/* Danger Zone Section */}
       <section>
-        <SectionHeading title="Danger Zone" variant="destructive" className="mb-6" />
+        <TitleBlock title="Danger Zone" className="mb-6" />
         <DeleteAccount />
       </section>
     </div>
