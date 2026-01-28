@@ -6,7 +6,7 @@ import PasswordResetEmail from "@/emails/password-reset-email";
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 const EMAIL_FROM = process.env.EMAIL_FROM || "noreply@resend.dev";
-const APP_URL = process.env.NEXTAUTH_URL || "http://localhost:3000";
+const APP_URL = process.env.NEXTAUTH_URL || "http://localhost:3040";
 
 /**
  * Send email verification email

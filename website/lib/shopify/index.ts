@@ -269,23 +269,29 @@ export async function updateCart(
 }
 
 export async function getCart(): Promise<Cart | undefined> {
-  const cartId = (await cookies()).get("cartId")?.value;
+  try {
+    const cartId = (await cookies()).get("cartId")?.value;
 
-  if (!cartId) {
+    if (!cartId) {
+      return undefined;
+    }
+
+    const res = await shopifyFetch<ShopifyCartOperation>({
+      query: getCartQuery,
+      variables: { cartId },
+    });
+
+    // Old carts becomes `null` when you checkout.
+    if (!res.body.data.cart) {
+      return undefined;
+    }
+
+    return reshapeCart(res.body.data.cart);
+  } catch (error) {
+    // Gracefully handle errors (e.g., missing Shopify config, API errors)
+    console.error("Error fetching cart:", error);
     return undefined;
   }
-
-  const res = await shopifyFetch<ShopifyCartOperation>({
-    query: getCartQuery,
-    variables: { cartId },
-  });
-
-  // Old carts becomes `null` when you checkout.
-  if (!res.body.data.cart) {
-    return undefined;
-  }
-
-  return reshapeCart(res.body.data.cart);
 }
 
 export async function getCollection(
@@ -467,16 +473,22 @@ export async function getProducts({
   cacheTag(TAGS.products);
   cacheLife("days");
 
-  const res = await shopifyFetch<ShopifyProductsOperation>({
-    query: getProductsQuery,
-    variables: {
-      query,
-      reverse,
-      sortKey,
-    },
-  });
+  try {
+    const res = await shopifyFetch<ShopifyProductsOperation>({
+      query: getProductsQuery,
+      variables: {
+        query,
+        reverse,
+        sortKey,
+      },
+    });
 
-  return reshapeProducts(removeEdgesAndNodes(res.body.data.products));
+    return reshapeProducts(removeEdgesAndNodes(res.body.data.products));
+  } catch (error) {
+    // Gracefully handle errors (e.g., missing Shopify config, API errors)
+    console.error("Error fetching products:", error);
+    return [];
+  }
 }
 
 // This is called from `app/api/revalidate.ts` so providers can control revalidation logic.

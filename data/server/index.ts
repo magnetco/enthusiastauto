@@ -13,7 +13,7 @@ import versionsRouter from './routes/versions.js'
 import vehicleImportRouter from './routes/vehicle-import.js'
 
 const app = express()
-const PORT = 4001
+const PORT = 4041
 
 app.use(cors())
 app.use(express.json({ limit: '50mb' }))

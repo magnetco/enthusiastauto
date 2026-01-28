@@ -2,7 +2,6 @@
 
 import { Product } from "@/lib/shopify/types";
 import { FitmentBadge } from "@/components/FitmentBadge";
-import { useFilters } from "@/contexts/FilterContext";
 import { matchVehicle } from "@/lib/utils/vehicle";
 import { useCart } from "@/components/cart/cart-context";
 import { addItem } from "@/components/cart/actions";
@@ -11,15 +10,38 @@ import Link from "next/link";
 import Price from "@/components/price";
 import { ShoppingCartIcon, HeartIcon } from "@heroicons/react/24/outline";
 import { toast } from "sonner";
-import { startTransition } from "react";
+import { startTransition, useEffect, useState } from "react";
 
 interface ProductCardProps {
   product: Product;
+  vehicle?: { model: string; year: number } | null;
 }
 
-export function ProductCard({ product }: ProductCardProps) {
-  const filterContext = useFilters();
-  const filters = filterContext?.filters || { vehicle: null };
+export function ProductCard({ product, vehicle = null }: ProductCardProps) {
+  // Try to get vehicle from FilterContext if available (client-side only)
+  const [filters, setFilters] = useState<{ vehicle: any }>({ vehicle });
+  
+  useEffect(() => {
+    // Only try to access FilterContext on client side after mount
+    if (typeof window === "undefined") return;
+    
+    // Use dynamic import to prevent SSR evaluation
+    // This will only work if FilterProvider is mounted in the component tree
+    import("@/contexts/FilterContext").then((mod) => {
+      try {
+        // useFilters hook requires FilterProvider to be in the tree
+        // If it's not available, it will return null, which is fine
+        const context = mod.useFilters();
+        if (context?.filters) {
+          setFilters(context.filters);
+        }
+      } catch {
+        // FilterContext not available, keep default vehicle prop
+      }
+    }).catch(() => {
+      // FilterContext module not available, keep default
+    });
+  }, []);
   const { addCartItem } = useCart();
 
   const isInStock = product.availableForSale;
@@ -28,8 +50,8 @@ export function ProductCard({ product }: ProductCardProps) {
     product.images[0]?.altText || `${product.title} by ${product.vendor}`;
 
   // Determine fitment status when vehicle is selected
-  const fitmentStatus = matchVehicle(product, filters.vehicle);
-  const showFitmentBadge = filters.vehicle !== null;
+  const fitmentStatus = matchVehicle(product, filters?.vehicle || null);
+  const showFitmentBadge = filters?.vehicle !== null && filters?.vehicle !== undefined;
 
   // Get default variant (first available variant)
   const defaultVariant = product.variants[0];

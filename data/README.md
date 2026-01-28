@@ -19,8 +19,8 @@ pnpm dev
 ```
 
 This starts:
-- Frontend at `http://localhost:4000`
-- API server at `http://localhost:4001`
+- Frontend at `http://localhost:4040`
+- API server at `http://localhost:4041`
 
 ## Environment
 

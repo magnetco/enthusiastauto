@@ -394,8 +394,10 @@ async function importVehicles(csvFilePath: string) {
         availabilityDate: row["Availability Date"]
           ? new Date(row["Availability Date"]).toISOString()
           : null,
-        inventoryStatus:
-          row["Current or Sold Inventory?"] || "Current Inventory",
+        status:
+          row["Current or Sold Inventory?"]?.includes("Sold") || row["Current or Sold Inventory?"] === "Sold"
+            ? "sold"
+            : "current",
         statusTag: row["Status Tag"] !== "None" ? row["Status Tag"] : null,
         isLive: row["Is Live"] === "true",
         featuredVehicle: row["Featured Vehicle"] === "true",

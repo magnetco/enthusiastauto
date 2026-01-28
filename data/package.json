@@ -4,9 +4,9 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "concurrently \"tsx watch server/index.ts\" \"vite --port 4000\"",
+    "dev": "concurrently \"tsx watch server/index.ts\" \"vite --port 4040\"",
     "build": "vite build && tsc -p tsconfig.server.json",
-    "preview": "vite preview --port 4000",
+    "preview": "vite preview --port 4040",
     "server": "tsx server/index.ts"
   },
   "dependencies": {

@@ -6,9 +6,9 @@ Enthusiast Auto platform technical architecture.
 
 | App | Port | Purpose |
 |-----|------|---------|
-| **website** | 3000 | Next.js 15 e-commerce platform |
-| **studio** | 3333 | Sanity CMS for vehicle content |
-| **data** | 4000 | Express + React admin dashboard |
+| **website** | 3040 | Next.js 15 e-commerce platform |
+| **studio** | 5040 | Sanity CMS for vehicle content |
+| **data** | 4040 (frontend) / 4041 (API) | Express + React admin dashboard |
 
 Each app is independent with its own `package.json`. Shared environment via `.env.local` at project root.
 

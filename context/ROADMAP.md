@@ -85,34 +85,84 @@ What's shipped, in progress, and planned for the Enthusiast Auto platform.
 - [x] Category filtering
 - [x] Sanity CMS integration for posts
 
+### Phase 12: Sell Your Car
+- [x] Sell landing page with three options (Sell, Consign, Auction)
+- [x] Multi-step submission wizard
+- [x] Vehicle information collection
+- [x] Photo upload capability
+- [x] API endpoint for sell submissions
+- [x] Email notifications for submissions
+- [x] Database storage via data admin app
+
+### Phase 13: Marketing Pages
+- [x] About page with company story and milestones
+- [x] Contact page with multiple inquiry types
+- [x] Contact form with vehicle/service/parts/general options
+- [x] Privacy policy page
+- [x] Terms of service page
+
+### Phase 14: Bug Fixes & Stability
+- [x] localStorage SSR error fix via instrumentation.ts
+- [x] Cursor IDE localStorage injection workaround
+- [x] Node.js 25 compatibility improvements
+
+### Phase 15: Testing Infrastructure
+- [x] Vitest setup for unit testing
+- [x] Unit tests for search functionality
+- [x] Unit tests for recommendations engine
+- [x] Unit tests for API routes (profile, search, contact)
+- [x] Unit tests for vehicle contact form
+- [x] Playwright setup for E2E testing (installed, tests pending)
+
 ## In Progress
 
 _Nothing actively in development._
 
 ## Planned
 
-### My Garage Enhancements
+### Phase 16: My Garage Enhancements
 - [ ] Garage vehicle cards with inline parts preview
 - [ ] Garage-based personalized homepage recommendations
+- [ ] Vehicle maintenance tracking
+- [ ] Service history integration
 
-### Sanity Studio Improvements
+### Phase 17: Sanity Studio Improvements
 - [ ] Preview mode for draft vehicles
 - [ ] Better image management workflow
+- [ ] Bulk vehicle import improvements
+- [ ] Custom validation rules
 
-### Performance & Analytics
+### Phase 18: Performance & Analytics
 - [ ] Image optimization audit
 - [ ] Core Web Vitals improvements
+- [ ] Analytics dashboard integration
+- [ ] Conversion tracking setup
+
+### Phase 19: Enhanced Search
+- [ ] Server-side search with Algolia or Meilisearch
+- [ ] Advanced filtering (price range, mileage, year)
+- [ ] Saved searches
+- [ ] Search result sorting options
+
+### Phase 20: Customer Experience
+- [ ] Live chat support
+- [ ] Vehicle comparison tool
+- [ ] Email marketing integration
+- [ ] Customer reviews and testimonials
 
 ## Technical Debt
 
-- [ ] Fix localStorage SSR error on homepage
 - [ ] Fix React type mismatch in reset-password page
 - [ ] Migrate from deskTool to structureTool in Sanity
-- [ ] Add E2E tests with Playwright
+- [ ] Write E2E tests with Playwright (framework installed)
 - [ ] Improve error boundaries
+- [ ] Audit and optimize image loading performance
+- [ ] Add comprehensive error logging/monitoring (e.g., Sentry)
+- [ ] Implement rate limiting on API endpoints
+- [ ] Expand unit test coverage beyond core features
+- [ ] Add integration tests for auth flows
 
 ## Known Issues
 
 - **Turbopack**: Doesn't work with this project structure (pnpm + subdirectory). Using webpack bundler instead.
-- **localStorage error**: Node.js 25 with Cursor's injected `--localstorage-file` flag causes SSR errors. The flag enables experimental localStorage in Node.js but provides an invalid path. This is an environmental issue, not a code issue. Workaround: use an older Node.js version (< 22) or ensure the flag is properly configured.
-- **React types**: Type mismatch between @types/react versions causes build errors
+- **React types**: Type mismatch between @types/react versions causes build errors in some auth pages

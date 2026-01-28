@@ -44,7 +44,6 @@ Configures fuzzy search engine with field weighting:
 - `chassis`: 1.5
 - `vin`: 1.5
 - `status`: 1.0
-- `inventoryStatus`: 1.0
 - `slug`: 0.8
 
 **Product Fields & Weights:**

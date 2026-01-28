@@ -31,7 +31,6 @@ export function transformVehicleToSearchable(
     mileage: vehicle.mileage,
     listingPrice: vehicle.listingPrice,
     status: vehicle.status,
-    inventoryStatus: vehicle.inventoryStatus,
     _createdAt: vehicle._createdAt,
   };
 }
@@ -74,7 +73,6 @@ export async function buildVehicleIndex(): Promise<SearchableVehicle[]> {
         listingPrice,
         showCallForPrice,
         status,
-        inventoryStatus,
         _createdAt
       }
     `;

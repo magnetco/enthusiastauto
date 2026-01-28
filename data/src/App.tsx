@@ -149,7 +149,7 @@ interface VehiclePreview {
   chassis: string
   mileage: number
   listingPrice: number
-  inventoryStatus: string
+  status: string
   hasSignatureShot: boolean
   hasGallery: boolean
   exists?: boolean
@@ -386,11 +386,11 @@ function VehicleImportPanel() {
                     <td className="py-2 pr-4 text-zinc-400">{formatPrice(v.listingPrice)}</td>
                     <td className="py-2 pr-4">
                       <span className={`text-xs px-2 py-0.5 rounded ${
-                        v.inventoryStatus.includes('Current') 
+                        v.status === 'current' 
                           ? 'bg-green-500/20 text-green-400' 
                           : 'bg-zinc-500/20 text-zinc-400'
                       }`}>
-                        {v.inventoryStatus.includes('Current') ? 'Current' : 'Sold'}
+                        {v.status === 'current' ? 'Current' : 'Sold'}
                       </span>
                     </td>
                     <td className="py-2">

@@ -13,7 +13,6 @@ export interface VehicleListItem {
   listingPrice?: number;
   showCallForPrice: boolean;
   status: "current" | "sold";
-  inventoryStatus: "Current Inventory" | "Sold";
   signatureShot?: any; // Sanity image reference
   soldShot?: any; // Sanity image reference
   _createdAt: string;
@@ -79,9 +78,7 @@ export async function getVehicles(
   }
 
   if (filters?.status && filters.status !== "all") {
-    const statusValue =
-      filters.status === "current" ? "Current Inventory" : "Sold";
-    conditions.push(`inventoryStatus == $status`);
+    conditions.push(`status == $status`);
   }
 
   // Build sort clause
@@ -123,7 +120,6 @@ export async function getVehicles(
       listingPrice,
       showCallForPrice,
       status,
-      inventoryStatus,
       signatureShot,
       soldShot,
       _createdAt
@@ -138,7 +134,7 @@ export async function getVehicles(
   if (filters?.priceMin !== undefined) params.priceMin = filters.priceMin;
   if (filters?.priceMax !== undefined) params.priceMax = filters.priceMax;
   if (filters?.status && filters.status !== "all") {
-    params.status = filters.status === "current" ? "Current Inventory" : "Sold";
+    params.status = filters.status;
   }
 
   try {
@@ -169,7 +165,6 @@ export interface VehicleDetail {
   listingPrice?: number;
   showCallForPrice: boolean;
   status: "current" | "sold";
-  inventoryStatus: "Current Inventory" | "Sold";
   statusTag?: string;
   isLive: boolean;
   featuredVehicle: boolean;
@@ -216,7 +211,6 @@ export const vehicleDetailQuery = `*[_type == "vehicle" && slug.current == $slug
   listingPrice,
   showCallForPrice,
   status,
-  inventoryStatus,
   statusTag,
   isLive,
   featuredVehicle,
@@ -366,7 +360,6 @@ export async function getFeaturedVehicles(
       listingPrice,
       showCallForPrice,
       status,
-      inventoryStatus,
       signatureShot,
       soldShot,
       _createdAt

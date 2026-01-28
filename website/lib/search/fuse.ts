@@ -18,7 +18,6 @@ export const vehicleFuseConfig: IFuseOptions<SearchableVehicle> = {
     { name: "chassis", weight: 1.5 },
     { name: "vin", weight: 1.5 },
     { name: "status", weight: 1.0 },
-    { name: "inventoryStatus", weight: 1.0 },
     { name: "slug", weight: 0.8 },
   ],
   includeScore: true,

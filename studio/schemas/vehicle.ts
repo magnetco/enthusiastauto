@@ -196,23 +196,6 @@ export const vehicle = defineType({
     }),
 
     defineField({
-      name: "inventoryStatus",
-      title: "Inventory Status",
-      type: "string",
-      description: "Current availability status of the vehicle",
-      options: {
-        list: [
-          { title: "Current Inventory", value: "Current Inventory" },
-          { title: "Sold", value: "Sold" },
-        ],
-        layout: "radio",
-      },
-      initialValue: "Current Inventory",
-      validation: (Rule) =>
-        Rule.required().error("Inventory status is required"),
-    }),
-
-    defineField({
       name: "statusTag",
       title: "Status Tag",
       type: "string",
@@ -687,13 +670,14 @@ export const vehicle = defineType({
       title: "listingTitle",
       chassis: "chassis",
       price: "listingPrice",
-      status: "inventoryStatus",
+      status: "status",
       media: "signatureShot",
     },
     prepare({ title, chassis, price, status, media }) {
+      const statusLabel = status === "sold" ? "Sold" : status === "current" ? "Current" : "Unknown";
       return {
         title: title || "Untitled Vehicle",
-        subtitle: `$${price?.toLocaleString() || "0"} - ${status || "Unknown"} - ${chassis || "N/A"}`,
+        subtitle: `$${price?.toLocaleString() || "0"} - ${statusLabel} - ${chassis || "N/A"}`,
         media: media,
       };
     },

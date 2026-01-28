@@ -17,7 +17,6 @@ const sedanTemplate: Template = {
   value: {
     // Pre-populate common fields
     status: "current",
-    inventoryStatus: "Current Inventory",
     bodyStyle: "Sedan",
     drive: "Rear-Wheel Drive",
     engineType: "Gasoline",

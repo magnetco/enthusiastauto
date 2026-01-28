@@ -106,7 +106,7 @@ router.post('/preview', async (req: Request, res: Response) => {
           chassis: row['Chassis'] || '',
           mileage: parseInt(row['Mileage']) || 0,
           listingPrice: parseFloat(row['Listing Price']) || 0,
-          inventoryStatus: row['Current or Sold Inventory?'] || 'Current Inventory',
+          status: row['Current or Sold Inventory?']?.includes('Sold') || row['Current or Sold Inventory?'] === 'Sold' ? 'sold' : 'current',
           hasSignatureShot: !!row['Signature Shot'],
           hasGallery: !!(row['Gallery Exterior 1'] || row['Gallery Interior 1']),
         })
@@ -161,7 +161,7 @@ router.post('/import-one', async (req: Request, res: Response) => {
       chassis: vehicle.chassis || '',
       mileage: parseInt(vehicle.mileage) || 0,
       listingPrice: parseFloat(vehicle.listingPrice) || 0,
-      inventoryStatus: vehicle.inventoryStatus || 'Current Inventory',
+      status: vehicle.status || (vehicle.inventoryStatus?.includes('Sold') || vehicle.inventoryStatus === 'Sold' ? 'sold' : 'current'),
       isLive: vehicle.isLive !== false,
     }
 

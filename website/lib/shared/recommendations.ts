@@ -618,7 +618,7 @@ export async function getVehiclesWithPart(
 
     // GROQ query to fetch vehicles with matching chassis
     const query = `
-      *[_type == "vehicle" && chassis in $models && inventoryStatus == "Current Inventory"]
+      *[_type == "vehicle" && chassis in $models && status == "current"]
       | order(_createdAt desc) [0...4] {
         _id,
         listingTitle,
@@ -628,7 +628,6 @@ export async function getVehiclesWithPart(
         listingPrice,
         showCallForPrice,
         status,
-        inventoryStatus,
         signatureShot,
         soldShot,
         _createdAt

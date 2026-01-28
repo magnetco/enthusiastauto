@@ -1,7 +1,6 @@
 "use client";
 
 import { MagnifyingGlassIcon, XMarkIcon } from "@heroicons/react/24/outline";
-import { useFilters } from "contexts/FilterContext";
 import { Input } from "@/components/ui/input";
 import Form from "next/form";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -10,7 +9,6 @@ import { useEffect, useRef, useState } from "react";
 export default function Search() {
   const searchParams = useSearchParams();
   const router = useRouter();
-  const filterContext = useFilters(); // May be null if outside FilterProvider
   const inputRef = useRef<HTMLInputElement>(null);
   const [searchValue, setSearchValue] = useState(searchParams?.get("q") || "");
   const [validationError, setValidationError] = useState("");

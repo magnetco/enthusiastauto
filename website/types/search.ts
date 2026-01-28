@@ -42,7 +42,6 @@ export interface SearchableVehicle {
   mileage: number;
   listingPrice?: number;
   status: string;
-  inventoryStatus: string;
   _createdAt: string;
 }
 

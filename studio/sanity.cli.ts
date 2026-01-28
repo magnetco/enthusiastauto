@@ -10,4 +10,7 @@ const dataset = process.env.SANITY_STUDIO_DATASET;
 
 export default defineCliConfig({
   api: { projectId, dataset },
+  server: {
+    port: 5040,
+  },
 });

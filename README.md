@@ -5,10 +5,21 @@ BMW specialist e-commerce platform.
 ## Quick Start
 
 ```bash
-cd website && pnpm install && pnpm dev    # localhost:3000
-cd studio && pnpm install && pnpm dev     # localhost:3333
-cd data && pnpm install && pnpm dev       # localhost:4000
+cd website && pnpm install && pnpm dev    # localhost:3040
+cd studio && pnpm install && pnpm dev     # localhost:5040
+cd data && pnpm install && pnpm dev       # localhost:4040
 ```
+
+## Development Ports
+
+| Service | Port | URL |
+|---------|------|-----|
+| Website (Next.js) | 3040 | http://localhost:3040 |
+| Data App (Vite) | 4040 | http://localhost:4040 |
+| Data API (Express) | 4041 | http://localhost:4041 |
+| Studio (Sanity) | 5040 | http://localhost:5040 |
+
+Port pattern: Base ports spaced by 1000 (3040 → 4040 → 5040).
 
 ## Documentation
 

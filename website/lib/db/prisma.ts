@@ -6,9 +6,23 @@ const prismaClientSingleton = () => {
 	const url = process.env.POSTGRES_PRISMA_URL || process.env.DATABASE_URL;
 
 	if (!url) {
-		throw new Error(
-			"Missing database connection string. Please ensure POSTGRES_PRISMA_URL or DATABASE_URL is set in your .env.local file."
+		// Log warning but create client with a minimal valid connection string format
+		// This allows the app to start; database operations will fail at runtime
+		console.warn(
+			"Missing database connection string. Database operations will fail. Please ensure POSTGRES_PRISMA_URL or DATABASE_URL is set in your .env.local file."
 		);
+		try {
+			// Try to create client with a placeholder - may fail but won't crash module load
+			const adapter = new PrismaPg({
+				connectionString: "postgresql://user:pass@localhost:5432/db",
+			});
+			return new PrismaClient({ adapter });
+		} catch (error) {
+			// If adapter creation fails, return a basic client
+			// Operations will fail at runtime with connection errors
+			console.error("Failed to create Prisma client:", error);
+			return new PrismaClient();
+		}
 	}
 
 	// Create the PostgreSQL adapter with the connection string
@@ -20,7 +34,7 @@ const prismaClientSingleton = () => {
 };
 
 declare const globalThis: {
-	prismaGlobal: ReturnType<typeof prismaClientSingleton>;
+	prismaGlobal: ReturnType<typeof prismaClientSingleton> | undefined;
 } & typeof global;
 
 const prisma = globalThis.prismaGlobal ?? prismaClientSingleton();

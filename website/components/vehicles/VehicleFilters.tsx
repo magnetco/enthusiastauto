@@ -264,9 +264,9 @@ export function VehicleFilters() {
           </AccordionContent>
         </AccordionItem>
 
-        {/* Inventory Status Filter */}
+        {/* Status Filter */}
         <AccordionItem value="status">
-          <AccordionTrigger>Inventory Status</AccordionTrigger>
+          <AccordionTrigger>Status</AccordionTrigger>
           <AccordionContent>
             <div className="space-y-2">
               {statusOptions.map((option) => (

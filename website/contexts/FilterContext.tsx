@@ -26,19 +26,61 @@ const VEHICLE_STORAGE_KEY = "vehicle-selection";
 
 // Check if localStorage is available and functional
 function isLocalStorageAvailable(): boolean {
+  // Must be in browser environment - check both window and document to be sure
+  if (typeof window === "undefined" || typeof document === "undefined") return false;
+  
   try {
-    // Must be in browser environment
-    if (typeof window === "undefined") return false;
     // Must have localStorage object on window (not global)
     if (!window.localStorage) return false;
-    // Must have proper methods (Cursor IDE can inject broken localStorage)
-    if (typeof window.localStorage.getItem !== "function") return false;
-    if (typeof window.localStorage.setItem !== "function") return false;
+    
+    // Cursor IDE can inject --localstorage-file which creates a broken localStorage
+    // where the object exists but methods are not functions or throw errors
+    // We need to carefully check if methods exist AND are callable
+    const storage = window.localStorage;
+    
+    // Check that localStorage methods exist and are functions
+    // Use try-catch around each access in case the property accessor throws
+    let getItem: typeof storage.getItem | undefined;
+    let setItem: typeof storage.setItem | undefined;
+    let removeItem: typeof storage.removeItem | undefined;
+    
+    try {
+      getItem = storage.getItem;
+      if (!getItem || typeof getItem !== "function") return false;
+    } catch {
+      return false;
+    }
+    
+    try {
+      setItem = storage.setItem;
+      if (!setItem || typeof setItem !== "function") return false;
+    } catch {
+      return false;
+    }
+    
+    try {
+      removeItem = storage.removeItem;
+      if (!removeItem || typeof removeItem !== "function") return false;
+    } catch {
+      return false;
+    }
+    
+    // Actually test if localStorage works by trying to use it
+    // This catches cases where Cursor IDE injects --localstorage-file without a path
     const test = "__storage_test__";
-    window.localStorage.setItem(test, test);
-    window.localStorage.removeItem(test);
-    return true;
+    try {
+      storage.setItem(test, "test");
+      const value = storage.getItem(test);
+      storage.removeItem(test);
+      
+      // Only return true if the test actually worked
+      return value === "test";
+    } catch {
+      // If the test fails, localStorage is broken
+      return false;
+    }
   } catch {
+    // Any error means localStorage is broken
     return false;
   }
 }
@@ -78,6 +120,9 @@ export function FilterProvider({ children }: { children: React.ReactNode }) {
 
   // Load filters from sessionStorage, vehicle from localStorage, and searchTerm from URL on mount
   useEffect(() => {
+    // Explicitly check we're on the client side before accessing storage
+    if (typeof window === "undefined") return;
+    
     const savedFilters = loadFiltersFromSession();
     const savedVehicle = loadVehicleFromStorage();
     const urlSearchTerm = searchParams.get("q") || "";
