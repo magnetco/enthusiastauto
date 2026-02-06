@@ -226,4 +226,3 @@ Testimonials, forum reviews, and influencer collaborations reinforce trust and r
 | Resend | Transactional emails |
 | Vercel | Hosting, CDN, serverless functions |
 | Google OAuth | Social login |
-

@@ -27,7 +27,7 @@ function isPublicRoute(pathname: string): boolean {
 	return publicRoutes.some((route) => pathname.startsWith(route));
 }
 
-export async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
 	const { pathname, searchParams } = request.nextUrl;
 
 	// #region agent log
@@ -35,8 +35,8 @@ export async function middleware(request: NextRequest) {
 		method: "POST",
 		headers: { "Content-Type": "application/json" },
 		body: JSON.stringify({
-			location: "middleware.ts:30",
-			message: "Middleware entry",
+			location: "proxy.ts:30",
+			message: "Proxy entry",
 			data: { pathname, isAuthRoute: pathname.startsWith("/api/auth/") },
 			timestamp: Date.now(),
 			sessionId: "debug-session",
@@ -52,7 +52,7 @@ export async function middleware(request: NextRequest) {
 		return NextResponse.redirect(new URL("/parts", request.url));
 	}
 
-	// Skip middleware for NextAuth API routes
+	// Skip proxy for NextAuth API routes
 	if (pathname.startsWith("/api/auth/")) {
 		return NextResponse.next();
 	}
@@ -84,7 +84,7 @@ export async function middleware(request: NextRequest) {
 	return NextResponse.next();
 }
 
-// Configure which routes the middleware should run on
+// Configure which routes the proxy should run on
 export const config = {
 	matcher: [
 		/*

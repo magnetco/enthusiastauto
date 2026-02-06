@@ -35,7 +35,7 @@ Define colors in three tiers:
 
 Document colors for each major component type:
 
-```
+\`\`\`
 Card (Light Mode)
 ├── Background:     var(--card)
 ├── Border:         var(--border) → var(--border-hover)
@@ -49,11 +49,11 @@ Header (Dark Mode)
 ├── Text Muted:     var(--muted-foreground)
 ├── Border:         var(--border)
 └── Focus Ring:     var(--ring)
-```
+\`\`\`
 
 ### Typography
 
-- Define font sizes with paired `line-height` and `letter-spacing`
+- Define font sizes with paired \`line-height\` and \`letter-spacing\`
 - Use negative letter-spacing for headings (tighter tracking)
 - Base body text: 14–16px with ~1.5 line-height
 
@@ -79,32 +79,32 @@ Use a consistent 4px or 8px base grid:
 
 Define 3–4 shadow levels:
 
-```css
+\`\`\`css
 --shadow-tiny:   0 1px 1px rgba(0,0,0,0.09);
 --shadow-low:    0 2px 4px rgba(0,0,0,0.1);
 --shadow-medium: 0 4px 24px rgba(0,0,0,0.2);
 --shadow-high:   0 7px 32px rgba(0,0,0,0.35);
-```
+\`\`\`
 
 ### Animation
 
 | Token | Duration | Usage |
 |-------|----------|-------|
-| `--duration-instant` | 0s | Immediate feedback |
-| `--duration-quick` | 100ms | Micro-interactions |
-| `--duration-base` | 250ms | Standard transitions |
-| `--ease-default` | `cubic-bezier(0.4, 0, 0.2, 1)` | General motion |
+| \`--duration-instant\` | 0s | Immediate feedback |
+| \`--duration-quick\` | 100ms | Micro-interactions |
+| \`--duration-base\` | 250ms | Standard transitions |
+| \`--ease-default\` | \`cubic-bezier(0.4, 0, 0.2, 1)\` | General motion |
 
-**Reduced motion:** Always support `prefers-reduced-motion`:
+**Reduced motion:** Always support \`prefers-reduced-motion\`:
 
-```css
+\`\`\`css
 @media (prefers-reduced-motion: reduce) {
   * {
     animation-duration: 0.01ms !important;
     transition-duration: 0.01ms !important;
   }
 }
-```
+\`\`\`
 
 ### Accessibility
 
@@ -122,52 +122,52 @@ Define 3–4 shadow levels:
 
 ### Component Model
 
-- **Server Components by default** — only add `'use client'` when required
+- **Server Components by default** — only add \`'use client'\` when required
 - Prefer composition over prop drilling
-- TypeScript strict mode — no `any` without justification
+- TypeScript strict mode — no \`any\` without justification
 
 ### When to Use Client Components
 
-Add `'use client'` only for:
-- `useState`, `useEffect`, `useContext`
+Add \`'use client'\` only for:
+- \`useState\`, \`useEffect\`, \`useContext\`
 - Event handlers (onClick, onChange)
 - Browser-only APIs (localStorage, window)
 - Third-party client libraries
 
 ### Organization
 
-```
+\`\`\`
 components/
 ├── ui/              # Primitives (button, card, input, dialog)
 ├── shared/          # Cross-feature (carousels, modals, tables)
 ├── layout/          # Structure (navbar, footer, sidebar)
 └── [feature]/       # Domain-specific (cart/, account/, blog/)
-```
+\`\`\`
 
 ### Naming Conventions
 
 | Type | Convention | Example |
 |------|------------|---------|
-| Component files | PascalCase | `ProductCard.tsx` |
-| Exports | Named, matching file | `export function ProductCard()` |
-| Props interface | `[Component]Props` | `interface ProductCardProps` |
-| Utility files | kebab-case | `format-price.ts` |
+| Component files | PascalCase | \`ProductCard.tsx\` |
+| Exports | Named, matching file | \`export function ProductCard()\` |
+| Props interface | \`[Component]Props\` | \`interface ProductCardProps\` |
+| Utility files | kebab-case | \`format-price.ts\` |
 
 ### ShadCN UI Guidelines
 
 **DO:**
 - Use ShadCN for primitives (Button, Dialog, Input, Select)
-- Customize via CSS variables in `globals.css`
-- Extend with `cn()` utility for conditional classes
+- Customize via CSS variables in \`globals.css\`
+- Extend with \`cn()\` utility for conditional classes
 
 **DON'T:**
-- Modify files in `components/ui/` directly
+- Modify files in \`components/ui/\` directly
 - Override styles with inline props — use CSS variables
 - Duplicate primitives — compose existing components
 
 ### Props & Types
 
-```typescript
+\`\`\`typescript
 // Extend HTML element props
 interface ButtonProps extends React.ComponentPropsWithoutRef<'button'> {
   variant?: 'primary' | 'secondary' | 'ghost';
@@ -178,7 +178,7 @@ interface ButtonProps extends React.ComponentPropsWithoutRef<'button'> {
 function Card({ children, className }: CardProps) {
   return <div className={cn('card', className)}>{children}</div>;
 }
-```
+\`\`\`
 
 ---
 
@@ -186,9 +186,9 @@ function Card({ children, className }: CardProps) {
 
 ### CSS Custom Properties Structure
 
-Define in `globals.css` using `@theme inline` (Tailwind v4) or `:root`:
+Define in \`globals.css\` using \`@theme inline\` (Tailwind v4) or \`:root\`:
 
-```css
+\`\`\`css
 @theme inline {
   /* Radius scale */
   --radius-4: 0.25rem;
@@ -213,11 +213,11 @@ Define in `globals.css` using `@theme inline` (Tailwind v4) or `:root`:
   --duration-base: 0.25s;
   --ease-default: cubic-bezier(0.4, 0, 0.2, 1);
 }
-```
+\`\`\`
 
 ### Theme Variables (ShadCN Pattern)
 
-```css
+\`\`\`css
 :root {
   /* Backgrounds */
   --background: #ffffff;
@@ -253,18 +253,18 @@ Define in `globals.css` using `@theme inline` (Tailwind v4) or `:root`:
   --card-foreground: #ffffff;
   /* ... override all tokens */
 }
-```
+\`\`\`
 
 ### Token Naming Conventions
 
 | Category | Pattern | Examples |
 |----------|---------|----------|
-| Colors | `--color-[category]-[variant]` | `--color-text-secondary` |
-| Radius | `--radius-[size]` | `--radius-8`, `--radius-full` |
-| Spacing | `--[context]-[property]` | `--page-x`, `--header-height` |
-| Typography | `--font-size-[scale]` | `--font-size-base` |
-| Shadows | `--shadow-[level]` | `--shadow-low`, `--shadow-high` |
-| Duration | `--duration-[speed]` | `--duration-quick` |
+| Colors | \`--color-[category]-[variant]\` | \`--color-text-secondary\` |
+| Radius | \`--radius-[size]\` | \`--radius-8\`, \`--radius-full\` |
+| Spacing | \`--[context]-[property]\` | \`--page-x\`, \`--header-height\` |
+| Typography | \`--font-size-[scale]\` | \`--font-size-base\` |
+| Shadows | \`--shadow-[level]\` | \`--shadow-low\`, \`--shadow-high\` |
+| Duration | \`--duration-[speed]\` | \`--duration-quick\` |
 
 ---
 
@@ -274,11 +274,11 @@ Define in `globals.css` using `@theme inline` (Tailwind v4) or `:root`:
 
 | File | Purpose | Required |
 |------|---------|----------|
-| `page.tsx` | Route UI | Yes |
-| `layout.tsx` | Shared wrapper | No |
-| `loading.tsx` | Suspense fallback | No |
-| `error.tsx` | Error boundary | No |
-| `not-found.tsx` | 404 page | No |
+| \`page.tsx\` | Route UI | Yes |
+| \`layout.tsx\` | Shared wrapper | No |
+| \`loading.tsx\` | Suspense fallback | No |
+| \`error.tsx\` | Error boundary | No |
+| \`not-found.tsx\` | 404 page | No |
 
 ### Rendering Strategy
 
@@ -289,7 +289,7 @@ Define in `globals.css` using `@theme inline` (Tailwind v4) or `:root`:
 | **SSR** | User-specific | Dashboards, account pages |
 | **CSR** | Interactive | Search, filters, real-time |
 
-```typescript
+\`\`\`typescript
 // ISR: revalidate every 60 seconds
 export const revalidate = 60;
 
@@ -301,24 +301,24 @@ export async function generateStaticParams() {
   const items = await getItems();
   return items.map((item) => ({ slug: item.slug }));
 }
-```
+\`\`\`
 
 ### Data Fetching
 
 **DO:**
 - Fetch in Server Components
-- Use `fetch()` with `next: { revalidate }` for caching
-- Use `Promise.all()` for parallel independent fetches
+- Use \`fetch()\` with \`next: { revalidate }\` for caching
+- Use \`Promise.all()\` for parallel independent fetches
 - Use Server Actions for mutations
 
 **DON'T:**
-- Fetch in `useEffect` when server fetch is possible
+- Fetch in \`useEffect\` when server fetch is possible
 - Forget to handle loading and error states
 - Over-fetch — select only needed fields
 
 ### API Routes
 
-```
+\`\`\`
 app/api/
 ├── auth/[...nextauth]/   # Auth (NextAuth.js)
 ├── webhooks/             # External integrations
@@ -326,7 +326,7 @@ app/api/
 │   └── stripe/
 ├── revalidate/           # ISR triggers
 └── [resource]/           # REST endpoints
-```
+\`\`\`
 
 **Requirements:**
 - Validate input with Zod
@@ -336,7 +336,7 @@ app/api/
 
 ### Metadata & SEO
 
-```typescript
+\`\`\`typescript
 export async function generateMetadata({ params }): Promise<Metadata> {
   const data = await getData(params.slug);
   return {
@@ -349,19 +349,19 @@ export async function generateMetadata({ params }): Promise<Metadata> {
     },
   };
 }
-```
+\`\`\`
 
 **Required files:**
-- `sitemap.ts` — Dynamic sitemap generation
-- `robots.ts` — Crawler rules
-- `opengraph-image.tsx` — Dynamic OG images (optional)
+- \`sitemap.ts\` — Dynamic sitemap generation
+- \`robots.ts\` — Crawler rules
+- \`opengraph-image.tsx\` — Dynamic OG images (optional)
 
 ### Images
 
-- Always use `next/image`
-- Provide `width` + `height` or use `fill`
-- Use `sizes` for responsive images
-- Set `priority` for above-the-fold images
+- Always use \`next/image\`
+- Provide \`width\` + \`height\` or use \`fill\`
+- Use \`sizes\` for responsive images
+- Set \`priority\` for above-the-fold images
 - Use CDN URLs when available (Sanity, Shopify, Cloudinary)
 
 ---
@@ -370,7 +370,7 @@ export async function generateMetadata({ params }): Promise<Metadata> {
 
 ### Schema Conventions
 
-```typescript
+\`\`\`typescript
 defineType({
   name: 'post',           // lowercase singular
   title: 'Blog Post',
@@ -396,10 +396,10 @@ defineType({
     select: { title: 'title', date: 'publishedAt' },
   },
 });
-```
+\`\`\`
 
 **Conventions:**
-- Lowercase singular names: `post`, `product`, `author`
+- Lowercase singular names: \`post\`, \`product\`, \`author\`
 - Auto-generate slugs from title
 - Add validation rules for required fields
 - Configure preview for studio UX
@@ -407,7 +407,7 @@ defineType({
 ### GROQ Best Practices
 
 **DO:**
-```groq
+\`\`\`groq
 *[_type == "post" && defined(slug.current)] | order(publishedAt desc) [0...12] {
   _id,
   title,
@@ -415,33 +415,33 @@ defineType({
   publishedAt,
   "image": mainImage.asset->url
 }
-```
+\`\`\`
 
 **DON'T:**
-```groq
+\`\`\`groq
 // Avoid: fetches all fields
 *[_type == "post"]
 
 // Avoid: no limit
 *[_type == "post"] { ... }
-```
+\`\`\`
 
 **Guidelines:**
 - Project only needed fields
-- Use parameters: `*[_type == $type]`
-- Limit results: `[0...50]`
-- Dereference (`->`) only when needed
+- Use parameters: \`*[_type == $type]\`
+- Limit results: \`[0...50]\`
+- Dereference (\`->\`) only when needed
 
 ### Webhooks & Revalidation
 
 1. Configure webhook in Sanity dashboard → API → Webhooks
-2. Point to `/api/webhooks/sanity`
+2. Point to \`/api/webhooks/sanity\`
 3. Verify signature with HMAC
-4. Call `revalidatePath()` or `revalidateTag()`
+4. Call \`revalidatePath()\` or \`revalidateTag()\`
 
 ### Preview Mode
 
-```typescript
+\`\`\`typescript
 // app/api/preview/route.ts
 export async function GET(request: NextRequest) {
   const secret = request.nextUrl.searchParams.get('secret');
@@ -452,9 +452,9 @@ export async function GET(request: NextRequest) {
   }
 
   draftMode().enable();
-  redirect(`/posts/${slug}`);
+  redirect(\`/posts/\${slug}\`);
 }
-```
+\`\`\`
 
 ---
 
@@ -462,7 +462,7 @@ export async function GET(request: NextRequest) {
 
 ### Schema Conventions
 
-```prisma
+\`\`\`prisma
 model Post {
   id          String   @id @default(cuid())
   title       String
@@ -480,35 +480,35 @@ model Post {
   @@index([authorId])
   @@index([published, createdAt])
 }
-```
+\`\`\`
 
 **Requirements:**
-- Use `cuid()` for IDs (URL-safe, sortable)
-- Include `createdAt` and `updatedAt` on all models
-- Define `onDelete: Cascade` for child relations
+- Use \`cuid()\` for IDs (URL-safe, sortable)
+- Include \`createdAt\` and \`updatedAt\` on all models
+- Define \`onDelete: Cascade\` for child relations
 - Add indexes on foreign keys and query filters
-- Use `@@unique` for composite constraints
+- Use \`@@unique\` for composite constraints
 
 ### Connection Configuration
 
-```env
+\`\`\`env
 # Pooled connection (serverless/edge functions)
 POSTGRES_PRISMA_URL="postgres://...?pgbouncer=true&connect_timeout=15"
 
 # Direct connection (migrations only)
 DATABASE_URL="postgres://..."
-```
+\`\`\`
 
 ### Migration Workflow
 
-1. Edit `schema.prisma`
-2. `prisma migrate dev --name add_posts_table`
+1. Edit \`schema.prisma\`
+2. \`prisma migrate dev --name add_posts_table\`
 3. Commit migration SQL files
-4. Production: `prisma migrate deploy`
+4. Production: \`prisma migrate deploy\`
 
 ### Query Patterns
 
-```typescript
+\`\`\`typescript
 // Singleton client
 const globalForPrisma = global as unknown as { prisma: PrismaClient };
 export const prisma = globalForPrisma.prisma || new PrismaClient();
@@ -528,7 +528,7 @@ await prisma.favorite.upsert({
   update: { updatedAt: new Date() },
   create: { userId, itemId, itemType },
 });
-```
+\`\`\`
 
 ---
 
@@ -555,15 +555,15 @@ await prisma.favorite.upsert({
 
 - [ ] No render-blocking resources
 - [ ] Images optimized and lazy-loaded
-- [ ] Fonts preloaded or using `font-display: swap`
+- [ ] Fonts preloaded or using \`font-display: swap\`
 - [ ] JavaScript bundles code-split
 
 ### SEO
 
-- [ ] Unique `<title>` and `<meta description>` per page
+- [ ] Unique \`<title>\` and \`<meta description>\` per page
 - [ ] OpenGraph tags for social sharing
-- [ ] `sitemap.xml` generated and submitted to Search Console
-- [ ] `robots.txt` configured correctly
+- [ ] \`sitemap.xml\` generated and submitted to Search Console
+- [ ] \`robots.txt\` configured correctly
 - [ ] Canonical URLs set
 - [ ] Structured data (JSON-LD) validates
 
@@ -629,7 +629,7 @@ await prisma.favorite.upsert({
 - Use raw Tailwind colors — map to semantic tokens
 - Skip accessibility testing
 - Deploy without error monitoring
-- Use `any` types without justification
-- Fetch in `useEffect` when server fetch works
+- Use \`any\` types without justification
+- Fetch in \`useEffect\` when server fetch works
 - Commit environment secrets
-- Forget `prefers-reduced-motion` support
+- Forget \`prefers-reduced-motion\` support

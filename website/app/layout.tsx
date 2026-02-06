@@ -79,9 +79,9 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
 										{children}
 										<Toaster closeButton />
 										<WelcomeToast />
-										{isDev && <DevModePopout />}
 									</main>
 									<Footer />
+									{isDev && <DevModePopout />}
 								</MobileMenuProvider>
 							</ClientProviders>
 						</Suspense>

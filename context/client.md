@@ -1,4 +1,6 @@
-# Enthusiast Auto Group (EAG) - Client Communication Context
+# Client
+
+Client communication history, key contacts, and project context for Enthusiast Auto Group.
 
 **Client Name:** Enthusiast Auto Group (EAG) / Enthusiast Auto / EABMW  
 **Primary Domains:** enthusiastauto.com, eabmw.com  
