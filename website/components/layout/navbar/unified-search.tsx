@@ -138,7 +138,7 @@ export default function UnifiedSearch() {
             <button
               type="button"
               onClick={handleClear}
-              className="flex h-5 w-5 items-center justify-center rounded-sm text-neutral-500 hover:text-neutral-700 dark:text-neutral-400 dark:hover:text-neutral-200"
+              className="flex h-5 w-5 items-center justify-center rounded-sm text-muted-foreground hover:text-foreground"
               aria-label="Clear search"
             >
               <XMarkIcon className="h-4 w-4" />
@@ -180,7 +180,7 @@ export function UnifiedSearchSkeleton() {
     <form className="w-max-[550px] relative w-full lg:w-80 xl:w-full">
       <input
         placeholder="Search vehicles & parts..."
-        className="w-full rounded-lg border bg-white px-4 py-2 text-sm text-black placeholder:text-neutral-500 dark:border-neutral-800 dark:bg-transparent dark:text-white dark:placeholder:text-neutral-400"
+        className="w-full rounded-lg border border-border bg-background px-4 py-2 text-sm text-foreground placeholder:text-muted-foreground"
       />
       <div className="absolute right-0 top-0 mr-3 flex h-full items-center">
         <MagnifyingGlassIcon className="h-4" />

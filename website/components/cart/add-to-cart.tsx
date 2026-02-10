@@ -25,7 +25,7 @@ function SubmitButton({
         disabled
         className={clsx(
           baseClasses,
-          "cursor-not-allowed border border-neutral-200 bg-neutral-100 text-neutral-400"
+          "cursor-not-allowed border border-border bg-muted text-muted-foreground"
         )}
       >
         Out Of Stock
@@ -40,7 +40,7 @@ function SubmitButton({
         disabled
         className={clsx(
           baseClasses,
-          "cursor-not-allowed border border-neutral-200 bg-neutral-100 text-neutral-400"
+          "cursor-not-allowed border border-border bg-muted text-muted-foreground"
         )}
       >
         <ShoppingCartIcon className="h-5 w-5" />
@@ -54,7 +54,7 @@ function SubmitButton({
       aria-label="Add to cart"
       className={clsx(
         baseClasses,
-        "bg-neutral-900 text-white hover:bg-neutral-800 active:scale-[0.98]"
+        "bg-foreground text-background hover:bg-foreground/90 active:scale-[0.98]"
       )}
     >
       <ShoppingCartIcon className="h-5 w-5" />

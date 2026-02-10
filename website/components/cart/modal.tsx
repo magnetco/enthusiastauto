@@ -76,7 +76,7 @@ export default function CartModal() {
             leaveFrom="translate-x-0"
             leaveTo="translate-x-full"
           >
-            <Dialog.Panel className="fixed bottom-0 right-0 top-0 flex h-full w-full flex-col border-l border-neutral-200 bg-white/80 p-4 text-black backdrop-blur-xl md:w-[390px] dark:border-neutral-700 dark:bg-black/80 dark:text-white">
+            <Dialog.Panel className="fixed bottom-0 right-0 top-0 flex h-full w-full flex-col border-l border-border bg-background/80 p-4 text-foreground backdrop-blur-xl md:w-[390px]">
               <div className="flex items-center justify-between mb-4">
                 <p className="text-base font-semibold">My Cart</p>
                 <button aria-label="Close cart" onClick={closeCart}>
@@ -86,17 +86,17 @@ export default function CartModal() {
 
               {!cart || cart.lines.length === 0 ? (
                 <div className="mt-16 flex w-full flex-col items-center justify-center overflow-hidden px-4">
-                  <ShoppingCartIcon className="h-12 text-neutral-400" />
+                  <ShoppingCartIcon className="h-12 text-muted-foreground" />
                   <p className="mt-4 text-center text-lg font-semibold">
                     Your cart is empty
                   </p>
-                  <p className="mt-1.5 text-center text-xs text-neutral-500 dark:text-neutral-400">
+                  <p className="mt-1.5 text-center text-xs text-muted-foreground">
                     Add some premium BMW parts to get started
                   </p>
                   <Link href="/">
                     <button
                       onClick={closeCart}
-                      className="mt-5 rounded-full bg-blue-600 px-5 py-2.5 text-xs font-medium text-white transition-all duration-200 hover:bg-blue-700"
+                      className="mt-5 rounded-full bg-primary px-5 py-2.5 text-xs font-medium text-primary-foreground transition-all duration-200 hover:bg-primary/90"
                     >
                       Browse Products
                     </button>
@@ -132,11 +132,11 @@ export default function CartModal() {
                         return (
                           <li
                             key={i}
-                            className="flex w-full flex-col border-b border-neutral-300 dark:border-neutral-700"
+                            className="flex w-full flex-col border-b border-border"
                           >
                             <div className="relative flex w-full flex-row justify-between gap-4 py-3">
                               <div className="flex flex-row gap-2.5">
-                                <div className="relative h-14 w-14 flex-shrink-0 rounded-md border border-neutral-300 bg-neutral-300 dark:border-neutral-700 dark:bg-neutral-900 dark:hover:bg-neutral-800">
+                                <div className="relative h-14 w-14 flex-shrink-0 rounded-md border border-border bg-muted hover:bg-muted/80">
                                   {/* Delete button overlaying image */}
                                   <div className="absolute left-1 top-1 z-40">
                                     <DeleteItemButton
@@ -169,7 +169,7 @@ export default function CartModal() {
                                     </span>
                                     {item.merchandise.title !==
                                     DEFAULT_OPTION ? (
-                                      <p className="text-xs text-neutral-500 dark:text-neutral-400 mt-0.5">
+                                      <p className="text-xs text-muted-foreground mt-0.5">
                                         {item.merchandise.title}
                                       </p>
                                     ) : null}
@@ -190,7 +190,7 @@ export default function CartModal() {
                                           <div className="mt-1">
                                             <Badge
                                               variant="secondary"
-                                              className="text-[11px] h-5 px-1.5 bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-100"
+                                              className="text-[11px] h-5 px-1.5 bg-accent/20 text-accent"
                                             >
                                               Fits: {parsedFitment.model}{" "}
                                               {parsedFitment.year}
@@ -228,7 +228,7 @@ export default function CartModal() {
                                     item.cost.totalAmount.currencyCode
                                   }
                                 />
-                                <div className="flex h-7 flex-row items-center rounded-full border border-neutral-200 dark:border-neutral-700">
+                                <div className="flex h-7 flex-row items-center rounded-full border border-border">
                                   <EditItemQuantityButton
                                     item={item}
                                     type="minus"
@@ -251,23 +251,23 @@ export default function CartModal() {
                         );
                       })}
                   </ul>
-                  <div className="py-3 text-xs text-neutral-400 dark:text-neutral-400 space-y-2">
-                    <div className="flex items-center justify-between border-b border-neutral-200 pb-2 dark:border-neutral-700">
-                      <p className="text-neutral-300 dark:text-neutral-300">Taxes</p>
+                  <div className="py-3 text-xs text-muted-foreground space-y-2">
+                    <div className="flex items-center justify-between border-b border-border pb-2">
+                      <p className="text-muted-foreground">Taxes</p>
                       <Price
-                        className="text-right text-sm text-black dark:text-white font-semibold"
+                        className="text-right text-sm text-foreground font-semibold"
                         amount={cart.cost.totalTaxAmount.amount}
                         currencyCode={cart.cost.totalTaxAmount.currencyCode}
                       />
                     </div>
-                    <div className="flex items-center justify-between border-b border-neutral-200 pb-2 dark:border-neutral-700">
-                      <p className="text-neutral-300 dark:text-neutral-300">Shipping</p>
-                      <p className="text-right text-xs text-neutral-300 dark:text-neutral-300">Calculated at checkout</p>
+                    <div className="flex items-center justify-between border-b border-border pb-2">
+                      <p className="text-muted-foreground">Shipping</p>
+                      <p className="text-right text-xs text-muted-foreground">Calculated at checkout</p>
                     </div>
-                    <div className="flex items-center justify-between border-b border-neutral-200 pb-2 dark:border-neutral-700">
-                      <p className="font-medium text-neutral-200 dark:text-neutral-200">Total</p>
+                    <div className="flex items-center justify-between border-b border-border pb-2">
+                      <p className="font-medium text-foreground">Total</p>
                       <Price
-                        className="text-right text-base text-black dark:text-white font-semibold"
+                        className="text-right text-base text-foreground font-semibold"
                         amount={cart.cost.totalAmount.amount}
                         currencyCode={cart.cost.totalAmount.currencyCode}
                       />
@@ -288,7 +288,7 @@ export default function CartModal() {
 
 function CloseCart({ className }: { className?: string }) {
   return (
-    <div className="relative flex h-9 w-9 items-center justify-center rounded-md border border-neutral-200 text-black transition-colors dark:border-neutral-700 dark:text-white hover:bg-neutral-100 dark:hover:bg-neutral-800">
+    <div className="relative flex h-9 w-9 items-center justify-center rounded-md border border-border text-foreground transition-colors hover:bg-muted">
       <XMarkIcon
         className={clsx(
           "h-5 transition-all ease-in-out hover:scale-110",
@@ -304,7 +304,7 @@ function CheckoutButton() {
 
   return (
     <button
-      className="block w-full rounded-full bg-blue-600 p-2.5 text-center text-sm font-medium text-white opacity-90 hover:opacity-100 transition-opacity"
+      className="block w-full rounded-full bg-primary p-2.5 text-center text-sm font-medium text-primary-foreground opacity-90 hover:opacity-100 transition-opacity"
       type="submit"
       disabled={pending}
     >

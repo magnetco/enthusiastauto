@@ -50,27 +50,27 @@ export function Breadcrumb({ product }: { product: Product }) {
           <li>
             <Link
               href="/"
-              className="text-neutral-500 transition-colors hover:text-neutral-900"
+              className="text-muted-foreground transition-colors hover:text-foreground"
             >
               Home
             </Link>
           </li>
           <li aria-hidden="true">
-            <ChevronRightIcon className="h-4 w-4 text-neutral-400" />
+            <ChevronRightIcon className="h-4 w-4 text-muted-foreground" />
           </li>
           <li>
             <Link
               href={`/search/${categoryHandle}`}
-              className="text-neutral-500 transition-colors hover:text-neutral-900"
+              className="text-muted-foreground transition-colors hover:text-foreground"
             >
               {category}
             </Link>
           </li>
           <li aria-hidden="true">
-            <ChevronRightIcon className="h-4 w-4 text-neutral-400" />
+            <ChevronRightIcon className="h-4 w-4 text-muted-foreground" />
           </li>
           <li
-            className="max-w-[200px] truncate font-medium text-neutral-900 sm:max-w-[300px]"
+            className="max-w-[200px] truncate font-medium text-foreground sm:max-w-[300px]"
             aria-current="page"
           >
             {product.title}
