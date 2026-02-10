@@ -242,7 +242,9 @@ export async function POST(request: NextRequest) {
                     encoder.encode(`data: ${JSON.stringify({ type: "chunk", content: chunk })}\n\n`)
                   );
                 }
-              }
+              },
+              undefined,
+              true // Disable tools on second call to force text response
             );
             
             console.log("Final response complete:", fullResponse);

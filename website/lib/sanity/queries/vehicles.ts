@@ -90,7 +90,12 @@ export async function getVehicles(
   }
 
   if (filters?.status && filters.status !== "all") {
-    conditions.push(`status == $status`);
+    if (filters.status === "current") {
+      // Treat null status as "current" (not sold)
+      conditions.push(`(status == "current" || !defined(status) || status == null)`);
+    } else {
+      conditions.push(`status == $status`);
+    }
   }
 
   // Build sort clause
@@ -392,7 +397,7 @@ export async function getVehicleSlugs(
 ): Promise<Array<{ slug: string; _updatedAt?: string }>> {
   const limitClause = limit ? `[0...${limit}]` : "";
   const query = `
-    *[_type == "vehicle" && status == "current" && isLive == true] | order(_createdAt desc) ${limitClause} {
+    *[_type == "vehicle" && (status == "current" || !defined(status) || status == null) && status != "sold" && isLive == true] | order(_createdAt desc) ${limitClause} {
       "slug": slug.current,
       _updatedAt
     }
@@ -418,7 +423,7 @@ export async function getFeaturedVehicles(
   limit = 6,
 ): Promise<VehicleListItem[]> {
   const query = `
-    *[_type == "vehicle" && status == "current" && featuredVehicle == true && isLive == true] | order(sortOrder desc, _createdAt desc) [0...${limit}] {
+    *[_type == "vehicle" && (status == "current" || !defined(status) || status == null) && status != "sold" && featuredVehicle == true && isLive == true] | order(sortOrder desc, _createdAt desc) [0...${limit}] {
       _id,
       listingTitle,
       slug,
@@ -456,7 +461,7 @@ export async function getSimilarVehicles(
   limit = 6,
 ): Promise<VehicleListItem[]> {
   const query = `
-    *[_type == "vehicle" && chassis == $chassis && slug.current != $currentSlug && status == "current" && isLive == true] | order(_createdAt desc) [0...${limit}] {
+    *[_type == "vehicle" && chassis == $chassis && slug.current != $currentSlug && (status == "current" || !defined(status) || status == null) && status != "sold" && isLive == true] | order(_createdAt desc) [0...${limit}] {
       _id,
       listingTitle,
       slug,

@@ -10,41 +10,18 @@
   --accent: #ef4444;
   --accent-foreground: #fafafa;
   
-  /* Dark mode specific colors */
+  /* Dark mode colors */
   --bg-primary: #09090b;
   --bg-secondary: #18181b;
   --bg-tertiary: #27272a;
   --text-primary: #fafafa;
-  --text-secondary: #a1a1aa;
-  --text-tertiary: #71717a;
+  --text-secondary: #fafafa;
+  --text-tertiary: #a1a1aa;
   --border-color: #27272a;
   --card-bg: rgba(24, 24, 27, 0.5);
   --hover-bg: rgba(39, 39, 42, 0.5);
   --input-bg: #27272a;
   --input-border: #3f3f46;
-}
-
-[data-theme="light"] {
-  --background: #ffffff;
-  --foreground: #09090b;
-  --muted: #f4f4f5;
-  --muted-foreground: #71717a;
-  --border: #e4e4e7;
-  --accent: #ef4444;
-  --accent-foreground: #fafafa;
-  
-  /* Light mode specific colors */
-  --bg-primary: #ffffff;
-  --bg-secondary: #f9fafb;
-  --bg-tertiary: #f4f4f5;
-  --text-primary: #09090b;
-  --text-secondary: #52525b;
-  --text-tertiary: #71717a;
-  --border-color: #e4e4e7;
-  --card-bg: rgba(255, 255, 255, 0.9);
-  --hover-bg: rgba(244, 244, 245, 0.9);
-  --input-bg: #ffffff;
-  --input-border: #d4d4d8;
 }
 
 body {
@@ -234,4 +211,3 @@ body {
     animation: shimmer-rotate 8s linear infinite !important;
   }
 }
-

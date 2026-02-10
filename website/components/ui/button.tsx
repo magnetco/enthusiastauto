@@ -15,7 +15,7 @@ const buttonVariants = cva(
           "rounded-full bg-primary text-primary-foreground hover:bg-accent transition-all duration-100",
         // Secondary variant - 2px border, fully rounded
         secondary:
-          "rounded-full border-2 border-foreground bg-transparent text-foreground hover:bg-foreground hover:text-background transition-all duration-100",
+          "rounded-full border-2 border-foreground bg-transparent text-foreground hover:bg-foreground hover:text-background transition-all duration-100 px-6",
         // Shimmer variant - animated gradient border with mouse proximity effect (handled by ShimmerButton component)
         shimmer:
           "rounded-full bg-transparent text-white transition-all duration-100",

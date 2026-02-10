@@ -167,6 +167,7 @@ export async function streamChatCompletion(
   messages: ChatMessage[],
   onChunk: (chunk: string) => void,
   onToolCall?: (toolCall: any) => Promise<string>,
+  disableTools: boolean = false,
 ): Promise<{
   content: string;
   toolCalls: any[];
@@ -176,8 +177,8 @@ export async function streamChatCompletion(
     const stream = await groq.chat.completions.create({
       model: GROQ_MODELS.primary,
       messages: messages as any[],
-      tools: CHAT_TOOLS,
-      tool_choice: "auto",
+      tools: disableTools ? undefined : CHAT_TOOLS,
+      tool_choice: disableTools ? undefined : "auto",
       temperature: 0.5, // Lower temp for better tool calling
       max_tokens: 1024,
       stream: true,

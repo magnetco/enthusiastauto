@@ -23,7 +23,7 @@ export function DocumentationPage() {
         </div>
         <div 
           className="space-y-3 text-sm"
-          style={{ color: 'var(--text-secondary)' }}
+          style={{ color: 'var(--text-primary)' }}
         >
           <p>
             The Enthusiast Auto Data Manager is a comprehensive admin dashboard for managing all aspects of the Enthusiast Auto Group platform.
@@ -54,7 +54,7 @@ export function DocumentationPage() {
         </div>
         <div 
           className="space-y-3 text-sm"
-          style={{ color: 'var(--text-secondary)' }}
+          style={{ color: 'var(--text-primary)' }}
         >
           <div>
             <h4 
@@ -106,7 +106,7 @@ export function DocumentationPage() {
         </div>
         <div 
           className="space-y-3 text-sm"
-          style={{ color: 'var(--text-secondary)' }}
+          style={{ color: 'var(--text-primary)' }}
         >
           <p>
             <strong style={{ color: 'var(--text-primary)' }}>Enthusiast Auto Group</strong> is a BMW preservation facility specializing in classic and high-end BMW M models.
@@ -147,7 +147,7 @@ export function DocumentationPage() {
         </div>
         <div 
           className="space-y-3 text-sm"
-          style={{ color: 'var(--text-secondary)' }}
+          style={{ color: 'var(--text-primary)' }}
         >
           <div>
             <h4 

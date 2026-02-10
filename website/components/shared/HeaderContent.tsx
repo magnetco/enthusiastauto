@@ -76,7 +76,7 @@ export function HeaderContent() {
       {/* Bottom Row: Navigation links (desktop only) */}
       <div
         className={cn(
-          "hidden border-b transition-colors duration-300 lg:block",
+          "hidden border-y transition-colors duration-300 lg:block",
           isScrolled ? "border-gray-200/50" : "border-white/10"
         )}
       >

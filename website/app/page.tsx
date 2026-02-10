@@ -5,7 +5,6 @@ import { ServicesSection } from "@/components/shared/ServicesSection";
 import { FeaturedBlogPostsWrapper } from "@/components/shared/FeaturedBlogPostsWrapper";
 import { AboutSection } from "@/components/shared/AboutSection";
 import { VehicleCardSkeleton } from "@/components/vehicles/VehicleCardSkeleton";
-import { SingleRowHeader } from "@/components/shared/SingleRowHeader";
 import type { Metadata } from "next";
 
 // ISR Configuration: Revalidate every 60 seconds
@@ -33,9 +32,6 @@ export const metadata: Metadata = {
 export default function HomePage() {
   return (
     <>
-      {/* Single Row Header Variant - Full width, no container */}
-      <SingleRowHeader />
-
       {/* Hero Section - Full height with dramatic styling */}
       <HeroSection />
 

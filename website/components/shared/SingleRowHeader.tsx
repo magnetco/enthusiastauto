@@ -7,71 +7,76 @@ import CartModal from "components/cart/modal";
 import { NAV_ITEMS } from "@/lib/config/navigation";
 import { FavoritesBadge } from "./FavoritesBadge";
 import { HeaderAuthButton } from "./HeaderAuthButton";
+import { DesktopNav } from "./DesktopNav";
+import { MobileMenuButton } from "./MobileMenuButton";
+import { cn } from "@/lib/utils";
+import { useHeaderScroll } from "./SmartStickyHeader";
 
 /**
- * Single-row full-width header variant
- * Layout: Logo | Nav Links | Wishlist, Cart, Sign In
- * No search input, no container max-width
+ * Single-row header with mega-menu dropdowns
+ * Layout: Logo | Nav Links with Dropdowns | Favorites, Cart, Auth (+ Hamburger on mobile)
  */
 export function SingleRowHeader() {
+  const { isScrolled } = useHeaderScroll();
+
   return (
-    <header className="w-full border-t border-white/10 bg-bg-dark-blue-primary">
-      <div className="flex h-20 items-center justify-between px-6">
-        {/* Logo */}
-        <Link
-          href="/"
-          prefetch={true}
-          className="flex flex-none items-center gap-3 transition-opacity duration-200 hover:opacity-80"
+    <div className="flex h-20 items-center justify-between px-6">
+      {/* Logo */}
+      <Link
+        href="/"
+        prefetch={true}
+        className={cn(
+          "flex flex-none items-center gap-3 transition-all duration-200 hover:opacity-80",
+          // Hide logo text on smaller screens to save space
+          "lg:gap-3"
+        )}
+      >
+        <FlagIcon
+          className={cn(
+            "h-8 w-auto transition-colors duration-300 lg:h-10",
+            isScrolled ? "text-white" : "text-white"
+          )}
+        />
+        <span
+          className={cn(
+            "hidden font-headline text-xl font-semibold transition-colors duration-300 sm:inline",
+            isScrolled ? "text-white" : "text-white"
+          )}
         >
-          <FlagIcon className="h-10 w-auto" />
-          <span className="font-headline text-xl font-semibold text-white">
-            ENTHUSIAST AUTO
-          </span>
-        </Link>
+          ENTHUSIAST AUTO
+        </span>
+      </Link>
 
-        {/* Center: Navigation Links */}
-        <nav className="flex flex-1 items-center justify-center">
-          <ul className="flex items-center gap-8">
-            {NAV_ITEMS.map((item) => (
-              <NavLink key={item.title} item={item} />
-            ))}
-          </ul>
-        </nav>
+      {/* Center: Navigation Links with Mega Menus (Desktop only) */}
+      <div className="hidden flex-1 items-center justify-center lg:flex">
+        <DesktopNav items={NAV_ITEMS} />
+      </div>
 
-        {/* Right: Wishlist, Cart, Auth */}
-        <div className="flex flex-none items-center gap-4">
-          {/* Favorites badge */}
+      {/* Right: Favorites, Cart, Auth */}
+      <div className="flex flex-none items-center gap-2 lg:gap-4">
+        {/* Desktop: Favorites badge */}
+        <div className="hidden lg:block">
           <Suspense fallback={null}>
             <FavoritesBadge />
           </Suspense>
+        </div>
 
-          {/* Cart */}
-          <CartModal />
+        {/* Cart - visible on both */}
+        <CartModal />
 
-          {/* Auth Button */}
+        {/* Desktop: Auth Button */}
+        <div className="hidden lg:block">
           <Suspense fallback={<AuthButtonSkeleton />}>
             <HeaderAuthButton />
           </Suspense>
         </div>
-      </div>
-    </header>
-  );
-}
 
-/**
- * Individual nav link
- */
-function NavLink({ item }: { item: { title: string; href: string } }) {
-  return (
-    <li>
-      <Link
-        href={item.href}
-        prefetch={true}
-        className="font-headline text-[11px] font-semibold text-white/70 transition-colors duration-200 hover:text-white"
-      >
-        {item.title}
-      </Link>
-    </li>
+        {/* Mobile: Hamburger menu button */}
+        <div className="lg:hidden">
+          <MobileMenuButton />
+        </div>
+      </div>
+    </div>
   );
 }
 

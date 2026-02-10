@@ -148,7 +148,7 @@ export function ShimmerButton({
           {children}
         </span>
       ) : (
-        <span className="relative z-10 flex h-full w-full items-center justify-center gap-2 text-white">
+        <span className="relative z-10 flex h-full w-full items-center justify-center gap-2 rounded-full px-8 text-white">
           {children}
         </span>
       )}
