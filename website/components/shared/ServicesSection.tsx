@@ -52,7 +52,7 @@ export function ServicesSection() {
 
   return (
     <section
-      className="relative bg-white py-16 sm:py-20 lg:py-24"
+      className="relative bg-background py-16 sm:py-20 lg:py-24"
       aria-labelledby="services-heading"
     >
       <div className="mx-auto max-w-[var(--container-max)] px-page-x">
@@ -68,7 +68,7 @@ export function ServicesSection() {
                 aria-label="Get an estimate"
                 className={cn(
                   buttonVariants({ variant: "outline", size: "lg" }),
-                  "gap-2 rounded-full border-neutral-300 text-neutral-900 hover:bg-neutral-100"
+                  "gap-2 rounded-full border-border text-foreground hover:bg-muted"
                 )}
               >
                 Get an estimate
@@ -103,13 +103,13 @@ export function ServicesSection() {
 
             {/* Featured Content */}
             <div className="flex flex-col justify-center lg:py-4">
-              <span className="mb-2 font-mono text-sm tracking-wider text-neutral-400">
+              <span className="mb-2 font-mono text-sm tracking-wider text-muted-foreground">
                 {featured.number}
               </span>
-              <h3 className="mb-4 font-headline text-xl uppercase tracking-wide text-neutral-900 sm:text-2xl">
+              <h3 className="mb-4 font-headline text-xl uppercase tracking-wide text-foreground sm:text-2xl">
                 {featured.title}
               </h3>
-              <p className="text-body-base leading-relaxed text-neutral-600">
+              <p className="text-body-base leading-relaxed text-muted-foreground">
                 {featured.description}
               </p>
             </div>
@@ -137,13 +137,13 @@ export function ServicesSection() {
 
               {/* Service Content */}
               <div>
-                <span className="mb-1 block font-mono text-sm tracking-wider text-neutral-400">
+                <span className="mb-1 block font-mono text-sm tracking-wider text-muted-foreground">
                   {service.number}
                 </span>
-                <h3 className="mb-3 font-headline text-lg uppercase tracking-wide text-neutral-900 transition-colors group-hover:text-blue-600">
+                <h3 className="mb-3 font-headline text-lg uppercase tracking-wide text-foreground transition-colors group-hover:text-primary">
                   {service.title}
                 </h3>
-                <p className="line-clamp-5 text-sm leading-relaxed text-neutral-600">
+                <p className="line-clamp-5 text-sm leading-relaxed text-muted-foreground">
                   {service.description}
                 </p>
               </div>

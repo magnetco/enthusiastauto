@@ -25,7 +25,7 @@ export async function FeaturedVehicles() {
 
   return (
     <section
-      className="relative bg-white py-16 sm:py-20 lg:py-24"
+      className="relative bg-background py-16 sm:py-20 lg:py-24"
       aria-labelledby="featured-vehicles-heading"
     >
       <div className="mx-auto max-w-[var(--container-max)] px-page-x">
@@ -41,7 +41,7 @@ export async function FeaturedVehicles() {
                 aria-label="View all vehicles"
                 className={cn(
                   buttonVariants({ variant: "outline", size: "lg" }),
-                  "gap-2 border-neutral-300 text-neutral-900 hover:bg-neutral-100"
+                  "gap-2 border-border text-foreground hover:bg-muted"
                 )}
               >
                 See all cars

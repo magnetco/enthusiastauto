@@ -50,9 +50,9 @@ function ProductRecommendationCard({ product }: { product: Product }) {
       className="group block h-full"
       aria-label={`View ${product.title}`}
     >
-      <Card className="h-full overflow-hidden border-gray-200 transition-shadow duration-200 hover:shadow-lg">
+      <Card className="h-full overflow-hidden border-border transition-shadow duration-200 hover:shadow-lg">
         {/* Image Container */}
-        <div className="relative aspect-square w-full overflow-hidden bg-gray-100">
+        <div className="relative aspect-square w-full overflow-hidden bg-muted">
           {imageUrl ? (
             <Image
               src={imageUrl}
@@ -89,7 +89,7 @@ function ProductRecommendationCard({ product }: { product: Product }) {
           </h3>
 
           {/* Vendor */}
-          <p className="mb-2 text-xs text-gray-400">{product.vendor}</p>
+          <p className="mb-2 text-xs text-muted-foreground">{product.vendor}</p>
 
           {/* Price */}
           <div className="text-sm font-semibold text-red-500">
@@ -126,9 +126,9 @@ function VehicleRecommendationCard({ vehicle }: { vehicle: VehicleListItem }) {
       }`}
       aria-label={`View ${vehicle.listingTitle}`}
     >
-      <Card className="h-full overflow-hidden border-gray-200 transition-shadow duration-200 hover:shadow-lg">
+      <Card className="h-full overflow-hidden border-border transition-shadow duration-200 hover:shadow-lg">
         {/* Image Container */}
-        <div className="relative aspect-[4/3] w-full overflow-hidden bg-gray-100">
+        <div className="relative aspect-[4/3] w-full overflow-hidden bg-muted">
           <Image
             src={imageUrl}
             alt={vehicle.listingTitle}
@@ -142,7 +142,7 @@ function VehicleRecommendationCard({ vehicle }: { vehicle: VehicleListItem }) {
           {isSold && (
             <div className="absolute inset-0 flex items-center justify-center bg-black/30">
               <div className="rounded-md bg-white/90 px-6 py-3">
-                <span className="text-2xl font-bold text-gray-900">SOLD</span>
+                <span className="text-2xl font-bold text-foreground">SOLD</span>
               </div>
             </div>
           )}
@@ -152,7 +152,7 @@ function VehicleRecommendationCard({ vehicle }: { vehicle: VehicleListItem }) {
             <div className="absolute right-3 top-3">
               <Badge
                 variant="destructive"
-                className="bg-red-600 text-white hover:bg-red-700"
+                className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
               >
                 SOLD
               </Badge>
@@ -163,7 +163,7 @@ function VehicleRecommendationCard({ vehicle }: { vehicle: VehicleListItem }) {
         {/* Card Content */}
         <CardContent className="p-4">
           {/* Vehicle Title */}
-          <h3 className="mb-2 text-lg font-semibold text-white group-hover:text-red-500">
+          <h3 className="mb-2 text-lg font-semibold text-foreground group-hover:text-destructive">
             {vehicle.listingTitle}
           </h3>
 
@@ -171,7 +171,7 @@ function VehicleRecommendationCard({ vehicle }: { vehicle: VehicleListItem }) {
           <div className="mb-3">
             <Badge
               variant="outline"
-              className="border-gray-600 text-xs text-gray-300"
+              className="border-border text-xs text-muted-foreground"
             >
               {vehicle.chassis}
             </Badge>
@@ -179,10 +179,10 @@ function VehicleRecommendationCard({ vehicle }: { vehicle: VehicleListItem }) {
 
           {/* Price and Mileage */}
           <div className="space-y-1 text-sm">
-            <p className="font-semibold text-red-500">
+            <p className="font-semibold text-destructive">
               {formatCurrency(vehicle.listingPrice, vehicle.showCallForPrice)}
             </p>
-            <p className="text-gray-400">{formatMileage(vehicle.mileage)}</p>
+            <p className="text-muted-foreground">{formatMileage(vehicle.mileage)}</p>
           </div>
         </CardContent>
       </Card>

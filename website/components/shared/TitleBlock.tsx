@@ -33,13 +33,13 @@ export function TitleBlock({
             <BMWMStripesStacked />
             <h2
               id={id}
-              className="font-headline text-title-2 tracking-wide text-neutral-900 sm:text-title-1"
+              className="font-headline text-title-2 tracking-wide text-foreground sm:text-title-1"
             >
               {title}
             </h2>
           </div>
           {description && (
-            <p className="max-w-md text-body-base text-neutral-600 sm:text-body-large">
+            <p className="max-w-md text-body-base text-muted-foreground sm:text-body-large">
               {description}
             </p>
           )}
