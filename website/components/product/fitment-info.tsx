@@ -42,8 +42,8 @@ export function FitmentInfo({ product }: { product: Product }) {
   );
 
   return (
-    <div className="mb-6 rounded-lg border border-neutral-200 bg-white p-4">
-      <h3 className="mb-3 text-sm font-medium text-neutral-900">
+    <div className="mb-6 rounded-lg border border-border bg-background p-4">
+      <h3 className="mb-3 text-sm font-medium text-foreground">
         Fitment Information
       </h3>
 
@@ -65,15 +65,15 @@ export function FitmentInfo({ product }: { product: Product }) {
 
       {/* Show other compatible vehicles as simple text list */}
       {otherFitments.length > 0 && (
-        <div className="text-sm text-neutral-600">
-          <p className="mb-2 font-medium text-neutral-700">
+        <div className="text-sm text-muted-foreground">
+          <p className="mb-2 font-medium text-foreground">
             {matchingFitments.length > 0 ? "Also fits:" : "Compatible with:"}
           </p>
           <div className="flex flex-wrap gap-2">
             {otherFitments.map(({ tag, parsed }) => (
               <span
                 key={tag}
-                className="inline-flex rounded border border-neutral-200 bg-neutral-50 px-2 py-0.5 text-xs text-neutral-600"
+                className="inline-flex rounded border border-border bg-muted px-2 py-0.5 text-xs text-muted-foreground"
               >
                 {parsed.model} {parsed.year}
               </span>

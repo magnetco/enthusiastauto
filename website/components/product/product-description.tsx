@@ -11,8 +11,8 @@ export function ProductDescription({ product }: { product: Product }) {
     <div className="flex flex-col">
       {/* Price Display */}
       <div className="mb-6">
-        <span className="text-sm text-neutral-500">Price</span>
-        <div className="mt-1 text-3xl font-bold text-neutral-900">
+        <span className="text-sm text-muted-foreground">Price</span>
+        <div className="mt-1 text-3xl font-bold text-foreground">
           <Price
             amount={product.priceRange.maxVariantPrice.amount}
             currencyCode={product.priceRange.maxVariantPrice.currencyCode}

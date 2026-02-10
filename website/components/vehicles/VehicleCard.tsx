@@ -29,7 +29,7 @@ export function VehicleCard({ vehicle, priority = false }: VehicleCardProps) {
     >
       <Card className="h-full overflow-hidden rounded-lg border transition-shadow duration-100">
         {/* Image Container */}
-        <div className="relative aspect-[4/3] w-full overflow-hidden bg-gray-100">
+        <div className="relative aspect-[4/3] w-full overflow-hidden bg-muted">
           <Image
             src={imageUrl}
             alt={vehicle.listingTitle}

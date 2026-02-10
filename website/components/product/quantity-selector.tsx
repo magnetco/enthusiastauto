@@ -20,7 +20,7 @@ export function QuantitySelector({
     <div>
       <label
         htmlFor="quantity"
-        className="mb-2 block text-sm font-medium text-neutral-900"
+        className="mb-2 block text-sm font-medium text-foreground"
       >
         Quantity
       </label>
@@ -29,14 +29,14 @@ export function QuantitySelector({
           type="button"
           onClick={() => handleChange(quantity - 1)}
           disabled={quantity <= 1}
-          className="flex h-10 w-10 items-center justify-center rounded-lg border border-neutral-200 bg-white text-neutral-700 transition-all hover:bg-neutral-50 disabled:cursor-not-allowed disabled:opacity-40"
+          className="flex h-10 w-10 items-center justify-center rounded-lg border border-border bg-background text-foreground transition-all hover:bg-muted disabled:cursor-not-allowed disabled:opacity-40"
           aria-label="Decrease quantity"
         >
           <MinusIcon className="h-4 w-4" />
         </button>
         <span
           id="quantity"
-          className="w-12 text-center text-lg font-semibold text-neutral-900"
+          className="w-12 text-center text-lg font-semibold text-foreground"
           aria-live="polite"
         >
           {quantity}
@@ -44,7 +44,7 @@ export function QuantitySelector({
         <button
           type="button"
           onClick={() => handleChange(quantity + 1)}
-          className="flex h-10 w-10 items-center justify-center rounded-lg border border-neutral-200 bg-white text-neutral-700 transition-all hover:bg-neutral-50"
+          className="flex h-10 w-10 items-center justify-center rounded-lg border border-border bg-background text-foreground transition-all hover:bg-muted"
           aria-label="Increase quantity"
         >
           <PlusIcon className="h-4 w-4" />

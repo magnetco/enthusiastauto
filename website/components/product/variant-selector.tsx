@@ -42,7 +42,7 @@ export function VariantSelector({
   return options.map((option) => (
     <form key={option.id}>
       <dl className="mb-6">
-        <dt className="mb-3 text-sm font-medium text-neutral-900">
+        <dt className="mb-3 text-sm font-medium text-foreground">
           {option.name}
         </dt>
         <dd className="flex flex-wrap gap-2">
@@ -85,13 +85,13 @@ export function VariantSelector({
                   "flex min-w-[48px] items-center justify-center rounded-lg border px-3 py-2 text-sm font-medium transition-all duration-200",
                   {
                     // Active state - dark border
-                    "border-neutral-900 bg-neutral-900 text-white":
+                    "border-foreground bg-foreground text-background":
                       isActive,
                     // Available but not active
-                    "border-neutral-200 bg-white text-neutral-900 hover:border-neutral-400":
+                    "border-border bg-background text-foreground hover:border-muted-foreground":
                       !isActive && isAvailableForSale,
                     // Unavailable
-                    "relative cursor-not-allowed border-neutral-200 bg-neutral-100 text-neutral-400 before:absolute before:inset-0 before:bg-[linear-gradient(135deg,transparent_45%,currentColor_45%,currentColor_55%,transparent_55%)] before:opacity-20":
+                    "relative cursor-not-allowed border-border bg-muted text-muted-foreground before:absolute before:inset-0 before:bg-[linear-gradient(135deg,transparent_45%,currentColor_45%,currentColor_55%,transparent_55%)] before:opacity-20":
                       !isAvailableForSale,
                   },
                 )}

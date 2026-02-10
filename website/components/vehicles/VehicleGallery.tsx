@@ -62,7 +62,7 @@ export function VehicleGallery({ images, vehicleTitle }: VehicleGalleryProps) {
 
   if (!images || images.length === 0) {
     return (
-      <div className="flex aspect-video items-center justify-center rounded-lg bg-gray-800 text-gray-400">
+      <div className="flex aspect-video items-center justify-center rounded-lg bg-muted text-muted-foreground">
         No images available
       </div>
     );
@@ -77,7 +77,7 @@ export function VehicleGallery({ images, vehicleTitle }: VehicleGalleryProps) {
   return (
     <div className="space-y-4">
       {/* Main Image Display */}
-      <div className="group relative aspect-video overflow-hidden rounded-lg bg-gray-900">
+      <div className="group relative aspect-video overflow-hidden rounded-lg bg-card">
         <Image
           src={currentImage.asset.url}
           alt={
@@ -142,7 +142,7 @@ export function VehicleGallery({ images, vehicleTitle }: VehicleGalleryProps) {
               onClick={() => handleThumbnailClick(index)}
               className={`relative aspect-video overflow-hidden rounded-md transition-all ${
                 index === currentIndex
-                  ? "ring-2 ring-blue-500 ring-offset-2 ring-offset-gray-950"
+                  ? "ring-2 ring-ring ring-offset-2 ring-offset-background"
                   : "opacity-60 hover:opacity-100"
               }`}
             >

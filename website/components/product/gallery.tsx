@@ -19,12 +19,12 @@ export function Gallery({
     imageIndex === 0 ? images.length - 1 : imageIndex - 1;
 
   const buttonClassName =
-    "h-full px-5 transition-all duration-200 ease-in-out hover:text-neutral-900 flex items-center justify-center text-neutral-500 hover:bg-neutral-100 active:scale-95";
+    "h-full px-5 transition-all duration-200 ease-in-out hover:text-foreground flex items-center justify-center text-muted-foreground hover:bg-muted active:scale-95";
 
   return (
     <form>
       {/* Main Image */}
-      <div className="relative aspect-square w-full overflow-hidden rounded-lg border border-neutral-200 bg-neutral-50">
+      <div className="relative aspect-square w-full overflow-hidden rounded-lg border border-border bg-muted">
         {images[imageIndex] && (
           <Image
             className="h-full w-full object-contain transition-opacity duration-300"
@@ -39,7 +39,7 @@ export function Gallery({
         {/* Navigation Arrows */}
         {images.length > 1 ? (
           <div className="absolute bottom-4 flex w-full justify-center">
-            <div className="flex h-11 items-center overflow-hidden rounded-full border border-neutral-200 bg-white shadow-sm">
+            <div className="flex h-11 items-center overflow-hidden rounded-full border border-border bg-background shadow-sm">
               <button
                 formAction={() => {
                   const newState = updateImage(previousImageIndex.toString());
@@ -50,7 +50,7 @@ export function Gallery({
               >
                 <ArrowLeftIcon className="h-4 w-4" />
               </button>
-              <div className="h-5 w-px bg-neutral-200" />
+              <div className="h-5 w-px bg-border" />
               <button
                 formAction={() => {
                   const newState = updateImage(nextImageIndex.toString());
@@ -85,8 +85,8 @@ export function Gallery({
                   <div
                     className={`h-full w-full overflow-hidden rounded-lg border-2 transition-all duration-200 ${
                       isActive
-                        ? "border-neutral-900"
-                        : "border-transparent hover:border-neutral-300"
+                        ? "border-foreground"
+                        : "border-transparent hover:border-muted-foreground"
                     }`}
                   >
                     <GridTileImage

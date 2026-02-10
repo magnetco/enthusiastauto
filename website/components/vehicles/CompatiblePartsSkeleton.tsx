@@ -37,9 +37,9 @@ export function CompatiblePartsSkeleton({
  */
 function PartCardSkeleton() {
   return (
-    <Card className="h-full overflow-hidden border-gray-200">
+    <Card className="h-full overflow-hidden border-border">
       {/* Image Skeleton */}
-      <div className="relative aspect-square w-full overflow-hidden bg-gray-100">
+      <div className="relative aspect-square w-full overflow-hidden bg-muted">
         <Skeleton className="h-full w-full" />
       </div>
 

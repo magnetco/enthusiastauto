@@ -38,7 +38,7 @@ export function SortDropdown() {
     <div className="flex items-center gap-2">
       <label
         htmlFor="sort-select"
-        className="text-sm font-medium text-gray-700"
+        className="text-sm font-medium text-muted-foreground"
       >
         Sort by:
       </label>

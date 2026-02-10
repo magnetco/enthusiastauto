@@ -21,13 +21,13 @@ export function VehicleSpecs({ vehicle }: VehicleSpecsProps) {
   ];
 
   return (
-    <div className="rounded-lg border border-gray-800 bg-gray-900 p-6">
-      <h2 className="mb-4 text-xl font-semibold text-white">Specifications</h2>
+    <div className="rounded-lg border border-border bg-card p-6">
+      <h2 className="mb-4 text-xl font-semibold text-foreground">Specifications</h2>
       <dl className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         {specs.map((spec) => (
           <div key={spec.label} className="space-y-1">
-            <dt className="text-sm font-medium text-gray-400">{spec.label}</dt>
-            <dd className="text-base text-white">{spec.value}</dd>
+            <dt className="text-sm font-medium text-muted-foreground">{spec.label}</dt>
+            <dd className="text-base text-foreground">{spec.value}</dd>
           </div>
         ))}
       </dl>
