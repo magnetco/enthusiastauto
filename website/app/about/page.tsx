@@ -130,7 +130,7 @@ export default function AboutPage() {
 									href="/contact"
 									className={cn(
 										buttonVariants({ variant: "outline", size: "lg" }),
-										"gap-2 border-neutral-300 text-neutral-900 hover:bg-neutral-100"
+										"gap-2 border-border text-foreground hover:bg-muted"
 									)}
 								>
 									Get in Touch
@@ -143,14 +143,14 @@ export default function AboutPage() {
 					<div className="grid gap-12 lg:grid-cols-2 lg:gap-16">
 						{/* Story Content */}
 						<div className="space-y-6">
-							<p className="text-body-large leading-relaxed text-neutral-700">
+							<p className="text-body-large leading-relaxed text-foreground">
 								What started as a small operation in a modest garage has grown
 								into one of the country's most respected sources for BMW
 								M-Series vehicles. We didn't set out to build just another
 								dealership—we set out to create a destination for those who
 								share our obsession.
 							</p>
-							<p className="text-body-base leading-relaxed text-neutral-600">
+							<p className="text-body-base leading-relaxed text-muted-foreground">
 								Our team includes certified technicians, restoration specialists,
 								and fellow enthusiasts who have spent decades behind the wheel
 								of these incredible machines. Every vehicle that passes through
@@ -164,10 +164,10 @@ export default function AboutPage() {
 							{milestones.map((milestone) => (
 								<div
 									key={milestone.year}
-									className="group relative overflow-hidden rounded-lg border border-neutral-200 bg-neutral-50 p-6 transition-all duration-300 hover:border-neutral-300 hover:shadow-lg"
+									className="group relative overflow-hidden rounded-lg border border-border bg-muted p-6 transition-all duration-300 hover:border-muted-foreground hover:shadow-lg"
 								>
 									{/* Background Year */}
-									<span className="absolute -right-2 -top-4 font-mono text-[5rem] font-bold leading-none text-neutral-200 transition-colors duration-300 group-hover:text-neutral-300">
+									<span className="absolute -right-2 -top-4 font-mono text-[5rem] font-bold leading-none text-muted transition-colors duration-300 group-hover:text-muted-foreground/30">
 										{milestone.year.slice(-2)}
 									</span>
 
@@ -175,10 +175,10 @@ export default function AboutPage() {
 										<span className="font-mono text-body-small font-bold text-primary">
 											{milestone.year}
 										</span>
-										<h3 className="mt-1 text-title-3 font-semibold text-neutral-900">
+										<h3 className="mt-1 text-title-3 font-semibold text-foreground">
 											{milestone.title}
 										</h3>
-										<p className="mt-2 text-body-base text-neutral-600">
+										<p className="mt-2 text-body-base text-muted-foreground">
 											{milestone.description}
 										</p>
 									</div>
@@ -194,7 +194,7 @@ export default function AboutPage() {
 
 			{/* Mission & Values */}
 			<section
-				className="relative bg-neutral-900 py-16 sm:py-20 lg:py-24"
+				className="relative bg-card py-16 sm:py-20 lg:py-24"
 				aria-labelledby="mission-heading"
 			>
 				<div className="mx-auto max-w-[var(--container-max)] px-page-x">
@@ -202,7 +202,7 @@ export default function AboutPage() {
 						<TitleBlock
 							title="Our Mission"
 							id="mission-heading"
-							className="[&_h2]:text-white [&_p]:text-neutral-400 [&_svg_polygon]:fill-white/30"
+							className="[&_h2]:text-foreground [&_p]:text-muted-foreground [&_svg_polygon]:fill-foreground/30"
 						/>
 					</div>
 
@@ -214,7 +214,7 @@ export default function AboutPage() {
 								exceptional vehicles, expert services, and a community for
 								enthusiasts who share our passion."
 							</p>
-							<footer className="mt-6 text-body-base font-medium text-neutral-500">
+							<footer className="mt-6 text-body-base font-medium text-muted-foreground">
 								— The Enthusiast Auto Group Team
 							</footer>
 						</blockquote>
@@ -273,7 +273,7 @@ export default function AboutPage() {
 									href="/vehicles"
 									className={cn(
 										buttonVariants({ variant: "outline", size: "lg" }),
-										"gap-2 border-neutral-300 text-neutral-900 hover:bg-neutral-100"
+										"gap-2 border-border text-foreground hover:bg-muted"
 									)}
 								>
 									Browse Inventory
@@ -350,7 +350,7 @@ export default function AboutPage() {
 									href="/contact"
 									className={cn(
 										buttonVariants({ variant: "outline", size: "lg" }),
-										"gap-2 border-neutral-300 text-neutral-900 hover:bg-neutral-100"
+										"gap-2 border-border text-foreground hover:bg-muted"
 									)}
 								>
 									Contact Us

@@ -76,7 +76,7 @@ export function FitmentBadge({ variant, modelName, year }: FitmentBadgeProps) {
   return (
     <Badge
       variant="secondary"
-      className="bg-neutral-500 text-white hover:bg-neutral-600 dark:bg-neutral-600 dark:hover:bg-neutral-700"
+      className="bg-muted-foreground text-background hover:bg-muted-foreground/90"
       role="status"
       aria-label="Universal fit - Compatible with all vehicles"
     >
