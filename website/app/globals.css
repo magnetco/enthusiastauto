@@ -37,7 +37,7 @@ button {
 }
 
 @theme inline {
-  /* ===== Border Radius Tokens (Linear-inspired) ===== */
+  /* ===== Border Radius Tokens (Magazine-style - 8px radius) ===== */
   --radius-4: 0.25rem; /* 4px */
   --radius-6: 0.375rem; /* 6px */
   --radius-8: 0.5rem; /* 8px */
@@ -46,7 +46,7 @@ button {
   --radius-24: 1.5rem; /* 24px */
   --radius-32: 2rem; /* 32px */
   --radius-full: 9999px; /* pills, badges */
-  --radius: var(--radius-8); /* default */
+  --radius: 0.5rem; /* default - 8px for magazine feel */
 
   /* ===== Linear Color System (Dark Theme) ===== */
   /* Base Colors */
@@ -78,6 +78,11 @@ button {
   --color-bg-quaternary: #252936; /* Higher elevation */
   --color-bg-quinary: #2a2f3f; /* Highest elevation */
   --color-bg-translucent: rgba(255, 255, 255, 0.03); /* Subtle overlay */
+
+  /* Dark Blue Backgrounds (for sections, headers, footers) */
+  --color-bg-dark-blue-primary: #0a0c10; /* Primary dark blue - main sections */
+  --color-bg-dark-blue-secondary: #0d0f14; /* Slightly lighter - elevated sections */
+  --color-bg-dark-blue-tertiary: #0a0d11; /* Alternative dark blue tone */
 
   /* Borders (3-tier system) */
   --color-border-primary: #2a2f3f; /* Subtle borders */
@@ -112,8 +117,8 @@ button {
   --ease-default: cubic-bezier(0.4, 0, 0.2, 1);
 
   /* ===== Typography Scale ===== */
-  --font-headline: var(--font-chromatic), var(--font-figtree), "Figtree", sans-serif;
-  --font-sans: var(--font-figtree), "Figtree", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-headline: var(--font-chromatic), var(--font-geist-sans), "Geist Sans", sans-serif;
+  --font-sans: var(--font-geist-sans), "Geist Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   --font-mono: ui-monospace, "SF Mono", "Menlo", "Consolas", monospace;
 
   /* Font Weights (Linear weights) */
@@ -154,9 +159,9 @@ button {
   --line-height-large: 1.5; /* 24px */
   --letter-spacing-large: -0.011em;
 
-  /* XL - Small titles */
+  /* XL - Standard body text */
   --font-size-xl: 1.125rem; /* 18px */
-  --line-height-xl: 1.44; /* 26px */
+  --line-height-xl: 1.5; /* 150% = 27px */
   --letter-spacing-xl: -0.014em;
 
   /* Title 3 - Section headings */
@@ -251,7 +256,7 @@ button {
 
 :root {
   /* Light mode - Enthusiast Auto brand colors */
-  --radius: var(--radius-8);
+  --radius: 0.5rem;
   --background: #ffffff;
   --foreground: #282a30;
   --card: #f8f8f8;
@@ -359,10 +364,10 @@ button {
   }
   body {
     @apply bg-background text-foreground overflow-x-hidden;
-    /* Linear base: 14px with tight line-height for better density */
-    font-size: var(--font-size-base); /* 14px */
-    line-height: var(--line-height-base); /* 1.57 = 22px */
-    letter-spacing: var(--letter-spacing-base); /* -0.006em */
+    /* Body: 18px with 150% line height for improved readability */
+    font-size: var(--font-size-xl); /* 18px */
+    line-height: var(--line-height-xl); /* 1.5 = 150% = 27px */
+    letter-spacing: var(--letter-spacing-xl); /* -0.014em */
     font-family: var(--font-sans);
     font-weight: var(--font-weight-normal);
   }
@@ -505,6 +510,24 @@ button {
     }
   }
 
+  /* ===== Text Hierarchy Utility Classes ===== */
+  /* Map text hierarchy tokens to utility classes */
+  .text-primary-emphasis {
+    color: var(--color-text-primary);
+  }
+
+  .text-secondary-emphasis {
+    color: var(--color-text-secondary);
+  }
+
+  .text-tertiary-emphasis {
+    color: var(--color-text-tertiary);
+  }
+
+  .text-quaternary-emphasis {
+    color: var(--color-text-quaternary);
+  }
+
   /* ===== Spacing Utility Classes ===== */
   /* Horizontal page padding utility using design token */
   .px-page-x {
@@ -513,11 +536,36 @@ button {
   }
 }
 
+/* ===== Animated Loader Keyframes ===== */
+@property --gradient-angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+
+@keyframes shimmer-rotate {
+  from {
+    --gradient-angle: 0deg;
+  }
+  to {
+    --gradient-angle: 360deg;
+  }
+}
+
+.loader-ring {
+  animation: shimmer-rotate 3.5s linear infinite;
+  will-change: transform;
+}
+
 /* ===== Reduced Motion Support (WCAG 2.1 AA) ===== */
 @media (prefers-reduced-motion: reduce) {
   * {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
+  }
+  
+  .loader-ring {
+    animation: shimmer-rotate 8s linear infinite !important;
   }
 }

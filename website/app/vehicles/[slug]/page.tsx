@@ -1,19 +1,21 @@
 import { Suspense } from "react";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
-import Link from "next/link";
 import {
   getVehicleDetail,
   getVehicleSlugs,
+  getSimilarVehicles,
+  getGlobalFAQs,
 } from "@/lib/sanity/queries/vehicles";
-import { VehicleGallery } from "@/components/vehicles/VehicleGallery";
-import { VehicleSpecs } from "@/components/vehicles/VehicleSpecs";
-import { VehicleDescription } from "@/components/vehicles/VehicleDescription";
-import { Breadcrumbs } from "@/components/shared/Breadcrumbs";
-import { VehicleContactForm } from "@/components/vehicles/VehicleContactForm";
-import { Badge } from "@/components/ui/badge";
-import { CompatiblePartsSection } from "@/components/vehicles/CompatiblePartsSection";
-import { CompatiblePartsSkeleton } from "@/components/vehicles/CompatiblePartsSkeleton";
+import { VehicleHeroClient } from "@/components/vehicles/VehicleHeroClient";
+import { VehicleSpecsSection } from "@/components/vehicles/VehicleSpecsSection";
+import { OverviewSection } from "@/components/vehicles/OverviewSection";
+import { VehicleGallerySection } from "@/components/vehicles/VehicleGallerySection";
+import { HistorySection } from "@/components/vehicles/HistorySection";
+import { VehicleDocumentation } from "@/components/vehicles/VehicleDocumentation";
+import { VehicleInquirySection } from "@/components/vehicles/VehicleInquirySection";
+import { VehicleFAQs } from "@/components/vehicles/VehicleFAQs";
+import { OtherCarsSection } from "@/components/vehicles/OtherCarsSection";
 
 // Enable ISR with 60-second revalidation
 export const revalidate = 60;
@@ -98,6 +100,7 @@ export async function generateMetadata({
   };
 }
 
+
 export default async function VehicleDetailPage({
   params,
 }: VehicleDetailPageProps) {
@@ -115,6 +118,12 @@ export default async function VehicleDetailPage({
 
   // Prepare gallery images
   const galleryImages = vehicle.galleryImages || [];
+
+  // Fetch similar vehicles and global FAQs
+  const [similarVehicles, globalFaqs] = await Promise.all([
+    getSimilarVehicles(vehicle.chassis, slug, 6),
+    getGlobalFAQs(),
+  ]);
 
   // Generate schema.org Vehicle structured data
   const vehicleSchema = {
@@ -151,6 +160,11 @@ export default async function VehicleDetailPage({
     image: galleryImages.map((img) => img.asset.url),
   };
 
+  // Extract year from title for form
+  const vehicleYear = parseInt(
+    vehicle.listingTitle.match(/^\d{4}/)?.[0] || new Date().getFullYear().toString()
+  );
+
   return (
     <>
       {/* Structured Data - Vehicle Schema */}
@@ -159,134 +173,60 @@ export default async function VehicleDetailPage({
         dangerouslySetInnerHTML={{ __html: JSON.stringify(vehicleSchema) }}
       />
 
-      <div className="light-section mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
-        {/* Breadcrumb Navigation with auto-generation and schema.org */}
-        <Breadcrumbs
-          customTitle={vehicle.listingTitle}
-          baseUrl={baseUrl}
+      {/* Hero Section */}
+      <VehicleHeroClient
+        title={vehicle.listingTitle}
+        price={vehicle.listingPrice}
+        showCallForPrice={vehicle.showCallForPrice}
+        status={vehicle.status}
+        images={galleryImages}
+        createdAt={vehicle._createdAt}
+        slug={slug}
+        isFavorited={false}
+      />
+
+      {/* Specifications Section */}
+      <VehicleSpecsSection vehicle={vehicle} />
+
+      {/* Overview Section */}
+      <OverviewSection vehicle={vehicle} />
+
+      {/* Gallery Section */}
+      <VehicleGallerySection
+        images={galleryImages}
+        vehicleTitle={vehicle.listingTitle}
+      />
+
+      {/* History Section */}
+      <HistorySection vehicle={vehicle} />
+
+      {/* Documentation Section */}
+      {vehicle.documentation && vehicle.documentation.length > 0 && (
+        <VehicleDocumentation
+          documentation={vehicle.documentation}
+          vehicleTitle={vehicle.listingTitle}
         />
+      )}
 
-        {/* Two-Column Layout */}
-        <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
-          {/* Main Content (2/3 width on desktop) */}
-          <div className="space-y-8 lg:col-span-2">
-            {/* Vehicle Title and SOLD Badge */}
-            <div>
-              <div className="mb-2 flex flex-wrap items-center gap-3">
-                <h1 className="text-3xl font-bold text-foreground sm:text-4xl">
-                  {vehicle.listingTitle}
-                </h1>
-                {isSold && (
-                  <Badge variant="destructive" className="text-lg px-4 py-2">
-                    SOLD
-                  </Badge>
-                )}
-              </div>
-              <div className="flex flex-wrap gap-4 text-sm text-muted-foreground">
-                <span>{vehicle.mileage.toLocaleString()} miles</span>
-                {vehicle.vin && <span>VIN: {vehicle.vin}</span>}
-              </div>
-            </div>
+      {/* Inquiry Section */}
+      <VehicleInquirySection
+        vehicleSlug={slug}
+        vehicleTitle={vehicle.listingTitle}
+        vehicleYear={vehicleYear}
+        vehiclePrice={vehicle.listingPrice || 0}
+        vehicleStatus={vehicle.status}
+      />
 
-            {/* Photo Gallery */}
-            {galleryImages.length > 0 ? (
-              <VehicleGallery
-                images={galleryImages}
-                vehicleTitle={vehicle.listingTitle}
-              />
-            ) : (
-              <div className="flex aspect-video items-center justify-center rounded-lg bg-muted text-muted-foreground">
-                No images available
-              </div>
-            )}
+      {/* FAQs Section */}
+      <VehicleFAQs
+        vehicleFaqs={vehicle.faqs || []}
+        globalFaqs={globalFaqs}
+      />
 
-            {/* Vehicle Features */}
-            {vehicle.listingThumbnailFeatures &&
-              vehicle.listingThumbnailFeatures.length > 0 && (
-                <div className="rounded-lg border border-border bg-card p-6">
-                  <h2 className="mb-4 text-xl font-semibold text-foreground">
-                    Features
-                  </h2>
-                  <div className="flex flex-wrap gap-2">
-                    {vehicle.listingThumbnailFeatures.map((feature, index) => (
-                      <Badge key={index} variant="secondary">
-                        {feature}
-                      </Badge>
-                    ))}
-                  </div>
-                </div>
-              )}
-
-            {/* Vehicle Description */}
-            <VehicleDescription vehicle={vehicle} />
-
-            {/* Specifications */}
-            <VehicleSpecs vehicle={vehicle} />
-          </div>
-
-          {/* Sidebar (1/3 width on desktop, sticky) */}
-          <div className="space-y-6 lg:sticky lg:top-8 lg:self-start">
-            {/* Pricing Card */}
-            <div className="rounded-lg border border-border bg-card p-6">
-              <div className="mb-4">
-                {vehicle.showCallForPrice ? (
-                  <p className="text-2xl font-bold text-foreground">
-                    Call for Price
-                  </p>
-                ) : vehicle.listingPrice ? (
-                  <p className="text-3xl font-bold text-foreground">
-                    ${vehicle.listingPrice.toLocaleString()}
-                  </p>
-                ) : null}
-              </div>
-              <dl className="space-y-2 text-sm">
-                <div className="flex justify-between">
-                  <dt className="text-muted-foreground">Mileage</dt>
-                  <dd className="font-medium text-foreground">
-                    {vehicle.mileage.toLocaleString()} mi
-                  </dd>
-                </div>
-                <div className="flex justify-between">
-                  <dt className="text-muted-foreground">Chassis</dt>
-                  <dd className="font-medium text-foreground">{vehicle.chassis}</dd>
-                </div>
-                <div className="flex justify-between">
-                  <dt className="text-muted-foreground">Status</dt>
-                  <dd className="font-medium text-foreground">
-                    {vehicle.status === "sold" ? "SOLD" : "Available"}
-                  </dd>
-                </div>
-              </dl>
-            </div>
-
-            {/* Contact Form */}
-            <VehicleContactForm
-              slug={slug}
-              title={vehicle.listingTitle}
-              year={parseInt(vehicle.listingTitle.match(/^\d{4}/)?.[0] || new Date().getFullYear().toString())}
-              make="BMW"
-              model={vehicle.chassis}
-              price={vehicle.listingPrice || 0}
-              status={vehicle.status}
-              source="Enthusiast Auto"
-            />
-
-            {/* Back to Inventory */}
-            <Link
-              href="/vehicles"
-              className="block rounded-lg border border-border bg-card p-4 text-center text-sm text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
-            >
-              ← Back to Inventory
-            </Link>
-          </div>
-        </div>
-
-        {/* Compatible Parts Section - Full Width Below Main Content */}
-        {/* Deferred loading with skeleton UI for fast page render */}
-        <Suspense fallback={<CompatiblePartsSkeleton count={8} />}>
-          <CompatiblePartsSection vehicle={vehicle} limit={8} />
-        </Suspense>
-      </div>
+      {/* Other Cars Section */}
+      {similarVehicles.length > 0 && (
+        <OtherCarsSection vehicles={similarVehicles} />
+      )}
     </>
   );
 }

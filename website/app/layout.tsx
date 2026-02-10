@@ -3,7 +3,7 @@ import { WelcomeToast } from "components/welcome-toast";
 import { SessionProvider } from "lib/auth/SessionProvider";
 import { getCart } from "lib/shopify";
 import { baseUrl } from "lib/utils";
-import { Figtree } from "next/font/google";
+import { GeistSans } from "geist/font/sans";
 import localFont from "next/font/local";
 import { ReactNode, Suspense } from "react";
 import { Toaster } from "sonner";
@@ -13,18 +13,11 @@ import { MobileMenuProvider } from "components/shared/MobileMenuContext";
 import { MobileMenu } from "components/shared/MobileMenu";
 import { ClientProviders } from "components/layout/ClientProviders";
 import { DevModePopout } from "components/dev/DevModePopout";
+import { ChatWidget } from "components/chat/ChatWidget";
 import Footer from "components/layout/footer";
 import "./globals.css";
 
 const isDev = process.env.NODE_ENV === "development";
-
-// Load Figtree font with complete weight range
-const figtree = Figtree({
-	subsets: ["latin"],
-	weight: ["300", "400", "500", "600", "700", "800", "900"],
-	variable: "--font-figtree",
-	display: "swap",
-});
 
 // Load Chromatic Gothic for headlines
 const chromaticGothic = localFont({
@@ -59,8 +52,8 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
 	const cart = getCart();
 
 	return (
-		<html lang="en" className={`dark ${figtree.variable} ${chromaticGothic.variable}`}>
-			<body className="bg-background text-foreground selection:bg-accent/30 selection:text-accent-foreground antialiased">
+		<html lang="en" className={`${GeistSans.variable} ${chromaticGothic.variable}`}>
+			<body className="bg-white text-black selection:bg-accent/30 selection:text-accent-foreground antialiased">
 				{/* Skip to main content link for keyboard navigation */}
 				<a
 					href="#main-content"
@@ -81,6 +74,7 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
 										<WelcomeToast />
 									</main>
 									<Footer />
+									<ChatWidget />
 									{isDev && <DevModePopout />}
 								</MobileMenuProvider>
 							</ClientProviders>

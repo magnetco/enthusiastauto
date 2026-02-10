@@ -16,6 +16,18 @@ export interface VehicleListItem {
   signatureShot?: any; // Sanity image reference
   soldShot?: any; // Sanity image reference
   _createdAt: string;
+  // Extended fields for list view
+  vin?: string;
+  transmission?: string;
+  drive?: string;
+  exteriorColor?: string;
+  interiorColor?: string;
+  engineType?: string;
+  engineSize?: string;
+  listingThumbnailFeatures?: string[];
+  statusTag?: string;
+  featuredVehicle?: boolean;
+  galleryImages?: any[]; // For quick gallery view
 }
 
 /**
@@ -122,7 +134,24 @@ export async function getVehicles(
       status,
       signatureShot,
       soldShot,
-      _createdAt
+      _createdAt,
+      vin,
+      transmission,
+      drive,
+      exteriorColor,
+      interiorColor,
+      engineType,
+      engineSize,
+      listingThumbnailFeatures,
+      statusTag,
+      featuredVehicle,
+      "galleryImages": [
+        ...coalesce(galleryExterior1[], []),
+        ...coalesce(galleryExterior2[], []),
+        ...coalesce(galleryExterior3[], []),
+        ...coalesce(galleryInterior1[], []),
+        ...coalesce(galleryInterior2[], [])
+      ][0...8]
     }
   `;
 
@@ -188,6 +217,25 @@ export interface VehicleDetail {
   overview?: any[];
   history?: string;
   featuredVehicleThumbnailText?: any[];
+  documentation?: Array<{
+    type: string;
+    image?: {
+      asset: {
+        url: string;
+        _id: string;
+      };
+    };
+    file?: {
+      asset: {
+        url: string;
+        _id: string;
+      };
+    };
+  }>;
+  faqs?: Array<{
+    question: string;
+    answer: string;
+  }>;
   _createdAt: string;
   _updatedAt?: string;
 }
@@ -292,6 +340,25 @@ export const vehicleDetailQuery = `*[_type == "vehicle" && slug.current == $slug
   overview,
   history,
   featuredVehicleThumbnailText,
+  documentation[] {
+    type,
+    image {
+      asset-> {
+        _id,
+        url
+      }
+    },
+    file {
+      asset-> {
+        _id,
+        url
+      }
+    }
+  },
+  faqs[] {
+    question,
+    answer
+  },
   _createdAt,
   _updatedAt
 }`;
@@ -373,4 +440,60 @@ export async function getFeaturedVehicles(
     console.error("Error fetching featured vehicles:", error);
     return [];
   }
+}
+
+/**
+ * Fetches similar vehicles based on chassis code
+ * Excludes the current vehicle and sold vehicles
+ * @param chassis - Chassis code to match
+ * @param currentSlug - Current vehicle slug to exclude
+ * @param limit - Number of similar vehicles to fetch (default: 6)
+ * @returns Array of vehicle list items
+ */
+export async function getSimilarVehicles(
+  chassis: string,
+  currentSlug: string,
+  limit = 6,
+): Promise<VehicleListItem[]> {
+  const query = `
+    *[_type == "vehicle" && chassis == $chassis && slug.current != $currentSlug && status == "current" && isLive == true] | order(_createdAt desc) [0...${limit}] {
+      _id,
+      listingTitle,
+      slug,
+      chassis,
+      mileage,
+      listingPrice,
+      showCallForPrice,
+      status,
+      signatureShot,
+      soldShot,
+      exteriorColor,
+      interiorColor,
+      _createdAt
+    }
+  `;
+
+  try {
+    const vehicles = await client.fetch<VehicleListItem[]>(query, {
+      chassis,
+      currentSlug,
+    });
+    return vehicles;
+  } catch (error) {
+    console.error("Error fetching similar vehicles:", error);
+    return [];
+  }
+}
+
+/**
+ * Fetches global FAQs (placeholder - would need a global FAQ schema)
+ * For now, returns empty array
+ * @returns Array of FAQ objects
+ */
+export async function getGlobalFAQs(): Promise<
+  Array<{ question: string; answer: string }>
+> {
+  // TODO: Create a global FAQ schema in Sanity
+  // For now, return empty array
+  return [];
 }

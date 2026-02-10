@@ -18,20 +18,29 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { ChassisIcon } from "./ChassisIcon";
 
 const chassisOptions = [
-  "E30",
-  "E36",
-  "E39",
-  "E46",
-  "E60",
-  "E90",
-  "F30",
-  "G20",
-  "X3",
-  "X4",
-  "X5",
-  "X6",
+  { code: "E24", label: "E24" },
+  { code: "E26", label: "E26" },
+  { code: "E28", label: "E28" },
+  { code: "E30", label: "E30" },
+  { code: "E31", label: "E31" },
+  { code: "E34", label: "E34" },
+  { code: "E36", label: "E36" },
+  { code: "E39", label: "E39" },
+  { code: "E46", label: "E46" },
+  { code: "E60", label: "E60" },
+  { code: "E82", label: "E82" },
+  { code: "E9X", label: "E9X" },
+  { code: "F8X", label: "F8X" },
+  { code: "F87", label: "F87" },
+  { code: "G8X", label: "G8X" },
+  { code: "Z3", label: "Z3" },
+  { code: "Z4", label: "Z4" },
+  { code: "Z8", label: "Z8" },
+  { code: "SAV", label: "SAV" },
+  { code: "OTHER", label: "Other" },
 ];
 
 const statusOptions = [
@@ -67,10 +76,10 @@ export function VehicleFilters() {
     router.push(`/vehicles?${params.toString()}`);
   };
 
-  const toggleChassis = (chassis: string) => {
-    const newSelection = selectedChassis.includes(chassis)
-      ? selectedChassis.filter((c) => c !== chassis)
-      : [...selectedChassis, chassis];
+  const toggleChassis = (chassisCode: string) => {
+    const newSelection = selectedChassis.includes(chassisCode)
+      ? selectedChassis.filter((c) => c !== chassisCode)
+      : [...selectedChassis, chassisCode];
 
     updateFilters({
       chassis: newSelection.length > 0 ? newSelection.join(",") : null,
@@ -170,21 +179,26 @@ export function VehicleFilters() {
         <AccordionItem value="chassis">
           <AccordionTrigger>Chassis/Model</AccordionTrigger>
           <AccordionContent>
-            <div className="space-y-2">
-              {chassisOptions.map((chassis) => (
-                <div key={chassis} className="flex items-center space-x-2">
-                  <Checkbox
-                    id={`chassis-${chassis}`}
-                    checked={selectedChassis.includes(chassis)}
-                    onCheckedChange={() => toggleChassis(chassis)}
-                  />
-                  <Label
-                    htmlFor={`chassis-${chassis}`}
-                    className="cursor-pointer text-sm font-normal"
-                  >
-                    {chassis}
-                  </Label>
-                </div>
+            <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-2 lg:grid-cols-3">
+              {chassisOptions.map((option) => (
+                <button
+                  key={option.code}
+                  type="button"
+                  onClick={() => toggleChassis(option.code)}
+                  className={`group relative flex flex-col items-center gap-2 rounded-lg border-2 p-3 transition-all hover:border-primary hover:bg-primary/5 ${
+                    selectedChassis.includes(option.code)
+                      ? "border-primary bg-primary/10"
+                      : "border-gray-200 bg-white"
+                  }`}
+                >
+                  <ChassisIcon chassis={option.code} className="h-10 w-20" />
+                  <span className="text-xs font-medium text-gray-900">
+                    {option.label}
+                  </span>
+                  {selectedChassis.includes(option.code) && (
+                    <div className="absolute right-2 top-2 h-2 w-2 rounded-full bg-primary" />
+                  )}
+                </button>
               ))}
             </div>
           </AccordionContent>
@@ -322,7 +336,7 @@ export function VehicleFilters() {
         {/* Full-screen container */}
         <div className="fixed inset-0 flex items-end">
           {/* Slide-in panel */}
-          <DialogPanel className="flex w-full max-h-[85vh] flex-col overflow-hidden rounded-t-2xl bg-white shadow-xl transition-all duration-300 ease-out data-[closed]:translate-y-full">
+          <DialogPanel className="flex w-full max-h-[85vh] flex-col overflow-hidden rounded-t-2xl bg-white shadow-xl transition-all duration-300 ease-out data-closed:translate-y-full">
             {/* Header */}
             <div className="sticky top-0 flex items-center justify-between border-b border-gray-200 bg-white px-4 py-4">
               <DialogTitle className="text-lg font-semibold text-gray-900">

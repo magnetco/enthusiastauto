@@ -15,6 +15,7 @@ interface DataTableProps<T extends { id: string }> {
   columns: Column<T>[]
   onUpdate?: (id: string, field: string, value: string) => Promise<void>
   onDelete?: (id: string) => Promise<void>
+  onRowClick?: (id: string) => void
 }
 
 export function DataTable<T extends { id: string }>({
@@ -22,6 +23,7 @@ export function DataTable<T extends { id: string }>({
   columns,
   onUpdate,
   onDelete,
+  onRowClick,
 }: DataTableProps<T>) {
   const [sortKey, setSortKey] = useState<string | null>(null)
   const [sortDirection, setSortDirection] = useState<SortDirection>(null)
@@ -87,7 +89,7 @@ export function DataTable<T extends { id: string }>({
   }
 
   return (
-    <div className="overflow-x-auto rounded-lg border border-zinc-800">
+    <div className="overflow-x-auto rounded-lg border" style={{ borderColor: 'var(--border-color)' }}>
       <table className="data-table">
         <thead>
           <tr>
@@ -109,7 +111,11 @@ export function DataTable<T extends { id: string }>({
         </thead>
         <tbody>
           {sortedData.map((row) => (
-            <tr key={row.id}>
+            <tr 
+              key={row.id}
+              onClick={() => onRowClick?.(row.id)}
+              className={onRowClick ? 'cursor-pointer' : ''}
+            >
               {columns.map((col) => {
                 const value = (row as Record<string, unknown>)[String(col.key)]
                 const isEditing = editingCell?.id === row.id && editingCell?.field === String(col.key)
@@ -126,7 +132,13 @@ export function DataTable<T extends { id: string }>({
                           onChange={(e) => setEditValue(e.target.value)}
                           onBlur={saveEdit}
                           onKeyDown={handleKeyDown}
-                          className="w-full bg-zinc-800 border border-zinc-600 rounded px-2 py-1 text-white focus:outline-none focus:ring-2 focus:ring-red-500/50"
+                          className="w-full rounded px-2 py-1 focus:outline-none focus:ring-2 focus:ring-red-500/50"
+                          style={{
+                            backgroundColor: 'var(--input-bg)',
+                            borderWidth: '1px',
+                            borderColor: 'var(--input-border)',
+                            color: 'var(--text-primary)',
+                          }}
                           autoFocus
                         />
                       ) : (
@@ -138,7 +150,7 @@ export function DataTable<T extends { id: string }>({
                         </span>
                       )
                     ) : (
-                      <span className="text-zinc-300">
+                      <span style={{ color: 'var(--text-primary)' }}>
                         {value !== null && value !== undefined ? String(value) : '—'}
                       </span>
                     )}
@@ -149,7 +161,8 @@ export function DataTable<T extends { id: string }>({
                 <td>
                   <button
                     onClick={() => onDelete(row.id)}
-                    className="p-1 text-zinc-500 hover:text-red-500 transition-colors"
+                    className="p-1 hover:text-red-500 transition-colors"
+                    style={{ color: 'var(--text-secondary)' }}
                     title="Delete"
                   >
                     <Trash2 />
@@ -160,7 +173,11 @@ export function DataTable<T extends { id: string }>({
           ))}
           {sortedData.length === 0 && (
             <tr>
-              <td colSpan={columns.length + (onDelete ? 1 : 0)} className="text-center py-8 text-zinc-500">
+              <td 
+                colSpan={columns.length + (onDelete ? 1 : 0)} 
+                className="text-center py-8"
+                style={{ color: 'var(--text-secondary)' }}
+              >
                 No data available
               </td>
             </tr>

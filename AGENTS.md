@@ -30,7 +30,7 @@ AI agent guidance for Enthusiast Auto Group platform development.
 
 ### Dual-CMS Strategy
 
-- **Sanity CMS**: Vehicle content (specs, images, service history) — rich editing experience
+- **Sanity CMS**: Vehicle content, services, blog posts, static pages — rich editing experience with full control over hero sections, SEO, and page structure
 - **Shopify API**: Parts e-commerce (cart, checkout, payments) — handles all commerce complexity
 
 ### Data Ownership
@@ -38,6 +38,9 @@ AI agent guidance for Enthusiast Auto Group platform development.
 | Data | Source | Reason |
 |------|--------|--------|
 | Vehicles | Sanity | Rich content editing, custom fields |
+| Services | Sanity | Service offerings, pricing, descriptions |
+| Pages | Sanity | Static page content, hero sections, SEO |
+| Blog Posts | Sanity | Article content, categories, featured posts |
 | Products | Shopify | Cart, checkout, inventory, payments |
 | Users, Favorites | Vercel Postgres | Auth sessions, cross-CMS favorites |
 
@@ -129,7 +132,9 @@ Define colors in three tiers:
 | **Brand Red** | `#F90020` | Primary CTAs, accents, alerts |
 | **Deep Blue** | `#005A90` | Links on light backgrounds, headers |
 | **Blue** | `#2E90FA` | Focus rings, interactive elements |
-| **Navy Primary** | `#141721` | Dark backgrounds (header, footer) |
+| **Dark Blue Primary** | `#0a0c10` | Main dark sections (header, footer, about) |
+| **Dark Blue Tertiary** | `#0a0d11` | Alternative dark sections (expanded nav) |
+| **Navy Primary** | `#141721` | Service pages, content hero backgrounds |
 | **Navy Secondary** | `#1f2233` | Cards, elevated surfaces |
 | **White** | `#FFFFFF` | Light backgrounds, text on dark |
 | **Gray 200** | `#DFE5EA` | Borders, dividers |
@@ -139,11 +144,16 @@ Define colors in three tiers:
 - Use semantic tokens (`--primary`, `--muted-foreground`) in components
 - Define both light and dark mode values for all semantic tokens
 - Document component-specific color patterns
+- Use `#0a0c10` for main dark sections (header, footer, menus)
+- Use `#141721` for content hero sections and service pages
+- Use `#1f2233` for cards and elevated surfaces
 
 **DON'T:**
 - Use raw Tailwind color classes (`text-blue-500`) — map to semantic tokens
 - Use arbitrary hex values not defined in the token system
 - Mix color systems — stick to the defined palette
+- Use pure black (`#000000` or `#0a0a0a`) for structural backgrounds — use blue-tinted dark colors instead
+- Change semi-transparent black overlays (`bg-black/30`, `bg-black/50`) — these are intentional for image overlays
 
 ### Typography
 

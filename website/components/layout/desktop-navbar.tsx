@@ -13,7 +13,7 @@ interface NavItem {
 
 const mainNavItems: NavItem[] = [
   { title: "About EAG", href: "/about" },
-  { title: "Inventory", href: "/inventory", hasDropdown: true },
+  { title: "Inventory", href: "/vehicles", hasDropdown: true },
   { title: "Services", href: "/services" },
   { title: "Sell your car", href: "/sell" },
   { title: "Under the hood", href: "/under-the-hood" },
@@ -26,7 +26,7 @@ export function DesktopNavbar() {
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
 
   return (
-    <nav className="sticky top-0 z-50 border-b border-border/50 bg-background/80 backdrop-blur-xl">
+    <nav className="sticky top-0 z-50 bg-background/80 backdrop-blur-xl">
       {/* Main Navigation Bar */}
       <div className="relative flex items-center justify-between p-4 lg:px-8 lg:py-5">
         {/* Logo */}
@@ -52,7 +52,7 @@ export function DesktopNavbar() {
             <div key={index} className="relative">
               <Link
                 href={item.href}
-                className="text-sm font-medium text-foreground transition-colors duration-200 hover:text-muted-foreground"
+                className="font-headline text-[11px] text-foreground transition-colors duration-200 hover:text-muted-foreground py-6 block"
                 onMouseEnter={() => item.hasDropdown && setActiveDropdown(item.title)}
                 onMouseLeave={() => setActiveDropdown(null)}
               >
@@ -61,7 +61,7 @@ export function DesktopNavbar() {
               
               {/* Active indicator for Inventory */}
               {item.title === "Inventory" && (
-                <div className="absolute bg-muted-foreground h-[2px] left-0 right-0 top-[42px] w-full" />
+                <div className="absolute bg-primary h-[2px] left-0 right-0 bottom-0 w-full" />
               )}
             </div>
           ))}
@@ -72,19 +72,22 @@ export function DesktopNavbar() {
           <UserIcon className="w-8 h-8 text-muted-foreground" />
           <Link 
             href="/account"
-            className="text-sm font-medium text-foreground transition-colors duration-200 hover:text-muted-foreground"
+            className="font-headline text-[11px] text-foreground transition-colors duration-200 hover:text-muted-foreground"
           >
             Account
           </Link>
           <span className="text-muted-foreground">|</span>
           <Link 
             href="/favorites"
-            className="text-sm font-medium text-foreground transition-colors duration-200 hover:text-muted-foreground"
+            className="font-headline text-[11px] text-foreground transition-colors duration-200 hover:text-muted-foreground"
           >
             Favorites
           </Link>
         </div>
       </div>
+      
+      {/* Border line at bottom of navbar */}
+      <div className="border-b border-border/50" />
 
       {/* BMW Navigation Dropdown */}
       {activeDropdown === "Inventory" && (

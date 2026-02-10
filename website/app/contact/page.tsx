@@ -102,7 +102,7 @@ export default function ContactPage() {
 				backgroundImage="https://images.unsplash.com/photo-1621839673705-6617adf9e890?q=80&w=2070&auto=format&fit=crop"
 			>
 				{/* Quick contact info badges */}
-				<div className="flex flex-wrap gap-6 text-body-small font-medium text-white/80">
+				<div className="mb-8 flex flex-wrap gap-6 text-sm font-medium text-white/80">
 					<a
 						href="tel:513-554-1269"
 						className="flex items-center gap-2 transition-colors hover:text-white"
@@ -149,7 +149,7 @@ export default function ContactPage() {
 								<h3 className="mb-2 text-lg font-semibold text-foreground">
 									{card.title}
 								</h3>
-								<p className="mb-4 text-sm text-muted-foreground">
+								<p className="mb-4 text-body-xl text-muted-foreground">
 									{card.description}
 								</p>
 								<span className="inline-flex items-center gap-1 text-sm font-medium text-primary transition-all group-hover:gap-2">
@@ -189,7 +189,7 @@ export default function ContactPage() {
 										<h4 className="font-semibold text-foreground">Phone</h4>
 										<a
 											href="tel:513-554-1269"
-											className="text-body-base text-primary hover:underline"
+											className="text-body-xl text-primary hover:underline"
 										>
 											513-554-1269
 										</a>
@@ -207,7 +207,7 @@ export default function ContactPage() {
 										<h4 className="font-semibold text-foreground">Email</h4>
 										<a
 											href="mailto:info@enthusiastauto.com"
-											className="text-body-base text-primary hover:underline"
+											className="text-body-xl text-primary hover:underline"
 										>
 											info@enthusiastauto.com
 										</a>
@@ -223,7 +223,7 @@ export default function ContactPage() {
 									</div>
 									<div>
 										<h4 className="font-semibold text-foreground">Location</h4>
-										<p className="text-body-base text-foreground">
+										<p className="text-body-xl text-foreground">
 											11608 Reading Rd
 											<br />
 											Cincinnati, OH 45241
@@ -247,7 +247,7 @@ export default function ContactPage() {
 										<h4 className="font-semibold text-foreground">
 											Business Hours
 										</h4>
-										<div className="mt-1 space-y-1 text-body-base">
+										<div className="mt-1 space-y-1 text-body-xl">
 											<div className="flex justify-between gap-4">
 												<span className="text-muted-foreground">
 													Monday – Friday
@@ -312,14 +312,14 @@ export default function ContactPage() {
 						<CardContent className="relative space-y-3">
 							<a
 								href="tel:513-554-1269"
-								className="flex items-center gap-2 text-body-base text-primary hover:underline"
+								className="flex items-center gap-2 text-body-xl text-primary hover:underline"
 							>
 								<Phone className="h-4 w-4" />
 								513-554-1269
 							</a>
 							<a
 								href="mailto:sales@enthusiastauto.com"
-								className="flex items-center gap-2 text-body-base text-primary hover:underline"
+								className="flex items-center gap-2 text-body-xl text-primary hover:underline"
 							>
 								<Mail className="h-4 w-4" />
 								sales@enthusiastauto.com
@@ -342,14 +342,14 @@ export default function ContactPage() {
 						<CardContent className="relative space-y-3">
 							<a
 								href="tel:513-554-1269"
-								className="flex items-center gap-2 text-body-base text-primary hover:underline"
+								className="flex items-center gap-2 text-body-xl text-primary hover:underline"
 							>
 								<Phone className="h-4 w-4" />
 								513-554-1269
 							</a>
 							<a
 								href="mailto:service@enthusiastauto.com"
-								className="flex items-center gap-2 text-body-base text-primary hover:underline"
+								className="flex items-center gap-2 text-body-xl text-primary hover:underline"
 							>
 								<Mail className="h-4 w-4" />
 								service@enthusiastauto.com
@@ -372,14 +372,14 @@ export default function ContactPage() {
 						<CardContent className="relative space-y-3">
 							<a
 								href="tel:513-554-1269"
-								className="flex items-center gap-2 text-body-base text-primary hover:underline"
+								className="flex items-center gap-2 text-body-xl text-primary hover:underline"
 							>
 								<Phone className="h-4 w-4" />
 								513-554-1269
 							</a>
 							<a
 								href="mailto:parts@enthusiastauto.com"
-								className="flex items-center gap-2 text-body-base text-primary hover:underline"
+								className="flex items-center gap-2 text-body-xl text-primary hover:underline"
 							>
 								<Mail className="h-4 w-4" />
 								parts@enthusiastauto.com
@@ -395,7 +395,7 @@ export default function ContactPage() {
 					<h2 className="mb-4 text-title-2 font-bold text-foreground">
 						Need a Quick Answer?
 					</h2>
-					<p className="mx-auto mb-6 max-w-xl text-body-large text-muted-foreground">
+					<p className="mx-auto mb-6 max-w-xl text-body-xl text-muted-foreground">
 						Check out our most commonly asked questions, or give us a call for
 						immediate assistance.
 					</p>

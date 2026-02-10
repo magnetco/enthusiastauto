@@ -3,7 +3,7 @@
  * Contains all nav items and inventory/services menu structure
  */
 
-export type SubmenuType = "inventory" | "services";
+export type SubmenuType = "about" | "inventory" | "services" | "contact";
 
 export interface NavItem {
   title: string;
@@ -38,29 +38,63 @@ export interface ServicesMenuConfig {
   services: ServiceMenuItem[];
 }
 
+export interface AboutMenuItem {
+  title: string;
+  href: string;
+  description: string;
+}
+
+export interface AboutMenuConfig {
+  items: AboutMenuItem[];
+}
+
+export interface ContactMenuItem {
+  title: string;
+  href: string;
+  description: string;
+}
+
+export interface ContactMenuConfig {
+  items: ContactMenuItem[];
+}
+
 /**
  * Main navigation items for the header
  */
 export const NAV_ITEMS: NavItem[] = [
-  { title: "About EAG", href: "/about" },
+  { title: "About", href: "/about", hasSubmenu: true, submenuType: "about" },
   { title: "Inventory", href: "/vehicles", hasSubmenu: true, submenuType: "inventory" },
   { title: "Services", href: "/services", hasSubmenu: true, submenuType: "services" },
-  { title: "Sell your car", href: "/sell" },
-  { title: "Under the hood", href: "/blog" },
-  { title: "Parts", href: "/search" },
-  { title: "Merchandise", href: "/merch" },
-  { title: "Contact", href: "/contact" },
+  { title: "Contact", href: "/contact", hasSubmenu: true, submenuType: "contact" },
 ];
+
+/**
+ * About mega-menu configuration
+ */
+export const ABOUT_MENU: AboutMenuConfig = {
+  items: [
+    {
+      title: "About EAG",
+      href: "/about",
+      description: "Learn about our BMW preservation facility and expertise",
+    },
+    {
+      title: "Under the Hood",
+      href: "/blog",
+      description: "Stories, insights, and BMW knowledge from our team",
+    },
+  ],
+};
 
 /**
  * Inventory mega-menu configuration
  */
 export const INVENTORY_MENU: InventoryMenuConfig = {
   quickLinks: [
-    { title: "Current inventory", href: "/vehicles" },
+    { title: "Cars", href: "/vehicles" },
+    { title: "Parts", href: "/search" },
     { title: "Previously sold", href: "/vehicles?status=sold" },
     { title: "Incoming", href: "/vehicles?status=incoming" },
-    { title: "Sell your car", href: "/sell" },
   ],
   chassisCodes: [
     { items: ["G8X", "F87", "E46", "E30"] },
@@ -76,14 +110,9 @@ export const INVENTORY_MENU: InventoryMenuConfig = {
 export const SERVICES_MENU: ServicesMenuConfig = {
   quickLinks: [
     { title: "All Services", href: "/services" },
+    { title: "Sell Your Car", href: "/sell" },
   ],
   services: [
-    {
-      title: "Conditioning & Protection",
-      href: "/services/conditioning",
-      description: "Paint correction, ceramic coating, and preservation treatments",
-      icon: "sparkles",
-    },
     {
       title: "Full Rejuvenation",
       href: "/services/rejuvenation",
@@ -101,6 +130,25 @@ export const SERVICES_MENU: ServicesMenuConfig = {
       href: "/services/cosmetic",
       description: "Collision repair, paint matching, and dent removal",
       icon: "wrench",
+    },
+    {
+      title: "Conditioning & Protection",
+      href: "/services/conditioning",
+      description: "Paint correction, ceramic coating, and preservation treatments",
+      icon: "sparkles",
+    },
+  ],
+};
+
+/**
+ * Contact mega-menu configuration
+ */
+export const CONTACT_MENU: ContactMenuConfig = {
+  items: [
+    {
+      title: "Contact Us",
+      href: "/contact",
+      description: "Get in touch with our team for inquiries and support",
     },
   ],
 };
@@ -136,9 +184,23 @@ export const MOBILE_INVENTORY_MENU = {
 };
 
 /**
+ * Mobile about menu configuration
+ */
+export const MOBILE_ABOUT_MENU = {
+  items: ABOUT_MENU.items,
+};
+
+/**
  * Mobile services menu configuration
  */
 export const MOBILE_SERVICES_MENU = {
   quickLinks: SERVICES_MENU.quickLinks,
   services: SERVICES_MENU.services,
+};
+
+/**
+ * Mobile contact menu configuration
+ */
+export const MOBILE_CONTACT_MENU = {
+  items: CONTACT_MENU.items,
 };

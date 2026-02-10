@@ -34,7 +34,7 @@ export function MobileInventoryPanel() {
           leaveFrom="translate-x-0"
           leaveTo="translate-x-full"
         >
-          <Dialog.Panel className="fixed inset-y-0 left-0 flex w-full max-w-sm flex-col bg-[#0a0a0a]">
+          <Dialog.Panel className="fixed inset-y-0 left-0 flex w-full max-w-sm flex-col bg-[#0a0c10]">
             {/* Header */}
             <div className="flex h-16 items-center justify-between border-b border-white/10 px-6">
               <Link

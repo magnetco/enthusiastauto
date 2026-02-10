@@ -23,11 +23,11 @@ export function VehicleCard({ vehicle, priority = false }: VehicleCardProps) {
   return (
     <Link
       href={`/vehicles/${vehicle.slug.current}`}
-      className={`group block h-full transition-all duration-200 hover:scale-[1.02] ${
+      className={`group block h-full transition-all duration-200 ${
         isSold ? "opacity-70" : ""
       }`}
     >
-      <Card className="h-full overflow-hidden rounded-lg border transition-shadow duration-100">
+      <Card className="h-full overflow-hidden rounded-lg border">
         {/* Image Container */}
         <div className="relative aspect-[4/3] w-full overflow-hidden bg-gray-100">
           <Image
@@ -59,8 +59,8 @@ export function VehicleCard({ vehicle, priority = false }: VehicleCardProps) {
         </div>
 
         {/* Card Content */}
-        <CardContent className="p-4">
-          <div className="space-y-1.5">
+        <CardContent className="p-6">
+          <div className="space-y-2">
             {/* Vehicle Title */}
             <h3 className="text-body-large font-semibold text-foreground group-hover:text-primary">
               {vehicle.listingTitle}

@@ -210,7 +210,7 @@ export function DevModePopout() {
   }, [fetchStatus]);
 
   return (
-    <div className="relative w-full border-t border-white/10 bg-[#0a0a0a]">
+    <div className="relative w-full border-t border-white/10 bg-[#0a0c10]">
       <div className="mx-auto max-w-[var(--container-max)] px-6 py-12">
         {/* Header */}
         <div className="mb-8">

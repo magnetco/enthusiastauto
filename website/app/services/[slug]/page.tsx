@@ -5,6 +5,7 @@ import { ServiceFeatureGrid } from "@/components/services/ServiceFeatureCard";
 import { ServiceContactInfo } from "@/components/services/ServiceContactInfo";
 import { RelatedBlogPosts } from "@/components/services/RelatedBlogPosts";
 import { TitleBlock } from "@/components/shared/TitleBlock";
+import { PageHero } from "@/components/shared/PageHero";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
@@ -25,6 +26,8 @@ interface Service {
   formTitle: string;
   formDescription: string;
   extendedDescription?: string;
+  sectionImages?: string[];
+  layout?: "grid" | "horizontal";
 }
 
 // Service data - in the future, this will come from Sanity CMS
@@ -73,6 +76,13 @@ const services: Record<string, Service> = {
       "Experience the ultimate in BMW M series preservation with EAG's bespoke rejuvenation service, combining restoration expertise with unparalleled marque knowledge.",
     heroImage:
       "https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?q=80&w=2083&auto=format&fit=crop",
+    layout: "horizontal",
+    sectionImages: [
+      "https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?q=80&w=2070&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?q=80&w=2083&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1619642751034-765dfdf7c58e?q=80&w=2074&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1580273916550-e323be2ae537?q=80&w=2070&auto=format&fit=crop",
+    ],
     sections: [
       {
         title: "Complete Assessment",
@@ -233,31 +243,26 @@ export default async function ServiceDetailPage(props: {
   return (
     <>
       {/* Hero Section */}
-      <section className="relative w-full overflow-hidden bg-[#141721]">
-        <div className="absolute inset-0 z-0">
-          <div
-            className="h-full w-full bg-cover bg-center bg-no-repeat opacity-40"
-            style={{ backgroundImage: `url('${service.heroImage}')` }}
-          />
-          <div className="absolute inset-0 bg-gradient-to-r from-[#141721] via-[#141721]/95 to-[#141721]/70" />
-          <div className="absolute inset-0 bg-gradient-to-t from-[#141721] via-transparent to-[#141721]/50" />
-        </div>
-
-        <Section as="div" dark className="relative z-10 py-20 sm:py-24 lg:py-32">
-          <h1 className="font-headline mb-4 text-[2.5rem] leading-[1.05] tracking-wide text-blue-400 sm:text-[3.5rem] md:text-[4rem]">
+      <PageHero
+        size="medium"
+        eyebrow={service.title}
+        title={
+          <>
             {service.heroTitle}
-          </h1>
-          <p className="mb-8 max-w-[42rem] text-lg text-white/90 sm:text-xl">
-            {service.description}
-          </p>
-          <a
-            href="#request-form"
-            className="inline-flex h-12 items-center justify-center rounded-md bg-white px-8 text-sm font-semibold text-black transition-colors hover:bg-white/90"
-          >
-            Schedule Now
-          </a>
-        </Section>
-      </section>
+            <br />
+            <span className="text-blue-400">{service.tagline}</span>
+          </>
+        }
+        subtitle={service.description}
+        backgroundImage={service.heroImage}
+        ctas={[
+          {
+            label: "Schedule Now",
+            href: "#request-form",
+            variant: "primary",
+          },
+        ]}
+      />
 
       {/* Service Overview Section */}
       <Section className="py-12 sm:py-16 lg:py-20">
@@ -268,7 +273,11 @@ export default async function ServiceDetailPage(props: {
         />
 
         {/* Feature Grid */}
-        <ServiceFeatureGrid sections={service.sections} />
+        <ServiceFeatureGrid
+          sections={service.sections}
+          layout={service.layout}
+          images={service.sectionImages}
+        />
 
         {/* Extended Description (for rejuvenation) */}
         {"extendedDescription" in service && service.extendedDescription && (

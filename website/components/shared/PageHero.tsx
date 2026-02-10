@@ -1,12 +1,15 @@
+"use client";
+
 import Link from "next/link";
 import { buttonVariants } from "@/components/ui/button";
+import { ShimmerButton } from "@/components/ui/shimmer-button";
 import { cn } from "@/lib/utils";
-import { ReactNode } from "react";
+import { ReactNode, useState, useRef } from "react";
 
 interface HeroCTA {
   label: string;
   href: string;
-  variant?: "primary" | "outline";
+  variant?: "primary" | "outline" | "shimmer";
   ariaLabel?: string;
 }
 
@@ -51,24 +54,54 @@ export function PageHero({
   children,
   className,
 }: PageHeroProps) {
+  const [mousePosition, setMousePosition] = useState<{ x: number; y: number } | null>(null);
+  const [isHeroHovered, setIsHeroHovered] = useState(false);
+  const rafRef = useRef<number>();
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLElement>) => {
+    // Throttle updates using requestAnimationFrame
+    if (rafRef.current) {
+      cancelAnimationFrame(rafRef.current);
+    }
+
+    rafRef.current = requestAnimationFrame(() => {
+      setMousePosition({ x: e.clientX, y: e.clientY });
+    });
+  };
+
+  const handleMouseEnter = () => {
+    setIsHeroHovered(true);
+  };
+
+  const handleMouseLeave = () => {
+    setIsHeroHovered(false);
+    setMousePosition(null);
+    if (rafRef.current) {
+      cancelAnimationFrame(rafRef.current);
+    }
+  };
+
   return (
     <section
       className={cn(
-        "relative flex w-full items-center overflow-hidden bg-black",
+        "relative flex w-full items-center overflow-hidden bg-[#141721]",
         sizeClasses[size],
         className
       )}
+      onMouseMove={handleMouseMove}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
     >
       {/* Background Image with overlay */}
       {backgroundImage && (
         <div className="absolute inset-0 z-0">
           <div
-            className="h-full w-full bg-cover bg-center bg-no-repeat"
+            className="h-full w-full bg-cover bg-center bg-no-repeat opacity-40"
             style={{ backgroundImage: `url('${backgroundImage}')` }}
           />
-          {/* Dark gradient overlay for dramatic effect */}
-          <div className="absolute inset-0 bg-gradient-to-r from-black via-black/90 to-black/60" />
-          <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-black/40" />
+          {/* Dark gradient overlay for dramatic effect - using navy primary */}
+          <div className="absolute inset-0 bg-gradient-to-r from-[#141721] via-[#141721]/95 to-[#141721]/70" />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#141721] via-transparent to-[#141721]/50" />
         </div>
       )}
 
@@ -82,25 +115,25 @@ export function PageHero({
         <div className="max-w-4xl">
           {/* Eyebrow Text */}
           {eyebrow && (
-            <p className="mb-6 text-body-base font-medium uppercase tracking-[0.2em] text-white/50">
+            <p className="mb-4 text-body-base font-medium uppercase tracking-[0.1em] text-white/60">
               {eyebrow}
             </p>
           )}
 
           {/* Main Heading */}
           {typeof title === "string" ? (
-            <h1 className="font-headline mb-8 text-[2rem] leading-[1.05] text-white sm:text-[2.5rem] md:text-[3rem] lg:text-[3.3rem]">
+            <h1 className="font-headline mb-6 text-[2.5rem] leading-[1.05] tracking-wide text-white sm:text-[3rem] md:text-[3.5rem] lg:text-[4rem]">
               {title}
             </h1>
           ) : (
-            <h1 className="font-headline mb-8 text-[2rem] leading-[1.05] text-white sm:text-[2.5rem] md:text-[3rem] lg:text-[3.3rem]">
+            <h1 className="font-headline mb-6 text-[2.5rem] leading-[1.05] tracking-wide text-white sm:text-[3rem] md:text-[3.5rem] lg:text-[4rem]">
               {title}
             </h1>
           )}
 
           {/* Subtitle */}
           {subtitle && (
-            <p className="mb-10 max-w-xl text-body-large text-white/70 sm:text-body-xl">
+            <p className="mb-10 max-w-2xl text-lg leading-relaxed text-white/90 sm:text-xl">
               {subtitle}
             </p>
           )}
@@ -111,24 +144,61 @@ export function PageHero({
           {/* CTAs */}
           {ctas && ctas.length > 0 && (
             <div className="flex flex-col gap-4 sm:flex-row sm:gap-5">
-              {ctas.map((cta, index) => (
-                <Link
-                  key={index}
-                  href={cta.href}
-                  aria-label={cta.ariaLabel || cta.label}
-                  className={cn(
-                    buttonVariants({
-                      size: "lg",
-                      variant: cta.variant === "outline" ? "outline" : "default",
-                    }),
-                    cta.variant === "outline"
-                      ? "border-white/30 font-semibold text-white hover:bg-white/10 hover:border-white/50"
-                      : "bg-white px-8 font-semibold text-black hover:bg-white/90"
-                  )}
-                >
-                  {cta.label}
-                </Link>
-              ))}
+              {ctas.map((cta, index) => {
+                // Use ShimmerButton for shimmer variant (with border)
+                if (cta.variant === "shimmer") {
+                  return (
+                    <ShimmerButton
+                      key={index}
+                      href={cta.href}
+                      size="lg"
+                      mousePosition={mousePosition}
+                      isHeroHovered={isHeroHovered}
+                      aria-label={cta.ariaLabel || cta.label}
+                      className="font-semibold"
+                      showBorder={true}
+                    >
+                      {cta.label}
+                    </ShimmerButton>
+                  );
+                }
+
+                // Use ShimmerButton for outline variant (no border, shimmer only)
+                if (cta.variant === "outline") {
+                  return (
+                    <ShimmerButton
+                      key={index}
+                      href={cta.href}
+                      size="lg"
+                      mousePosition={mousePosition}
+                      isHeroHovered={isHeroHovered}
+                      aria-label={cta.ariaLabel || cta.label}
+                      className="font-semibold"
+                      showBorder={false}
+                    >
+                      {cta.label}
+                    </ShimmerButton>
+                  );
+                }
+
+                // Regular buttons for other variants (default/primary)
+                return (
+                  <Link
+                    key={index}
+                    href={cta.href}
+                    aria-label={cta.ariaLabel || cta.label}
+                    className={cn(
+                      buttonVariants({
+                        size: "lg",
+                        variant: "default",
+                      }),
+                      "bg-white px-8 font-semibold text-black hover:bg-white/90"
+                    )}
+                  >
+                    {cta.label}
+                  </Link>
+                );
+              })}
             </div>
           )}
         </div>

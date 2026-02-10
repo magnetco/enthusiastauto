@@ -16,7 +16,7 @@ export function HeroSection() {
         {
           label: "View Inventory",
           href: "/vehicles",
-          variant: "primary",
+          variant: "shimmer",
           ariaLabel: "View vehicle inventory",
         },
         {

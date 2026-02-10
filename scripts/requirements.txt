@@ -1,0 +1,13 @@
+# Python dependencies for Enthusiast Auto Group inventory sync scripts
+
+# HTTP requests
+requests>=2.31.0
+
+# HTML parsing
+beautifulsoup4>=4.12.0
+
+# Environment variables
+python-dotenv>=1.0.0
+
+# Beautiful console output (optional, for enhanced formatting)
+rich>=13.0.0

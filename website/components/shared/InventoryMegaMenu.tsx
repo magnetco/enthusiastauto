@@ -57,7 +57,7 @@ export function InventoryMegaMenu({ isOpen, onClose }: InventoryMegaMenuProps) {
       )}
     >
       {/* Full-width background */}
-      <div className="w-full border-y border-white/10 bg-[#0a0a0a] shadow-2xl">
+      <div className="w-full border-y border-white/10 bg-[#0a0c10] shadow-2xl">
         {/* Content container - aligned with header */}
         <div className="mx-auto max-w-[var(--container-max)] px-6">
           <div className="flex py-6">

@@ -4,6 +4,8 @@ import Link from "next/link";
 import Image from "next/image";
 import { useSession, signIn, signOut } from "next-auth/react";
 import { toast } from "sonner";
+import { useHeaderScroll } from "./StickyHeader";
+import { cn } from "@/lib/utils";
 
 /**
  * Auth button for the header
@@ -12,6 +14,7 @@ import { toast } from "sonner";
  */
 export function HeaderAuthButton() {
   const { data: session, status } = useSession();
+  const isScrolled = useHeaderScroll();
 
   const handleSignOut = async () => {
     try {
@@ -25,8 +28,18 @@ export function HeaderAuthButton() {
   if (status === "loading") {
     return (
       <div className="flex items-center gap-3">
-        <div className="h-8 w-8 animate-pulse rounded-full bg-white/10" />
-        <div className="h-4 w-20 animate-pulse rounded bg-white/10" />
+        <div
+          className={cn(
+            "h-8 w-8 animate-pulse rounded-full transition-colors duration-300",
+            isScrolled ? "bg-gray-200" : "bg-white/10"
+          )}
+        />
+        <div
+          className={cn(
+            "h-4 w-20 animate-pulse rounded transition-colors duration-300",
+            isScrolled ? "bg-gray-200" : "bg-white/10"
+          )}
+        />
       </div>
     );
   }
@@ -46,7 +59,12 @@ export function HeaderAuthButton() {
         {/* Avatar - shows user image if available, otherwise initials */}
         <Link
           href="/account"
-          className="flex h-8 w-8 items-center justify-center rounded-full bg-white/20 text-xs font-medium text-white transition-colors hover:bg-white/30 overflow-hidden"
+          className={cn(
+            "flex h-8 w-8 items-center justify-center rounded-full text-xs font-medium transition-colors duration-300 overflow-hidden",
+            isScrolled
+              ? "bg-gray-200 text-gray-900 hover:bg-gray-300"
+              : "bg-white/20 text-white hover:bg-white/30"
+          )}
         >
           {session.user.image ? (
             <Image
@@ -64,7 +82,12 @@ export function HeaderAuthButton() {
         {/* Name - links to account page */}
         <Link
           href="/account"
-          className="font-medium text-white transition-colors hover:text-white/70"
+          className={cn(
+            "font-medium transition-colors duration-300",
+            isScrolled
+              ? "text-gray-900 hover:text-gray-600"
+              : "text-white hover:text-white/70"
+          )}
         >
           {displayName}
         </Link>
@@ -72,7 +95,12 @@ export function HeaderAuthButton() {
         {/* Sign out link */}
         <button
           onClick={handleSignOut}
-          className="text-white/50 transition-colors hover:text-white"
+          className={cn(
+            "transition-colors duration-300",
+            isScrolled
+              ? "text-gray-500 hover:text-gray-900"
+              : "text-white/50 hover:text-white"
+          )}
         >
           Sign out
         </button>
@@ -80,14 +108,20 @@ export function HeaderAuthButton() {
     );
   }
 
-  // Logged out: Show Log in link
+  // Logged out: Show Sign in with Google button
   return (
-    <Link
-      href="/auth/signin"
-      className="text-sm font-medium text-white/70 transition-colors hover:text-white"
+    <button
+      onClick={() => signIn("google")}
+      className={cn(
+        "flex items-center gap-2 rounded-md px-4 py-2 text-sm font-medium transition-colors duration-300",
+        isScrolled
+          ? "bg-gray-900 text-white hover:bg-gray-800"
+          : "bg-white text-gray-900 hover:bg-white/90"
+      )}
     >
-      Log in
-    </Link>
+      <GoogleIcon className="h-4 w-4" />
+      Sign in with Google
+    </button>
   );
 }
 

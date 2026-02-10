@@ -1,9 +1,15 @@
 import { useState, useEffect, useCallback, useRef } from 'react'
 import { DataTable } from './components/DataTable'
-import { RefreshCw, History, Car, Upload, Check, AlertCircle, Logo, DollarSign } from './components/Icons'
+import { RefreshCw, Upload, Check, AlertCircle, History, List, Columns, User, Mail, Phone, Car } from './components/Icons'
 import { fetchData, updateField, deleteRecord, postData } from './lib/api'
+import { Sidebar } from './components/Sidebar'
+import { ServiceRequestDetail } from './components/ServiceRequestDetail'
+import { SellSubmissionDetail } from './components/SellSubmissionDetail'
+import { KanbanBoard } from './components/KanbanBoard'
+import { SettingsPage } from './components/SettingsPage'
+import { DocumentationPage } from './components/DocumentationPage'
 
-type TabId = 'users' | 'accounts' | 'sessions' | 'favorites' | 'service-requests' | 'sell-submissions' | 'versions' | 'vehicle-import'
+type TabId = 'users' | 'accounts' | 'sessions' | 'favorites' | 'service-requests' | 'sell-submissions' | 'versions' | 'vehicle-import' | 'documentation' | 'settings'
 
 interface Tab {
   id: TabId
@@ -20,16 +26,35 @@ const tabs: Tab[] = [
   { id: 'sell-submissions', label: 'Sell Submissions', endpoint: '/sell-submissions' },
   { id: 'versions', label: 'Version History', endpoint: '/versions' },
   { id: 'vehicle-import', label: 'Vehicle Import', endpoint: '/vehicle-import' },
+  { id: 'documentation', label: 'Documentation', endpoint: '/documentation' },
+  { id: 'settings', label: 'Settings', endpoint: '/settings' },
 ]
 
 // Column definitions for each table
 const columnDefs = {
   users: [
-    { key: 'id', label: 'ID' },
+    { 
+      key: 'image', 
+      label: 'Avatar', 
+      render: (v: unknown) => {
+        const imageUrl = v as string | null
+        if (!imageUrl) return <span style={{ color: 'var(--text-tertiary)' }}>—</span>
+        return (
+          <img 
+            src={imageUrl} 
+            alt="Avatar" 
+            className="w-8 h-8 rounded-full object-cover"
+            onError={(e) => {
+              (e.target as HTMLImageElement).style.display = 'none'
+            }}
+          />
+        )
+      }
+    },
     { key: 'name', label: 'Name', editable: true },
     { key: 'email', label: 'Email', editable: true },
     { key: 'emailVerified', label: 'Verified', render: (v: unknown) => v ? '✓' : '—' },
-    { key: 'image', label: 'Image', editable: true },
+    { key: 'id', label: 'ID' },
     { key: 'createdAt', label: 'Created', render: (v: unknown) => formatDate(v as string) },
   ],
   accounts: [
@@ -282,8 +307,14 @@ function VehicleImportPanel() {
       )}
 
       {/* File Upload */}
-      <div className="bg-zinc-900/50 border border-zinc-800 rounded-lg p-6">
-        <h3 className="text-lg font-medium text-white mb-4">Upload CSV File</h3>
+      <div 
+        className="border rounded-lg p-6"
+        style={{
+          backgroundColor: 'var(--card-bg)',
+          borderColor: 'var(--border-color)',
+        }}
+      >
+        <h3 className="text-lg font-medium mb-4" style={{ color: 'var(--text-primary)' }}>Upload CSV File</h3>
         <div className="flex items-center gap-4">
           <input
             ref={fileInputRef}
@@ -295,12 +326,15 @@ function VehicleImportPanel() {
           <button
             onClick={() => fileInputRef.current?.click()}
             disabled={!config?.configured}
-            className="flex items-center gap-2 px-4 py-2 bg-red-500 hover:bg-red-600 disabled:bg-zinc-700 disabled:cursor-not-allowed rounded-lg text-sm font-medium transition-colors"
+            className="flex items-center gap-2 px-4 py-2 bg-red-500 hover:bg-red-600 disabled:opacity-50 disabled:cursor-not-allowed rounded-lg text-sm font-medium transition-colors text-white"
+            style={{
+              backgroundColor: config?.configured ? '#ef4444' : 'var(--bg-tertiary)',
+            }}
           >
             <Upload />
             Choose CSV File
           </button>
-          <span className="text-sm text-zinc-500">
+          <span className="text-sm" style={{ color: 'var(--text-secondary)' }}>
             Upload a CSV file with vehicle inventory data
           </span>
         </div>
@@ -315,11 +349,17 @@ function VehicleImportPanel() {
 
       {/* Preview */}
       {vehicles.length > 0 && (
-        <div className="bg-zinc-900/50 border border-zinc-800 rounded-lg p-6">
+        <div 
+          className="border rounded-lg p-6"
+          style={{
+            backgroundColor: 'var(--card-bg)',
+            borderColor: 'var(--border-color)',
+          }}
+        >
           <div className="flex items-center justify-between mb-4">
             <div>
-              <h3 className="text-lg font-medium text-white">Preview</h3>
-              <p className="text-sm text-zinc-500 mt-1">
+              <h3 className="text-lg font-medium" style={{ color: 'var(--text-primary)' }}>Preview</h3>
+              <p className="text-sm mt-1" style={{ color: 'var(--text-secondary)' }}>
                 {vehicles.length} vehicles found • {newVehicles.length} new • {existingVehicles.length} already exist
               </p>
             </div>
@@ -335,19 +375,25 @@ function VehicleImportPanel() {
 
           {/* Import Progress */}
           {importing && (
-            <div className="mb-4 p-4 bg-zinc-800/50 rounded-lg">
+            <div 
+              className="mb-4 p-4 rounded-lg"
+              style={{ backgroundColor: 'var(--bg-tertiary)' }}
+            >
               <div className="flex items-center justify-between text-sm mb-2">
-                <span className="text-zinc-400">
+                <span style={{ color: 'var(--text-secondary)' }}>
                   Importing {importProgress.current} of {importProgress.total}...
                 </span>
-                <span className="text-zinc-500">
+                <span style={{ color: 'var(--text-secondary)' }}>
                   <span className="text-green-400">{importProgress.success} success</span>
                   {importProgress.failed > 0 && (
                     <span className="text-red-400 ml-2">{importProgress.failed} failed</span>
                   )}
                 </span>
               </div>
-              <div className="w-full bg-zinc-700 rounded-full h-2">
+              <div 
+                className="w-full rounded-full h-2"
+                style={{ backgroundColor: 'var(--bg-secondary)' }}
+              >
                 <div
                   className="bg-green-500 h-2 rounded-full transition-all duration-300"
                   style={{ width: `${(importProgress.current / importProgress.total) * 100}%` }}
@@ -360,7 +406,13 @@ function VehicleImportPanel() {
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
-                <tr className="text-left text-zinc-500 border-b border-zinc-800">
+                <tr 
+                  className="text-left border-b"
+                  style={{ 
+                    color: 'var(--text-secondary)',
+                    borderColor: 'var(--border-color)',
+                  }}
+                >
                   <th className="pb-2 pr-4">Status</th>
                   <th className="pb-2 pr-4">Title</th>
                   <th className="pb-2 pr-4">Chassis</th>
@@ -372,7 +424,11 @@ function VehicleImportPanel() {
               </thead>
               <tbody>
                 {vehicles.map((v, i) => (
-                  <tr key={i} className={`border-b border-zinc-800/50 ${v.exists ? 'opacity-50' : ''}`}>
+                  <tr 
+                    key={i} 
+                    className={`border-b ${v.exists ? 'opacity-50' : ''}`}
+                    style={{ borderColor: 'var(--border-color)' }}
+                  >
                     <td className="py-2 pr-4">
                       {v.exists ? (
                         <span className="text-yellow-400 text-xs">EXISTS</span>
@@ -380,10 +436,10 @@ function VehicleImportPanel() {
                         <span className="text-green-400 text-xs">NEW</span>
                       )}
                     </td>
-                    <td className="py-2 pr-4 text-white">{v.listingTitle}</td>
-                    <td className="py-2 pr-4 text-zinc-400">{v.chassis || '—'}</td>
-                    <td className="py-2 pr-4 text-zinc-400">{v.mileage.toLocaleString()}</td>
-                    <td className="py-2 pr-4 text-zinc-400">{formatPrice(v.listingPrice)}</td>
+                    <td className="py-2 pr-4" style={{ color: 'var(--text-primary)' }}>{v.listingTitle}</td>
+                    <td className="py-2 pr-4" style={{ color: 'var(--text-secondary)' }}>{v.chassis || '—'}</td>
+                    <td className="py-2 pr-4" style={{ color: 'var(--text-secondary)' }}>{v.mileage.toLocaleString()}</td>
+                    <td className="py-2 pr-4" style={{ color: 'var(--text-secondary)' }}>{formatPrice(v.listingPrice)}</td>
                     <td className="py-2 pr-4">
                       <span className={`text-xs px-2 py-0.5 rounded ${
                         v.status === 'current' 
@@ -394,7 +450,7 @@ function VehicleImportPanel() {
                       </span>
                     </td>
                     <td className="py-2">
-                      <span className="text-zinc-500 text-xs">
+                      <span className="text-xs" style={{ color: 'var(--text-secondary)' }}>
                         {v.hasSignatureShot ? '📸' : '—'}
                         {v.hasGallery ? ' 🖼️' : ''}
                       </span>
@@ -409,26 +465,32 @@ function VehicleImportPanel() {
 
       {/* Instructions */}
       {vehicles.length === 0 && config?.configured && (
-        <div className="bg-zinc-900/30 border border-zinc-800/50 rounded-lg p-6">
-          <h3 className="text-lg font-medium text-white mb-3">CSV Format</h3>
-          <p className="text-sm text-zinc-400 mb-4">
+        <div 
+          className="border rounded-lg p-6"
+          style={{
+            backgroundColor: 'var(--bg-secondary)',
+            borderColor: 'var(--border-color)',
+          }}
+        >
+          <h3 className="text-lg font-medium mb-3" style={{ color: 'var(--text-primary)' }}>CSV Format</h3>
+          <p className="text-sm mb-4" style={{ color: 'var(--text-secondary)' }}>
             Upload a CSV file with the following columns:
           </p>
           <div className="grid grid-cols-2 gap-2 text-sm">
-            <div className="text-zinc-500">Listing Title</div>
-            <div className="text-zinc-400">Vehicle title (required)</div>
-            <div className="text-zinc-500">Slug</div>
-            <div className="text-zinc-400">URL-friendly ID (required)</div>
-            <div className="text-zinc-500">VIN</div>
-            <div className="text-zinc-400">Vehicle identification number (required)</div>
-            <div className="text-zinc-500">Stock Number</div>
-            <div className="text-zinc-400">Last 7 of VIN</div>
-            <div className="text-zinc-500">Chassis</div>
-            <div className="text-zinc-400">E30, E46, F87, etc.</div>
-            <div className="text-zinc-500">Mileage</div>
-            <div className="text-zinc-400">Current odometer</div>
-            <div className="text-zinc-500">Listing Price</div>
-            <div className="text-zinc-400">Sale price</div>
+            <div style={{ color: 'var(--text-secondary)' }}>Listing Title</div>
+            <div style={{ color: 'var(--text-primary)' }}>Vehicle title (required)</div>
+            <div style={{ color: 'var(--text-secondary)' }}>Slug</div>
+            <div style={{ color: 'var(--text-primary)' }}>URL-friendly ID (required)</div>
+            <div style={{ color: 'var(--text-secondary)' }}>VIN</div>
+            <div style={{ color: 'var(--text-primary)' }}>Vehicle identification number (required)</div>
+            <div style={{ color: 'var(--text-secondary)' }}>Stock Number</div>
+            <div style={{ color: 'var(--text-primary)' }}>Last 7 of VIN</div>
+            <div style={{ color: 'var(--text-secondary)' }}>Chassis</div>
+            <div style={{ color: 'var(--text-primary)' }}>E30, E46, F87, etc.</div>
+            <div style={{ color: 'var(--text-secondary)' }}>Mileage</div>
+            <div style={{ color: 'var(--text-primary)' }}>Current odometer</div>
+            <div style={{ color: 'var(--text-secondary)' }}>Listing Price</div>
+            <div style={{ color: 'var(--text-primary)' }}>Sale price</div>
           </div>
         </div>
       )}
@@ -436,16 +498,30 @@ function VehicleImportPanel() {
   )
 }
 
+type ViewMode = 'table' | 'kanban'
+
 export default function App() {
   const [activeTab, setActiveTab] = useState<TabId>('users')
   const [data, setData] = useState<Record<string, unknown>[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const [selectedServiceRequestId, setSelectedServiceRequestId] = useState<string | null>(null)
+  const [selectedSellSubmissionId, setSelectedSellSubmissionId] = useState<string | null>(null)
+  const [viewMode, setViewMode] = useState<ViewMode>('table')
 
   const currentTab = tabs.find((t) => t.id === activeTab)!
   const columns = columnDefs[activeTab] || []
+  const supportsKanban = activeTab === 'service-requests' || activeTab === 'sell-submissions'
+  const isReadOnly = activeTab === 'versions' || activeTab === 'accounts' || activeTab === 'sessions' || activeTab === 'vehicle-import' || activeTab === 'documentation' || activeTab === 'settings'
 
   const loadData = useCallback(async () => {
+    // Skip loading for tabs that don't use the standard data table
+    if (activeTab === 'vehicle-import' || activeTab === 'settings') {
+      setLoading(false)
+      setData([])
+      return
+    }
+
     setLoading(true)
     setError(null)
     try {
@@ -457,11 +533,21 @@ export default function App() {
     } finally {
       setLoading(false)
     }
-  }, [currentTab.endpoint])
+  }, [currentTab.endpoint, activeTab])
 
   useEffect(() => {
+    // Reset view mode when changing tabs
+    if (!supportsKanban) {
+      setViewMode('table')
+    }
+    
+    // Close any open detail modals when switching tabs
+    setSelectedServiceRequestId(null)
+    setSelectedSellSubmissionId(null)
+    
+    // Load data for the new tab
     loadData()
-  }, [loadData])
+  }, [loadData, supportsKanban])
 
   const handleUpdate = async (id: string, field: string, value: string) => {
     await updateField(currentTab.endpoint, id, field, value)
@@ -474,83 +560,219 @@ export default function App() {
     await loadData()
   }
 
-  const isReadOnly = activeTab === 'versions' || activeTab === 'accounts' || activeTab === 'sessions' || activeTab === 'vehicle-import'
+  const handleRowClick = (id: string) => {
+    if (activeTab === 'service-requests') {
+      setSelectedServiceRequestId(id)
+    } else if (activeTab === 'sell-submissions') {
+      setSelectedSellSubmissionId(id)
+    }
+  }
+
+  // Kanban columns configuration
+  const serviceRequestKanbanColumns = [
+    { id: 'pending', label: 'Pending', color: 'yellow' },
+    { id: 'contacted', label: 'Contacted', color: 'blue' },
+    { id: 'scheduled', label: 'Scheduled', color: 'purple' },
+    { id: 'in-progress', label: 'In Progress', color: 'orange' },
+    { id: 'completed', label: 'Completed', color: 'green' },
+    { id: 'cancelled', label: 'Cancelled', color: 'red' },
+  ]
+
+  const sellSubmissionKanbanColumns = [
+    { id: 'pending', label: 'Pending', color: 'yellow' },
+    { id: 'contacted', label: 'Contacted', color: 'blue' },
+    { id: 'evaluating', label: 'Evaluating', color: 'purple' },
+    { id: 'offer-made', label: 'Offer Made', color: 'orange' },
+    { id: 'completed', label: 'Completed', color: 'green' },
+    { id: 'cancelled', label: 'Cancelled', color: 'red' },
+  ]
+
+  const renderServiceRequestCard = (item: Record<string, unknown>) => (
+    <div className="space-y-2">
+      <div className="flex items-start justify-between gap-2">
+        <h4 className="text-sm font-medium line-clamp-1" style={{ color: 'var(--text-primary)' }}>{item.name as string}</h4>
+        <span className="text-xs whitespace-nowrap" style={{ color: 'var(--text-tertiary)' }}>
+          {new Date(item.createdAt as string).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+        </span>
+      </div>
+      <div className="space-y-1 text-xs" style={{ color: 'var(--text-secondary)' }}>
+        <div className="flex items-center gap-1.5">
+          <Mail className="w-3 h-3" />
+          <span className="truncate">{item.email as string}</span>
+        </div>
+        <div className="flex items-center gap-1.5">
+          <Phone className="w-3 h-3" />
+          <span>{item.phone as string}</span>
+        </div>
+        <div className="flex items-center gap-1.5">
+          <Car className="w-3 h-3" />
+          <span className="truncate">
+            {item.vehicleYear} {item.vehicleMake} {item.vehicleModel}
+          </span>
+        </div>
+      </div>
+      <div className="pt-2 border-t" style={{ borderColor: 'var(--border-color)' }}>
+        <span className="text-xs" style={{ color: 'var(--text-tertiary)' }}>{item.serviceType as string}</span>
+      </div>
+    </div>
+  )
+
+  const renderSellSubmissionCard = (item: Record<string, unknown>) => (
+    <div className="space-y-2">
+      <div className="flex items-start justify-between gap-2">
+        <h4 className="text-sm font-medium line-clamp-1" style={{ color: 'var(--text-primary)' }}>
+          {item.firstName} {item.lastName}
+        </h4>
+        <span className={`text-xs px-2 py-0.5 rounded ${
+          item.sellOption === 'sell' ? 'bg-blue-500/20 text-blue-400' :
+          item.sellOption === 'consign' ? 'bg-purple-500/20 text-purple-400' :
+          'bg-orange-500/20 text-orange-400'
+        }`}>
+          {(item.sellOption as string).toUpperCase()}
+        </span>
+      </div>
+      <div className="space-y-1 text-xs" style={{ color: 'var(--text-secondary)' }}>
+        <div className="flex items-center gap-1.5">
+          <Mail className="w-3 h-3" />
+          <span className="truncate">{item.email as string}</span>
+        </div>
+        <div className="flex items-center gap-1.5">
+          <Phone className="w-3 h-3" />
+          <span>{item.phone as string}</span>
+        </div>
+        <div className="flex items-center gap-1.5">
+          <Car className="w-3 h-3" />
+          <span className="truncate">
+            {item.year} {item.make} {item.model}
+          </span>
+        </div>
+      </div>
+      <div className="pt-2 border-t flex items-center justify-between" style={{ borderColor: 'var(--border-color)' }}>
+        <span className="text-xs" style={{ color: 'var(--text-tertiary)' }}>{item.mileage} miles</span>
+        <span className="text-xs" style={{ color: 'var(--text-tertiary)' }}>
+          {new Date(item.createdAt as string).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+        </span>
+      </div>
+    </div>
+  )
 
   return (
-    <div className="min-h-screen bg-zinc-950">
-      {/* Header */}
-      <header className="border-b border-zinc-800 bg-zinc-900/50 backdrop-blur-sm sticky top-0 z-10">
-        <div className="max-w-7xl mx-auto px-6 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4">
-              <Logo className="h-7 w-auto" />
-              <div className="h-6 w-px bg-zinc-700" />
-              <span className="text-sm font-medium text-zinc-400">Data Manager</span>
-            </div>
-            <button
-              onClick={loadData}
-              disabled={loading}
-              className="flex items-center gap-2 px-4 py-2 bg-zinc-800 hover:bg-zinc-700 rounded-lg text-sm font-medium transition-colors disabled:opacity-50"
-            >
-              <RefreshCw />
-              Refresh
-            </button>
-          </div>
-        </div>
-      </header>
+    <div className="min-h-screen" style={{ backgroundColor: 'var(--bg-primary)' }}>
+      {/* Sidebar */}
+      <Sidebar activeTab={activeTab} onTabChange={setActiveTab} />
 
-      {/* Tabs */}
-      <nav className="border-b border-zinc-800 bg-zinc-900/30">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="flex gap-1 overflow-x-auto">
-            {tabs.map((tab) => (
-              <button
-                key={tab.id}
-                onClick={() => setActiveTab(tab.id)}
-                className={`tab ${activeTab === tab.id ? 'active' : ''}`}
-              >
-                {tab.id === 'versions' && <History />}
-                {tab.id === 'vehicle-import' && <Car />}
-                {tab.id === 'sell-submissions' && <DollarSign />}
-                {tab.label}
-              </button>
-            ))}
-          </div>
-        </div>
-      </nav>
-
-      {/* Content */}
-      <main className="max-w-7xl mx-auto px-6 py-8">
-        {/* Stats */}
-        <div className="flex items-center justify-between mb-6">
-          <div>
-            <h2 className="text-2xl font-semibold text-white">{currentTab.label}</h2>
-            {activeTab !== 'vehicle-import' && (
-              <p className="text-sm text-zinc-500 mt-1">
-                {loading ? 'Loading...' : `${data.length} records`}
-              </p>
-            )}
-            {activeTab === 'vehicle-import' && (
-              <p className="text-sm text-zinc-500 mt-1">
-                Import vehicles from CSV to Sanity CMS
-              </p>
-            )}
-          </div>
-          {activeTab === 'versions' && (
-            <div className="flex items-center gap-2 text-sm text-zinc-400">
-              <History />
-              <span>All changes are tracked automatically</span>
+      {/* Main Content Area */}
+      <div 
+        className="flex flex-col min-h-screen ml-72"
+        style={{ backgroundColor: 'var(--bg-primary)' }}
+      >
+        {/* Header */}
+        <header 
+          className="border-b backdrop-blur-sm sticky top-0 z-10"
+          style={{ 
+            borderColor: 'var(--border-color)',
+            backgroundColor: 'var(--card-bg)',
+          }}
+        >
+          <div className="px-6 py-4">
+            <div className="flex items-center justify-between">
+              <div>
+                <h2 className="text-2xl font-semibold" style={{ color: 'var(--text-primary)' }}>{currentTab.label}</h2>
+                {activeTab !== 'vehicle-import' && activeTab !== 'documentation' && activeTab !== 'settings' && (
+                  <p className="text-sm mt-1" style={{ color: 'var(--text-secondary)' }}>
+                    {loading ? 'Loading...' : `${data.length} records`}
+                  </p>
+                )}
+                {activeTab === 'vehicle-import' && (
+                  <p className="text-sm mt-1" style={{ color: 'var(--text-secondary)' }}>
+                    Import vehicles from CSV to Sanity CMS
+                  </p>
+                )}
+                {activeTab === 'documentation' && (
+                  <p className="text-sm mt-1" style={{ color: 'var(--text-secondary)' }}>
+                    Platform architecture and operational guides
+                  </p>
+                )}
+                {activeTab === 'settings' && (
+                  <p className="text-sm mt-1" style={{ color: 'var(--text-secondary)' }}>
+                    Manage application preferences
+                  </p>
+                )}
+              </div>
+              <div className="flex items-center gap-2">
+                {supportsKanban && (
+                  <div 
+                    className="flex items-center gap-1 rounded-lg p-1"
+                    style={{ backgroundColor: 'var(--bg-tertiary)' }}
+                  >
+                    <button
+                      onClick={() => setViewMode('table')}
+                      className="flex items-center gap-1.5 px-3 py-1.5 rounded text-sm font-medium transition-colors"
+                      style={{
+                        backgroundColor: viewMode === 'table' ? 'var(--bg-secondary)' : 'transparent',
+                        color: viewMode === 'table' ? 'var(--text-primary)' : 'var(--text-secondary)',
+                      }}
+                    >
+                      <List />
+                      Table
+                    </button>
+                    <button
+                      onClick={() => setViewMode('kanban')}
+                      className="flex items-center gap-1.5 px-3 py-1.5 rounded text-sm font-medium transition-colors"
+                      style={{
+                        backgroundColor: viewMode === 'kanban' ? 'var(--bg-secondary)' : 'transparent',
+                        color: viewMode === 'kanban' ? 'var(--text-primary)' : 'var(--text-secondary)',
+                      }}
+                    >
+                      <Columns />
+                      Kanban
+                    </button>
+                  </div>
+                )}
+                <button
+                  onClick={loadData}
+                  disabled={loading}
+                  className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors disabled:opacity-50"
+                  style={{
+                    backgroundColor: 'var(--bg-tertiary)',
+                    color: 'var(--text-primary)',
+                  }}
+                >
+                  <RefreshCw />
+                  Refresh
+                </button>
+              </div>
             </div>
-          )}
-        </div>
+          </div>
+        </header>
+
+        {/* Content */}
+        <main className="flex-1 px-6 py-8">
+        {/* Version History Info */}
+        {activeTab === 'versions' && (
+          <div className="flex items-center gap-2 text-sm mb-6" style={{ color: 'var(--text-secondary)' }}>
+            <History />
+            <span>All changes are tracked automatically</span>
+          </div>
+        )}
 
         {/* Vehicle Import Panel */}
         {activeTab === 'vehicle-import' && (
           <VehicleImportPanel />
         )}
 
+        {/* Documentation Page */}
+        {activeTab === 'documentation' && (
+          <DocumentationPage />
+        )}
+
+        {/* Settings Page */}
+        {activeTab === 'settings' && (
+          <SettingsPage />
+        )}
+
         {/* Standard Table Views */}
-        {activeTab !== 'vehicle-import' && (
+        {activeTab !== 'vehicle-import' && activeTab !== 'documentation' && activeTab !== 'settings' && (
           <>
             {/* Error State */}
             {error && (
@@ -569,34 +791,86 @@ export default function App() {
               </div>
             )}
 
-            {/* Data Table */}
-            {!loading && !error && (
+            {/* Table View */}
+            {!loading && !error && viewMode === 'table' && (
               <DataTable
+                key={activeTab}
                 data={data as { id: string }[]}
                 columns={columns}
                 onUpdate={isReadOnly ? undefined : handleUpdate}
                 onDelete={isReadOnly ? undefined : handleDelete}
+                onRowClick={handleRowClick}
+              />
+            )}
+
+            {/* Kanban View */}
+            {!loading && !error && viewMode === 'kanban' && activeTab === 'service-requests' && (
+              <KanbanBoard
+                key="service-requests-kanban"
+                data={data as { id: string }[]}
+                columns={serviceRequestKanbanColumns}
+                statusField="status"
+                onItemClick={handleRowClick}
+                onRefresh={loadData}
+                endpoint={currentTab.endpoint}
+                renderCard={renderServiceRequestCard}
+              />
+            )}
+
+            {!loading && !error && viewMode === 'kanban' && activeTab === 'sell-submissions' && (
+              <KanbanBoard
+                key="sell-submissions-kanban"
+                data={data as { id: string }[]}
+                columns={sellSubmissionKanbanColumns}
+                statusField="status"
+                onItemClick={handleRowClick}
+                onRefresh={loadData}
+                endpoint={currentTab.endpoint}
+                renderCard={renderSellSubmissionCard}
               />
             )}
 
             {/* Help Text */}
             {!isReadOnly && !loading && !error && data.length > 0 && (
-              <p className="text-sm text-zinc-600 mt-4">
+              <p className="text-sm mt-4" style={{ color: 'var(--text-tertiary)' }}>
                 💡 Click any highlighted cell to edit. Press Enter to save or Escape to cancel.
               </p>
             )}
           </>
         )}
-      </main>
+        </main>
 
-      {/* Footer */}
-      <footer className="border-t border-zinc-800 mt-auto">
-        <div className="max-w-7xl mx-auto px-6 py-4">
-          <p className="text-sm text-zinc-600 text-center">
-            Enthusiast Auto Data Manager • Connected to Neon Postgres
-          </p>
-        </div>
-      </footer>
+        {/* Footer */}
+        <footer className="border-t mt-auto" style={{ borderColor: 'var(--border-color)' }}>
+          <div className="px-6 py-4">
+            <p className="text-sm text-center" style={{ color: 'var(--text-tertiary)' }}>
+              Enthusiast Auto Data Manager • Connected to Neon Postgres
+            </p>
+          </div>
+        </footer>
+      </div>
+
+      {/* Service Request Detail Modal */}
+      {selectedServiceRequestId && (
+        <ServiceRequestDetail
+          requestId={selectedServiceRequestId}
+          onClose={() => {
+            setSelectedServiceRequestId(null)
+            loadData() // Refresh data after closing
+          }}
+        />
+      )}
+
+      {/* Sell Submission Detail Modal */}
+      {selectedSellSubmissionId && (
+        <SellSubmissionDetail
+          submissionId={selectedSellSubmissionId}
+          onClose={() => {
+            setSelectedSellSubmissionId(null)
+            loadData() // Refresh data after closing
+          }}
+        />
+      )}
     </div>
   )
 }

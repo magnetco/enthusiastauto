@@ -8,11 +8,12 @@ export function ServiceHero() {
   return (
     <PageHero
       size="medium"
+      eyebrow="BMW Services"
       title={
         <>
           Expert BMW Care
           <br />
-          <span className="text-[#2E90FA]">From Touch-Ups to Total Restoration</span>
+          <span className="text-blue-400">From Touch-Ups to Total Restoration</span>
         </>
       }
       subtitle="Whether you need cosmetic repairs, protective treatments, or complete restoration, we deliver factory-exceeding results."
@@ -26,17 +27,17 @@ export function ServiceHero() {
       ]}
     >
       {/* Key Benefits */}
-      <div className="mb-8 flex flex-wrap gap-4 text-body-small font-medium text-white/70">
+      <div className="mb-8 flex flex-wrap gap-4 text-sm font-medium text-white/70">
         <div className="flex items-center gap-2">
-          <span className="text-[#2E90FA]">✓</span>
+          <span className="text-blue-400">✓</span>
           <span>Genuine BMW Parts</span>
         </div>
         <div className="flex items-center gap-2">
-          <span className="text-[#2E90FA]">✓</span>
+          <span className="text-blue-400">✓</span>
           <span>Factory-Level Precision</span>
         </div>
         <div className="flex items-center gap-2">
-          <span className="text-[#2E90FA]">✓</span>
+          <span className="text-blue-400">✓</span>
           <span>M Series Specialists</span>
         </div>
       </div>

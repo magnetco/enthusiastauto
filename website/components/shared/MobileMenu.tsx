@@ -8,26 +8,34 @@ import { usePathname } from "next/navigation";
 import FlagIcon from "components/icons/flag";
 import { NAV_ITEMS } from "@/lib/config/navigation";
 import { useMobileMenu } from "./MobileMenuContext";
+import { MobileAboutPanel } from "./MobileAboutPanel";
 import { MobileInventoryPanel } from "./MobileInventoryPanel";
 import { MobileServicesPanel } from "./MobileServicesPanel";
+import { MobileContactPanel } from "./MobileContactPanel";
 
 /**
- * Mobile menu slide-over panel with nested inventory and services submenus
+ * Mobile menu slide-over panel with nested submenus
  */
 export function MobileMenu() {
   const pathname = usePathname();
   const {
     isOpen,
     closeMenu,
+    openAboutPanel,
     openInventoryPanel,
     openServicesPanel,
+    openContactPanel,
   } = useMobileMenu();
 
   const handleSubmenuClick = (submenuType?: string) => {
-    if (submenuType === "inventory") {
+    if (submenuType === "about") {
+      openAboutPanel();
+    } else if (submenuType === "inventory") {
       openInventoryPanel();
     } else if (submenuType === "services") {
       openServicesPanel();
+    } else if (submenuType === "contact") {
+      openContactPanel();
     }
   };
 
@@ -58,7 +66,7 @@ export function MobileMenu() {
             leaveFrom="translate-x-0"
             leaveTo="-translate-x-full"
           >
-            <Dialog.Panel className="fixed inset-y-0 left-0 flex w-full max-w-sm flex-col bg-[#0a0a0a]">
+            <Dialog.Panel className="fixed inset-y-0 left-0 flex w-full max-w-sm flex-col bg-[#0a0c10]">
               {/* Header */}
               <div className="flex h-16 items-center justify-between border-b border-white/10 px-6">
                 <Link href="/" onClick={closeMenu} className="flex items-center">
@@ -82,7 +90,7 @@ export function MobileMenu() {
                         <li key={item.title}>
                           <button
                             onClick={() => handleSubmenuClick(item.submenuType)}
-                            className="flex w-full items-center justify-between py-3 text-base font-medium text-white/90 transition-colors hover:text-white"
+                            className="font-headline flex w-full items-center justify-between py-3 text-base font-medium text-white/90 transition-colors hover:text-white"
                           >
                             <span>{item.title}</span>
                             <ChevronRightIcon className="h-5 w-5 text-white/50" />
@@ -101,7 +109,7 @@ export function MobileMenu() {
                         <Link
                           href={item.href}
                           onClick={closeMenu}
-                          className={`block py-3 text-base font-medium transition-colors ${
+                          className={`font-headline block py-3 text-base font-medium transition-colors ${
                             isActive
                               ? "text-white"
                               : "text-white/70 hover:text-white"
@@ -145,8 +153,10 @@ export function MobileMenu() {
       </Transition>
 
       {/* Sub-panels */}
+      <MobileAboutPanel />
       <MobileInventoryPanel />
       <MobileServicesPanel />
+      <MobileContactPanel />
     </>
   );
 }

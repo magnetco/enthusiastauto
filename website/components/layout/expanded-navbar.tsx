@@ -18,7 +18,7 @@ interface NavItem {
 
 const mainNavItems: NavItem[] = [
   { title: "About EAG", href: "/about" },
-  { title: "Inventory", href: "/inventory", hasDropdown: true },
+  { title: "Inventory", href: "/vehicles", hasDropdown: true },
   { title: "Services", href: "/services" },
   { title: "Sell your car", href: "/sell" },
   { title: "Under the hood", href: "/under-the-hood" },
@@ -92,7 +92,7 @@ export function ExpandedNavbar() {
           <div key={index} className="relative">
             <Link
               href={item.href}
-              className="relative shrink-0 transition-colors duration-200 hover:text-muted-foreground"
+              className="relative shrink-0 transition-colors duration-200 hover:text-muted-foreground py-6 block"
               onMouseEnter={() => item.hasDropdown && setActiveDropdown(item.title)}
               onMouseLeave={() => setActiveDropdown(null)}
             >
@@ -101,7 +101,7 @@ export function ExpandedNavbar() {
             
             {/* Active indicator */}
             {item.title === "Inventory" && (
-              <div className="absolute bg-[#92a7b4] h-[2px] left-[calc(12.5%+123px)] top-[42px] w-[65px]" />
+              <div className="absolute bg-[#2E90FA] h-[2px] left-0 bottom-0 w-full" />
             )}
           </div>
         ))}

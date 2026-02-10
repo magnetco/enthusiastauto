@@ -2,6 +2,7 @@ import Link from "next/link";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { ArrowRightIcon } from "@heroicons/react/24/outline";
+import { GradientLine } from "@/components/shared/GradientLine";
 
 const values = [
   {
@@ -108,7 +109,7 @@ export function AboutSection() {
 
           {/* Right: Description + CTA */}
           <div className="flex flex-col justify-end">
-            <p className="mb-8 text-body-large leading-relaxed text-neutral-400 sm:text-body-xl">
+            <p className="mb-8 text-body-xl leading-relaxed text-white">
               Enthusiast Auto offers curated BMW vehicles for sale and premium
               parts for BMW enthusiasts. We understand the passion for the
               ultimate driving machine—because we share it.
@@ -129,25 +130,16 @@ export function AboutSection() {
         </div>
 
         {/* M-Colors Divider */}
-        <div className="mb-16 flex h-1 lg:mb-20">
-          <div className="flex-1 bg-gradient-to-r from-transparent via-[#0066B1] to-[#0066B1]" />
-          <div className="w-24 bg-[#6B3FA0]" />
-          <div className="flex-1 bg-gradient-to-l from-transparent via-[#E32526] to-[#E32526]" />
-        </div>
+        <GradientLine className="mb-16 lg:mb-20" />
 
         {/* Value Propositions */}
-        <div className="grid gap-6 sm:grid-cols-3 lg:gap-8">
+        <div className="grid gap-2 sm:grid-cols-3">
           {values.map((value, index) => (
             <div
               key={value.number}
-              className="group relative rounded-xl border border-neutral-800/50 bg-gradient-to-b from-neutral-900/50 to-transparent p-6 transition-all duration-500 hover:border-neutral-700 hover:bg-neutral-900/80 sm:p-8"
+              className="group relative rounded-lg border border-neutral-800/50 bg-gradient-to-b from-neutral-900/50 to-transparent p-8 transition-all duration-500 hover:border-neutral-700 hover:bg-neutral-900/80"
               style={{ animationDelay: `${index * 100}ms` }}
             >
-              {/* Large Background Number */}
-              <span className="absolute right-4 top-4 font-mono text-[5rem] font-bold leading-none text-white/[0.03] transition-colors duration-500 group-hover:text-white/[0.06] sm:right-6 sm:top-6 sm:text-[6rem]">
-                {value.number}
-              </span>
-
               {/* Icon */}
               <div className="relative mb-5 inline-flex rounded-lg bg-blue-500/10 p-3 text-blue-400 ring-1 ring-blue-500/20">
                 {value.icon}
@@ -158,7 +150,7 @@ export function AboutSection() {
                 <h3 className="mb-3 text-title-3 font-semibold text-white">
                   {value.title}
                 </h3>
-                <p className="text-body-base leading-relaxed text-neutral-400">
+                <p className="text-body-xl leading-relaxed text-white">
                   {value.description}
                 </p>
               </div>
@@ -181,7 +173,7 @@ export function AboutSection() {
               <div className="mb-2 font-headline text-[1.75rem] text-white sm:text-[2rem] lg:text-[2.5rem]">
                 {stat.value}
               </div>
-              <div className="text-body-small text-neutral-500">
+              <div className="text-body-small text-white">
                 {stat.label}
               </div>
             </div>

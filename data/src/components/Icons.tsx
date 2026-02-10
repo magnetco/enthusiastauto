@@ -102,6 +102,410 @@ export function DollarSign() {
   )
 }
 
+export function Users() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+      <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+      <circle cx="9" cy="7" r="4" />
+      <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+      <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+    </svg>
+  )
+}
+
+export function UserCircle() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+      <circle cx="12" cy="12" r="10" />
+      <circle cx="12" cy="10" r="3" />
+      <path d="M7 20.662V19a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v1.662" />
+    </svg>
+  )
+}
+
+export function Clock() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+      <circle cx="12" cy="12" r="10" />
+      <polyline points="12 6 12 12 16 14" />
+    </svg>
+  )
+}
+
+export function Heart() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+      <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
+    </svg>
+  )
+}
+
+export function Wrench() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+      <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z" />
+    </svg>
+  )
+}
+
+export function ChevronRight() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+      <polyline points="9 18 15 12 9 6" />
+    </svg>
+  )
+}
+
+export function Package() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+      <line x1="16.5" y1="9.4" x2="7.5" y2="4.21" />
+      <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" />
+      <polyline points="3.27 6.96 12 12.01 20.73 6.96" />
+      <line x1="12" y1="22.08" x2="12" y2="12" />
+    </svg>
+  )
+}
+
+export function FileText() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+      <polyline points="14 2 14 8 20 8" />
+      <line x1="16" y1="13" x2="8" y2="13" />
+      <line x1="16" y1="17" x2="8" y2="17" />
+      <polyline points="10 9 9 9 8 9" />
+    </svg>
+  )
+}
+
+export function Mail() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+      <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+      <polyline points="22,6 12,13 2,6" />
+    </svg>
+  )
+}
+
+export function MessageSquare() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+      <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+    </svg>
+  )
+}
+
+export function Megaphone() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+      <path d="M3 11l18-5v12L3 13v-2z" />
+      <path d="M11.6 16.8a3 3 0 1 1-5.8-1.6" />
+    </svg>
+  )
+}
+
+export function Layout() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+      <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
+      <line x1="3" y1="9" x2="21" y2="9" />
+      <line x1="9" y1="21" x2="9" y2="9" />
+    </svg>
+  )
+}
+
+export function BarChart() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+      <line x1="12" y1="20" x2="12" y2="10" />
+      <line x1="18" y1="20" x2="18" y2="4" />
+      <line x1="6" y1="20" x2="6" y2="16" />
+    </svg>
+  )
+}
+
+export function Target() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+      <circle cx="12" cy="12" r="10" />
+      <circle cx="12" cy="12" r="6" />
+      <circle cx="12" cy="12" r="2" />
+    </svg>
+  )
+}
+
+export function TrendingUp() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+      <polyline points="23 6 13.5 15.5 8.5 10.5 1 18" />
+      <polyline points="17 6 23 6 23 12" />
+    </svg>
+  )
+}
+
+export function Users2() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+      <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+      <circle cx="9" cy="7" r="4" />
+      <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
+      <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+    </svg>
+  )
+}
+
+export function Headphones() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+      <path d="M3 18v-6a9 9 0 0 1 18 0v6" />
+      <path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z" />
+    </svg>
+  )
+}
+
+export function MessageCircle() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+      <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" />
+    </svg>
+  )
+}
+
+export function BookOpen() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+      <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" />
+      <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
+    </svg>
+  )
+}
+
+export function Code() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+      <polyline points="16 18 22 12 16 6" />
+      <polyline points="8 6 2 12 8 18" />
+    </svg>
+  )
+}
+
+export function Briefcase() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+      <rect x="2" y="7" width="20" height="14" rx="2" ry="2" />
+      <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" />
+    </svg>
+  )
+}
+
+export function Settings() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+      <circle cx="12" cy="12" r="3" />
+      <path d="M12 1v6m0 6v6m9-9h-6m-6 0H3m15.364 6.364l-4.243-4.243m-6.364 0l-4.242 4.243m12.728 0l-4.242-4.243m-6.364 0l-4.243 4.243" />
+    </svg>
+  )
+}
+
+export function ShoppingBag({ className = "" }: { className?: string }) {
+  return (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className={className}>
+      <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" />
+      <line x1="3" y1="6" x2="21" y2="6" />
+      <path d="M16 10a4 4 0 0 1-8 0" />
+    </svg>
+  )
+}
+
+export function Tag({ className = "" }: { className?: string }) {
+  return (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className={className}>
+      <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z" />
+      <line x1="7" y1="7" x2="7.01" y2="7" />
+    </svg>
+  )
+}
+
+export function Grid({ className = "" }: { className?: string }) {
+  return (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className={className}>
+      <rect x="3" y="3" width="7" height="7" />
+      <rect x="14" y="3" width="7" height="7" />
+      <rect x="14" y="14" width="7" height="7" />
+      <rect x="3" y="14" width="7" height="7" />
+    </svg>
+  )
+}
+
+export function Truck({ className = "" }: { className?: string }) {
+  return (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className={className}>
+      <rect x="1" y="3" width="15" height="13" />
+      <polygon points="16 8 20 8 23 11 23 16 16 16 16 8" />
+      <circle cx="5.5" cy="18.5" r="2.5" />
+      <circle cx="18.5" cy="18.5" r="2.5" />
+    </svg>
+  )
+}
+
+export function ExternalLink({ className = "" }: { className?: string }) {
+  return (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className={className}>
+      <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+      <polyline points="15 3 21 3 21 9" />
+      <line x1="10" y1="14" x2="21" y2="3" />
+    </svg>
+  )
+}
+
+export function X({ className = "" }: { className?: string }) {
+  return (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className={className}>
+      <line x1="18" y1="6" x2="6" y2="18" />
+      <line x1="6" y1="6" x2="18" y2="18" />
+    </svg>
+  )
+}
+
+export function User({ className = "" }: { className?: string }) {
+  return (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className={className}>
+      <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+      <circle cx="12" cy="7" r="4" />
+    </svg>
+  )
+}
+
+export function Phone({ className = "" }: { className?: string }) {
+  return (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className={className}>
+      <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
+    </svg>
+  )
+}
+
+export function Calendar({ className = "" }: { className?: string }) {
+  return (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className={className}>
+      <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+      <line x1="16" y1="2" x2="16" y2="6" />
+      <line x1="8" y1="2" x2="8" y2="6" />
+      <line x1="3" y1="10" x2="21" y2="10" />
+    </svg>
+  )
+}
+
+export function CheckCircle({ className = "" }: { className?: string }) {
+  return (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className={className}>
+      <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+      <polyline points="22 4 12 14.01 9 11.01" />
+    </svg>
+  )
+}
+
+export function XCircle({ className = "" }: { className?: string }) {
+  return (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className={className}>
+      <circle cx="12" cy="12" r="10" />
+      <line x1="15" y1="9" x2="9" y2="15" />
+      <line x1="9" y1="9" x2="15" y2="15" />
+    </svg>
+  )
+}
+
+export function ArrowLeft({ className = "" }: { className?: string }) {
+  return (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className={className}>
+      <line x1="19" y1="12" x2="5" y2="12" />
+      <polyline points="12 19 5 12 12 5" />
+    </svg>
+  )
+}
+
+export function List({ className = "" }: { className?: string }) {
+  return (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className={className}>
+      <line x1="8" y1="6" x2="21" y2="6" />
+      <line x1="8" y1="12" x2="21" y2="12" />
+      <line x1="8" y1="18" x2="21" y2="18" />
+      <line x1="3" y1="6" x2="3.01" y2="6" />
+      <line x1="3" y1="12" x2="3.01" y2="12" />
+      <line x1="3" y1="18" x2="3.01" y2="18" />
+    </svg>
+  )
+}
+
+export function Columns({ className = "" }: { className?: string }) {
+  return (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className={className}>
+      <rect x="3" y="3" width="7" height="18" rx="1" />
+      <rect x="14" y="3" width="7" height="18" rx="1" />
+    </svg>
+  )
+}
+
+export function Sun({ className = "" }: { className?: string }) {
+  return (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className={className}>
+      <circle cx="12" cy="12" r="5" />
+      <line x1="12" y1="1" x2="12" y2="3" />
+      <line x1="12" y1="21" x2="12" y2="23" />
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
+      <line x1="1" y1="12" x2="3" y2="12" />
+      <line x1="21" y1="12" x2="23" y2="12" />
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
+    </svg>
+  )
+}
+
+export function Moon({ className = "" }: { className?: string }) {
+  return (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className={className}>
+      <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+    </svg>
+  )
+}
+
+export function FlagIcon({ className = "" }: { className?: string }) {
+  return (
+    <svg
+      width="69"
+      height="37"
+      viewBox="0 0 69 37"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      className={className}
+    >
+      <path d="M41.7338 20.7402C40.6109 21.7534 39.5515 22.7331 38.6108 23.7205C40.3197 26.0277 42.0922 27.7956 43.9535 29.162C45.1162 27.7936 46.1585 26.4959 46.8854 25.3091C44.7541 23.9305 43.0347 22.2376 41.7338 20.7402Z" fill="#005A90"/>
+      <path d="M38.6128 23.7222C37.5806 22.3298 36.5752 20.7438 35.586 18.9321C35.0054 17.8622 34.4302 16.9429 33.8495 16.1526C33.4033 16.3569 32.9786 16.5773 32.5861 16.83C31.6883 17.3945 30.9034 18.5235 30.1884 19.9965C30.3712 20.2277 30.554 20.4696 30.7367 20.7331C32.3173 22.9964 33.9517 25.249 35.6452 27.3457C36.4355 26.1522 37.2688 25.1953 38.1612 24.2061C38.3064 24.0448 38.4569 23.8835 38.6128 23.7222Z" fill="#005A90"/>
+      <path d="M44.7405 17.9776C46.1042 19.1953 47.5672 20.3356 49.1422 21.3452C49.9597 20.2104 50.8935 19.1385 51.7311 18.2088C50.2171 17.4702 48.7607 16.4538 47.3793 15.2838C46.5139 16.2396 45.629 17.1355 44.7405 17.9776Z" fill="#CCCCCC"/>
+      <path d="M47.3763 15.2881C48.3763 14.1806 49.3386 12.9871 50.2257 11.6699C49.3601 10.9549 48.5967 10.127 47.8064 9.25605C46.7742 9.61087 45.6882 9.79904 44.4355 9.80979C44.1076 10.3528 43.7366 10.8313 43.3442 11.2614C44.5807 12.6807 45.9355 14.0677 47.3763 15.2881Z" fill="#CCCCCC"/>
+      <path d="M43.3442 11.2614C42.8711 10.7184 42.4134 10.1749 41.9779 9.63724C41.5155 9.57273 41.0317 9.49746 40.521 9.39531C39.392 9.18027 37.9189 9.00285 36.2792 8.93296C37.5426 10.3845 38.8759 11.9651 40.3167 13.5511C41.408 12.9705 42.4464 12.2506 43.3442 11.2614Z" fill="#005A90"/>
+      <path d="M54.9736 13.8993C56.1079 11.9746 57.6993 9.12528 59.1508 6.43182C57.952 6.08775 56.6617 5.66303 55.366 5.08241C54.5757 5.50175 53.7801 5.94797 52.979 6.4157C52.221 8.37261 51.2802 10.1091 50.2264 11.6682C51.4576 12.6843 52.9038 13.4853 54.9736 13.8993Z" fill="#CCCCCC"/>
+      <path d="M41.7315 20.7351C42.6992 19.8534 43.7153 18.9448 44.7367 17.9771C43.1454 16.5632 41.6831 15.0525 40.3176 13.5525C39.2692 14.1009 38.1671 14.5203 37.0919 14.9073C38.4198 16.4772 39.4789 17.8965 40.2638 18.9233C40.6724 19.4609 41.1616 20.0792 41.7315 20.7351Z" fill="#005A90"/>
+      <path d="M25.4035 17.0645C26.2031 15.3016 27.3108 13.5209 28.8499 12.0388C27.4463 11.5018 25.9594 11.3187 24.3452 11.2462C22.9975 12.8192 21.9162 15.076 21.0811 17.3644C22.4996 17.1119 23.9528 16.8694 25.4035 17.0645Z" fill="#005A90"/>
+      <path d="M25.403 17.0662C24.4138 19.2327 23.8762 21.3778 23.5267 22.9154C23.231 24.2272 22.973 25.453 22.6612 26.7056C24.2095 26.7594 25.7363 27.1518 27.2363 28.426C28.1502 25.3508 29.0863 22.2653 30.1884 19.9965C28.6293 18.0665 27.0158 17.292 25.403 17.0662Z" fill="#005A90"/>
+      <path d="M33.8495 16.15C34.8483 15.6921 35.9541 15.3157 37.0917 14.9133C35.7009 13.2691 34.0142 11.4689 32.0379 9.7903C30.8027 10.3993 29.7527 11.168 28.8496 12.0401C30.5934 12.7061 32.2259 13.9237 33.8495 16.15Z" fill="#005A90"/>
+      <path d="M18.5566 26.9793C18.1319 28.8663 17.476 30.5813 15.1374 33.4092C15.7718 33.592 16.4599 33.7533 17.2126 33.8823C18.2126 33.5866 19.3254 33.3017 20.5297 33.0597C21.5834 30.6244 22.1855 28.6352 22.664 26.7105C21.3092 26.6621 19.9383 26.8718 18.5566 26.9793Z" fill="#F90020"/>
+      <path d="M40.7841 32.8893C42.156 34.1345 43.5663 35.2031 45.0161 36.0404L48.0541 31.5504C46.636 30.9151 45.2739 30.1382 43.958 29.167C42.9379 30.3662 41.8444 31.6117 40.7841 32.8893Z" fill="#005A90"/>
+      <path d="M35.6473 27.3435C34.7461 28.6933 33.8978 30.3462 33.0758 32.7055C35.1992 33.0188 37.3861 33.5553 39.5914 34.3774C39.9795 33.8824 40.3793 33.3875 40.7841 32.8893C39.0086 31.2838 37.3018 29.3928 35.6473 27.3435Z" fill="#005A90"/>
+      <path d="M27.6481 28.7965C27.5155 28.672 27.3758 28.5501 27.2411 28.4304C26.8404 29.7653 26.4447 31.1024 26.0389 32.3701C27.7223 32.285 29.4968 32.3117 31.3328 32.4899C30.1726 31.2953 28.9102 30.0134 27.6481 28.7965Z" fill="#005A90"/>
+      <path d="M65.7446 0.710938C64.3844 1.13028 62.9059 1.65176 61.3522 2.28077C60.734 3.49578 59.9652 4.94197 59.1588 6.43654C61.191 7.01716 62.9705 7.36124 64.1102 7.81283L68.0886 1.92595C67.223 1.4636 66.4327 1.05501 65.7446 0.710938Z" fill="#CCCCCC"/>
+      <path d="M54.9761 13.8988C54.3847 14.9042 53.9116 15.6622 53.6536 16.0063C53.245 16.5546 52.53 17.318 51.7235 18.2105C53.1859 18.9309 54.6965 19.3879 56.2234 19.4685L59.7985 14.1784C57.8685 14.2698 56.2933 14.1622 54.9761 13.8988Z" fill="#CCCCCC"/>
+      <path d="M47.5626 24.0384C47.3906 24.447 47.1594 24.8717 46.8906 25.3125C48.111 26.1028 49.4658 26.791 50.9496 27.2748L53.4442 23.5868C51.9227 22.9739 50.4926 22.2105 49.1432 21.3503C48.5142 22.2266 47.9497 23.1352 47.5626 24.0384Z" fill="#CCCCCC"/>
+      <path d="M18.5565 26.9747C18.6909 26.3833 18.8038 25.7758 18.9382 25.1092C19.25 23.5662 19.9435 20.4427 21.0779 17.3621C20.2607 17.5073 19.4597 17.6525 18.6694 17.717C17.0942 20.561 13.7932 26.1629 13.7126 26.3457C15.3415 27.0715 16.9598 27.093 18.5565 26.9747Z" fill="#F90020"/>
+      <path d="M13.7151 26.3411C13.6613 26.3142 11.4571 28.798 8.80664 29.6044C9.30662 30.0721 9.79585 30.5022 10.3012 30.9C11.7151 29.5184 12.9678 28.0776 13.7151 26.3411Z" fill="#F90020"/>
+      <path d="M10.2975 30.9017C9.16849 32.0092 7.93198 33.0791 6.7546 34.2296C7.78682 35.1005 8.90506 35.9392 10.1523 36.7617C10.862 36.5789 11.5501 36.2886 12.2383 35.88C12.5608 35.6865 12.9963 35.4661 13.5339 35.2188C14.1414 34.5629 14.6683 33.9607 15.1306 33.4016C13.1468 32.8264 11.6738 31.9877 10.2975 30.9017Z" fill="#F90020"/>
+      <path d="M6.75323 34.2326C5.70943 33.3523 4.73669 32.4314 3.79575 31.4581C0.960976 33.102 0.355469 34.9745 0.355469 34.9745C1.98887 35.6185 3.41739 36.1294 4.70265 36.4783C5.33527 35.6797 6.03469 34.9437 6.75323 34.2326Z" fill="#F90020"/>
+      <path d="M34.4194 8.90978C33.3764 8.92053 32.3012 8.98504 31.2206 9.11407C31.5001 9.33987 31.7743 9.56567 32.0431 9.79147C32.7689 9.43664 33.5592 9.14095 34.4194 8.90978Z" fill="#005A90"/>
+    </svg>
+  )
+}
+
 export function Logo({ className = "" }: { className?: string }) {
   return (
     <svg

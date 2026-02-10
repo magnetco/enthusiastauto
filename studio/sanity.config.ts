@@ -6,6 +6,7 @@
 import { visionTool } from "@sanity/vision";
 import { defineConfig } from "sanity";
 import { structureTool } from "sanity/structure";
+import { DocumentIcon } from "@sanity/icons";
 
 import { apiVersion, dataset, projectId } from "./env";
 import { schema } from "./schemaTypes";
@@ -21,7 +22,7 @@ export default defineConfig({
   title: "Enthusiast Auto Content Studio",
 
   // Custom studio icon
-  icon: () => "🚗",
+  icon: DocumentIcon,
 
   // Schema and template configuration
   schema: {

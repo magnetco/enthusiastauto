@@ -74,19 +74,19 @@ export default function Footer() {
 	const copyrightName = COMPANY_NAME || SITE_NAME || "Enthusiast Auto Group";
 
 	return (
-		<footer className="border-t border-white/10 bg-[#0a0a0a]">
+		<footer className="border-t border-white/10 bg-[#0a0c10]">
 			{/* Main Footer Content */}
 			<div className="mx-auto max-w-[var(--container-max)] px-6 py-16">
 				<div className="grid gap-12 lg:grid-cols-6">
 					{/* Brand Column */}
 					<div className="lg:col-span-2">
-						<Link href="/" className="inline-flex items-center gap-3 transition-opacity hover:opacity-80">
-							<FlagIcon className="h-10 w-auto" />
-						</Link>
-						<p className="mt-4 max-w-xs text-sm leading-relaxed text-white/60">
-							Curating the finest BMW enthusiast vehicles. From classic E30s to modern M cars, 
-							we specialize in driver-focused machines for the true enthusiast.
-						</p>
+					<Link href="/" className="inline-flex items-center gap-3 transition-opacity hover:opacity-80">
+						<FlagIcon className="h-10 w-auto" />
+					</Link>
+					<p className="mt-4 max-w-xs text-body-xl leading-relaxed text-white/60">
+						Curating the finest BMW enthusiast vehicles. From classic E30s to modern M cars, 
+						we specialize in driver-focused machines for the true enthusiast.
+					</p>
 						
 						{/* Contact Info */}
 						<div className="mt-6 space-y-2">
@@ -131,7 +131,7 @@ export default function Footer() {
 					<div className="grid gap-8 sm:grid-cols-2 lg:col-span-4 lg:grid-cols-4">
 						{Object.values(footerLinks).slice(0, 4).map((section) => (
 							<div key={section.title}>
-								<h3 className="text-xs font-semibold uppercase tracking-wider text-white">
+								<h3 className="font-headline text-xs font-semibold text-white">
 									{section.title}
 								</h3>
 								<ul className="mt-4 space-y-3">

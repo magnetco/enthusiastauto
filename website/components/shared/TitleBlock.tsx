@@ -39,7 +39,7 @@ export function TitleBlock({
             </h2>
           </div>
           {description && (
-            <p className="max-w-md text-body-base text-neutral-600 sm:text-body-large">
+            <p className="max-w-md text-body-xl leading-[1.5] text-neutral-600">
               {description}
             </p>
           )}

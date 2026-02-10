@@ -4,6 +4,8 @@ import Link from "next/link";
 import { StarIcon } from "@heroicons/react/24/outline";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
+import { useHeaderScroll } from "./StickyHeader";
+import { cn } from "@/lib/utils";
 
 /**
  * Favorites badge component with count
@@ -12,6 +14,7 @@ import { useEffect, useState } from "react";
 export function FavoritesBadge() {
   const { data: session } = useSession();
   const [count, setCount] = useState(0);
+  const isScrolled = useHeaderScroll();
 
   // Fetch favorites count when logged in
   useEffect(() => {
@@ -38,7 +41,12 @@ export function FavoritesBadge() {
   return (
     <Link
       href="/account/garage"
-      className="flex h-10 items-center gap-2 rounded-md border border-white/20 bg-transparent px-4 text-white/70 transition-colors hover:border-white/40 hover:text-white"
+      className={cn(
+        "flex h-10 items-center gap-2 rounded-md px-4 transition-colors duration-300",
+        isScrolled
+          ? "bg-gray-100 text-gray-600 hover:bg-gray-200 hover:text-gray-900"
+          : "bg-white/5 text-white/70 hover:bg-white/10 hover:text-white"
+      )}
       aria-label={`Favorites (${count} items)`}
     >
       <StarIcon className="h-5 w-5" />

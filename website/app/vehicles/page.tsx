@@ -1,10 +1,8 @@
 import Section from "@/components/layout/section";
 import { PageHero } from "@/components/shared/PageHero";
 import { EmptyState } from "@/components/vehicles/EmptyState";
-import { SortDropdown } from "@/components/vehicles/SortDropdown";
 import { VehicleGridSkeleton } from "@/components/vehicles/VehicleCardSkeleton";
-import { VehicleFilters } from "@/components/vehicles/VehicleFilters";
-import { VehicleGrid } from "@/components/vehicles/VehicleGrid";
+import { VehiclesPageClient } from "@/components/vehicles/VehiclesPageClient";
 import {
 	getVehicles,
 	type VehicleFilters as VehicleFiltersType,
@@ -46,10 +44,15 @@ interface VehiclesPageProps {
 // Skeleton for vehicle results area only
 function VehicleResultsSkeleton() {
 	return (
-		<>
-			<div className="mb-4 h-5 w-32 animate-pulse rounded bg-gray-200" />
-			<VehicleGridSkeleton count={9} />
-		</>
+		<div className="min-h-[600px] animate-pulse">
+			<div className="mb-8 h-32 w-full rounded bg-gray-200" />
+			<div className="mb-6 h-12 w-full rounded bg-gray-200" />
+			<div className="space-y-6">
+				{[1, 2, 3].map((i) => (
+					<div key={i} className="h-64 rounded-lg bg-gray-200" />
+				))}
+			</div>
+		</div>
 	);
 }
 
@@ -85,14 +88,7 @@ async function VehicleResults({ searchParams }: VehiclesPageProps) {
 		return <EmptyState hasActiveFilters={hasActiveFilters} />;
 	}
 
-	return (
-		<>
-			<div className="mb-4 text-sm text-muted-foreground">
-				{vehicles.length} {vehicles.length === 1 ? "vehicle" : "vehicles"} found
-			</div>
-			<VehicleGrid vehicles={vehicles} />
-		</>
-	);
+	return <VehiclesPageClient vehicles={vehicles} vehicleCount={vehicles.length} />;
 }
 
 export default async function VehiclesPage({ searchParams }: VehiclesPageProps) {
@@ -107,36 +103,13 @@ export default async function VehiclesPage({ searchParams }: VehiclesPageProps) 
 				backgroundImage="https://images.unsplash.com/photo-1580273916550-e323be2ae537?q=80&w=2070&auto=format&fit=crop"
 			/>
 
-			{/* Content */}
-			<Section className="py-8 lg:py-12">
-				{/* Mobile Filters Button and Desktop Sort */}
-				<div className="mb-6 flex items-center justify-between">
-					{/* Only show mobile filter button - desktop filters in sidebar */}
-					<div className="md:hidden">
-						<VehicleFilters />
-					</div>
-					<div className="ml-auto">
-						<SortDropdown />
-					</div>
-				</div>
-
-				{/* Desktop Filters Sidebar + Vehicle Grid */}
-				<div className="gap-8 md:grid md:grid-cols-[280px_1fr] lg:gap-12">
-					{/* Desktop Sidebar Filters */}
-					<aside className="hidden md:block">
-						<div className="sticky top-24">
-							<VehicleFilters />
-						</div>
-					</aside>
-
-					{/* Main Content - Only this area needs Suspense */}
-					<main className="min-h-[600px]">
-						<Suspense fallback={<VehicleResultsSkeleton />}>
-							<VehicleResults searchParams={searchParams} />
-						</Suspense>
-					</main>
-				</div>
-			</Section>
+		{/* Content */}
+		<Section className="py-8 lg:py-12">
+			{/* Main Content with Suspense */}
+			<Suspense fallback={<VehicleResultsSkeleton />}>
+				<VehicleResults searchParams={searchParams} />
+			</Suspense>
+		</Section>
 		</>
 	);
 }

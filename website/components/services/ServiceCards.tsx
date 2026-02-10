@@ -161,7 +161,7 @@ export function ServiceCards() {
                   )}
                 </div>
                 <CardTitle className="text-lg leading-tight">{service.title}</CardTitle>
-                <CardDescription className="text-sm leading-relaxed">
+                <CardDescription className="text-body-xl leading-relaxed">
                   {service.description}
                 </CardDescription>
               </CardHeader>
@@ -172,7 +172,7 @@ export function ServiceCards() {
                   </h4>
                   <ul className="space-y-1.5">
                     {service.features.slice(0, 4).map((feature, index) => (
-                      <li key={index} className="flex items-start gap-2 text-sm text-neutral-600">
+                      <li key={index} className="flex items-start gap-2 text-body-xl text-neutral-600">
                         <span
                           className={cn(
                             "mt-0.5 text-xs",

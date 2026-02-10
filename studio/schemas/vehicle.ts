@@ -647,7 +647,109 @@ export const vehicle = defineType({
     }),
 
     // ============================================
-    // TASK 8: Metadata and Preview
+    // TASK 8: Documentation and FAQs
+    // ============================================
+    defineField({
+      name: "documentation",
+      title: "Documentation",
+      type: "array",
+      description:
+        "Upload vehicle documentation (manuals, keys, window sticker, service records, accessories, tools). Each item should have a type, image preview, and optional file download.",
+      of: [
+        {
+          type: "object",
+          name: "documentationItem",
+          title: "Documentation Item",
+          fields: [
+            {
+              name: "type",
+              type: "string",
+              title: "Document Type",
+              options: {
+                list: [
+                  { title: "Manuals", value: "Manuals" },
+                  { title: "Keys", value: "Keys" },
+                  { title: "Window Sticker", value: "Window Sticker" },
+                  { title: "Service Records", value: "Service Records" },
+                  { title: "Accessories", value: "Accessories" },
+                  { title: "Tools", value: "Tools" },
+                ],
+                layout: "dropdown",
+              },
+              validation: (Rule) => Rule.required(),
+            },
+            {
+              name: "image",
+              type: "image",
+              title: "Preview Image",
+              description: "Image preview of the document",
+              options: {
+                hotspot: true,
+              },
+            },
+            {
+              name: "file",
+              type: "file",
+              title: "File Download",
+              description: "Optional PDF or document file for download",
+            },
+          ],
+          preview: {
+            select: {
+              title: "type",
+              media: "image",
+            },
+          },
+        },
+      ],
+    }),
+
+    defineField({
+      name: "faqs",
+      title: "Vehicle-Specific FAQs",
+      type: "array",
+      description:
+        "Add frequently asked questions specific to this vehicle. These will appear in addition to global FAQs on the vehicle detail page.",
+      of: [
+        {
+          type: "object",
+          name: "faqItem",
+          title: "FAQ Item",
+          fields: [
+            {
+              name: "question",
+              type: "string",
+              title: "Question",
+              validation: (Rule) => Rule.required().max(200),
+            },
+            {
+              name: "answer",
+              type: "text",
+              title: "Answer",
+              rows: 4,
+              validation: (Rule) => Rule.required().max(1000),
+            },
+          ],
+          preview: {
+            select: {
+              title: "question",
+              subtitle: "answer",
+            },
+            prepare({ title, subtitle }) {
+              return {
+                title: title || "Untitled Question",
+                subtitle: subtitle
+                  ? subtitle.substring(0, 60) + (subtitle.length > 60 ? "..." : "")
+                  : "",
+              };
+            },
+          },
+        },
+      ],
+    }),
+
+    // ============================================
+    // TASK 9: Metadata and Preview
     // ============================================
     defineField({
       name: "createdAt",

@@ -1,4 +1,13 @@
 import type { StructureResolver } from "sanity/structure";
+import {
+  DocumentIcon,
+  CheckmarkCircleIcon,
+  EditIcon,
+  DocumentsIcon,
+  DocumentTextIcon,
+  WrenchIcon,
+  ComponentIcon,
+} from "@sanity/icons";
 
 /**
  * Sanity Studio Structure Configuration
@@ -13,7 +22,7 @@ export const structure: StructureResolver = (S) =>
       // Current Inventory Section
       S.listItem()
         .title("Current Inventory")
-        .icon(() => "🚗")
+        .icon(DocumentIcon)
         .child(
           S.documentList()
             .title("Current Inventory")
@@ -25,7 +34,7 @@ export const structure: StructureResolver = (S) =>
       // Sold Vehicles Section
       S.listItem()
         .title("Sold Vehicles")
-        .icon(() => "✅")
+        .icon(CheckmarkCircleIcon)
         .child(
           S.documentList()
             .title("Sold Vehicles")
@@ -37,7 +46,7 @@ export const structure: StructureResolver = (S) =>
       // Draft Vehicles Section
       S.listItem()
         .title("Drafts")
-        .icon(() => "📝")
+        .icon(EditIcon)
         .child(
           S.documentList()
             .title("Draft Vehicles")
@@ -52,7 +61,7 @@ export const structure: StructureResolver = (S) =>
       // All Vehicles (unfiltered)
       S.listItem()
         .title("All Vehicles")
-        .icon(() => "📋")
+        .icon(DocumentsIcon)
         .child(
           S.documentList()
             .title("All Vehicles")
@@ -63,8 +72,29 @@ export const structure: StructureResolver = (S) =>
       // Divider
       S.divider(),
 
-      // Other document types (if any are added later)
-      ...S.documentTypeListItems().filter(
-        (listItem) => listItem.getId() !== "vehicle"
-      ),
+      // Blog Posts
+      S.listItem()
+        .title("Blog Post")
+        .icon(DocumentTextIcon)
+        .child(S.documentTypeList("post").title("Blog Posts")),
+
+      // Services
+      S.listItem()
+        .title("Service")
+        .icon(WrenchIcon)
+        .child(
+          S.documentTypeList("service")
+            .title("Services")
+            .defaultOrdering([{ field: "sortOrder", direction: "asc" }])
+        ),
+
+      // Pages
+      S.listItem()
+        .title("Page")
+        .icon(ComponentIcon)
+        .child(
+          S.documentTypeList("page")
+            .title("Pages")
+            .defaultOrdering([{ field: "pageType", direction: "asc" }])
+        ),
     ]);

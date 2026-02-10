@@ -34,7 +34,7 @@ export function BlogGrid({ posts, columns = 3 }: BlogGridProps) {
   return (
     <div
       className={cn(
-        "grid gap-6 sm:gap-8",
+        "grid gap-2",
         columns === 2
           ? "grid-cols-1 sm:grid-cols-2"
           : "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3"
@@ -63,7 +63,7 @@ function BlogCard({ post }: { post: PostListItem }) {
 
   return (
     <Link href={`/blog/${post.slug}`} className="group block">
-      <article className="h-full overflow-hidden rounded-lg border border-neutral-200 bg-white transition-all duration-300 hover:border-neutral-300 hover:shadow-lg">
+      <article className="h-full overflow-hidden rounded-lg border border-neutral-200 bg-white transition-all duration-300 hover:border-neutral-300 hover:shadow-sm">
         {/* Image */}
         <div className="relative aspect-[3/2] overflow-hidden bg-neutral-100">
           {imageUrl ? (
@@ -79,13 +79,13 @@ function BlogCard({ post }: { post: PostListItem }) {
             </div>
           )}
           {/* Category Badge */}
-          <span className="absolute left-3 top-3 rounded bg-white/90 px-2 py-1 text-xs font-medium uppercase tracking-wider text-neutral-700 backdrop-blur-sm">
+          <span className="absolute left-3 top-3 rounded-lg bg-white/90 px-2 py-1 text-xs font-medium uppercase tracking-wider text-neutral-700 backdrop-blur-sm">
             {categoryLabels[post.category]}
           </span>
         </div>
 
         {/* Content */}
-        <div className="p-5">
+        <div className="p-6">
           {/* Meta */}
           <div className="mb-2 flex items-center gap-2 text-sm text-neutral-500">
             <time dateTime={post.publishedAt}>{formattedDate}</time>
@@ -103,7 +103,7 @@ function BlogCard({ post }: { post: PostListItem }) {
           </h3>
 
           {/* Excerpt */}
-          <p className="line-clamp-3 text-sm text-neutral-600">
+          <p className="line-clamp-3 text-body-xl text-neutral-600">
             {post.excerpt}
           </p>
 

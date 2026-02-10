@@ -31,15 +31,15 @@ function ServiceCard({
     <Link
       href={service.href}
       onClick={onClose}
-      className="group flex flex-col rounded-lg border border-white/10 bg-white/5 p-4 transition-all hover:border-white/20 hover:bg-white/10"
+      className="group flex flex-col rounded-lg border border-white/10 bg-white/5 p-6 transition-all hover:border-white/20 hover:bg-white/10"
     >
-      <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-lg bg-blue-500/20 text-blue-400">
-        <Icon className="h-5 w-5" />
+      <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-blue-500/20 text-blue-400">
+        <Icon className="h-6 w-6" />
       </div>
-      <h3 className="mb-1 text-sm font-semibold text-white group-hover:text-blue-400">
+      <h3 className="mb-2 text-base font-semibold text-white group-hover:text-blue-400">
         {service.title}
       </h3>
-      <p className="text-xs leading-relaxed text-white/60">
+      <p className="text-sm leading-relaxed text-white/60">
         {service.description}
       </p>
     </Link>
@@ -93,7 +93,7 @@ export function ServicesMegaMenu({ isOpen, onClose }: ServicesMegaMenuProps) {
       )}
     >
       {/* Full-width background */}
-      <div className="w-full border-y border-white/10 bg-[#0a0a0a] shadow-2xl">
+      <div className="w-full border-y border-white/10 bg-[#0a0c10] shadow-2xl">
         {/* Content container - aligned with header */}
         <div className="mx-auto max-w-[var(--container-max)] px-6">
           <div className="flex py-6">
@@ -124,7 +124,7 @@ export function ServicesMegaMenu({ isOpen, onClose }: ServicesMegaMenuProps) {
 
             {/* Right section: Service cards in a grid */}
             <div className="flex-1 pl-8">
-              <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
+              <div className="grid grid-cols-2 gap-2 lg:grid-cols-4">
                 {SERVICES_MENU.services.map((service) => (
                   <ServiceCard
                     key={service.href}

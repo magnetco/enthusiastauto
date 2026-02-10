@@ -50,14 +50,99 @@ interface ServiceFeatureCardProps {
   section: ServiceSection;
   index: number;
   variant?: "default" | "dark";
+  layout?: "grid" | "horizontal";
+  image?: string;
 }
 
 export function ServiceFeatureCard({
   section,
   index,
   variant = "default",
+  layout = "grid",
+  image,
 }: ServiceFeatureCardProps) {
   const icon = iconMap[section.title] || <Sparkles className="h-6 w-6" />;
+
+  if (layout === "horizontal" && image) {
+    return (
+      <div
+        className={cn(
+          "group relative flex overflow-hidden rounded-xl border transition-all duration-300 hover:shadow-lg",
+          variant === "dark"
+            ? "border-white/10 bg-white/5 hover:border-white/20 hover:bg-white/[0.08]"
+            : "border-neutral-200 bg-white hover:border-neutral-300"
+        )}
+      >
+        {/* Image - 2/3 width */}
+        <div className="relative w-2/3 overflow-hidden">
+          <img
+            src={image}
+            alt={section.title}
+            className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+          />
+          {/* Gradient overlay */}
+          <div className="absolute inset-0 bg-gradient-to-r from-black/20 to-transparent" />
+          {/* Number overlay on image */}
+          <span
+            className={cn(
+              "absolute bottom-4 left-4 font-headline text-6xl font-bold text-white/20"
+            )}
+          >
+            {String(index + 1).padStart(2, "0")}
+          </span>
+        </div>
+
+        {/* Content - 1/3 width */}
+        <div className="relative w-1/3 p-6">
+          {/* Subtle gradient accent on hover */}
+          <div
+            className={cn(
+              "absolute inset-0 bg-gradient-to-br opacity-0 transition-opacity duration-300 group-hover:opacity-100",
+              variant === "dark"
+                ? "from-blue-500/5 to-transparent"
+                : "from-blue-50 to-transparent"
+            )}
+          />
+
+          <div className="relative z-10 flex h-full flex-col">
+            {/* Icon */}
+            <div className="mb-4">
+              <div
+                className={cn(
+                  "flex h-12 w-12 items-center justify-center rounded-lg transition-colors",
+                  variant === "dark"
+                    ? "bg-blue-500/20 text-blue-400"
+                    : "bg-blue-50 text-blue-600"
+                )}
+              >
+                {icon}
+              </div>
+            </div>
+
+            {/* Title */}
+            <h3
+              className={cn(
+                "mb-3 text-lg font-bold",
+                variant === "dark" ? "text-white" : "text-neutral-900"
+              )}
+            >
+              {section.title}
+            </h3>
+
+            {/* Content */}
+            <p
+              className={cn(
+                "text-sm leading-relaxed",
+                variant === "dark" ? "text-white/70" : "text-neutral-600"
+              )}
+            >
+              {section.content}
+            </p>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div
@@ -128,20 +213,32 @@ export function ServiceFeatureCard({
 interface ServiceFeatureGridProps {
   sections: ServiceSection[];
   variant?: "default" | "dark";
+  layout?: "grid" | "horizontal";
+  images?: string[];
 }
 
 export function ServiceFeatureGrid({
   sections,
   variant = "default",
+  layout = "grid",
+  images,
 }: ServiceFeatureGridProps) {
   return (
-    <div className="grid gap-4 sm:grid-cols-2 lg:gap-6">
+    <div
+      className={cn(
+        layout === "horizontal"
+          ? "flex flex-col gap-6"
+          : "grid gap-4 sm:grid-cols-2 lg:gap-6"
+      )}
+    >
       {sections.map((section, index) => (
         <ServiceFeatureCard
           key={section.title}
           section={section}
           index={index}
           variant={variant}
+          layout={layout}
+          image={images?.[index]}
         />
       ))}
     </div>

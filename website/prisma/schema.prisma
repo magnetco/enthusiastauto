@@ -13,18 +13,19 @@ datasource db {
 // Ref: https://authjs.dev/getting-started/adapters/prisma
 
 model User {
-  id            String          @id @default(cuid())
-  name          String?
-  email         String          @unique
-  emailVerified DateTime?
-  password      String?         // For credentials login
-  image         String?
-  addresses     Json?           @db.JsonB
-  accounts      Account[]
-  sessions      Session[]
-  favorites     UserFavorite[]
-  createdAt     DateTime        @default(now())
-  updatedAt     DateTime        @updatedAt
+  id                String              @id @default(cuid())
+  name              String?
+  email             String              @unique
+  emailVerified     DateTime?
+  password          String?             // For credentials login
+  image             String?
+  addresses         Json?               @db.JsonB
+  accounts          Account[]
+  sessions          Session[]
+  favorites         UserFavorite[]
+  chatConversations ChatConversation[]
+  createdAt         DateTime            @default(now())
+  updatedAt         DateTime            @updatedAt
 
   @@index([email])
 }
@@ -125,4 +126,36 @@ model SellSubmission {
   @@index([status])
   @@index([createdAt])
   @@index([sellOption])
+}
+
+// Chat Conversations
+model ChatConversation {
+  id        String        @id @default(cuid())
+  userId    String?       // Nullable for guest sessions
+  sessionId String?       // For guest users (IP-based or cookie)
+  title     String?       // Auto-generated from first message
+  messages  ChatMessage[]
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+
+  user User? @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([sessionId])
+  @@index([updatedAt])
+}
+
+model ChatMessage {
+  id             String           @id @default(cuid())
+  conversationId String
+  role           String           // "user" | "assistant" | "system"
+  content        String           @db.Text
+  toolCalls      Json?            @db.JsonB // Store tool calls/results
+  metadata       Json?            @db.JsonB // Model, tokens, latency
+  createdAt      DateTime         @default(now())
+
+  conversation ChatConversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+
+  @@index([conversationId])
+  @@index([createdAt])
 }

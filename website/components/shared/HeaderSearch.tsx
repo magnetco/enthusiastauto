@@ -1,8 +1,11 @@
 "use client";
 
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
+import { Input } from "@/components/ui/input";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { useHeaderScroll } from "./StickyHeader";
+import { cn } from "@/lib/utils";
 
 /**
  * Header search bar component
@@ -11,6 +14,7 @@ import { useState } from "react";
 export function HeaderSearch() {
   const router = useRouter();
   const [searchValue, setSearchValue] = useState("");
+  const isScrolled = useHeaderScroll();
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -22,23 +26,31 @@ export function HeaderSearch() {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="relative">
-      <div className="flex h-10 w-80 items-center rounded-md border border-white/20 bg-transparent pl-4 pr-3 transition-colors focus-within:border-white/40 hover:border-white/30">
-        <input
-          type="text"
-          placeholder="Search cars or parts"
-          value={searchValue}
-          onChange={(e) => setSearchValue(e.target.value)}
-          className="flex-1 bg-transparent text-sm text-white/70 placeholder:text-white/50 focus:outline-none"
-        />
-        <button
-          type="submit"
-          className="flex h-6 w-6 items-center justify-center text-white/60 transition-colors hover:text-white"
-          aria-label="Search"
-        >
-          <MagnifyingGlassIcon className="h-4 w-4" />
-        </button>
-      </div>
+    <form onSubmit={handleSubmit} className="relative w-80">
+      <Input
+        type="text"
+        placeholder="Search cars or parts"
+        value={searchValue}
+        onChange={(e) => setSearchValue(e.target.value)}
+        className={cn(
+          "h-10 pr-10 transition-colors duration-300",
+          isScrolled
+            ? "bg-gray-100 text-gray-900 placeholder:text-gray-500 hover:bg-gray-200 focus:bg-gray-200"
+            : "bg-white/5 text-white/70 placeholder:text-white/50 hover:bg-white/10 focus:bg-white/10"
+        )}
+      />
+      <button
+        type="submit"
+        className={cn(
+          "absolute right-3 top-1/2 flex h-6 w-6 -translate-y-1/2 items-center justify-center transition-colors duration-300",
+          isScrolled
+            ? "text-gray-500 hover:text-gray-900"
+            : "text-white/60 hover:text-white"
+        )}
+        aria-label="Search"
+      >
+        <MagnifyingGlassIcon className="h-5 w-5" />
+      </button>
     </form>
   );
 }

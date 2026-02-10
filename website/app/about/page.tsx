@@ -143,14 +143,14 @@ export default function AboutPage() {
 					<div className="grid gap-12 lg:grid-cols-2 lg:gap-16">
 						{/* Story Content */}
 						<div className="space-y-6">
-							<p className="text-body-large leading-relaxed text-neutral-700">
+							<p className="text-body-xl leading-relaxed text-neutral-700">
 								What started as a small operation in a modest garage has grown
 								into one of the country's most respected sources for BMW
 								M-Series vehicles. We didn't set out to build just another
 								dealership—we set out to create a destination for those who
 								share our obsession.
 							</p>
-							<p className="text-body-base leading-relaxed text-neutral-600">
+							<p className="text-body-xl leading-relaxed text-neutral-600">
 								Our team includes certified technicians, restoration specialists,
 								and fellow enthusiasts who have spent decades behind the wheel
 								of these incredible machines. Every vehicle that passes through
@@ -178,7 +178,7 @@ export default function AboutPage() {
 										<h3 className="mt-1 text-title-3 font-semibold text-neutral-900">
 											{milestone.title}
 										</h3>
-										<p className="mt-2 text-body-base text-neutral-600">
+										<p className="mt-2 text-body-xl text-neutral-600">
 											{milestone.description}
 										</p>
 									</div>
@@ -244,7 +244,7 @@ export default function AboutPage() {
 										{value.title}
 									</h3>
 
-									<p className="text-body-base text-neutral-400">
+									<p className="text-body-xl text-neutral-400">
 										{value.description}
 									</p>
 								</div>
@@ -307,7 +307,7 @@ export default function AboutPage() {
 										{item.title}
 									</h3>
 
-									<p className="text-body-base text-neutral-600">
+									<p className="text-body-xl text-neutral-600">
 										{item.description}
 									</p>
 								</div>
@@ -369,7 +369,7 @@ export default function AboutPage() {
 							<h3 className="mb-2 text-title-3 font-semibold text-neutral-900">
 								Location
 							</h3>
-							<p className="mb-4 text-body-base text-neutral-600">
+							<p className="mb-4 text-body-xl text-neutral-600">
 								11608 Reading Rd
 								<br />
 								Cincinnati, OH 45241
@@ -378,7 +378,7 @@ export default function AboutPage() {
 								href="https://maps.google.com/?q=11608+Reading+Rd+Cincinnati+OH+45241"
 								target="_blank"
 								rel="noopener noreferrer"
-								className="inline-flex items-center gap-1 text-body-base font-medium text-primary hover:underline"
+								className="inline-flex items-center gap-1 text-body-xl font-medium text-primary hover:underline"
 							>
 								Get Directions
 								<ArrowRightIcon className="h-4 w-4" />
@@ -393,7 +393,7 @@ export default function AboutPage() {
 							<h3 className="mb-2 text-title-3 font-semibold text-neutral-900">
 								Hours
 							</h3>
-							<div className="space-y-2 text-body-base">
+							<div className="space-y-2 text-body-xl">
 								<div className="flex justify-between">
 									<span className="text-neutral-600">Monday – Friday</span>
 									<span className="font-medium text-neutral-900">8am – 5pm</span>
@@ -423,7 +423,7 @@ export default function AboutPage() {
 							</a>
 							<a
 								href="mailto:info@enthusiastauto.com"
-								className="text-body-base text-neutral-600 hover:text-primary hover:underline"
+								className="text-body-xl text-neutral-600 hover:text-primary hover:underline"
 							>
 								info@enthusiastauto.com
 							</a>
@@ -437,7 +437,7 @@ export default function AboutPage() {
 								<h3 className="text-title-2 font-semibold text-white">
 									Ready to find your next BMW?
 								</h3>
-								<p className="mt-2 text-body-large text-neutral-400">
+								<p className="mt-2 text-body-xl text-neutral-400">
 									Browse our curated collection or reach out to discuss your
 									needs.
 								</p>

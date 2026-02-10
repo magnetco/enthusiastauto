@@ -5,8 +5,11 @@ import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
 import { NavItem } from "@/lib/config/navigation";
+import { AboutMegaMenu } from "./AboutMegaMenu";
 import { InventoryMegaMenu } from "./InventoryMegaMenu";
 import { ServicesMegaMenu } from "./ServicesMegaMenu";
+import { ContactMegaMenu } from "./ContactMegaMenu";
+import { useHeaderScroll } from "./StickyHeader";
 
 interface DesktopNavProps {
   items: NavItem[];
@@ -17,22 +20,71 @@ interface DesktopNavProps {
  */
 export function DesktopNav({ items }: DesktopNavProps) {
   const pathname = usePathname();
+  const isScrolled = useHeaderScroll();
+  const [aboutOpen, setAboutOpen] = useState(false);
   const [inventoryOpen, setInventoryOpen] = useState(false);
   const [servicesOpen, setServicesOpen] = useState(false);
+  const [contactOpen, setContactOpen] = useState(false);
 
   const closeAllMenus = () => {
+    setAboutOpen(false);
     setInventoryOpen(false);
     setServicesOpen(false);
+    setContactOpen(false);
   };
 
   return (
     <nav className="flex items-center">
-      <ul className="flex items-center gap-1">
+      <ul className="flex w-full items-center justify-between">
         {items.map((item) => {
           const isActive =
             item.href === "/"
               ? pathname === item.href
               : pathname.startsWith(item.href);
+
+          if (item.hasSubmenu && item.submenuType === "about") {
+            return (
+              <li key={item.title} className="relative">
+                <button
+                  onClick={() => {
+                    closeAllMenus();
+                    setAboutOpen(!aboutOpen);
+                  }}
+                  onMouseEnter={() => {
+                    closeAllMenus();
+                    setAboutOpen(true);
+                  }}
+                  className={cn(
+                    "font-headline px-4 py-2 text-[11px] font-semibold transition-colors duration-200",
+                    isScrolled
+                      ? isActive || aboutOpen
+                        ? "text-gray-900"
+                        : "text-gray-600 hover:text-gray-900"
+                      : isActive || aboutOpen
+                      ? "text-white"
+                      : "text-white/70 hover:text-white"
+                  )}
+                >
+                  <span
+                    className={cn(
+                      "border-b-2 pb-1 transition-colors duration-200",
+                      isActive || aboutOpen
+                        ? "border-blue-500"
+                        : "border-transparent"
+                    )}
+                  >
+                    {item.title}
+                  </span>
+                </button>
+
+                {/* About Mega Menu */}
+                <AboutMegaMenu
+                  isOpen={aboutOpen}
+                  onClose={() => setAboutOpen(false)}
+                />
+              </li>
+            );
+          }
 
           if (item.hasSubmenu && item.submenuType === "inventory") {
             return (
@@ -47,15 +99,19 @@ export function DesktopNav({ items }: DesktopNavProps) {
                     setInventoryOpen(true);
                   }}
                   className={cn(
-                    "px-4 py-2 text-sm font-medium transition-colors duration-200",
-                    isActive || inventoryOpen
+                    "font-headline px-4 py-2 text-[11px] font-semibold transition-colors duration-200",
+                    isScrolled
+                      ? isActive || inventoryOpen
+                        ? "text-gray-900"
+                        : "text-gray-600 hover:text-gray-900"
+                      : isActive || inventoryOpen
                       ? "text-white"
                       : "text-white/70 hover:text-white"
                   )}
                 >
                   <span
                     className={cn(
-                      "border-b-2 pb-1",
+                      "border-b-2 pb-1 transition-colors duration-200",
                       isActive || inventoryOpen
                         ? "border-blue-500"
                         : "border-transparent"
@@ -87,15 +143,19 @@ export function DesktopNav({ items }: DesktopNavProps) {
                     setServicesOpen(true);
                   }}
                   className={cn(
-                    "px-4 py-2 text-sm font-medium transition-colors duration-200",
-                    isActive || servicesOpen
+                    "font-headline px-4 py-2 text-[11px] font-semibold transition-colors duration-200",
+                    isScrolled
+                      ? isActive || servicesOpen
+                        ? "text-gray-900"
+                        : "text-gray-600 hover:text-gray-900"
+                      : isActive || servicesOpen
                       ? "text-white"
                       : "text-white/70 hover:text-white"
                   )}
                 >
                   <span
                     className={cn(
-                      "border-b-2 pb-1",
+                      "border-b-2 pb-1 transition-colors duration-200",
                       isActive || servicesOpen
                         ? "border-blue-500"
                         : "border-transparent"
@@ -114,14 +174,64 @@ export function DesktopNav({ items }: DesktopNavProps) {
             );
           }
 
+          if (item.hasSubmenu && item.submenuType === "contact") {
+            return (
+              <li key={item.title} className="relative">
+                <button
+                  onClick={() => {
+                    closeAllMenus();
+                    setContactOpen(!contactOpen);
+                  }}
+                  onMouseEnter={() => {
+                    closeAllMenus();
+                    setContactOpen(true);
+                  }}
+                  className={cn(
+                    "font-headline px-4 py-2 text-[11px] font-semibold transition-colors duration-200",
+                    isScrolled
+                      ? isActive || contactOpen
+                        ? "text-gray-900"
+                        : "text-gray-600 hover:text-gray-900"
+                      : isActive || contactOpen
+                      ? "text-white"
+                      : "text-white/70 hover:text-white"
+                  )}
+                >
+                  <span
+                    className={cn(
+                      "border-b-2 pb-1 transition-colors duration-200",
+                      isActive || contactOpen
+                        ? "border-blue-500"
+                        : "border-transparent"
+                    )}
+                  >
+                    {item.title}
+                  </span>
+                </button>
+
+                {/* Contact Mega Menu */}
+                <ContactMegaMenu
+                  isOpen={contactOpen}
+                  onClose={() => setContactOpen(false)}
+                />
+              </li>
+            );
+          }
+
           return (
             <li key={item.title}>
               <Link
                 href={item.href}
                 prefetch={true}
                 className={cn(
-                  "px-4 py-2 text-sm font-medium transition-colors duration-200",
-                  isActive ? "text-white" : "text-white/70 hover:text-white"
+                  "font-headline px-4 py-2 text-[11px] font-semibold transition-colors duration-200",
+                  isScrolled
+                    ? isActive
+                      ? "text-gray-900"
+                      : "text-gray-600 hover:text-gray-900"
+                    : isActive
+                    ? "text-white"
+                    : "text-white/70 hover:text-white"
                 )}
               >
                 {item.title}
