@@ -121,7 +121,7 @@ export function ServiceCards() {
                 "group relative flex cursor-pointer flex-col transition-all duration-200",
                 isSelected
                   ? "border-primary bg-primary/[0.03] ring-2 ring-primary/20"
-                  : "hover:border-neutral-300 hover:shadow-md"
+                  : "hover:border-border hover:shadow-md"
               )}
             >
               {/* Selection indicator */}
@@ -129,8 +129,8 @@ export function ServiceCards() {
                 className={cn(
                   "absolute right-3 top-3 flex h-6 w-6 items-center justify-center rounded-full border-2 transition-all",
                   isSelected
-                    ? "border-primary bg-primary text-white"
-                    : "border-neutral-300 bg-white group-hover:border-neutral-400"
+                    ? "border-primary bg-primary text-primary-foreground"
+                    : "border-border bg-background group-hover:border-muted-foreground"
                 )}
               >
                 {isSelected && <Check className="h-3.5 w-3.5" strokeWidth={3} />}
@@ -143,7 +143,7 @@ export function ServiceCards() {
                       "rounded-lg p-2.5 transition-colors",
                       isSelected
                         ? "bg-primary/15 text-primary"
-                        : "bg-neutral-100 text-neutral-600 group-hover:bg-neutral-200"
+                        : "bg-muted text-muted-foreground group-hover:bg-muted/80"
                     )}
                   >
                     {service.icon}
@@ -172,11 +172,11 @@ export function ServiceCards() {
                   </h4>
                   <ul className="space-y-1.5">
                     {service.features.slice(0, 4).map((feature, index) => (
-                      <li key={index} className="flex items-start gap-2 text-sm text-neutral-600">
+                      <li key={index} className="flex items-start gap-2 text-sm text-muted-foreground">
                         <span
                           className={cn(
                             "mt-0.5 text-xs",
-                            isSelected ? "text-primary" : "text-neutral-400"
+                            isSelected ? "text-primary" : "text-muted-foreground"
                           )}
                         >
                           ✓
@@ -194,7 +194,7 @@ export function ServiceCards() {
                 <div
                   className={cn(
                     "rounded-md p-2.5 text-xs",
-                    isSelected ? "bg-primary/10" : "bg-neutral-50"
+                    isSelected ? "bg-primary/10" : "bg-muted"
                   )}
                 >
                   <p className="font-medium text-muted-foreground">{service.ideal}</p>
@@ -209,7 +209,7 @@ export function ServiceCards() {
       {selectedServices.length > 0 && (
         <div className="flex flex-col items-center gap-4 rounded-lg border border-primary/20 bg-primary/[0.03] p-4 sm:flex-row sm:justify-between">
           <div className="flex flex-wrap items-center gap-2 text-sm">
-            <span className="font-medium text-neutral-700">Selected:</span>
+            <span className="font-medium text-foreground">Selected:</span>
             {selectedServices.map((serviceId) => {
               const service = services.find((s) => s.id === serviceId);
               return (

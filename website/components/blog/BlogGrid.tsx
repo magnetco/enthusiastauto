@@ -63,9 +63,9 @@ function BlogCard({ post }: { post: PostListItem }) {
 
   return (
     <Link href={`/blog/${post.slug}`} className="group block">
-      <article className="h-full overflow-hidden rounded-lg border border-neutral-200 bg-white transition-all duration-300 hover:border-neutral-300 hover:shadow-lg">
+      <article className="h-full overflow-hidden rounded-lg border border-border bg-background transition-all duration-300 hover:border-muted-foreground hover:shadow-lg">
         {/* Image */}
-        <div className="relative aspect-[3/2] overflow-hidden bg-neutral-100">
+        <div className="relative aspect-[3/2] overflow-hidden bg-muted">
           {imageUrl ? (
             <Image
               src={imageUrl}
@@ -74,12 +74,12 @@ function BlogCard({ post }: { post: PostListItem }) {
               className="object-cover transition-transform duration-500 group-hover:scale-105"
             />
           ) : (
-            <div className="absolute inset-0 flex items-center justify-center bg-neutral-200">
-              <span className="text-sm text-neutral-400">No image</span>
+            <div className="absolute inset-0 flex items-center justify-center bg-muted">
+              <span className="text-sm text-muted-foreground">No image</span>
             </div>
           )}
           {/* Category Badge */}
-          <span className="absolute left-3 top-3 rounded bg-white/90 px-2 py-1 text-xs font-medium uppercase tracking-wider text-neutral-700 backdrop-blur-sm">
+          <span className="absolute left-3 top-3 rounded bg-background/90 px-2 py-1 text-xs font-medium uppercase tracking-wider text-foreground backdrop-blur-sm">
             {categoryLabels[post.category]}
           </span>
         </div>
@@ -87,28 +87,28 @@ function BlogCard({ post }: { post: PostListItem }) {
         {/* Content */}
         <div className="p-5">
           {/* Meta */}
-          <div className="mb-2 flex items-center gap-2 text-sm text-neutral-500">
+          <div className="mb-2 flex items-center gap-2 text-sm text-muted-foreground">
             <time dateTime={post.publishedAt}>{formattedDate}</time>
             {post.location && (
               <>
-                <span className="text-neutral-300">•</span>
+                <span className="text-muted-foreground/50">•</span>
                 <span>{post.location}</span>
               </>
             )}
           </div>
 
           {/* Title */}
-          <h3 className="mb-2 line-clamp-2 text-lg font-semibold text-neutral-900 transition-colors group-hover:text-blue-600">
+          <h3 className="mb-2 line-clamp-2 text-lg font-semibold text-foreground transition-colors group-hover:text-primary">
             {post.title}
           </h3>
 
           {/* Excerpt */}
-          <p className="line-clamp-3 text-sm text-neutral-600">
+          <p className="line-clamp-3 text-sm text-muted-foreground">
             {post.excerpt}
           </p>
 
           {/* Read Link */}
-          <span className="mt-4 inline-flex items-center text-sm font-medium text-blue-600">
+          <span className="mt-4 inline-flex items-center text-sm font-medium text-primary">
             Read Story
             <svg
               className="ml-1 h-4 w-4 transition-transform group-hover:translate-x-1"

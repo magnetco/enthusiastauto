@@ -60,7 +60,7 @@ export function FeaturedCarousel({ posts }: FeaturedCarouselProps) {
   return (
     <div className="relative">
       {/* Carousel Container */}
-      <div className="relative overflow-hidden rounded-xl bg-neutral-900">
+      <div className="relative overflow-hidden rounded-xl bg-card">
         <Link href={`/blog/${currentPost.slug}`} className="group block">
           {/* Image */}
           <div className="relative aspect-[16/9] sm:aspect-[21/9]">
@@ -73,7 +73,7 @@ export function FeaturedCarousel({ posts }: FeaturedCarouselProps) {
                 priority
               />
             ) : (
-              <div className="absolute inset-0 bg-neutral-800" />
+              <div className="absolute inset-0 bg-muted" />
             )}
             {/* Gradient Overlay */}
             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />

@@ -115,7 +115,7 @@ export function ServiceRequestForm() {
 
   if (isSubmitted) {
     return (
-      <Card className="mx-auto max-w-3xl border-0 bg-neutral-50">
+      <Card className="mx-auto max-w-3xl border-0 bg-muted">
         <CardContent className="py-12 text-center">
           <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-primary text-3xl text-white">
             ✓
@@ -150,7 +150,7 @@ export function ServiceRequestForm() {
   }
 
   return (
-    <Card className="mx-auto max-w-3xl border-0 bg-neutral-50">
+    <Card className="mx-auto max-w-3xl border-0 bg-muted">
       <CardContent className="p-6 sm:p-8">
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
           {/* Selected Services Display */}
@@ -183,8 +183,8 @@ export function ServiceRequestForm() {
                     className={cn(
                       "inline-flex items-center gap-1.5 rounded-full border px-4 py-2 text-sm font-medium transition-all",
                       isSelected
-                        ? "border-primary bg-primary text-white"
-                        : "border-neutral-300 bg-white text-neutral-700 hover:border-neutral-400 hover:bg-neutral-50",
+                        ? "border-primary bg-primary text-primary-foreground"
+                        : "border-border bg-background text-foreground hover:border-muted-foreground hover:bg-muted",
                       needsAdvice && "cursor-not-allowed opacity-50"
                     )}
                   >

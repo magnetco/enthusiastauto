@@ -16,10 +16,10 @@ const hours = [
 export function ServiceContactInfo({ variant = "card" }: ServiceContactInfoProps) {
   if (variant === "inline") {
     return (
-      <div className="flex flex-wrap items-center justify-center gap-6 text-sm text-neutral-600">
+      <div className="flex flex-wrap items-center justify-center gap-6 text-sm text-muted-foreground">
         <a
           href="tel:513-554-1269"
-          className="flex items-center gap-2 transition-colors hover:text-blue-600"
+          className="flex items-center gap-2 transition-colors hover:text-primary"
         >
           <Phone className="h-4 w-4" />
           <span>513-554-1269</span>
@@ -37,40 +37,40 @@ export function ServiceContactInfo({ variant = "card" }: ServiceContactInfoProps
   }
 
   return (
-    <div className="rounded-xl border border-neutral-200 bg-neutral-50 p-6">
-      <h3 className="mb-4 flex items-center gap-2 font-semibold text-neutral-900">
-        <Clock className="h-5 w-5 text-blue-600" />
+    <div className="rounded-xl border border-border bg-muted p-6">
+      <h3 className="mb-4 flex items-center gap-2 font-semibold text-foreground">
+        <Clock className="h-5 w-5 text-primary" />
         Service Department Hours
       </h3>
 
       <div className="mb-6 space-y-2">
         {hours.map(({ day, time }) => (
           <div key={day} className="flex justify-between text-sm">
-            <span className="text-neutral-600">{day}</span>
-            <span className={time === "Closed" ? "text-neutral-400" : "font-medium text-neutral-900"}>
+            <span className="text-muted-foreground">{day}</span>
+            <span className={time === "Closed" ? "text-muted-foreground" : "font-medium text-foreground"}>
               {time}
             </span>
           </div>
         ))}
       </div>
 
-      <div className="space-y-3 border-t border-neutral-200 pt-4">
+      <div className="space-y-3 border-t border-border pt-4">
         <a
           href="tel:513-554-1269"
-          className="flex items-center gap-3 text-lg font-bold text-blue-600 transition-colors hover:text-blue-700"
+          className="flex items-center gap-3 text-lg font-bold text-primary transition-colors hover:text-primary/90"
         >
-          <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-blue-100">
+          <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10">
             <Phone className="h-5 w-5" />
           </div>
           513-554-1269
         </a>
 
-        <div className="flex items-start gap-3 text-sm text-neutral-600">
-          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-neutral-100">
-            <MapPin className="h-5 w-5 text-neutral-500" />
+        <div className="flex items-start gap-3 text-sm text-muted-foreground">
+          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-muted">
+            <MapPin className="h-5 w-5 text-muted-foreground" />
           </div>
           <div>
-            <p className="font-medium text-neutral-900">Enthusiast Auto Group</p>
+            <p className="font-medium text-foreground">Enthusiast Auto Group</p>
             <p>11608 Reading Rd</p>
             <p>Cincinnati, OH 45241</p>
           </div>

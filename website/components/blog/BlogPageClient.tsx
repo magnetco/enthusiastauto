@@ -55,7 +55,7 @@ export function BlogPageClient({
         {/* Load More - could be implemented with pagination */}
         {filteredPosts.length > 9 && (
           <div className="mt-12 flex justify-center">
-            <button className="rounded-full border border-neutral-300 px-8 py-3 text-sm font-medium text-neutral-700 transition-colors hover:bg-neutral-50">
+            <button className="rounded-full border border-border px-8 py-3 text-sm font-medium text-foreground transition-colors hover:bg-muted">
               View More Stories
             </button>
           </div>
