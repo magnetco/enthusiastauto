@@ -9,9 +9,9 @@ interface PartsEmptyStateProps {
 
 export function PartsEmptyState({ hasActiveFilters }: PartsEmptyStateProps) {
   return (
-    <div className="flex min-h-[400px] flex-col items-center justify-center rounded-2xl border border-dashed border-gray-300 bg-gray-50/50 px-6 py-12 text-center">
+    <div className="flex min-h-[400px] flex-col items-center justify-center rounded-2xl border border-dashed border-border bg-muted/50 px-6 py-12 text-center">
       <svg
-        className="mb-4 h-16 w-16 text-gray-300"
+        className="mb-4 h-16 w-16 text-muted-foreground"
         fill="none"
         stroke="currentColor"
         viewBox="0 0 24 24"
@@ -24,10 +24,10 @@ export function PartsEmptyState({ hasActiveFilters }: PartsEmptyStateProps) {
           d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"
         />
       </svg>
-      <h3 className="mb-2 text-lg font-semibold text-gray-900">
+      <h3 className="mb-2 text-lg font-semibold text-foreground">
         No parts found
       </h3>
-      <p className="mb-6 max-w-sm text-sm text-gray-600">
+      <p className="mb-6 max-w-sm text-sm text-muted-foreground">
         {hasActiveFilters
           ? "No parts match your current filters. Try adjusting your search criteria."
           : "Check back soon for quality BMW parts and accessories."}

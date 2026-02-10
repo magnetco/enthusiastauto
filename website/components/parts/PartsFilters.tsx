@@ -133,7 +133,7 @@ export function PartsFilters({ products }: PartsFiltersProps) {
           {searchQuery && (
             <Badge
               variant="secondary"
-              className="cursor-pointer hover:bg-gray-300"
+              className="cursor-pointer hover:bg-muted"
               onClick={() => updateFilters({ q: null })}
             >
               &quot;{searchQuery}&quot;
@@ -144,7 +144,7 @@ export function PartsFilters({ products }: PartsFiltersProps) {
             <Badge
               key={vendor}
               variant="secondary"
-              className="cursor-pointer hover:bg-gray-300"
+              className="cursor-pointer hover:bg-muted"
               onClick={() => toggleVendor(vendor)}
             >
               {vendor}
@@ -155,7 +155,7 @@ export function PartsFilters({ products }: PartsFiltersProps) {
             <Badge
               key={category}
               variant="secondary"
-              className="cursor-pointer hover:bg-gray-300"
+              className="cursor-pointer hover:bg-muted"
               onClick={() => toggleCategory(category)}
             >
               {category}
@@ -165,7 +165,7 @@ export function PartsFilters({ products }: PartsFiltersProps) {
           {priceMin && (
             <Badge
               variant="secondary"
-              className="cursor-pointer hover:bg-gray-300"
+              className="cursor-pointer hover:bg-muted"
               onClick={() => updateFilters({ priceMin: null })}
             >
               Min ${parseInt(priceMin).toLocaleString()}
@@ -175,7 +175,7 @@ export function PartsFilters({ products }: PartsFiltersProps) {
           {priceMax && (
             <Badge
               variant="secondary"
-              className="cursor-pointer hover:bg-gray-300"
+              className="cursor-pointer hover:bg-muted"
               onClick={() => updateFilters({ priceMax: null })}
             >
               Max ${parseInt(priceMax).toLocaleString()}
@@ -295,7 +295,7 @@ export function PartsFilters({ products }: PartsFiltersProps) {
       {/* Mobile Filter Button */}
       <button
         onClick={() => setIsDrawerOpen(true)}
-        className="flex items-center gap-2 rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm font-medium text-gray-900 shadow-sm transition-colors hover:bg-gray-50 md:hidden"
+        className="flex items-center gap-2 rounded-lg border border-border bg-background px-4 py-2.5 text-sm font-medium text-foreground shadow-sm transition-colors hover:bg-muted md:hidden"
         aria-label="Open filters"
       >
         <AdjustmentsHorizontalIcon className="h-5 w-5" aria-hidden="true" />
@@ -324,15 +324,15 @@ export function PartsFilters({ products }: PartsFiltersProps) {
         {/* Full-screen container */}
         <div className="fixed inset-0 flex items-end">
           {/* Slide-in panel */}
-          <DialogPanel className="flex w-full max-h-[85vh] flex-col overflow-hidden rounded-t-2xl bg-white shadow-xl transition-all duration-300 ease-out data-[closed]:translate-y-full">
+          <DialogPanel className="flex w-full max-h-[85vh] flex-col overflow-hidden rounded-t-2xl bg-background shadow-xl transition-all duration-300 ease-out data-[closed]:translate-y-full">
             {/* Header */}
-            <div className="sticky top-0 flex items-center justify-between border-b border-gray-200 bg-white px-4 py-4">
-              <DialogTitle className="text-lg font-semibold text-gray-900">
+            <div className="sticky top-0 flex items-center justify-between border-b border-border bg-background px-4 py-4">
+              <DialogTitle className="text-lg font-semibold text-foreground">
                 Filters
               </DialogTitle>
               <button
                 onClick={() => setIsDrawerOpen(false)}
-                className="flex h-11 w-11 items-center justify-center rounded-full p-2 text-gray-500 transition-colors hover:bg-gray-100 hover:text-gray-900"
+                className="flex h-11 w-11 items-center justify-center rounded-full p-2 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
                 aria-label="Close filters"
               >
                 <XMarkIcon className="h-6 w-6" aria-hidden="true" />
@@ -345,7 +345,7 @@ export function PartsFilters({ products }: PartsFiltersProps) {
             </div>
 
             {/* Bottom Button */}
-            <div className="sticky bottom-0 border-t border-gray-200 bg-white px-4 py-4">
+            <div className="sticky bottom-0 border-t border-border bg-background px-4 py-4">
               <Button
                 onClick={() => setIsDrawerOpen(false)}
                 className="w-full"

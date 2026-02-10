@@ -108,7 +108,7 @@ export function AboutSection() {
 
           {/* Right: Description + CTA */}
           <div className="flex flex-col justify-end">
-            <p className="mb-8 text-body-large leading-relaxed text-neutral-400 sm:text-body-xl">
+            <p className="mb-8 text-body-large leading-relaxed text-muted-foreground sm:text-body-xl">
               Enthusiast Auto offers curated BMW vehicles for sale and premium
               parts for BMW enthusiasts. We understand the passion for the
               ultimate driving machine—because we share it.
@@ -118,7 +118,7 @@ export function AboutSection() {
                 href="/about"
                 className={cn(
                   buttonVariants({ variant: "outline", size: "lg" }),
-                  "group gap-2 border-neutral-700 bg-transparent text-white hover:border-white hover:bg-white/5"
+                  "group gap-2 border-border bg-transparent text-foreground hover:border-foreground hover:bg-foreground/5"
                 )}
               >
                 Our Story
@@ -140,7 +140,7 @@ export function AboutSection() {
           {values.map((value, index) => (
             <div
               key={value.number}
-              className="group relative rounded-xl border border-neutral-800/50 bg-gradient-to-b from-neutral-900/50 to-transparent p-6 transition-all duration-500 hover:border-neutral-700 hover:bg-neutral-900/80 sm:p-8"
+              className="group relative rounded-xl border border-border/50 bg-gradient-to-b from-card/50 to-transparent p-6 transition-all duration-500 hover:border-border hover:bg-card/80 sm:p-8"
               style={{ animationDelay: `${index * 100}ms` }}
             >
               {/* Large Background Number */}
@@ -158,7 +158,7 @@ export function AboutSection() {
                 <h3 className="mb-3 text-title-3 font-semibold text-white">
                   {value.title}
                 </h3>
-                <p className="text-body-base leading-relaxed text-neutral-400">
+                <p className="text-body-base leading-relaxed text-muted-foreground">
                   {value.description}
                 </p>
               </div>
@@ -170,7 +170,7 @@ export function AboutSection() {
         </div>
 
         {/* Stats Row */}
-        <div className="mt-16 grid grid-cols-2 gap-8 border-t border-neutral-800/50 pt-16 sm:grid-cols-4 lg:mt-20 lg:pt-20">
+        <div className="mt-16 grid grid-cols-2 gap-8 border-t border-border/50 pt-16 sm:grid-cols-4 lg:mt-20 lg:pt-20">
           {[
             { value: "500+", label: "Vehicles Sold" },
             { value: "10K+", label: "Parts Shipped" },
@@ -181,7 +181,7 @@ export function AboutSection() {
               <div className="mb-2 font-headline text-[1.75rem] text-white sm:text-[2rem] lg:text-[2.5rem]">
                 {stat.value}
               </div>
-              <div className="text-body-small text-neutral-500">
+              <div className="text-body-small text-muted-foreground">
                 {stat.label}
               </div>
             </div>

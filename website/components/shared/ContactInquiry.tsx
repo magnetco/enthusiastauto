@@ -14,20 +14,20 @@ export function ContactInquiry({ vehicleTitle, isSold }: ContactInquiryProps) {
 
   if (isSold) {
     return (
-      <div className="rounded-lg border border-gray-800 bg-gray-900 p-6 text-center">
-        <p className="text-gray-400">This vehicle has been sold.</p>
+      <div className="rounded-lg border border-border bg-card p-6 text-center">
+        <p className="text-muted-foreground">This vehicle has been sold.</p>
       </div>
     );
   }
 
   return (
-    <div className="rounded-lg border border-gray-800 bg-gray-900 p-6">
+    <div className="rounded-lg border border-border bg-card p-6">
       <Link href={contactUrl} className="block">
         <Button className="w-full" size="lg">
           Inquire About This Vehicle
         </Button>
       </Link>
-      <p className="mt-3 text-center text-xs text-gray-400">
+      <p className="mt-3 text-center text-xs text-muted-foreground">
         Contact us to schedule a viewing or request more information
       </p>
     </div>
