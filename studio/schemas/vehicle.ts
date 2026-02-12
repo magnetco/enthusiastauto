@@ -60,6 +60,19 @@ export const vehicle = defineType({
     }),
 
     defineField({
+      name: "year",
+      title: "Year",
+      type: "number",
+      description: "Model year of the vehicle (e.g., 2003)",
+      validation: (Rule) =>
+        Rule.required()
+          .min(1970)
+          .max(new Date().getFullYear() + 1)
+          .integer()
+          .error("Year must be a valid 4-digit year"),
+    }),
+
+    defineField({
       name: "chassis",
       title: "Chassis Code",
       type: "string",
@@ -770,16 +783,17 @@ export const vehicle = defineType({
   preview: {
     select: {
       title: "listingTitle",
+      year: "year",
       chassis: "chassis",
       price: "listingPrice",
       status: "status",
       media: "signatureShot",
     },
-    prepare({ title, chassis, price, status, media }) {
+    prepare({ title, year, chassis, price, status, media }) {
       const statusLabel = status === "sold" ? "Sold" : status === "current" ? "Current" : "Unknown";
       return {
         title: title || "Untitled Vehicle",
-        subtitle: `$${price?.toLocaleString() || "0"} - ${statusLabel} - ${chassis || "N/A"}`,
+        subtitle: `${year || "N/A"} - $${price?.toLocaleString() || "0"} - ${statusLabel} - ${chassis || "N/A"}`,
         media: media,
       };
     },

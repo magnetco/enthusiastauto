@@ -1,10 +1,9 @@
-import { useState, useEffect, useCallback, useRef } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { RefreshCw, List, Columns, Mail, Phone, Car } from '../components/Icons'
 import { DataTable } from '../components/DataTable'
 import { KanbanBoard } from '../components/KanbanBoard'
 import { fetchData, updateField, deleteRecord } from '../lib/api'
-import { fadeIn } from '../lib/animations'
 
 type ViewMode = 'table' | 'kanban'
 
@@ -126,7 +125,6 @@ export function SellSubmissionsRoute() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [viewMode, setViewMode] = useState<ViewMode>('table')
-  const contentRef = useRef<HTMLDivElement>(null)
 
   // Restore view mode from location state if available
   useEffect(() => {
@@ -157,12 +155,6 @@ export function SellSubmissionsRoute() {
   useEffect(() => {
     loadData()
   }, [loadData])
-
-  useEffect(() => {
-    if (!loading && contentRef.current) {
-      fadeIn(contentRef.current)
-    }
-  }, [loading])
 
   const handleUpdate = async (id: string, field: string, value: string) => {
     await updateField('/sell-submissions', id, field, value)
@@ -233,7 +225,7 @@ export function SellSubmissionsRoute() {
         </div>
       </header>
 
-      <main className="flex-1 px-6 py-8" ref={contentRef}>
+      <main className="flex-1 px-6 py-8">
         {error && (
           <div className="bg-red-500/10 border border-red-500/20 rounded-lg p-4 mb-6">
             <p className="text-red-400">{error}</p>

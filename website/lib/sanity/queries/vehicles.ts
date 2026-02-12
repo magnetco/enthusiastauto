@@ -8,6 +8,7 @@ export interface VehicleListItem {
   _id: string;
   listingTitle: string;
   slug: { current: string };
+  year: number;
   chassis: string;
   mileage: number;
   listingPrice?: number;
@@ -39,7 +40,7 @@ export interface VehicleFilters {
   yearMax?: number;
   priceMin?: number;
   priceMax?: number;
-  status?: "current" | "sold" | "all";
+  currentOnly?: boolean;
 }
 
 /**
@@ -67,19 +68,20 @@ export async function getVehicles(
   // Build filter conditions
   const conditions: string[] = ['_type == "vehicle"'];
 
+  // Always require at least one image (signatureShot or soldShot)
+  conditions.push(`(defined(signatureShot) || defined(soldShot))`);
+
   if (filters?.chassis && filters.chassis.length > 0) {
     conditions.push(`chassis in $chassis`);
   }
 
-  // Note: Year filtering commented out until we add year field to schema
-  // For now, year is part of listingTitle
-  // if (filters?.yearMin !== undefined) {
-  //   conditions.push(`year >= $yearMin`);
-  // }
+  if (filters?.yearMin !== undefined) {
+    conditions.push(`year >= $yearMin`);
+  }
 
-  // if (filters?.yearMax !== undefined) {
-  //   conditions.push(`year <= $yearMax`);
-  // }
+  if (filters?.yearMax !== undefined) {
+    conditions.push(`year <= $yearMax`);
+  }
 
   if (filters?.priceMin !== undefined) {
     conditions.push(`listingPrice >= $priceMin`);
@@ -89,13 +91,10 @@ export async function getVehicles(
     conditions.push(`listingPrice <= $priceMax`);
   }
 
-  if (filters?.status && filters.status !== "all") {
-    if (filters.status === "current") {
-      // Treat null status as "current" (not sold)
-      conditions.push(`(status == "current" || !defined(status) || status == null)`);
-    } else {
-      conditions.push(`status == $status`);
-    }
+  // Handle currentOnly filter (default: true - show only current inventory)
+  // When currentOnly is true or undefined, exclude sold vehicles
+  if (filters?.currentOnly !== false) {
+    conditions.push(`status != "sold"`);
   }
 
   // Build sort clause
@@ -132,6 +131,7 @@ export async function getVehicles(
       _id,
       listingTitle,
       slug,
+      year,
       chassis,
       mileage,
       listingPrice,
@@ -167,9 +167,6 @@ export async function getVehicles(
   if (filters?.yearMax !== undefined) params.yearMax = filters.yearMax;
   if (filters?.priceMin !== undefined) params.priceMin = filters.priceMin;
   if (filters?.priceMax !== undefined) params.priceMax = filters.priceMax;
-  if (filters?.status && filters.status !== "all") {
-    params.status = filters.status;
-  }
 
   try {
     const vehicles = await client.fetch<VehicleListItem[]>(query, params);
@@ -190,6 +187,7 @@ export interface VehicleDetail {
   slug: { current: string };
   stockNumber: string;
   vin?: string;
+  year: number;
   chassis: string;
   mileage: number;
   bodyStyle: string;
@@ -255,6 +253,7 @@ export const vehicleDetailQuery = `*[_type == "vehicle" && slug.current == $slug
   slug,
   stockNumber,
   vin,
+  year,
   chassis,
   mileage,
   bodyStyle,
@@ -427,6 +426,7 @@ export async function getFeaturedVehicles(
       _id,
       listingTitle,
       slug,
+      year,
       chassis,
       mileage,
       listingPrice,
@@ -465,6 +465,7 @@ export async function getSimilarVehicles(
       _id,
       listingTitle,
       slug,
+      year,
       chassis,
       mileage,
       listingPrice,
@@ -501,4 +502,160 @@ export async function getGlobalFAQs(): Promise<
   // TODO: Create a global FAQ schema in Sanity
   // For now, return empty array
   return [];
+}
+
+/**
+ * Year distribution data for heatmap visualization
+ */
+export interface YearDistribution {
+  year: number;
+  count: number;
+  percentage: number;
+}
+
+/**
+ * Fetches year distribution for all vehicles (or filtered subset)
+ * Used for heatmap visualization in year range slider
+ * @param filters - Optional filter parameters (excluding year filters)
+ * @returns Array of year distribution data
+ */
+export async function getYearDistribution(
+  filters?: Omit<VehicleFilters, "yearMin" | "yearMax">,
+): Promise<YearDistribution[]> {
+  // Build filter conditions (excluding year filters)
+  const conditions: string[] = ['_type == "vehicle"', "defined(year)"];
+
+  if (filters?.chassis && filters.chassis.length > 0) {
+    conditions.push(`chassis in $chassis`);
+  }
+
+  if (filters?.priceMin !== undefined) {
+    conditions.push(`listingPrice >= $priceMin`);
+  }
+
+  if (filters?.priceMax !== undefined) {
+    conditions.push(`listingPrice <= $priceMax`);
+  }
+
+  // Handle currentOnly filter (default: true - show only current inventory)
+  if (filters?.currentOnly !== false) {
+    conditions.push(`status != "sold"`);
+  }
+
+  const whereClause = conditions.join(" && ");
+
+  // Query to get year distribution
+  const query = `
+    *[${whereClause}] {
+      year
+    } | order(year asc)
+  `;
+
+  // Build params object
+  const params: Record<string, unknown> = {};
+  if (filters?.chassis) params.chassis = filters.chassis;
+  if (filters?.priceMin !== undefined) params.priceMin = filters.priceMin;
+  if (filters?.priceMax !== undefined) params.priceMax = filters.priceMax;
+
+  try {
+    const vehicles = await client.fetch<Array<{ year: number }>>(query, params);
+
+    // Count occurrences of each year
+    const yearCounts = new Map<number, number>();
+    vehicles.forEach((v) => {
+      const count = yearCounts.get(v.year) || 0;
+      yearCounts.set(v.year, count + 1);
+    });
+
+    // Find max count for percentage calculation
+    const maxCount = Math.max(...Array.from(yearCounts.values()), 1);
+
+    // Convert to array and calculate percentages
+    const distribution: YearDistribution[] = Array.from(yearCounts.entries())
+      .map(([year, count]) => ({
+        year,
+        count,
+        percentage: (count / maxCount) * 100,
+      }))
+      .sort((a, b) => a.year - b.year);
+
+    return distribution;
+  } catch (error) {
+    console.error("Error fetching year distribution:", error);
+    return [];
+  }
+}
+
+/**
+ * Price range data for slider bounds
+ */
+export interface PriceRange {
+  min: number;
+  max: number;
+}
+
+/**
+ * Fetches the price range (min/max) for all vehicles (or filtered subset)
+ * Used to set bounds for price range slider
+ * @param filters - Optional filter parameters (excluding price filters)
+ * @returns Price range object with min and max values
+ */
+export async function getPriceRange(
+  filters?: Omit<VehicleFilters, "priceMin" | "priceMax">,
+): Promise<PriceRange> {
+  // Build filter conditions (excluding price filters)
+  const conditions: string[] = [
+    '_type == "vehicle"',
+    "defined(listingPrice)",
+    "listingPrice > 0",
+  ];
+
+  if (filters?.chassis && filters.chassis.length > 0) {
+    conditions.push(`chassis in $chassis`);
+  }
+
+  if (filters?.yearMin !== undefined) {
+    conditions.push(`year >= $yearMin`);
+  }
+
+  if (filters?.yearMax !== undefined) {
+    conditions.push(`year <= $yearMax`);
+  }
+
+  // Handle currentOnly filter (default: true - show only current inventory)
+  if (filters?.currentOnly !== false) {
+    conditions.push(`status != "sold"`);
+  }
+
+  const whereClause = conditions.join(" && ");
+
+  // Query to get price range
+  const query = `
+    {
+      "min": *[${whereClause}] | order(listingPrice asc) [0].listingPrice,
+      "max": *[${whereClause}] | order(listingPrice desc) [0].listingPrice
+    }
+  `;
+
+  // Build params object
+  const params: Record<string, unknown> = {};
+  if (filters?.chassis) params.chassis = filters.chassis;
+  if (filters?.yearMin !== undefined) params.yearMin = filters.yearMin;
+  if (filters?.yearMax !== undefined) params.yearMax = filters.yearMax;
+
+  try {
+    const result = await client.fetch<{ min: number | null; max: number | null }>(
+      query,
+      params,
+    );
+
+    // Default to reasonable bounds if no vehicles found
+    return {
+      min: result.min ?? 0,
+      max: result.max ?? 200000,
+    };
+  } catch (error) {
+    console.error("Error fetching price range:", error);
+    return { min: 0, max: 200000 };
+  }
 }

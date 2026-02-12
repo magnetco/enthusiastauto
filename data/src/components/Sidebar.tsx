@@ -19,10 +19,11 @@ import {
   Truck,
   ExternalLink,
   BookOpen,
-  Settings
+  Settings,
+  Download
 } from './Icons'
 
-type TabId = 'users' | 'accounts' | 'sessions' | 'favorites' | 'service-requests' | 'sell-submissions' | 'versions' | 'vehicle-import' | 'documentation' | 'settings'
+type TabId = 'users' | 'accounts' | 'sessions' | 'favorites' | 'service-requests' | 'sell-submissions' | 'versions' | 'vehicle-import' | 'vehicle-export' | 'documentation' | 'settings'
 
 interface MenuItem {
   id: TabId | string
@@ -58,6 +59,7 @@ const menuSections: MenuSection[] = [
     label: 'Inventory',
     items: [
       { id: 'vehicle-import', label: 'Vehicle Import', icon: <Car /> },
+      { id: 'vehicle-export', label: 'Vehicle Export', icon: <Download /> },
       { id: 'versions', label: 'Version History', icon: <History /> },
     ],
   },

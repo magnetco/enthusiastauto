@@ -5,6 +5,7 @@ import { VehicleGridSkeleton } from "@/components/vehicles/VehicleCardSkeleton";
 import { VehiclesPageClient } from "@/components/vehicles/VehiclesPageClient";
 import {
 	getVehicles,
+	getPriceRange,
 	type VehicleFilters as VehicleFiltersType,
 	type VehicleSort,
 } from "@/lib/sanity/queries/vehicles";
@@ -33,7 +34,7 @@ interface SearchParams {
 	yearMax?: string;
 	priceMin?: string;
 	priceMax?: string;
-	status?: string;
+	currentOnly?: string;
 	sort?: string;
 }
 
@@ -67,13 +68,22 @@ async function VehicleResults({ searchParams }: VehiclesPageProps) {
 		yearMax: params.yearMax ? parseInt(params.yearMax) : undefined,
 		priceMin: params.priceMin ? parseInt(params.priceMin) : undefined,
 		priceMax: params.priceMax ? parseInt(params.priceMax) : undefined,
-		status: (params.status as "current" | "sold" | "all") || "all",
+		// Default to showing current inventory only (true) unless explicitly set to false
+		currentOnly: params.currentOnly !== "false",
 	};
 
 	const sort = (params.sort as VehicleSort) || "recent";
 
-	// Fetch vehicles with filters and sorting
-	const vehicles = await getVehicles(filters, sort);
+	// Fetch vehicles and price range in parallel
+	const [vehicles, priceRange] = await Promise.all([
+		getVehicles(filters, sort),
+		getPriceRange({
+			chassis: filters.chassis,
+			yearMin: filters.yearMin,
+			yearMax: filters.yearMax,
+			currentOnly: filters.currentOnly,
+		}),
+	]);
 
 	// Check if any filters are active
 	const hasActiveFilters: boolean =
@@ -81,14 +91,19 @@ async function VehicleResults({ searchParams }: VehiclesPageProps) {
 		filters.yearMin !== undefined ||
 		filters.yearMax !== undefined ||
 		filters.priceMin !== undefined ||
-		filters.priceMax !== undefined ||
-		(filters.status !== undefined && filters.status !== "all");
+		filters.priceMax !== undefined;
 
 	if (vehicles.length === 0) {
 		return <EmptyState hasActiveFilters={hasActiveFilters} />;
 	}
 
-	return <VehiclesPageClient vehicles={vehicles} vehicleCount={vehicles.length} />;
+	return (
+		<VehiclesPageClient
+			vehicles={vehicles}
+			vehicleCount={vehicles.length}
+			priceRange={priceRange}
+		/>
+	);
 }
 
 export default async function VehiclesPage({ searchParams }: VehiclesPageProps) {

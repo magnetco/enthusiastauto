@@ -257,82 +257,116 @@ export default function AboutPage() {
 				</div>
 			</section>
 
-			{/* What Sets Us Apart */}
-			<section
-				className="relative bg-white py-16 sm:py-20 lg:py-24"
-				aria-labelledby="differentiators-heading"
-			>
-				<div className="mx-auto max-w-[var(--container-max)] px-page-x">
-					<div className="mb-12 lg:mb-16">
-						<TitleBlock
-							title="What Sets Us Apart"
-							description="We're not just another dealership. Here's what makes Enthusiast Auto Group different."
-							id="differentiators-heading"
-							action={
-								<Link
-									href="/vehicles"
-									className={cn(
-										buttonVariants({ variant: "outline", size: "lg" }),
-										"gap-2 border-neutral-300 text-neutral-900 hover:bg-neutral-100"
-									)}
-								>
-									Browse Inventory
-									<ArrowRightIcon className="h-4 w-4" />
-								</Link>
-							}
-						/>
+		{/* What Sets Us Apart */}
+		<section
+			className="relative bg-white py-16 sm:py-20 lg:py-32"
+			aria-labelledby="differentiators-heading"
+		>
+			<div className="mx-auto max-w-[var(--container-max)] px-page-x">
+				{/* Section Header - Minimal */}
+				<div className="mb-16 lg:mb-24">
+					<h2
+						id="differentiators-heading"
+						className="text-title-2 font-semibold text-neutral-900 sm:text-title-1"
+					>
+						What Sets Us Apart
+					</h2>
+				</div>
+
+				{/* Staggered Column Layout */}
+				<div className="grid gap-8 lg:grid-cols-3 lg:gap-12">
+					{/* Column 1 - Image */}
+					<div className="lg:pt-16">
+						<div className="aspect-[3/4] overflow-hidden rounded-sm">
+							<img
+								src="https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?q=80&w=800&auto=format&fit=crop"
+								alt="BMW detail"
+								className="h-full w-full object-cover"
+							/>
+						</div>
 					</div>
 
-					{/* Differentiators Grid */}
-					<div className="grid gap-6 sm:grid-cols-2 lg:gap-8">
-						{differentiators.map((item) => (
-							<div
-								key={item.number}
-								className="group relative overflow-hidden rounded-lg border border-neutral-200 bg-neutral-50 p-6 transition-all duration-300 hover:border-neutral-300 hover:shadow-lg sm:p-8"
-							>
-								{/* Large Background Number */}
-								<span className="absolute -right-4 -top-8 font-mono text-[8rem] font-bold leading-none text-neutral-200 transition-colors duration-300 group-hover:text-neutral-300 sm:text-[10rem]">
-									{item.number}
-								</span>
+					{/* Column 2 - Content Items */}
+					<div className="space-y-12 lg:space-y-16">
+						<div>
+							<span className="mb-4 block font-mono text-body-small text-neutral-400">
+								01
+							</span>
+							<h3 className="mb-3 text-title-3 font-semibold text-neutral-900">
+								Curated Inventory
+							</h3>
+							<p className="text-body-base leading-relaxed text-neutral-600">
+								Every vehicle is carefully inspected and vetted. We only sell
+								the best examples.
+							</p>
+						</div>
 
-								<div className="relative z-10">
-									<div className="mb-4 flex items-center gap-3">
-										<span className="font-mono text-body-large font-bold text-primary">
-											{item.number}
-										</span>
-										<div className="h-px flex-1 bg-neutral-200" />
-									</div>
+						<div>
+							<span className="mb-4 block font-mono text-body-small text-neutral-400">
+								02
+							</span>
+							<h3 className="mb-3 text-title-3 font-semibold text-neutral-900">
+								Full Rejuvenation
+							</h3>
+							<p className="text-body-base leading-relaxed text-neutral-600">
+								Before listing, every vehicle undergoes our comprehensive
+								rejuvenation process.
+							</p>
+						</div>
 
-									<h3 className="mb-3 text-title-3 font-semibold text-neutral-900">
-										{item.title}
-									</h3>
-
-									<p className="text-body-xl text-neutral-600">
-										{item.description}
-									</p>
-								</div>
-
-								{/* Hover accent */}
-								<div className="absolute bottom-0 left-0 h-1 w-0 bg-gradient-to-r from-[#E32526] via-[#0066B1] to-[#6EB5E0] transition-all duration-300 group-hover:w-full" />
+						<div className="lg:pt-8">
+							<div className="aspect-[4/3] overflow-hidden rounded-sm">
+								<img
+									src="https://images.unsplash.com/photo-1503376780353-7e6692767b70?q=80&w=800&auto=format&fit=crop"
+									alt="BMW workshop"
+									className="h-full w-full object-cover"
+								/>
 							</div>
-						))}
+						</div>
 					</div>
 
-					{/* Mobile CTA */}
-					<div className="mt-10 flex justify-center sm:hidden">
-						<Link
-							href="/vehicles"
-							className={cn(
-								buttonVariants({ variant: "outline", size: "lg" }),
-								"w-full gap-2 border-neutral-300 text-neutral-900 hover:bg-neutral-100"
-							)}
-						>
-							Browse Inventory
-							<ArrowRightIcon className="h-4 w-4" />
-						</Link>
+					{/* Column 3 - Content Items */}
+					<div className="space-y-12 lg:space-y-16 lg:pt-32">
+						<div>
+							<span className="mb-4 block font-mono text-body-small text-neutral-400">
+								03
+							</span>
+							<h3 className="mb-3 text-title-3 font-semibold text-neutral-900">
+								Expert Knowledge
+							</h3>
+							<p className="text-body-base leading-relaxed text-neutral-600">
+								Decades of M-Series experience. We're here to share expertise,
+								not just sell cars.
+							</p>
+						</div>
+
+						<div>
+							<span className="mb-4 block font-mono text-body-small text-neutral-400">
+								04
+							</span>
+							<h3 className="mb-3 text-title-3 font-semibold text-neutral-900">
+								Community Focus
+							</h3>
+							<p className="text-body-base leading-relaxed text-neutral-600">
+								Events, content, and connections that extend beyond the
+								transaction.
+							</p>
+						</div>
 					</div>
 				</div>
-			</section>
+
+				{/* CTA - Minimal */}
+				<div className="mt-16 flex justify-center lg:mt-24">
+					<Link
+						href="/vehicles"
+						className="group inline-flex items-center gap-2 text-body-base font-medium text-neutral-900 transition-colors hover:text-primary"
+					>
+						Browse Inventory
+						<ArrowRightIcon className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+					</Link>
+				</div>
+			</div>
+		</section>
 
 			{/* Visit Us */}
 			<section

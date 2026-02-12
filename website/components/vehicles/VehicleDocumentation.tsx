@@ -41,7 +41,7 @@ export function VehicleDocumentation({
   vehicleTitle,
 }: VehicleDocumentationProps) {
   const [selectedType, setSelectedType] = useState(
-    documentation.length > 0 ? documentation[0].type : DOC_TYPES[0]
+    documentation.length > 0 ? documentation[0]?.type : DOC_TYPES[0]
   );
 
   const selectedDoc = documentation.find((doc) => doc.type === selectedType);

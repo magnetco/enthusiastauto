@@ -11,6 +11,7 @@ import serviceRequestsRouter from './routes/service-requests.js'
 import sellSubmissionsRouter from './routes/sell-submissions.js'
 import versionsRouter from './routes/versions.js'
 import vehicleImportRouter from './routes/vehicle-import.js'
+import vehicleExportRouter from './routes/vehicle-export.js'
 
 const app = express()
 const PORT = 4041
@@ -27,6 +28,7 @@ app.use('/api/service-requests', serviceRequestsRouter)
 app.use('/api/sell-submissions', sellSubmissionsRouter)
 app.use('/api/versions', versionsRouter)
 app.use('/api/vehicle-import', vehicleImportRouter)
+app.use('/api/vehicle-export', vehicleExportRouter)
 
 // Health check
 app.get('/api/health', (_req, res) => {

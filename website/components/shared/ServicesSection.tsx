@@ -77,13 +77,9 @@ const services = [
 ];
 
 export function ServicesSection() {
-  const [featured, ...secondaryServices] = services;
   const [mousePosition, setMousePosition] = useState<{ x: number; y: number } | null>(null);
   const [isSectionHovered, setIsSectionHovered] = useState(false);
-  const rafRef = useRef<number>();
-  
-  // TypeScript guard - services array is always populated
-  if (!featured) return null;
+  const rafRef = useRef<number | undefined>(undefined);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLElement>) => {
     // Throttle updates using requestAnimationFrame
@@ -138,59 +134,13 @@ export function ServicesSection() {
           />
         </div>
 
-        {/* Featured Service (01) - Large Card */}
-        <div className="mb-2">
-          <Link
-            href={`/services/${featured.slug}`}
-            className="group grid gap-8 lg:grid-cols-[2fr,1fr] lg:gap-12"
-          >
-            {/* Featured Image */}
-            <div className="relative aspect-[4/3] overflow-hidden rounded-lg lg:aspect-auto lg:min-h-[400px]">
-              <Image
-                src={featured.image}
-                alt={featured.title}
-                fill
-                className="object-cover transition-transform duration-500 group-hover:scale-105"
-                sizes="(max-width: 1024px) 100vw, 66vw"
-              />
-              {/* Image pagination dots */}
-              <div className="absolute bottom-4 left-1/2 flex -translate-x-1/2 gap-2">
-                <span className="h-2 w-2 rounded-full bg-white/90" />
-                <span className="h-2 w-2 rounded-full bg-white/40" />
-                <span className="h-2 w-2 rounded-full bg-white/40" />
-              </div>
-            </div>
-
-            {/* Featured Content */}
-            <div className="flex flex-col justify-center lg:py-4">
-              <span className="mb-2 font-mono text-sm tracking-wider text-neutral-400">
-                {featured.number}
-              </span>
-              <h3 className="mb-4 font-headline text-xl uppercase tracking-wide text-neutral-900 sm:text-2xl">
-                {featured.title}
-              </h3>
-              <p className="mb-4 text-body-xl leading-relaxed text-neutral-600">
-                {featured.description}
-              </p>
-              <ul className="space-y-2">
-                {featured.features.map((feature, index) => (
-                  <li key={index} className="flex items-start gap-2 text-sm text-neutral-600">
-                    <span className="mt-0.5 text-neutral-400">•</span>
-                    <span>{feature}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </Link>
-        </div>
-
-        {/* Secondary Services (02-04) - Three Column Grid */}
-        <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
-          {secondaryServices.map((service) => (
+        {/* All Services - Four Column Grid */}
+        <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-4">
+          {services.map((service) => (
             <Link
               key={service.number}
               href={`/services/${service.slug}`}
-              className="group"
+              className="group flex flex-col"
             >
               {/* Service Image */}
               <div className="relative mb-4 aspect-[4/3] overflow-hidden rounded-lg">
@@ -199,12 +149,12 @@ export function ServicesSection() {
                   alt={service.title}
                   fill
                   className="object-cover transition-transform duration-500 group-hover:scale-105"
-                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
                 />
               </div>
 
               {/* Service Content */}
-              <div>
+              <div className="flex flex-1 flex-col">
                 <span className="mb-1 block font-mono text-sm tracking-wider text-neutral-400">
                   {service.number}
                 </span>
@@ -214,7 +164,7 @@ export function ServicesSection() {
                 <p className="mb-3 text-body-xl leading-relaxed text-neutral-600">
                   {service.description}
                 </p>
-                <ul className="space-y-1.5">
+                <ul className="mt-auto space-y-1.5">
                   {service.features.map((feature, index) => (
                     <li key={index} className="flex items-start gap-2 text-sm text-neutral-600">
                       <span className="mt-0.5 text-neutral-400">•</span>

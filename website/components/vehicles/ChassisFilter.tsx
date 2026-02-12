@@ -68,11 +68,12 @@ export function ChassisFilter({
               {/* Chassis Illustration */}
               <div className="relative h-16 w-full">
                 <Image
-                  src={`/chassis-icons/${chassis.id}.avif`}
+                  src={`/chassis-icons/${chassis.id}.${chassis.id === 'other' ? 'svg' : 'avif'}`}
                   alt={`${chassis.label} chassis`}
                   fill
                   className="object-contain transition-transform duration-200 group-hover:scale-105"
                   sizes="(max-width: 640px) 50vw, (max-width: 768px) 33vw, (max-width: 1024px) 25vw, 16vw"
+                  unoptimized
                 />
               </div>
 

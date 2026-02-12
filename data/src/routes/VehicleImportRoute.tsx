@@ -1,7 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
 import { Upload, Check, AlertCircle, Car } from '../components/Icons'
 import { fetchData, postData } from '../lib/api'
-import { fadeIn } from '../lib/animations'
 
 interface VehiclePreview {
   listingTitle: string
@@ -39,18 +38,11 @@ export function VehicleImportRoute() {
   const [importProgress, setImportProgress] = useState({ current: 0, total: 0, success: 0, failed: 0 })
   const [error, setError] = useState<string | null>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
-  const contentRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     fetchData<ImportConfig>('/vehicle-import/config')
       .then(setConfig)
       .catch((err) => setError(err.message))
-  }, [])
-
-  useEffect(() => {
-    if (contentRef.current) {
-      fadeIn(contentRef.current)
-    }
   }, [])
 
   const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -120,7 +112,7 @@ export function VehicleImportRoute() {
         </div>
       </header>
 
-      <main className="flex-1 px-6 py-8" ref={contentRef}>
+      <main className="flex-1 px-6 py-8">
         <div className="space-y-6">
           {/* Config Status */}
           {config && !config.configured && (

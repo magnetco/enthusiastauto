@@ -180,7 +180,7 @@ async function scoreRecommendations(
   // Fetch candidate items
   const [allVehicles, allProducts] = await Promise.all([
     type === 'vehicles' || type === 'all'
-      ? getVehicles({ status: 'current' }, 'recent')
+      ? getVehicles({ currentOnly: true }, 'recent')
       : Promise.resolve([]),
     type === 'parts' || type === 'all'
       ? getProducts({})

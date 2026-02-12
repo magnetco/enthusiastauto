@@ -56,7 +56,7 @@ export function PageHero({
 }: PageHeroProps) {
   const [mousePosition, setMousePosition] = useState<{ x: number; y: number } | null>(null);
   const [isHeroHovered, setIsHeroHovered] = useState(false);
-  const rafRef = useRef<number>();
+  const rafRef = useRef<number | undefined>(undefined);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLElement>) => {
     // Throttle updates using requestAnimationFrame
@@ -113,13 +113,6 @@ export function PageHero({
         )}
       >
         <div className="max-w-4xl">
-          {/* Eyebrow Text */}
-          {eyebrow && (
-            <p className="mb-4 text-body-base font-medium uppercase tracking-[0.1em] text-white/60">
-              {eyebrow}
-            </p>
-          )}
-
           {/* Main Heading */}
           {typeof title === "string" ? (
             <h1 className="font-headline mb-6 text-[2.5rem] leading-[1.05] tracking-wide text-white sm:text-[3rem] md:text-[3.5rem] lg:text-[4rem]">

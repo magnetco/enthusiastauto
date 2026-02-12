@@ -40,7 +40,7 @@ export function VehicleListItem({
   const [mousePosition, setMousePosition] = useState<{ x: number; y: number } | null>(null);
   const [isHovered, setIsHovered] = useState(false);
   const cardRef = useRef<HTMLAnchorElement>(null);
-  const rafRef = useRef<number>();
+  const rafRef = useRef<number | undefined>(undefined);
 
   // Select hero image based on status
   const heroImage = isSold ? vehicle.soldShot : vehicle.signatureShot;

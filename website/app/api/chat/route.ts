@@ -259,7 +259,7 @@ export async function POST(request: NextRequest) {
               conversationId: conversation.id,
               role: "assistant",
               content: fullResponse,
-              toolCalls: toolCalls.length > 0 ? toolCalls : null,
+              toolCalls: toolCalls.length > 0 ? toolCalls : undefined,
               metadata: {
                 model: "llama-3.3-70b-versatile",
                 timestamp: new Date().toISOString(),

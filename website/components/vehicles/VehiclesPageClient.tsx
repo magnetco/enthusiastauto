@@ -1,56 +1,50 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useViewPreference } from "@/lib/hooks/useViewPreference";
 import { useVehicleComparison } from "@/lib/hooks/useVehicleComparison";
 import { VehicleGrid } from "./VehicleGrid";
 import { ViewToggle } from "./ViewToggle";
-import { ChassisFilter } from "./ChassisFilter";
-import { VehicleFilters } from "./VehicleFilters";
+import { FilterNavbar } from "./FilterNavbar";
 import { SortDropdown } from "./SortDropdown";
 import { VehicleComparison } from "./VehicleComparison";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Label } from "@/components/ui/label";
 import type { VehicleListItem } from "@/lib/sanity/queries/vehicles";
-import { useRouter, useSearchParams } from "next/navigation";
 
 interface VehiclesPageClientProps {
   vehicles: VehicleListItem[];
   vehicleCount: number;
+  priceRange?: {
+    min: number;
+    max: number;
+  };
 }
 
 /**
  * Client-side wrapper for vehicles page
- * Manages view state, comparison, and chassis filtering
+ * Manages view state, comparison, and filtering
  */
-export function VehiclesPageClient({ vehicles, vehicleCount }: VehiclesPageClientProps) {
+export function VehiclesPageClient({ vehicles, vehicleCount, priceRange }: VehiclesPageClientProps) {
+  const router = useRouter();
+  const searchParams = useSearchParams();
   const { view, setView, isHydrated } = useViewPreference();
   const comparison = useVehicleComparison();
   const [isComparisonOpen, setIsComparisonOpen] = useState(false);
-  const router = useRouter();
-  const searchParams = useSearchParams();
 
-  // Get current chassis filter from URL
-  const currentChassis = searchParams.get("chassis")?.split(",").filter(Boolean) || [];
+  // Default to showing current inventory only (true) unless explicitly set to false
+  const showCurrentOnly = searchParams.get("currentOnly") !== "false";
 
-  // Handle chassis filter toggle
-  const handleChassisToggle = (chassis: string) => {
-    const params = new URLSearchParams(searchParams.toString());
-    const current = params.get("chassis")?.split(",").filter(Boolean) || [];
-    
-    let updated: string[];
-    if (current.includes(chassis)) {
-      // Remove chassis
-      updated = current.filter((c) => c !== chassis);
+  const toggleCurrentInventory = (checked: boolean) => {
+    const params = new URLSearchParams(searchParams);
+    if (checked) {
+      // Show current inventory only (default state, remove param)
+      params.delete("currentOnly");
     } else {
-      // Add chassis
-      updated = [...current, chassis];
+      // Show all inventory
+      params.set("currentOnly", "false");
     }
-
-    if (updated.length > 0) {
-      params.set("chassis", updated.join(","));
-    } else {
-      params.delete("chassis");
-    }
-
     router.push(`/vehicles?${params.toString()}`);
   };
 
@@ -70,55 +64,48 @@ export function VehiclesPageClient({ vehicles, vehicleCount }: VehiclesPageClien
 
   return (
     <>
-      {/* Chassis Filter - Horizontal Grid */}
+      {/* Filter Navbar - Full width collapsible panels */}
       <div className="mb-8">
-        <ChassisFilter
-          selectedChassis={currentChassis}
-          onChassisToggle={handleChassisToggle}
-        />
+        <FilterNavbar priceRange={priceRange} />
       </div>
 
-      {/* Controls Row: View Toggle and Sort */}
+      {/* Controls Row: View Toggle, Current Inventory, Count, and Sort */}
       <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        {/* Left: View Toggle */}
-        <ViewToggle currentView={view} onViewChange={setView} />
+        {/* Left: View Toggle and Current Inventory Checkbox */}
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-4">
+          <ViewToggle currentView={view} onViewChange={setView} />
+          
+          <div className="flex items-center space-x-2">
+            <Checkbox
+              id="current-inventory"
+              checked={showCurrentOnly}
+              onCheckedChange={toggleCurrentInventory}
+            />
+            <Label
+              htmlFor="current-inventory"
+              className="cursor-pointer text-sm font-medium"
+            >
+              Current Inventory
+            </Label>
+          </div>
+        </div>
+
+        {/* Center: Vehicle Count */}
+        <div className="text-sm text-muted-foreground">
+          {vehicleCount} {vehicleCount === 1 ? "vehicle" : "vehicles"} found
+        </div>
 
         {/* Right: Sort Dropdown */}
-        <div className="flex items-center gap-4">
-          {/* Mobile Filters Button */}
-          <div className="md:hidden">
-            <VehicleFilters />
-          </div>
-          <SortDropdown />
-        </div>
+        <SortDropdown />
       </div>
 
-      {/* Vehicle Count */}
-      <div className="mb-4 text-sm text-muted-foreground">
-        {vehicleCount} {vehicleCount === 1 ? "vehicle" : "vehicles"} found
-      </div>
-
-      {/* Main Layout: Conditional Sidebar + Vehicle Grid */}
-      <div className={view === "list" ? "w-full" : "gap-8 md:grid md:grid-cols-[280px_1fr] lg:gap-12"}>
-        {/* Desktop Sidebar Filters - Hidden in list view */}
-        {view !== "list" && (
-          <aside className="hidden md:block">
-            <div className="sticky top-24">
-              <VehicleFilters />
-            </div>
-          </aside>
-        )}
-
-        {/* Main Content */}
-        <main>
-          <VehicleGrid
-            vehicles={vehicles}
-            view={view}
-            onCompareToggle={(vehicle) => comparison.toggleVehicle(vehicle)}
-            comparisonIds={comparison.selectedVehicles.map((v) => v._id)}
-          />
-        </main>
-      </div>
+      {/* Vehicle Grid - Full width */}
+      <VehicleGrid
+        vehicles={vehicles}
+        view={view}
+        onCompareToggle={(vehicle) => comparison.toggleVehicle(vehicle)}
+        comparisonIds={comparison.selectedVehicles.map((v) => v._id)}
+      />
 
       {/* Comparison Bar - Sticky at bottom when vehicles selected */}
       {comparison.count > 0 && (

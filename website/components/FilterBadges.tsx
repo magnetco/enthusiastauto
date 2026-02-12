@@ -2,6 +2,7 @@
 
 import { useFilters } from "contexts/FilterContext";
 import { Badge } from "./ui/badge";
+import { Button } from "./ui/button";
 import { X } from "lucide-react";
 
 export function FilterBadges() {
@@ -117,13 +118,15 @@ export function FilterBadges() {
         filters.vehicle !== null ||
         (filters.searchTerm && filters.searchTerm.length >= 2) ||
         (filters.vendors.length > 0 && filters.categories.length > 0)) && (
-        <button
+        <Button
+          variant="link"
+          size="sm"
           onClick={clearFilters}
-          className="ml-1 text-xs font-medium text-[#529BCA] hover:underline dark:text-[#529BCA] h-7 px-1.5"
+          className="ml-1 h-7 px-1.5 text-xs"
           aria-label="Clear all filters"
         >
           Clear All
-        </button>
+        </Button>
       )}
     </div>
   );

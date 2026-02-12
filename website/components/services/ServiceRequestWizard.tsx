@@ -56,11 +56,11 @@ const serviceRequestSchema = z.object({
 type ServiceRequestFormData = z.infer<typeof serviceRequestSchema>;
 
 const STEPS = [
-  { id: 1, title: "Services", icon: Wrench, description: "Select what you need" },
-  { id: 2, title: "Contact", icon: User, description: "Your information" },
-  { id: 3, title: "Vehicle", icon: Car, description: "Tell us about your BMW" },
-  { id: 4, title: "Details", icon: FileText, description: "Describe your needs" },
-  { id: 5, title: "Review", icon: Send, description: "Confirm & submit" },
+  { id: 1, title: "Services", icon: Wrench },
+  { id: 2, title: "Contact", icon: User },
+  { id: 3, title: "Vehicle", icon: Car },
+  { id: 4, title: "Details", icon: FileText },
+  { id: 5, title: "Review", icon: Send },
 ];
 
 const SERVICE_ICONS: Record<ServiceType, React.ReactNode> = {
@@ -182,37 +182,37 @@ export function ServiceRequestWizard() {
         <div className="mx-auto max-w-2xl px-4 py-16 sm:py-24">
           <div className="text-center">
             {/* Success Icon */}
-            <div className="mx-auto mb-8 flex h-24 w-24 items-center justify-center rounded-full bg-[#005A90]">
-              <Check className="h-12 w-12 text-white" strokeWidth={3} />
+            <div className="mx-auto mb-8 flex h-16 w-16 items-center justify-center rounded-full bg-[#005A90]">
+              <Check className="h-8 w-8 text-white" strokeWidth={2.5} />
             </div>
 
             <h2 className="mb-4 font-headline text-2xl tracking-wider text-[#282a30] sm:text-3xl">
               REQUEST SUBMITTED
             </h2>
 
-            <p className="mb-8 text-lg text-[#6f6e77]">
+            <p className="mb-6 text-base leading-relaxed text-[#6f6e77]">
               Thank you for your interest in our services. A BMW Service Professional will
               contact you within 1 business day to discuss your needs and schedule an
               assessment.
             </p>
 
-            <p className="mb-2 text-sm text-[#6f6e77]">
+            <p className="mb-12 text-xs text-[#6f6e77]">
               A confirmation email has been sent to your inbox.
             </p>
 
             {/* Contact Card */}
-            <div className="my-12 rounded-xl border border-[#DFE5EA] bg-white p-8 shadow-sm">
-              <h3 className="mb-3 text-lg font-semibold text-[#282a30]">
-                Need immediate assistance?
+            <div className="my-12 bg-white p-8">
+              <h3 className="mb-4 text-sm font-semibold uppercase tracking-wider text-[#282a30]">
+                Need Immediate Assistance?
               </h3>
               <a
                 href="tel:513-554-1269"
-                className="mb-2 block text-2xl font-bold text-[#005A90] hover:underline"
+                className="mb-2 block text-xl font-bold text-[#005A90] hover:underline sm:text-2xl"
               >
                 513-554-1269
               </a>
-              <p className="text-sm text-[#6f6e77]">Monday - Friday, 8am - 5pm</p>
-              <p className="mt-4 text-sm text-[#6f6e77]">
+              <p className="text-xs text-[#6f6e77]">Monday - Friday, 8am - 5pm</p>
+              <p className="mt-4 text-xs text-[#6f6e77]">
                 11608 Reading Rd, Cincinnati, OH 45241
               </p>
             </div>
@@ -224,8 +224,8 @@ export function ServiceRequestWizard() {
                 setSelectedServices([]);
                 reset();
               }}
-              variant="outline"
-              className="border-[#005A90] text-[#005A90] hover:bg-[#005A90] hover:text-white"
+              variant="ghost"
+              className="text-[#005A90] hover:bg-[#005A90]/5"
             >
               Submit Another Request
             </Button>
@@ -237,66 +237,53 @@ export function ServiceRequestWizard() {
 
   return (
     <div className="light-section w-full">
-      {/* Progress Steps */}
-      <div className="border-b border-[#DFE5EA] bg-white">
-        <div className="mx-auto max-w-5xl px-4 py-6">
-          <div className="flex items-center justify-between">
+      {/* Progress Steps - Minimalist Design */}
+      <div className="border-b border-[#DFE5EA]/50 bg-white/50 backdrop-blur-sm">
+        <div className="mx-auto max-w-4xl px-4 py-8">
+          <div className="flex items-center justify-between gap-2">
             {STEPS.map((step, index) => {
               const isActive = currentStep === step.id;
               const isCompleted = currentStep > step.id;
-              const StepIcon = step.icon;
 
               return (
                 <div key={step.id} className="flex flex-1 items-center">
-                  <div className="flex flex-col items-center">
-                    <button
-                      type="button"
-                      onClick={() => {
-                        if (isCompleted) setCurrentStep(step.id);
-                      }}
-                      disabled={!isCompleted && !isActive}
+                  <button
+                    type="button"
+                    onClick={() => {
+                      if (isCompleted) setCurrentStep(step.id);
+                    }}
+                    disabled={!isCompleted && !isActive}
+                    className={cn(
+                      "group flex flex-col items-center gap-2 transition-all",
+                      (isCompleted || isActive) && "cursor-pointer"
+                    )}
+                  >
+                    <div
                       className={cn(
-                        "flex h-12 w-12 items-center justify-center rounded-full border-2 transition-all",
-                        isActive &&
-                          "border-[#005A90] bg-[#005A90] text-white shadow-lg",
-                        isCompleted &&
-                          "border-[#005A90] bg-[#005A90]/10 text-[#005A90] hover:bg-[#005A90]/20",
-                        !isActive &&
-                          !isCompleted &&
-                          "border-[#DFE5EA] bg-white text-[#CCCCCC]"
+                        "flex h-8 w-8 items-center justify-center rounded-full transition-all",
+                        isActive && "bg-[#005A90] text-white",
+                        isCompleted && "bg-[#005A90]/10 text-[#005A90]",
+                        !isActive && !isCompleted && "bg-[#f4f4f4] text-[#CCCCCC]"
                       )}
                     >
-                      {isCompleted ? (
-                        <Check className="h-5 w-5" strokeWidth={3} />
-                      ) : (
-                        <StepIcon className="h-5 w-5" />
-                      )}
-                    </button>
+                      <span className="text-xs font-semibold">{step.id}</span>
+                    </div>
                     <span
                       className={cn(
-                        "mt-2 text-xs font-medium",
-                        isActive && "text-[#005A90]",
-                        isCompleted && "text-[#005A90]",
+                        "text-xs font-medium transition-colors",
+                        isActive && "text-[#282a30]",
+                        isCompleted && "text-[#6f6e77]",
                         !isActive && !isCompleted && "text-[#CCCCCC]"
                       )}
                     >
                       {step.title}
                     </span>
-                    <span
-                      className={cn(
-                        "hidden text-xs sm:block",
-                        isActive && "text-[#6f6e77]",
-                        !isActive && "text-[#CCCCCC]"
-                      )}
-                    >
-                      {step.description}
-                    </span>
-                  </div>
+                  </button>
                   {index < STEPS.length - 1 && (
                     <div
                       className={cn(
-                        "mx-2 h-0.5 flex-1",
-                        isCompleted ? "bg-[#005A90]" : "bg-[#DFE5EA]"
+                        "mx-2 h-px flex-1 transition-colors",
+                        isCompleted ? "bg-[#005A90]/30" : "bg-[#DFE5EA]"
                       )}
                     />
                   )}
@@ -313,8 +300,8 @@ export function ServiceRequestWizard() {
           {/* Step 1: Services */}
           {currentStep === 1 && (
             <div className="animate-in fade-in duration-300">
-              <div className="mb-8 text-center">
-                <h2 className="mb-2 font-headline text-2xl tracking-wider text-[#282a30]">
+              <div className="mb-12 text-center">
+                <h2 className="mb-3 font-headline text-2xl tracking-wider text-[#282a30] sm:text-3xl">
                   SELECT YOUR SERVICES
                 </h2>
                 <p className="text-[#6f6e77]">
@@ -322,8 +309,8 @@ export function ServiceRequestWizard() {
                 </p>
               </div>
 
-              <div className="mb-6 grid gap-4 sm:grid-cols-2">
-                {services.map((service) => {
+              <div className="mb-8 space-y-3">
+                {services.map((service, index) => {
                   const isSelected = selectedServices.includes(service.id);
                   return (
                     <button
@@ -332,54 +319,96 @@ export function ServiceRequestWizard() {
                       onClick={() => toggleService(service.id)}
                       disabled={needsAdvice}
                       className={cn(
-                        "group relative flex flex-col rounded-xl border-2 p-6 text-left transition-all",
+                        "group relative w-full text-left transition-all",
                         isSelected
-                          ? "border-[#005A90] bg-[#005A90]/5 shadow-md"
-                          : "border-[#DFE5EA] bg-white hover:border-[#CCCCCC] hover:shadow-sm",
-                        needsAdvice && "cursor-not-allowed opacity-50"
+                          ? "bg-white"
+                          : "bg-white/50 hover:bg-white",
+                        needsAdvice && "cursor-not-allowed opacity-40"
                       )}
                     >
-                      {/* Selection indicator */}
-                      <div
-                        className={cn(
-                          "absolute right-4 top-4 flex h-6 w-6 items-center justify-center rounded-full border-2 transition-all",
-                          isSelected
-                            ? "border-[#005A90] bg-[#005A90] text-white"
-                            : "border-[#CCCCCC] bg-white"
-                        )}
-                      >
-                        {isSelected && <Check className="h-3.5 w-3.5" strokeWidth={3} />}
+                      <div className="flex items-start gap-6 p-6 sm:p-8">
+                        {/* Number indicator */}
+                        <div className="flex shrink-0 flex-col items-center gap-2">
+                          <div
+                            className={cn(
+                              "flex h-10 w-10 items-center justify-center rounded-full text-sm font-semibold transition-all",
+                              isSelected
+                                ? "bg-[#005A90] text-white"
+                                : "bg-[#f4f4f4] text-[#CCCCCC] group-hover:bg-[#DFE5EA]"
+                            )}
+                          >
+                            {String(index + 1).padStart(2, '0')}
+                          </div>
+                        </div>
+
+                        {/* Content */}
+                        <div className="min-w-0 flex-1 space-y-3">
+                          <div className="flex items-start justify-between gap-4">
+                            <div className="space-y-1">
+                              <div className="flex items-center gap-3">
+                                <h3 className="font-headline text-lg uppercase tracking-wider text-[#282a30] sm:text-xl">
+                                  {service.title}
+                                </h3>
+                                {service.badge && (
+                                  <span className="rounded-full bg-[#005A90]/10 px-2.5 py-0.5 text-xs font-medium uppercase tracking-wide text-[#005A90]">
+                                    {service.badge}
+                                  </span>
+                                )}
+                              </div>
+                              <p className="text-sm leading-relaxed text-[#6f6e77]">
+                                {service.description}
+                              </p>
+                            </div>
+                            
+                            {/* Selection indicator */}
+                            <div
+                              className={cn(
+                                "flex h-6 w-6 shrink-0 items-center justify-center rounded-full transition-all",
+                                isSelected
+                                  ? "bg-[#005A90]"
+                                  : "border border-[#DFE5EA] bg-white group-hover:border-[#005A90]/30"
+                              )}
+                            >
+                              {isSelected && (
+                                <Check className="h-3.5 w-3.5 text-white" strokeWidth={3} />
+                              )}
+                            </div>
+                          </div>
+
+                          {/* Features - compact inline display */}
+                          <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs text-[#6f6e77]">
+                            {service.features.slice(0, 3).map((feature, idx) => (
+                              <span key={idx} className="flex items-center gap-1.5">
+                                <span
+                                  className={cn(
+                                    "text-[10px]",
+                                    isSelected ? "text-[#005A90]" : "text-[#CCCCCC]"
+                                  )}
+                                >
+                                  •
+                                </span>
+                                {feature}
+                              </span>
+                            ))}
+                          </div>
+                        </div>
                       </div>
 
+                      {/* Bottom border accent */}
                       <div
                         className={cn(
-                          "mb-3 flex h-12 w-12 items-center justify-center rounded-lg transition-colors",
-                          isSelected
-                            ? "bg-[#005A90] text-white"
-                            : "bg-[#f4f4f4] text-[#6f6e77] group-hover:bg-[#DFE5EA]"
+                          "h-px w-full transition-colors",
+                          isSelected ? "bg-[#005A90]" : "bg-[#DFE5EA]/50"
                         )}
-                      >
-                        {SERVICE_ICONS[service.id]}
-                      </div>
-
-                      <h3 className="mb-1 pr-8 text-lg font-semibold text-[#282a30]">
-                        {service.title}
-                      </h3>
-                      <p className="text-sm text-[#6f6e77]">{service.description}</p>
-
-                      {service.badge && (
-                        <span className="mt-3 inline-flex w-fit rounded-full bg-[#005A90]/10 px-2.5 py-0.5 text-xs font-medium text-[#005A90]">
-                          {service.badge}
-                        </span>
-                      )}
+                      />
                     </button>
                   );
                 })}
               </div>
 
-              {/* Not sure option */}
-              <div className="rounded-lg border border-[#DFE5EA] bg-[#f8f8f8] p-4">
-                <div className="flex items-start gap-3">
+              {/* Not sure option - minimalist */}
+              <div className="rounded-lg bg-[#f4f4f4] p-6">
+                <div className="flex items-start gap-4">
                   <Checkbox
                     id="needsAdvice"
                     checked={needsAdvice}
@@ -392,23 +421,22 @@ export function ServiceRequestWizard() {
                     }}
                     className="mt-0.5"
                   />
-                  <div>
+                  <div className="space-y-1">
                     <Label
                       htmlFor="needsAdvice"
-                      className="cursor-pointer text-base font-medium text-[#282a30]"
+                      className="cursor-pointer text-sm font-medium text-[#282a30]"
                     >
                       I'm not sure what I need
                     </Label>
-                    <p className="text-sm text-[#6f6e77]">
-                      Our BMW specialists will assess your vehicle and recommend the best
-                      services
+                    <p className="text-xs text-[#6f6e77]">
+                      Our BMW specialists will assess your vehicle and recommend the best services
                     </p>
                   </div>
                 </div>
               </div>
 
               {errors.serviceTypes && !needsAdvice && (
-                <p className="mt-3 text-center text-sm text-[#F90020]">
+                <p className="mt-4 text-center text-sm text-[#F90020]">
                   {errors.serviceTypes.message}
                 </p>
               )}
@@ -418,8 +446,8 @@ export function ServiceRequestWizard() {
           {/* Step 2: Contact Information */}
           {currentStep === 2 && (
             <div className="animate-in fade-in duration-300">
-              <div className="mb-8 text-center">
-                <h2 className="mb-2 font-headline text-2xl tracking-wider text-[#282a30]">
+              <div className="mb-12 text-center">
+                <h2 className="mb-3 font-headline text-2xl tracking-wider text-[#282a30] sm:text-3xl">
                   CONTACT INFORMATION
                 </h2>
                 <p className="text-[#6f6e77]">
@@ -429,7 +457,7 @@ export function ServiceRequestWizard() {
 
               <div className="mx-auto max-w-xl space-y-6">
                 <div className="space-y-2">
-                  <Label htmlFor="name" className="text-[#282a30]">
+                  <Label htmlFor="name" className="text-sm font-medium text-[#282a30]">
                     Full Name <span className="text-[#F90020]">*</span>
                   </Label>
                   <Input
@@ -437,15 +465,15 @@ export function ServiceRequestWizard() {
                     {...register("name")}
                     placeholder="John Smith"
                     disabled={isLoading}
-                    className="h-12 border-[#DFE5EA] bg-white text-base focus:border-[#005A90] focus:ring-[#2E90FA]"
+                    className="h-11 border-[#DFE5EA]/50 bg-white text-sm focus:border-[#005A90] focus:ring-1 focus:ring-[#005A90]"
                   />
                   {errors.name && (
-                    <p className="text-sm text-[#F90020]">{errors.name.message}</p>
+                    <p className="text-xs text-[#F90020]">{errors.name.message}</p>
                   )}
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="email" className="text-[#282a30]">
+                  <Label htmlFor="email" className="text-sm font-medium text-[#282a30]">
                     Email Address <span className="text-[#F90020]">*</span>
                   </Label>
                   <Input
@@ -454,15 +482,15 @@ export function ServiceRequestWizard() {
                     {...register("email")}
                     placeholder="john@example.com"
                     disabled={isLoading}
-                    className="h-12 border-[#DFE5EA] bg-white text-base focus:border-[#005A90] focus:ring-[#2E90FA]"
+                    className="h-11 border-[#DFE5EA]/50 bg-white text-sm focus:border-[#005A90] focus:ring-1 focus:ring-[#005A90]"
                   />
                   {errors.email && (
-                    <p className="text-sm text-[#F90020]">{errors.email.message}</p>
+                    <p className="text-xs text-[#F90020]">{errors.email.message}</p>
                   )}
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="phone" className="text-[#282a30]">
+                  <Label htmlFor="phone" className="text-sm font-medium text-[#282a30]">
                     Phone Number <span className="text-[#F90020]">*</span>
                   </Label>
                   <Input
@@ -471,15 +499,15 @@ export function ServiceRequestWizard() {
                     {...register("phone")}
                     placeholder="(513) 555-1234"
                     disabled={isLoading}
-                    className="h-12 border-[#DFE5EA] bg-white text-base focus:border-[#005A90] focus:ring-[#2E90FA]"
+                    className="h-11 border-[#DFE5EA]/50 bg-white text-sm focus:border-[#005A90] focus:ring-1 focus:ring-[#005A90]"
                   />
                   {errors.phone && (
-                    <p className="text-sm text-[#F90020]">{errors.phone.message}</p>
+                    <p className="text-xs text-[#F90020]">{errors.phone.message}</p>
                   )}
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="existingCustomer" className="text-[#282a30]">
+                  <Label htmlFor="existingCustomer" className="text-sm font-medium text-[#282a30]">
                     Are you an existing customer?
                   </Label>
                   <Select
@@ -489,7 +517,7 @@ export function ServiceRequestWizard() {
                     }
                     disabled={isLoading}
                   >
-                    <SelectTrigger className="h-12 border-[#DFE5EA] bg-white text-base focus:border-[#005A90] focus:ring-[#2E90FA]">
+                    <SelectTrigger className="h-11 border-[#DFE5EA]/50 bg-white text-sm focus:border-[#005A90] focus:ring-1 focus:ring-[#005A90]">
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
@@ -505,8 +533,8 @@ export function ServiceRequestWizard() {
           {/* Step 3: Vehicle Information */}
           {currentStep === 3 && (
             <div className="animate-in fade-in duration-300">
-              <div className="mb-8 text-center">
-                <h2 className="mb-2 font-headline text-2xl tracking-wider text-[#282a30]">
+              <div className="mb-12 text-center">
+                <h2 className="mb-3 font-headline text-2xl tracking-wider text-[#282a30] sm:text-3xl">
                   VEHICLE INFORMATION
                 </h2>
                 <p className="text-[#6f6e77]">Tell us about your BMW</p>
@@ -515,7 +543,7 @@ export function ServiceRequestWizard() {
               <div className="mx-auto max-w-xl space-y-6">
                 <div className="grid gap-4 sm:grid-cols-3">
                   <div className="space-y-2">
-                    <Label htmlFor="vehicleYear" className="text-[#282a30]">
+                    <Label htmlFor="vehicleYear" className="text-sm font-medium text-[#282a30]">
                       Year <span className="text-[#F90020]">*</span>
                     </Label>
                     <Input
@@ -523,17 +551,17 @@ export function ServiceRequestWizard() {
                       {...register("vehicleYear")}
                       placeholder="2020"
                       disabled={isLoading}
-                      className="h-12 border-[#DFE5EA] bg-white text-base focus:border-[#005A90] focus:ring-[#2E90FA]"
+                      className="h-11 border-[#DFE5EA]/50 bg-white text-sm focus:border-[#005A90] focus:ring-1 focus:ring-[#005A90]"
                     />
                     {errors.vehicleYear && (
-                      <p className="text-sm text-[#F90020]">
+                      <p className="text-xs text-[#F90020]">
                         {errors.vehicleYear.message}
                       </p>
                     )}
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="vehicleMake" className="text-[#282a30]">
+                    <Label htmlFor="vehicleMake" className="text-sm font-medium text-[#282a30]">
                       Make <span className="text-[#F90020]">*</span>
                     </Label>
                     <Input
@@ -541,17 +569,17 @@ export function ServiceRequestWizard() {
                       {...register("vehicleMake")}
                       placeholder="BMW"
                       disabled={isLoading}
-                      className="h-12 border-[#DFE5EA] bg-white text-base focus:border-[#005A90] focus:ring-[#2E90FA]"
+                      className="h-11 border-[#DFE5EA]/50 bg-white text-sm focus:border-[#005A90] focus:ring-1 focus:ring-[#005A90]"
                     />
                     {errors.vehicleMake && (
-                      <p className="text-sm text-[#F90020]">
+                      <p className="text-xs text-[#F90020]">
                         {errors.vehicleMake.message}
                       </p>
                     )}
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="vehicleModel" className="text-[#282a30]">
+                    <Label htmlFor="vehicleModel" className="text-sm font-medium text-[#282a30]">
                       Model <span className="text-[#F90020]">*</span>
                     </Label>
                     <Input
@@ -559,10 +587,10 @@ export function ServiceRequestWizard() {
                       {...register("vehicleModel")}
                       placeholder="M3"
                       disabled={isLoading}
-                      className="h-12 border-[#DFE5EA] bg-white text-base focus:border-[#005A90] focus:ring-[#2E90FA]"
+                      className="h-11 border-[#DFE5EA]/50 bg-white text-sm focus:border-[#005A90] focus:ring-1 focus:ring-[#005A90]"
                     />
                     {errors.vehicleModel && (
-                      <p className="text-sm text-[#F90020]">
+                      <p className="text-xs text-[#F90020]">
                         {errors.vehicleModel.message}
                       </p>
                     )}
@@ -570,7 +598,7 @@ export function ServiceRequestWizard() {
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="vin" className="text-[#282a30]">
+                  <Label htmlFor="vin" className="text-sm font-medium text-[#282a30]">
                     VIN <span className="text-[#6f6e77]">(Optional)</span>
                   </Label>
                   <Input
@@ -578,7 +606,7 @@ export function ServiceRequestWizard() {
                     {...register("vin")}
                     placeholder="WBSWD93508PX12345"
                     disabled={isLoading}
-                    className="h-12 border-[#DFE5EA] bg-white font-mono text-base focus:border-[#005A90] focus:ring-[#2E90FA]"
+                    className="h-11 border-[#DFE5EA]/50 bg-white font-mono text-sm focus:border-[#005A90] focus:ring-1 focus:ring-[#005A90]"
                   />
                   <p className="text-xs text-[#6f6e77]">
                     Providing your VIN helps us identify your exact vehicle specifications
@@ -591,8 +619,8 @@ export function ServiceRequestWizard() {
           {/* Step 4: Service Details */}
           {currentStep === 4 && (
             <div className="animate-in fade-in duration-300">
-              <div className="mb-8 text-center">
-                <h2 className="mb-2 font-headline text-2xl tracking-wider text-[#282a30]">
+              <div className="mb-12 text-center">
+                <h2 className="mb-3 font-headline text-2xl tracking-wider text-[#282a30] sm:text-3xl">
                   SERVICE DETAILS
                 </h2>
                 <p className="text-[#6f6e77]">
@@ -602,7 +630,7 @@ export function ServiceRequestWizard() {
 
               <div className="mx-auto max-w-xl">
                 <div className="space-y-2">
-                  <Label htmlFor="description" className="text-[#282a30]">
+                  <Label htmlFor="description" className="text-sm font-medium text-[#282a30]">
                     Describe Your Needs <span className="text-[#F90020]">*</span>
                   </Label>
                   <Textarea
@@ -625,14 +653,13 @@ export function ServiceRequestWizard() {
                     }
                     rows={8}
                     disabled={isLoading}
-                    className="border-[#DFE5EA] bg-white text-base focus:border-[#005A90] focus:ring-[#2E90FA]"
+                    className="border-[#DFE5EA]/50 bg-white text-sm focus:border-[#005A90] focus:ring-1 focus:ring-[#005A90]"
                   />
                   {errors.description && (
-                    <p className="text-sm text-[#F90020]">{errors.description.message}</p>
+                    <p className="text-xs text-[#F90020]">{errors.description.message}</p>
                   )}
                   <p className="text-xs text-[#6f6e77]">
-                    Include details about condition, timeline, goals, or any specific
-                    concerns
+                    Include details about condition, timeline, goals, or any specific concerns
                   </p>
                 </div>
               </div>
@@ -642,8 +669,8 @@ export function ServiceRequestWizard() {
           {/* Step 5: Review */}
           {currentStep === 5 && (
             <div className="animate-in fade-in duration-300">
-              <div className="mb-8 text-center">
-                <h2 className="mb-2 font-headline text-2xl tracking-wider text-[#282a30]">
+              <div className="mb-12 text-center">
+                <h2 className="mb-3 font-headline text-2xl tracking-wider text-[#282a30] sm:text-3xl">
                   REVIEW YOUR REQUEST
                 </h2>
                 <p className="text-[#6f6e77]">
@@ -651,31 +678,32 @@ export function ServiceRequestWizard() {
                 </p>
               </div>
 
-              <div className="mx-auto max-w-2xl space-y-6">
+              <div className="mx-auto max-w-2xl space-y-4">
                 {/* Services */}
-                <div className="rounded-xl border border-[#DFE5EA] bg-white p-6">
-                  <div className="mb-4 flex items-center justify-between">
-                    <h3 className="font-semibold text-[#282a30]">Selected Services</h3>
+                <div className="bg-white p-6">
+                  <div className="mb-4 flex items-center justify-between border-b border-[#DFE5EA]/50 pb-3">
+                    <h3 className="text-sm font-semibold uppercase tracking-wider text-[#282a30]">
+                      Selected Services
+                    </h3>
                     <button
                       type="button"
                       onClick={() => setCurrentStep(1)}
-                      className="text-sm text-[#005A90] hover:underline"
+                      className="text-xs text-[#005A90] hover:underline"
                     >
                       Edit
                     </button>
                   </div>
                   <div className="flex flex-wrap gap-2">
                     {needsAdvice ? (
-                      <span className="rounded-full bg-[#005A90]/10 px-3 py-1.5 text-sm font-medium text-[#005A90]">
+                      <span className="rounded-full bg-[#005A90]/10 px-3 py-1 text-xs font-medium text-[#005A90]">
                         Not Sure — Need Advice
                       </span>
                     ) : (
                       selectedServices.map((service) => (
                         <span
                           key={service}
-                          className="inline-flex items-center gap-1.5 rounded-full bg-[#005A90]/10 px-3 py-1.5 text-sm font-medium text-[#005A90]"
+                          className="rounded-full bg-[#005A90]/10 px-3 py-1 text-xs font-medium text-[#005A90]"
                         >
-                          {SERVICE_ICONS[service]}
                           {getServiceLabel(service)}
                         </span>
                       ))
@@ -684,82 +712,87 @@ export function ServiceRequestWizard() {
                 </div>
 
                 {/* Contact */}
-                <div className="rounded-xl border border-[#DFE5EA] bg-white p-6">
-                  <div className="mb-4 flex items-center justify-between">
-                    <h3 className="font-semibold text-[#282a30]">Contact Information</h3>
+                <div className="bg-white p-6">
+                  <div className="mb-4 flex items-center justify-between border-b border-[#DFE5EA]/50 pb-3">
+                    <h3 className="text-sm font-semibold uppercase tracking-wider text-[#282a30]">
+                      Contact Information
+                    </h3>
                     <button
                       type="button"
                       onClick={() => setCurrentStep(2)}
-                      className="text-sm text-[#005A90] hover:underline"
+                      className="text-xs text-[#005A90] hover:underline"
                     >
                       Edit
                     </button>
                   </div>
-                  <div className="grid gap-3 sm:grid-cols-2">
+                  <div className="grid gap-4 sm:grid-cols-2">
                     <div>
-                      <p className="text-xs text-[#6f6e77]">Name</p>
-                      <p className="font-medium text-[#282a30]">{formData.name}</p>
+                      <p className="mb-1 text-xs uppercase tracking-wider text-[#6f6e77]">Name</p>
+                      <p className="text-sm font-medium text-[#282a30]">{formData.name}</p>
                     </div>
                     <div>
-                      <p className="text-xs text-[#6f6e77]">Phone</p>
-                      <p className="font-medium text-[#282a30]">{formData.phone}</p>
+                      <p className="mb-1 text-xs uppercase tracking-wider text-[#6f6e77]">Phone</p>
+                      <p className="text-sm font-medium text-[#282a30]">{formData.phone}</p>
                     </div>
                     <div className="sm:col-span-2">
-                      <p className="text-xs text-[#6f6e77]">Email</p>
-                      <p className="font-medium text-[#282a30]">{formData.email}</p>
+                      <p className="mb-1 text-xs uppercase tracking-wider text-[#6f6e77]">Email</p>
+                      <p className="text-sm font-medium text-[#282a30]">{formData.email}</p>
                     </div>
                   </div>
                 </div>
 
                 {/* Vehicle */}
-                <div className="rounded-xl border border-[#DFE5EA] bg-white p-6">
-                  <div className="mb-4 flex items-center justify-between">
-                    <h3 className="font-semibold text-[#282a30]">Vehicle Information</h3>
+                <div className="bg-white p-6">
+                  <div className="mb-4 flex items-center justify-between border-b border-[#DFE5EA]/50 pb-3">
+                    <h3 className="text-sm font-semibold uppercase tracking-wider text-[#282a30]">
+                      Vehicle Information
+                    </h3>
                     <button
                       type="button"
                       onClick={() => setCurrentStep(3)}
-                      className="text-sm text-[#005A90] hover:underline"
+                      className="text-xs text-[#005A90] hover:underline"
                     >
                       Edit
                     </button>
                   </div>
                   <div className="space-y-3">
                     <div>
-                      <p className="text-xs text-[#6f6e77]">Vehicle</p>
-                      <p className="font-medium text-[#282a30]">
+                      <p className="mb-1 text-xs uppercase tracking-wider text-[#6f6e77]">Vehicle</p>
+                      <p className="text-sm font-medium text-[#282a30]">
                         {formData.vehicleYear} {formData.vehicleMake} {formData.vehicleModel}
                       </p>
                     </div>
                     {formData.vin && (
                       <div>
-                        <p className="text-xs text-[#6f6e77]">VIN</p>
-                        <p className="font-mono text-sm text-[#282a30]">{formData.vin}</p>
+                        <p className="mb-1 text-xs uppercase tracking-wider text-[#6f6e77]">VIN</p>
+                        <p className="font-mono text-xs text-[#282a30]">{formData.vin}</p>
                       </div>
                     )}
                   </div>
                 </div>
 
                 {/* Description */}
-                <div className="rounded-xl border border-[#DFE5EA] bg-white p-6">
-                  <div className="mb-4 flex items-center justify-between">
-                    <h3 className="font-semibold text-[#282a30]">Service Details</h3>
+                <div className="bg-white p-6">
+                  <div className="mb-4 flex items-center justify-between border-b border-[#DFE5EA]/50 pb-3">
+                    <h3 className="text-sm font-semibold uppercase tracking-wider text-[#282a30]">
+                      Service Details
+                    </h3>
                     <button
                       type="button"
                       onClick={() => setCurrentStep(4)}
-                      className="text-sm text-[#005A90] hover:underline"
+                      className="text-xs text-[#005A90] hover:underline"
                     >
                       Edit
                     </button>
                   </div>
-                  <p className="whitespace-pre-wrap text-[#6f6e77]">
+                  <p className="whitespace-pre-wrap text-sm leading-relaxed text-[#6f6e77]">
                     {formData.description}
                   </p>
                 </div>
 
                 {/* Submit disclaimer */}
-                <p className="text-center text-xs text-[#6f6e77]">
-                  By submitting this request, you agree to be contacted by Enthusiast Auto
-                  regarding your service needs.
+                <p className="pt-4 text-center text-xs text-[#6f6e77]">
+                  By submitting this request, you agree to be contacted by Enthusiast Auto regarding your service needs.
                 </p>
               </div>
             </div>
@@ -767,21 +800,21 @@ export function ServiceRequestWizard() {
         </div>
 
         {/* Navigation */}
-        <div className="border-t border-[#DFE5EA] bg-white">
+        <div className="border-t border-[#DFE5EA]/50 bg-white/80 backdrop-blur-sm">
           <div className="mx-auto flex max-w-4xl items-center justify-between px-4 py-6">
             <Button
               type="button"
-              variant="outline"
+              variant="ghost"
               onClick={prevStep}
               disabled={currentStep === 1 || isLoading}
-              className="gap-2 border-[#DFE5EA] text-[#282a30] hover:bg-[#f4f4f4]"
+              className="gap-2 text-[#6f6e77] hover:bg-[#f4f4f4] hover:text-[#282a30] disabled:opacity-30"
             >
               <ChevronLeft className="h-4 w-4" />
-              Back
+              <span className="hidden sm:inline">Back</span>
             </Button>
 
-            <div className="text-sm text-[#6f6e77]">
-              Step {currentStep} of {STEPS.length}
+            <div className="text-xs font-medium text-[#6f6e77]">
+              {currentStep} / {STEPS.length}
             </div>
 
             {currentStep < 5 ? (
@@ -792,26 +825,28 @@ export function ServiceRequestWizard() {
                   isLoading ||
                   (currentStep === 1 && selectedServices.length === 0 && !needsAdvice)
                 }
-                className="gap-2 bg-[#005A90] text-white hover:bg-[#005A90]/90"
+                className="gap-2 bg-[#005A90] px-6 text-sm text-white hover:bg-[#005A90]/90 disabled:opacity-50"
               >
-                Continue
+                <span className="hidden sm:inline">Continue</span>
+                <span className="sm:hidden">Next</span>
                 <ChevronRight className="h-4 w-4" />
               </Button>
             ) : (
               <Button
                 type="submit"
                 disabled={isLoading}
-                className="gap-2 bg-[#005A90] px-8 text-white hover:bg-[#005A90]/90"
+                className="gap-2 bg-[#005A90] px-8 text-sm text-white hover:bg-[#005A90]/90"
               >
                 {isLoading ? (
                   <>
                     <div className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
-                    Submitting...
+                    <span className="hidden sm:inline">Submitting...</span>
                   </>
                 ) : (
                   <>
+                    <span className="hidden sm:inline">Submit Request</span>
+                    <span className="sm:hidden">Submit</span>
                     <Send className="h-4 w-4" />
-                    Submit Request
                   </>
                 )}
               </Button>

@@ -117,8 +117,8 @@ button {
   --ease-default: cubic-bezier(0.4, 0, 0.2, 1);
 
   /* ===== Typography Scale ===== */
-  --font-headline: var(--font-chromatic), var(--font-geist-sans), "Geist Sans", sans-serif;
-  --font-sans: var(--font-geist-sans), "Geist Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-headline: var(--font-chromatic), var(--font-figtree), "Figtree", sans-serif;
+  --font-sans: var(--font-figtree), "Figtree", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   --font-mono: ui-monospace, "SF Mono", "Menlo", "Consolas", monospace;
 
   /* Font Weights (Linear weights) */

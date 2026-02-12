@@ -293,9 +293,11 @@ export function PartsFilters({ products }: PartsFiltersProps) {
   return (
     <>
       {/* Mobile Filter Button */}
-      <button
+      <Button
+        variant="outline"
+        size="sm"
         onClick={() => setIsDrawerOpen(true)}
-        className="flex items-center gap-2 rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm font-medium text-gray-900 shadow-sm transition-colors hover:bg-gray-50 md:hidden"
+        className="md:hidden"
         aria-label="Open filters"
       >
         <AdjustmentsHorizontalIcon className="h-5 w-5" aria-hidden="true" />
@@ -305,7 +307,7 @@ export function PartsFilters({ products }: PartsFiltersProps) {
             {selectedVendors.length + selectedCategories.length + (priceMin ? 1 : 0) + (priceMax ? 1 : 0) + (searchQuery ? 1 : 0)}
           </span>
         )}
-      </button>
+      </Button>
 
       {/* Desktop Filters Sidebar */}
       <div className="hidden md:block">
@@ -324,19 +326,20 @@ export function PartsFilters({ products }: PartsFiltersProps) {
         {/* Full-screen container */}
         <div className="fixed inset-0 flex items-end">
           {/* Slide-in panel */}
-          <DialogPanel className="flex w-full max-h-[85vh] flex-col overflow-hidden rounded-t-2xl bg-white shadow-xl transition-all duration-300 ease-out data-[closed]:translate-y-full">
+          <DialogPanel className="flex w-full max-h-[85vh] flex-col overflow-hidden rounded-t-2xl bg-white shadow-xl transition-all duration-300 ease-out data-closed:translate-y-full">
             {/* Header */}
             <div className="sticky top-0 flex items-center justify-between border-b border-gray-200 bg-white px-4 py-4">
               <DialogTitle className="text-lg font-semibold text-gray-900">
                 Filters
               </DialogTitle>
-              <button
+              <Button
+                variant="ghost"
+                size="icon"
                 onClick={() => setIsDrawerOpen(false)}
-                className="flex h-11 w-11 items-center justify-center rounded-full p-2 text-gray-500 transition-colors hover:bg-gray-100 hover:text-gray-900"
                 aria-label="Close filters"
               >
                 <XMarkIcon className="h-6 w-6" aria-hidden="true" />
-              </button>
+              </Button>
             </div>
 
             {/* Scrollable Content */}

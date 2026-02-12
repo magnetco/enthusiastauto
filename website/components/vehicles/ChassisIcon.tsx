@@ -9,7 +9,8 @@ export function ChassisIcon({ chassis, className = "" }: ChassisIconProps) {
   const chassisLower = chassis.toLowerCase();
   
   // Map chassis codes to icon filenames
-  const iconPath = `/chassis-icons/${chassisLower}.avif`;
+  const fileExtension = chassisLower === 'other' ? 'svg' : 'avif';
+  const iconPath = `/chassis-icons/${chassisLower}.${fileExtension}`;
   
   return (
     <div className={`relative ${className}`}>
@@ -19,6 +20,7 @@ export function ChassisIcon({ chassis, className = "" }: ChassisIconProps) {
         width={80}
         height={40}
         className="object-contain"
+        unoptimized
         onError={(e) => {
           // Fallback to text if image fails to load
           const target = e.target as HTMLImageElement;

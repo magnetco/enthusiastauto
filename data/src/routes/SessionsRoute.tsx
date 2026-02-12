@@ -1,8 +1,7 @@
-import { useState, useEffect, useCallback, useRef } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { RefreshCw } from '../components/Icons'
 import { DataTable } from '../components/DataTable'
 import { fetchData } from '../lib/api'
-import { fadeIn } from '../lib/animations'
 
 const formatDate = (v: unknown) => {
   if (!v) return '—'
@@ -36,7 +35,6 @@ export function SessionsRoute() {
   const [data, setData] = useState<Record<string, unknown>[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
-  const contentRef = useRef<HTMLDivElement>(null)
 
   const loadData = useCallback(async () => {
     setLoading(true)
@@ -55,12 +53,6 @@ export function SessionsRoute() {
   useEffect(() => {
     loadData()
   }, [loadData])
-
-  useEffect(() => {
-    if (!loading && contentRef.current) {
-      fadeIn(contentRef.current)
-    }
-  }, [loading])
 
   return (
     <>
@@ -85,7 +77,7 @@ export function SessionsRoute() {
         </div>
       </header>
 
-      <main className="flex-1 px-6 py-8" ref={contentRef}>
+      <main className="flex-1 px-6 py-8">
         {error && (
           <div className="bg-red-500/10 border border-red-500/20 rounded-lg p-4 mb-6">
             <p className="text-red-400">{error}</p>

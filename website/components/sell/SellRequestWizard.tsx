@@ -9,6 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
+import { TitleBlock } from "@/components/shared/TitleBlock";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 import {
@@ -265,18 +266,18 @@ export function SellRequestWizard() {
 
   return (
     <div className="light-section w-full">
-      {/* Progress Steps */}
+      {/* Progress Steps - Full Width with Horizontal Scroll */}
       <div className="border-b border-[#DFE5EA] bg-white">
-        <div className="mx-auto max-w-5xl px-4 py-6">
-          <div className="flex items-center justify-between">
-            {STEPS.map((step, index) => {
-              const isActive = currentStep === step.id;
-              const isCompleted = currentStep > step.id;
-              const StepIcon = step.icon;
+        <div className="mx-auto max-w-[var(--container-max)] px-page-x py-8">
+          <div className="overflow-x-auto">
+            <div className="flex min-w-max items-center gap-4 md:min-w-0 md:justify-between">
+              {STEPS.map((step, index) => {
+                const isActive = currentStep === step.id;
+                const isCompleted = currentStep > step.id;
+                const StepIcon = step.icon;
 
-              return (
-                <div key={step.id} className="flex flex-1 items-center">
-                  <div className="flex flex-col items-center">
+                return (
+                  <div key={step.id} className="flex flex-1 items-center">
                     <button
                       type="button"
                       onClick={() => {
@@ -284,142 +285,161 @@ export function SellRequestWizard() {
                       }}
                       disabled={!isCompleted && !isActive}
                       className={cn(
-                        "flex h-12 w-12 items-center justify-center rounded-full border-2 transition-all",
-                        isActive && "border-[#005A90] bg-[#005A90] text-white shadow-lg",
+                        "flex min-w-[200px] items-center gap-4 rounded-lg border-2 px-4 py-3 text-left transition-all md:min-w-0",
+                        isActive && "border-[#005A90] bg-[#005A90]/5 shadow-md",
                         isCompleted &&
-                          "border-[#005A90] bg-[#005A90]/10 text-[#005A90] hover:bg-[#005A90]/20",
-                        !isActive && !isCompleted && "border-[#DFE5EA] bg-white text-[#CCCCCC]"
+                          "border-[#005A90]/30 bg-white hover:border-[#005A90]/50 hover:bg-[#005A90]/5",
+                        !isActive && !isCompleted && "border-[#DFE5EA] bg-white"
                       )}
                     >
-                      {isCompleted ? (
-                        <Check className="h-5 w-5" strokeWidth={3} />
-                      ) : (
-                        <StepIcon className="h-5 w-5" />
-                      )}
+                      <div
+                        className={cn(
+                          "flex h-10 w-10 shrink-0 items-center justify-center rounded-full transition-all",
+                          isActive && "bg-[#005A90] text-white",
+                          isCompleted && "bg-[#005A90] text-white",
+                          !isActive && !isCompleted && "bg-[#f4f4f4] text-[#CCCCCC]"
+                        )}
+                      >
+                        {isCompleted ? (
+                          <Check className="h-5 w-5" strokeWidth={3} />
+                        ) : (
+                          <StepIcon className="h-5 w-5" />
+                        )}
+                      </div>
+                      <div className="flex-1">
+                        <div
+                          className={cn(
+                            "text-sm font-semibold",
+                            isActive && "text-[#005A90]",
+                            isCompleted && "text-[#005A90]",
+                            !isActive && !isCompleted && "text-[#CCCCCC]"
+                          )}
+                        >
+                          {step.title}
+                        </div>
+                        <div
+                          className={cn(
+                            "text-xs",
+                            isActive && "text-[#6f6e77]",
+                            isCompleted && "text-[#6f6e77]",
+                            !isActive && !isCompleted && "text-[#CCCCCC]"
+                          )}
+                        >
+                          {step.description}
+                        </div>
+                      </div>
                     </button>
-                    <span
-                      className={cn(
-                        "mt-2 text-xs font-medium",
-                        isActive && "text-[#005A90]",
-                        isCompleted && "text-[#005A90]",
-                        !isActive && !isCompleted && "text-[#CCCCCC]"
-                      )}
-                    >
-                      {step.title}
-                    </span>
-                    <span
-                      className={cn(
-                        "hidden text-xs sm:block",
-                        isActive && "text-[#6f6e77]",
-                        !isActive && "text-[#CCCCCC]"
-                      )}
-                    >
-                      {step.description}
-                    </span>
+                    {index < STEPS.length - 1 && (
+                      <div
+                        className={cn(
+                          "mx-3 h-0.5 w-8 shrink-0 md:flex-1",
+                          isCompleted ? "bg-[#005A90]" : "bg-[#DFE5EA]"
+                        )}
+                      />
+                    )}
                   </div>
-                  {index < STEPS.length - 1 && (
-                    <div
-                      className={cn(
-                        "mx-2 h-0.5 flex-1",
-                        isCompleted ? "bg-[#005A90]" : "bg-[#DFE5EA]"
-                      )}
-                    />
-                  )}
-                </div>
-              );
-            })}
+                );
+              })}
+            </div>
           </div>
         </div>
       </div>
 
       {/* Form Content */}
       <form onSubmit={handleSubmit(onSubmit)} className="min-h-[50vh]">
-        <div className="mx-auto max-w-4xl px-4 py-12">
+        <div className="mx-auto max-w-[var(--container-max)] px-page-x py-12">
           {/* Step 1: Sell Option */}
           {currentStep === 1 && (
             <div className="animate-in fade-in duration-300">
-              <div className="mb-8 text-center">
-                <h2 className="mb-2 font-headline text-2xl tracking-wider text-[#282a30]">
-                  HOW WOULD YOU LIKE TO SELL?
-                </h2>
-                <p className="text-[#6f6e77]">
-                  Choose the option that best fits your timeline and goals
-                </p>
+              <div className="mb-12">
+                <TitleBlock
+                  title="HOW WOULD YOU LIKE TO SELL?"
+                  description="Choose the option that best fits your timeline and goals"
+                />
               </div>
 
-              <div className="grid gap-6 lg:grid-cols-3">
+              <div className="space-y-6">
                 {sellOptions.map((option) => {
                   const isSelected = selectedOption === option.id;
                   return (
-                    <button
+                    <div
                       key={option.id}
-                      type="button"
-                      onClick={() => handleSelectOption(option.id)}
                       className={cn(
-                        "group relative flex flex-col rounded-xl border-2 p-6 text-left transition-all",
+                        "relative flex w-full flex-col rounded-xl border p-8 text-left transition-all md:flex-row md:items-start md:gap-8",
                         isSelected
-                          ? "border-[#005A90] bg-[#005A90]/5 shadow-lg"
-                          : "border-[#DFE5EA] bg-white hover:border-[#CCCCCC] hover:shadow-md"
+                          ? "border-[#2E90FA] border-4 bg-white shadow-lg"
+                          : "border-gray-200 bg-white"
                       )}
                     >
-                      {/* Selection indicator */}
-                      <div
+                      {/* Toggle button */}
+                      <button
+                        type="button"
+                        onClick={() => handleSelectOption(option.id)}
                         className={cn(
-                          "absolute right-4 top-4 flex h-6 w-6 items-center justify-center rounded-full border-2 transition-all",
+                          "absolute right-6 top-6 flex h-10 w-10 items-center justify-center rounded-full border-2 transition-all hover:scale-110",
                           isSelected
-                            ? "border-[#005A90] bg-[#005A90] text-white"
-                            : "border-[#CCCCCC] bg-white"
+                            ? "border-[#2E90FA] bg-[#2E90FA] text-white"
+                            : "border-gray-300 bg-white hover:border-[#2E90FA]"
                         )}
+                        aria-label={`Select ${option.title}`}
                       >
-                        {isSelected && <Check className="h-3.5 w-3.5" strokeWidth={3} />}
-                      </div>
+                        {isSelected && <Check className="h-5 w-5" strokeWidth={3} />}
+                      </button>
 
+                      {/* Icon */}
                       <div
                         className={cn(
-                          "mb-4 flex h-14 w-14 items-center justify-center rounded-xl transition-colors",
+                          "mb-6 flex h-16 w-16 shrink-0 items-center justify-center rounded-xl transition-colors md:mb-0",
                           isSelected
                             ? "bg-[#005A90] text-white"
-                            : "bg-[#f4f4f4] text-[#6f6e77] group-hover:bg-[#DFE5EA]"
+                            : "bg-[#f4f4f4] text-[#6f6e77]"
                         )}
                       >
                         {option.icon}
                       </div>
 
-                      <div className="mb-1 flex items-center gap-2">
-                        <h3 className="text-xl font-semibold text-[#282a30]">{option.title}</h3>
-                        <span
-                          className={cn(
-                            "rounded-full px-2 py-0.5 text-xs font-medium",
-                            isSelected
-                              ? "bg-[#005A90]/10 text-[#005A90]"
-                              : "bg-[#f4f4f4] text-[#6f6e77]"
-                          )}
-                        >
-                          {option.tagline}
-                        </span>
-                      </div>
+                      {/* Content */}
+                      <div className="flex-1 pr-12">
+                        <div className="mb-3 flex items-center gap-3">
+                          <h3 className="font-headline text-xl tracking-wide text-[#282a30] sm:text-2xl">
+                            {option.title}
+                          </h3>
+                          <span
+                            className={cn(
+                              "rounded-full px-3 py-1 text-xs font-medium",
+                              isSelected
+                                ? "bg-[#005A90]/10 text-[#005A90]"
+                                : "bg-[#f4f4f4] text-[#6f6e77]"
+                            )}
+                          >
+                            {option.tagline}
+                          </span>
+                        </div>
 
-                      <p className="mb-4 text-sm text-[#6f6e77]">{option.description}</p>
+                        <p className="mb-6 text-base leading-relaxed text-[#6f6e77]">
+                          {option.description}
+                        </p>
 
-                      <div className="mt-auto space-y-2">
-                        {option.benefits.map((benefit, idx) => (
-                          <div key={idx} className="flex items-start gap-2">
-                            <CheckCircle2
-                              className={cn(
-                                "mt-0.5 h-4 w-4 shrink-0",
-                                isSelected ? "text-[#005A90]" : "text-[#CCCCCC]"
-                              )}
-                            />
-                            <div>
-                              <span className="text-sm font-medium text-[#282a30]">
-                                {benefit.title}
-                              </span>
-                              <span className="text-sm text-[#6f6e77]"> — {benefit.description}</span>
+                        <div className="space-y-3">
+                          {option.benefits.map((benefit, idx) => (
+                            <div key={idx} className="flex items-start gap-3">
+                              <CheckCircle2
+                                className={cn(
+                                  "mt-1 h-5 w-5 shrink-0",
+                                  isSelected ? "text-[#005A90]" : "text-[#CCCCCC]"
+                                )}
+                              />
+                              <div>
+                                <span className="font-semibold text-[#282a30]">
+                                  {benefit.title}
+                                </span>
+                                <span className="text-[#6f6e77]"> — {benefit.description}</span>
+                              </div>
                             </div>
-                          </div>
-                        ))}
+                          ))}
+                        </div>
                       </div>
-                    </button>
+                    </div>
                   );
                 })}
               </div>
@@ -429,14 +449,14 @@ export function SellRequestWizard() {
           {/* Step 2: Contact Information */}
           {currentStep === 2 && (
             <div className="animate-in fade-in duration-300">
-              <div className="mb-8 text-center">
-                <h2 className="mb-2 font-headline text-2xl tracking-wider text-[#282a30]">
-                  CONTACT INFORMATION
-                </h2>
-                <p className="text-[#6f6e77]">How should we reach you about your vehicle?</p>
+              <div className="mb-12">
+                <TitleBlock
+                  title="CONTACT INFORMATION"
+                  description="How should we reach you about your vehicle?"
+                />
               </div>
 
-              <div className="mx-auto max-w-xl space-y-6">
+              <div className="mx-auto max-w-2xl space-y-6">
                 <div className="grid gap-4 sm:grid-cols-2">
                   <div className="space-y-2">
                     <Label htmlFor="firstName" className="text-[#282a30]">
@@ -511,14 +531,14 @@ export function SellRequestWizard() {
           {/* Step 3: Vehicle Information */}
           {currentStep === 3 && (
             <div className="animate-in fade-in duration-300">
-              <div className="mb-8 text-center">
-                <h2 className="mb-2 font-headline text-2xl tracking-wider text-[#282a30]">
-                  VEHICLE INFORMATION
-                </h2>
-                <p className="text-[#6f6e77]">Tell us about your BMW</p>
+              <div className="mb-12">
+                <TitleBlock
+                  title="VEHICLE INFORMATION"
+                  description="Tell us about your BMW"
+                />
               </div>
 
-              <div className="mx-auto max-w-xl space-y-6">
+              <div className="mx-auto max-w-2xl space-y-6">
                 <div className="grid gap-4 sm:grid-cols-3">
                   <div className="space-y-2">
                     <Label htmlFor="year" className="text-[#282a30]">
@@ -611,16 +631,14 @@ export function SellRequestWizard() {
           {/* Step 4: Additional Details */}
           {currentStep === 4 && (
             <div className="animate-in fade-in duration-300">
-              <div className="mb-8 text-center">
-                <h2 className="mb-2 font-headline text-2xl tracking-wider text-[#282a30]">
-                  ADDITIONAL DETAILS
-                </h2>
-                <p className="text-[#6f6e77]">
-                  Share any additional information about your vehicle
-                </p>
+              <div className="mb-12">
+                <TitleBlock
+                  title="ADDITIONAL DETAILS"
+                  description="Share any additional information about your vehicle"
+                />
               </div>
 
-              <div className="mx-auto max-w-xl space-y-6">
+              <div className="mx-auto max-w-2xl space-y-6">
                 <div className="space-y-2">
                   <Label htmlFor="notes" className="text-[#282a30]">
                     Vehicle Notes <span className="text-[#6f6e77]">(Optional)</span>
@@ -693,14 +711,14 @@ export function SellRequestWizard() {
           {/* Step 5: Review */}
           {currentStep === 5 && (
             <div className="animate-in fade-in duration-300">
-              <div className="mb-8 text-center">
-                <h2 className="mb-2 font-headline text-2xl tracking-wider text-[#282a30]">
-                  REVIEW YOUR SUBMISSION
-                </h2>
-                <p className="text-[#6f6e77]">Please confirm all details before submitting</p>
+              <div className="mb-12">
+                <TitleBlock
+                  title="REVIEW YOUR SUBMISSION"
+                  description="Please confirm all details before submitting"
+                />
               </div>
 
-              <div className="mx-auto max-w-2xl space-y-6">
+              <div className="mx-auto max-w-3xl space-y-6">
                 {/* Sell Option */}
                 <div className="rounded-xl border border-[#DFE5EA] bg-white p-6">
                   <div className="mb-4 flex items-center justify-between">
@@ -822,7 +840,7 @@ export function SellRequestWizard() {
 
         {/* Navigation */}
         <div className="border-t border-[#DFE5EA] bg-white">
-          <div className="mx-auto flex max-w-4xl items-center justify-between px-4 py-6">
+          <div className="mx-auto flex max-w-[var(--container-max)] items-center justify-between px-page-x py-6">
             <Button
               type="button"
               variant="outline"

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Dialog, DialogPanel, DialogTitle } from "@headlessui/react";
 import {
@@ -19,6 +19,9 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ChassisIcon } from "./ChassisIcon";
+import { YearRangeSlider } from "./YearRangeSlider";
+import { PriceRangeSlider } from "./PriceRangeSlider";
+import type { YearDistribution } from "@/lib/sanity/queries/vehicles";
 
 const chassisOptions = [
   { code: "E24", label: "E24" },
@@ -46,13 +49,22 @@ const chassisOptions = [
 const statusOptions = [
   { value: "all", label: "All Vehicles" },
   { value: "current", label: "Current Inventory" },
-  { value: "sold", label: "Sold" },
+  { value: "sold", label: "Sold Only" },
 ];
 
-export function VehicleFilters() {
+interface VehicleFiltersProps {
+  priceRange?: {
+    min: number;
+    max: number;
+  };
+}
+
+export function VehicleFilters({ priceRange = { min: 0, max: 200000 } }: VehicleFiltersProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [yearDistribution, setYearDistribution] = useState<YearDistribution[]>([]);
+  const [isLoadingDistribution, setIsLoadingDistribution] = useState(true);
 
   // Parse current filters from URL
   const selectedChassis = searchParams.get("chassis")?.split(",") || [];
@@ -61,6 +73,39 @@ export function VehicleFilters() {
   const priceMin = searchParams.get("priceMin") || "";
   const priceMax = searchParams.get("priceMax") || "";
   const status = searchParams.get("status") || "all";
+  // Default to hiding sold vehicles (true) unless explicitly set to false
+  const hideSold = searchParams.get("hideSold") !== "false";
+
+  // Fetch year distribution when filters change (excluding year filters)
+  useEffect(() => {
+    const fetchDistribution = async () => {
+      setIsLoadingDistribution(true);
+      try {
+        const params = new URLSearchParams();
+        if (selectedChassis.length > 0) {
+          params.set("chassis", selectedChassis.join(","));
+        }
+        if (priceMin) params.set("priceMin", priceMin);
+        if (priceMax) params.set("priceMax", priceMax);
+        if (status && status !== "all") params.set("status", status);
+        params.set("hideSold", hideSold.toString());
+
+        const response = await fetch(
+          `/api/vehicles/year-distribution?${params.toString()}`,
+        );
+        if (response.ok) {
+          const data = await response.json();
+          setYearDistribution(data);
+        }
+      } catch (error) {
+        console.error("Error fetching year distribution:", error);
+      } finally {
+        setIsLoadingDistribution(false);
+      }
+    };
+
+    fetchDistribution();
+  }, [selectedChassis.join(","), priceMin, priceMax, status, hideSold]);
 
   const updateFilters = (updates: Record<string, string | null>) => {
     const params = new URLSearchParams(searchParams);
@@ -97,7 +142,8 @@ export function VehicleFilters() {
     yearMax ||
     priceMin ||
     priceMax ||
-    (status && status !== "all");
+    (status && status !== "all") ||
+    hideSold;
 
   const FilterContent = () => (
     <div className="space-y-4">
@@ -161,7 +207,17 @@ export function VehicleFilters() {
               className="cursor-pointer hover:bg-gray-300"
               onClick={() => updateFilters({ status: null })}
             >
-              {status === "current" ? "Current Inventory" : "Sold"}
+              {status === "current" ? "Current Inventory" : "Sold Only"}
+              <XMarkIcon className="ml-1 h-3 w-3" />
+            </Badge>
+          )}
+          {hideSold && (
+            <Badge
+              variant="secondary"
+              className="cursor-pointer hover:bg-gray-300"
+              onClick={() => updateFilters({ hideSold: "false" })}
+            >
+              Hide Sold
               <XMarkIcon className="ml-1 h-3 w-3" />
             </Badge>
           )}
@@ -208,36 +264,28 @@ export function VehicleFilters() {
         <AccordionItem value="year">
           <AccordionTrigger>Year Range</AccordionTrigger>
           <AccordionContent>
-            <div className="space-y-2">
-              <div>
-                <Label htmlFor="year-min" className="text-sm">
-                  Min Year
-                </Label>
-                <Input
-                  id="year-min"
-                  type="number"
-                  placeholder="e.g., 2000"
-                  value={yearMin}
-                  onChange={(e) => updateFilters({ yearMin: e.target.value })}
-                  min="1990"
-                  max="2025"
-                />
+            {isLoadingDistribution ? (
+              <div className="space-y-4">
+                <div className="h-16 w-full animate-pulse rounded bg-gray-200" />
+                <div className="h-8 w-full animate-pulse rounded bg-gray-200" />
               </div>
-              <div>
-                <Label htmlFor="year-max" className="text-sm">
-                  Max Year
-                </Label>
-                <Input
-                  id="year-max"
-                  type="number"
-                  placeholder="e.g., 2024"
-                  value={yearMax}
-                  onChange={(e) => updateFilters({ yearMax: e.target.value })}
-                  min="1990"
-                  max="2025"
-                />
+            ) : yearDistribution.length > 0 ? (
+              <YearRangeSlider
+                min={yearMin ? parseInt(yearMin) : undefined}
+                max={yearMax ? parseInt(yearMax) : undefined}
+                distribution={yearDistribution}
+                onChange={(min, max) => {
+                  updateFilters({
+                    yearMin: min.toString(),
+                    yearMax: max.toString(),
+                  });
+                }}
+              />
+            ) : (
+              <div className="text-sm text-muted-foreground">
+                No vehicles available with current filters
               </div>
-            </div>
+            )}
           </AccordionContent>
         </AccordionItem>
 
@@ -245,36 +293,20 @@ export function VehicleFilters() {
         <AccordionItem value="price">
           <AccordionTrigger>Price Range</AccordionTrigger>
           <AccordionContent>
-            <div className="space-y-2">
-              <div>
-                <Label htmlFor="price-min" className="text-sm">
-                  Min Price
-                </Label>
-                <Input
-                  id="price-min"
-                  type="number"
-                  placeholder="e.g., 10000"
-                  value={priceMin}
-                  onChange={(e) => updateFilters({ priceMin: e.target.value })}
-                  min="0"
-                  step="1000"
-                />
-              </div>
-              <div>
-                <Label htmlFor="price-max" className="text-sm">
-                  Max Price
-                </Label>
-                <Input
-                  id="price-max"
-                  type="number"
-                  placeholder="e.g., 100000"
-                  value={priceMax}
-                  onChange={(e) => updateFilters({ priceMax: e.target.value })}
-                  min="0"
-                  step="1000"
-                />
-              </div>
-            </div>
+            <PriceRangeSlider
+              min={priceRange.min}
+              max={priceRange.max}
+              value={[
+                priceMin ? parseInt(priceMin) : priceRange.min,
+                priceMax ? parseInt(priceMax) : priceRange.max,
+              ]}
+              onChange={([min, max]) => {
+                updateFilters({
+                  priceMin: min === priceRange.min ? null : min.toString(),
+                  priceMax: max === priceRange.max ? null : max.toString(),
+                });
+              }}
+            />
           </AccordionContent>
         </AccordionItem>
 
@@ -282,24 +314,47 @@ export function VehicleFilters() {
         <AccordionItem value="status">
           <AccordionTrigger>Status</AccordionTrigger>
           <AccordionContent>
-            <div className="space-y-2">
-              {statusOptions.map((option) => (
-                <div key={option.value} className="flex items-center space-x-2">
+            <div className="space-y-3">
+              {/* Hide Sold Toggle */}
+              <div className="rounded-lg border border-gray-200 bg-gray-50 p-3">
+                <div className="flex items-center space-x-2">
                   <Checkbox
-                    id={`status-${option.value}`}
-                    checked={status === option.value}
-                    onCheckedChange={() =>
-                      updateFilters({ status: option.value })
+                    id="hide-sold"
+                    checked={hideSold}
+                    onCheckedChange={(checked) =>
+                      updateFilters({ hideSold: checked ? null : "false" })
                     }
                   />
                   <Label
-                    htmlFor={`status-${option.value}`}
-                    className="cursor-pointer text-sm font-normal"
+                    htmlFor="hide-sold"
+                    className="cursor-pointer text-sm font-medium"
                   >
-                    {option.label}
+                    Hide Sold Vehicles
                   </Label>
                 </div>
-              ))}
+              </div>
+
+              {/* Status Radio Options */}
+              <div className="space-y-2">
+                <p className="text-xs font-medium text-muted-foreground">Or filter by status:</p>
+                {statusOptions.map((option) => (
+                  <div key={option.value} className="flex items-center space-x-2">
+                    <Checkbox
+                      id={`status-${option.value}`}
+                      checked={status === option.value}
+                      onCheckedChange={() =>
+                        updateFilters({ status: option.value })
+                      }
+                    />
+                    <Label
+                      htmlFor={`status-${option.value}`}
+                      className="cursor-pointer text-sm font-normal"
+                    >
+                      {option.label}
+                    </Label>
+                  </div>
+                ))}
+              </div>
             </div>
           </AccordionContent>
         </AccordionItem>
@@ -310,14 +365,16 @@ export function VehicleFilters() {
   return (
     <>
       {/* Mobile Filter Button */}
-      <button
+      <Button
+        variant="outline"
+        size="sm"
         onClick={() => setIsDrawerOpen(true)}
-        className="flex items-center gap-2 rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm font-medium text-gray-900 shadow-sm transition-colors hover:bg-gray-50 md:hidden"
+        className="md:hidden"
         aria-label="Open filters"
       >
         <AdjustmentsHorizontalIcon className="h-5 w-5" aria-hidden="true" />
         Filters
-      </button>
+      </Button>
 
       {/* Desktop Filters Sidebar */}
       <div className="hidden md:block">
@@ -342,13 +399,14 @@ export function VehicleFilters() {
               <DialogTitle className="text-lg font-semibold text-gray-900">
                 Filters
               </DialogTitle>
-              <button
+              <Button
+                variant="ghost"
+                size="icon"
                 onClick={() => setIsDrawerOpen(false)}
-                className="flex h-11 w-11 items-center justify-center rounded-full p-2 text-gray-500 transition-colors hover:bg-gray-100 hover:text-gray-900"
                 aria-label="Close filters"
               >
                 <XMarkIcon className="h-6 w-6" aria-hidden="true" />
-              </button>
+              </Button>
             </div>
 
             {/* Scrollable Content */}

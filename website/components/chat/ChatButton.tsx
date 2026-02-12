@@ -1,15 +1,41 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { MessageCircle, X } from "lucide-react";
 import { ChatWindow } from "./ChatWindow";
 
 interface ChatButtonProps {
   isAuthenticated: boolean;
+  initialMessage?: string;
+  onOpenChange?: (isOpen: boolean) => void;
 }
 
-export function ChatButton({ isAuthenticated }: ChatButtonProps) {
+export function ChatButton({ isAuthenticated, initialMessage, onOpenChange }: ChatButtonProps) {
   const [isOpen, setIsOpen] = useState(false);
+  const [messageToSend, setMessageToSend] = useState<string | undefined>(initialMessage);
+
+  // Listen for custom events to open chat with a message
+  useEffect(() => {
+    const handleOpenChat = (event: CustomEvent<{ message: string }>) => {
+      setMessageToSend(event.detail.message);
+      setIsOpen(true);
+    };
+
+    window.addEventListener("openChatWithMessage" as any, handleOpenChat);
+    return () => {
+      window.removeEventListener("openChatWithMessage" as any, handleOpenChat);
+    };
+  }, []);
+
+  // Notify parent when open state changes
+  useEffect(() => {
+    onOpenChange?.(isOpen);
+  }, [isOpen, onOpenChange]);
+
+  const handleClose = () => {
+    setIsOpen(false);
+    setMessageToSend(undefined);
+  };
 
   return (
     <>
@@ -17,7 +43,8 @@ export function ChatButton({ isAuthenticated }: ChatButtonProps) {
       {isOpen && (
         <ChatWindow
           isAuthenticated={isAuthenticated}
-          onClose={() => setIsOpen(false)}
+          onClose={handleClose}
+          initialMessage={messageToSend}
         />
       )}
 

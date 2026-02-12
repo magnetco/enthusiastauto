@@ -43,7 +43,7 @@ export function ShimmerButton({
 }: ShimmerButtonProps) {
   const buttonRef = React.useRef<HTMLAnchorElement>(null);
   const [shimmerStyle, setShimmerStyle] = React.useState<React.CSSProperties>({});
-  const rafRef = React.useRef<number>();
+  const rafRef = React.useRef<number | undefined>(undefined);
 
   // Calculate mouse proximity shimmer effect
   React.useEffect(() => {

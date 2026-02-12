@@ -25,22 +25,6 @@ export function ServiceHero() {
           variant: "primary",
         },
       ]}
-    >
-      {/* Key Benefits */}
-      <div className="mb-8 flex flex-wrap gap-4 text-sm font-medium text-white/70">
-        <div className="flex items-center gap-2">
-          <span className="text-blue-400">✓</span>
-          <span>Genuine BMW Parts</span>
-        </div>
-        <div className="flex items-center gap-2">
-          <span className="text-blue-400">✓</span>
-          <span>Factory-Level Precision</span>
-        </div>
-        <div className="flex items-center gap-2">
-          <span className="text-blue-400">✓</span>
-          <span>M Series Specialists</span>
-        </div>
-      </div>
-    </PageHero>
+    />
   );
 }

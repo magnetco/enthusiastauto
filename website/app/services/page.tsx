@@ -31,25 +31,25 @@ export default function ServicesPage() {
 			<ServicesContent />
 
 			{/* Contact Information */}
-			<section className="light-section border-t border-[#DFE5EA] py-12">
+			<section className="light-section border-t border-[#DFE5EA]/50 py-16">
 				<div className="mx-auto max-w-4xl px-4 text-center">
-					<h3 className="mb-4 text-xl font-semibold text-[#282a30]">
+					<h3 className="mb-3 font-headline text-xl uppercase tracking-wider text-[#282a30]">
 						Have Questions?
 					</h3>
-					<p className="mb-4 text-[#6f6e77]">
+					<p className="mb-8 text-sm text-[#6f6e77]">
 						Our BMW Service Professionals are here to help
 					</p>
-					<div className="flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
+					<div className="flex flex-col items-center gap-6 sm:flex-row sm:justify-center">
 						<a
 							href="tel:513-554-1269"
-							className="text-xl font-bold text-[#005A90] hover:underline"
+							className="text-2xl font-bold text-[#005A90] hover:underline"
 						>
 							513-554-1269
 						</a>
-						<span className="hidden text-[#CCCCCC] sm:inline">•</span>
-						<p className="text-sm text-[#6f6e77]">Monday-Friday, 8am - 5pm</p>
+						<span className="hidden text-[#DFE5EA] sm:inline">|</span>
+						<p className="text-xs text-[#6f6e77]">Monday-Friday, 8am - 5pm</p>
 					</div>
-					<p className="mt-2 text-sm text-[#6f6e77]">
+					<p className="mt-6 text-xs text-[#6f6e77]">
 						11608 Reading Rd, Cincinnati, OH 45241
 					</p>
 				</div>

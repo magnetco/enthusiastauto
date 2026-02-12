@@ -5,17 +5,17 @@ import { ShimmerButton } from "@/components/ui/shimmer-button";
 import { BlogCard } from "@/components/blog/BlogGrid";
 import { TitleBlock } from "@/components/shared/TitleBlock";
 import { useState, useRef, useEffect } from "react";
-import type { Post } from "@/lib/sanity/queries/posts";
+import type { PostListItem } from "@/lib/sanity/queries/posts";
 
 interface FeaturedBlogPostsProps {
-  posts: Post[];
+  posts: PostListItem[];
 }
 
 export function FeaturedBlogPosts({ posts }: FeaturedBlogPostsProps) {
   const featuredPosts = posts.slice(0, 3);
   const [mousePosition, setMousePosition] = useState<{ x: number; y: number } | null>(null);
   const [isSectionHovered, setIsSectionHovered] = useState(false);
-  const rafRef = useRef<number>();
+  const rafRef = useRef<number | undefined>(undefined);
 
   // If no blog posts, don't render section
   if (!featuredPosts || featuredPosts.length === 0) {

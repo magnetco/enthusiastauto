@@ -10,6 +10,7 @@ import { SellSubmissionsRoute } from './routes/SellSubmissionsRoute'
 import { SellSubmissionDetailRoute } from './routes/SellSubmissionDetailRoute'
 import { VersionsRoute } from './routes/VersionsRoute'
 import { VehicleImportRoute } from './routes/VehicleImportRoute'
+import { VehicleExportRoute } from './routes/VehicleExportRoute'
 import { DocumentationRoute } from './routes/DocumentationRoute'
 import { SettingsRoute } from './routes/SettingsRoute'
 import TestLoaderPage from './routes/test-loader'
@@ -62,6 +63,10 @@ export const router = createBrowserRouter([
       {
         path: 'vehicle-import',
         element: <VehicleImportRoute />,
+      },
+      {
+        path: 'vehicle-export',
+        element: <VehicleExportRoute />,
       },
       {
         path: 'documentation',

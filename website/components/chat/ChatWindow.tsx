@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import { X, Minus } from "lucide-react";
 import { ChatMessages } from "./ChatMessages";
 import { ChatInput } from "./ChatInput";
@@ -8,6 +8,7 @@ import { ChatInput } from "./ChatInput";
 interface ChatWindowProps {
   isAuthenticated: boolean;
   onClose: () => void;
+  initialMessage?: string;
 }
 
 export interface Message {
@@ -18,10 +19,11 @@ export interface Message {
   toolCalls?: any[];
 }
 
-export function ChatWindow({ isAuthenticated, onClose }: ChatWindowProps) {
+export function ChatWindow({ isAuthenticated, onClose, initialMessage }: ChatWindowProps) {
   const [messages, setMessages] = useState<Message[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [conversationId, setConversationId] = useState<string | null>(null);
+  const [hasAutoSent, setHasAutoSent] = useState(false);
   const [sessionId] = useState(() => {
     // Generate a session ID for guest users
     if (typeof window !== "undefined") {
@@ -35,7 +37,7 @@ export function ChatWindow({ isAuthenticated, onClose }: ChatWindowProps) {
     return null;
   });
 
-  const handleSendMessage = async (content: string) => {
+  const handleSendMessage = useCallback(async (content: string) => {
     if (!content.trim() || isLoading) {
       console.log("Message blocked:", { content, isLoading });
       return;
@@ -113,10 +115,12 @@ export function ChatWindow({ isAuthenticated, onClose }: ChatWindowProps) {
                 setMessages((prev) => {
                   const newMessages = [...prev];
                   const lastIndex = newMessages.length - 1;
-                  newMessages[lastIndex] = {
-                    ...newMessages[lastIndex],
-                    content: assistantContent,
-                  };
+                  if (newMessages[lastIndex]) {
+                    newMessages[lastIndex] = {
+                      ...newMessages[lastIndex],
+                      content: assistantContent,
+                    };
+                  }
                   return newMessages;
                 });
               } else if (data.type === "tool_call") {
@@ -151,7 +155,15 @@ export function ChatWindow({ isAuthenticated, onClose }: ChatWindowProps) {
       console.log("Message complete, setting loading to false");
       setIsLoading(false);
     }
-  };
+  }, [conversationId, sessionId]);
+
+  // Auto-send initial message if provided
+  useEffect(() => {
+    if (initialMessage && !hasAutoSent && !isLoading) {
+      setHasAutoSent(true);
+      handleSendMessage(initialMessage);
+    }
+  }, [initialMessage, hasAutoSent, isLoading, handleSendMessage]);
 
   return (
     <div className="fixed inset-0 z-50 flex flex-col overflow-hidden bg-white animate-in slide-in-from-bottom-8 fade-in-0 duration-300 md:bottom-6 md:right-6 md:top-auto md:left-auto md:h-[600px] md:w-[400px] md:rounded-xl md:border md:border-gray-200 md:shadow-high">

@@ -12,7 +12,7 @@ const GARAGE_ITEM_LIMIT = parseInt(
 const favoriteSchema = z.object({
   itemId: z.string().min(1, "Item ID is required"),
   itemType: z.enum(["vehicle", "product"], {
-    errorMap: () => ({ message: "Item type must be 'vehicle' or 'product'" }),
+    message: "Item type must be 'vehicle' or 'product'",
   }),
   itemHandle: z.string().optional(), // Shopify product handle or Sanity vehicle slug
 });

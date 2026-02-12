@@ -210,12 +210,12 @@ export function ServiceRequestDetail({ requestId }: ServiceRequestDetailProps) {
 
         {/* Main Content */}
         <div className="bg-zinc-900/50 rounded-lg border border-zinc-800">
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 p-6">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-0 lg:divide-x divide-zinc-800">
               {/* Left Column - Customer & Vehicle Info */}
-              <div className="lg:col-span-2 space-y-6">
+              <div className="lg:col-span-2 p-6 space-y-6">
                 {/* Status & Timeline */}
-                <div className="bg-zinc-900/50 rounded-lg border border-zinc-800 p-5">
-                  <div className="flex items-center justify-between mb-4">
+                <div>
+                  <div className="flex items-center justify-between mb-3">
                     <h3 className="text-sm font-semibold text-white uppercase tracking-wide">Status</h3>
                     <div className="flex items-center gap-2 text-xs text-zinc-500">
                       <Clock className="w-3.5 h-3.5" />
@@ -223,7 +223,7 @@ export function ServiceRequestDetail({ requestId }: ServiceRequestDetailProps) {
                     </div>
                   </div>
                   
-                  <div className="flex flex-wrap gap-2">
+                  <div className="flex flex-wrap gap-2 mb-4">
                     {statusOptions.map((option) => (
                       <button
                         key={option.value}
@@ -240,29 +240,25 @@ export function ServiceRequestDetail({ requestId }: ServiceRequestDetailProps) {
                     ))}
                   </div>
 
-                  <div className="mt-4 pt-4 border-t border-zinc-800">
-                    <div className="flex items-center justify-between text-xs">
-                      <span className="text-zinc-500">Created</span>
-                      <span className="text-zinc-400">{formatDate(request.createdAt)}</span>
-                    </div>
-                    <div className="flex items-center justify-between text-xs mt-2">
-                      <span className="text-zinc-500">Last Updated</span>
-                      <span className="text-zinc-400">{formatDate(request.updatedAt)}</span>
-                    </div>
+                  <div className="flex items-center justify-between text-xs text-zinc-500">
+                    <span>Created {formatDate(request.createdAt)}</span>
+                    <span>Updated {formatDate(request.updatedAt)}</span>
                   </div>
                 </div>
 
+                <div className="border-t border-zinc-800/50" />
+
                 {/* Customer Information */}
-                <div className="bg-zinc-900/50 rounded-lg border border-zinc-800 p-5">
-                  <div className="flex items-center gap-2 mb-4">
+                <div>
+                  <div className="flex items-center gap-2 mb-3">
                     <User className="w-4 h-4 text-zinc-500" />
                     <h3 className="text-sm font-semibold text-white uppercase tracking-wide">Customer Information</h3>
                   </div>
                   
-                  <div className="space-y-3">
+                  <div className="space-y-2">
                     <div>
                       <label className="text-xs text-zinc-500 uppercase tracking-wide">Name</label>
-                      <p className="text-white font-medium mt-1">{request.name}</p>
+                      <p className="text-white font-medium">{request.name}</p>
                     </div>
                     
                     <div className="grid grid-cols-2 gap-3">
@@ -273,7 +269,7 @@ export function ServiceRequestDetail({ requestId }: ServiceRequestDetailProps) {
                         </label>
                         <a
                           href={`mailto:${request.email}`}
-                          className="text-blue-400 hover:text-blue-300 font-medium mt-1 block"
+                          className="text-blue-400 hover:text-blue-300 font-medium block"
                         >
                           {request.email}
                         </a>
@@ -286,14 +282,14 @@ export function ServiceRequestDetail({ requestId }: ServiceRequestDetailProps) {
                         </label>
                         <a
                           href={`tel:${request.phone}`}
-                          className="text-blue-400 hover:text-blue-300 font-medium mt-1 block"
+                          className="text-blue-400 hover:text-blue-300 font-medium block"
                         >
                           {request.phone}
                         </a>
                       </div>
                     </div>
 
-                    <div className="pt-2">
+                    <div className="pt-1">
                       {request.existingCustomer ? (
                         <span className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-green-500/10 text-green-400 rounded-full text-xs font-medium">
                           <CheckCircle className="w-3.5 h-3.5" />
@@ -308,17 +304,19 @@ export function ServiceRequestDetail({ requestId }: ServiceRequestDetailProps) {
                   </div>
                 </div>
 
+                <div className="border-t border-zinc-800/50" />
+
                 {/* Vehicle Information */}
-                <div className="bg-zinc-900/50 rounded-lg border border-zinc-800 p-5">
-                  <div className="flex items-center gap-2 mb-4">
+                <div>
+                  <div className="flex items-center gap-2 mb-3">
                     <Car className="w-4 h-4 text-zinc-500" />
                     <h3 className="text-sm font-semibold text-white uppercase tracking-wide">Vehicle Information</h3>
                   </div>
                   
-                  <div className="space-y-3">
+                  <div className="space-y-2">
                     <div>
                       <label className="text-xs text-zinc-500 uppercase tracking-wide">Vehicle</label>
-                      <p className="text-white font-medium text-lg mt-1">
+                      <p className="text-white font-medium text-lg">
                         {request.vehicleYear} {request.vehicleMake} {request.vehicleModel}
                       </p>
                     </div>
@@ -326,30 +324,32 @@ export function ServiceRequestDetail({ requestId }: ServiceRequestDetailProps) {
                     {request.vin && (
                       <div>
                         <label className="text-xs text-zinc-500 uppercase tracking-wide">VIN</label>
-                        <p className="text-zinc-300 font-mono text-sm mt-1">{request.vin}</p>
+                        <p className="text-zinc-300 font-mono text-sm">{request.vin}</p>
                       </div>
                     )}
                   </div>
                 </div>
 
+                <div className="border-t border-zinc-800/50" />
+
                 {/* Service Details */}
-                <div className="bg-zinc-900/50 rounded-lg border border-zinc-800 p-5">
-                  <div className="flex items-center gap-2 mb-4">
+                <div>
+                  <div className="flex items-center gap-2 mb-3">
                     <FileText className="w-4 h-4 text-zinc-500" />
                     <h3 className="text-sm font-semibold text-white uppercase tracking-wide">Service Details</h3>
                   </div>
                   
-                  <div className="space-y-3">
+                  <div className="space-y-2">
                     <div>
                       <label className="text-xs text-zinc-500 uppercase tracking-wide">Service Type</label>
-                      <p className="text-white font-medium mt-1">
+                      <p className="text-white font-medium">
                         {serviceTypeLabels[request.serviceType] || request.serviceType}
                       </p>
                     </div>
                     
                     <div>
                       <label className="text-xs text-zinc-500 uppercase tracking-wide">Description</label>
-                      <p className="text-zinc-300 mt-1 leading-relaxed whitespace-pre-wrap">
+                      <p className="text-zinc-300 leading-relaxed whitespace-pre-wrap">
                         {request.description}
                       </p>
                     </div>
@@ -358,10 +358,10 @@ export function ServiceRequestDetail({ requestId }: ServiceRequestDetailProps) {
               </div>
 
               {/* Right Column - Actions & Notes */}
-              <div className="space-y-6">
+              <div className="p-6 space-y-6">
                 {/* Quick Actions */}
-                <div className="bg-zinc-900/50 rounded-lg border border-zinc-800 p-5">
-                  <h3 className="text-sm font-semibold text-white uppercase tracking-wide mb-4">Quick Actions</h3>
+                <div>
+                  <h3 className="text-sm font-semibold text-white uppercase tracking-wide mb-3">Quick Actions</h3>
                   
                   <div className="space-y-2">
                     <a
@@ -393,9 +393,11 @@ export function ServiceRequestDetail({ requestId }: ServiceRequestDetailProps) {
                   </div>
                 </div>
 
+                <div className="border-t border-zinc-800/50" />
+
                 {/* Internal Notes */}
-                <div className="bg-zinc-900/50 rounded-lg border border-zinc-800 p-5">
-                  <div className="flex items-center gap-2 mb-4">
+                <div>
+                  <div className="flex items-center gap-2 mb-3">
                     <MessageSquare className="w-4 h-4 text-zinc-500" />
                     <h3 className="text-sm font-semibold text-white uppercase tracking-wide">Internal Notes</h3>
                   </div>
@@ -422,9 +424,11 @@ export function ServiceRequestDetail({ requestId }: ServiceRequestDetailProps) {
                   </p>
                 </div>
 
+                <div className="border-t border-zinc-800/50" />
+
                 {/* Workflow Timeline */}
-                <div className="bg-zinc-900/50 rounded-lg border border-zinc-800 p-5">
-                  <div className="flex items-center gap-2 mb-4">
+                <div>
+                  <div className="flex items-center gap-2 mb-3">
                     <Calendar className="w-4 h-4 text-zinc-500" />
                     <h3 className="text-sm font-semibold text-white uppercase tracking-wide">Timeline</h3>
                   </div>

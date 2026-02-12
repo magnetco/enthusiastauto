@@ -38,7 +38,7 @@ export async function getPopularVehicles(
 
     // Fetch recent Current Inventory vehicles
     const vehicles = await getVehicles(
-      { status: 'current' },
+      { currentOnly: true },
       'recent'
     );
 

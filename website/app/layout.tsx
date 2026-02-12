@@ -3,7 +3,6 @@ import { WelcomeToast } from "components/welcome-toast";
 import { SessionProvider } from "lib/auth/SessionProvider";
 import { getCart } from "lib/shopify";
 import { baseUrl } from "lib/utils";
-import { GeistSans } from "geist/font/sans";
 import localFont from "next/font/local";
 import { ReactNode, Suspense } from "react";
 import { Toaster } from "sonner";
@@ -18,6 +17,14 @@ import Footer from "components/layout/footer";
 import "./globals.css";
 
 const isDev = process.env.NODE_ENV === "development";
+
+// Load Figtree for body text
+const figtree = localFont({
+	src: "../fonts/Figtree-VariableFont_wght.ttf",
+	variable: "--font-figtree",
+	display: "swap",
+	weight: "400 600",
+});
 
 // Load Chromatic Gothic for headlines
 const chromaticGothic = localFont({
@@ -52,7 +59,7 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
 	const cart = getCart();
 
 	return (
-		<html lang="en" className={`${GeistSans.variable} ${chromaticGothic.variable}`}>
+		<html lang="en" className={`${figtree.variable} ${chromaticGothic.variable}`}>
 			<body className="bg-white text-black selection:bg-accent/30 selection:text-accent-foreground antialiased">
 				{/* Skip to main content link for keyboard navigation */}
 				<a

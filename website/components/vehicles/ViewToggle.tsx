@@ -16,14 +16,14 @@ interface ViewToggleProps {
  */
 export function ViewToggle({ currentView, onViewChange, className }: ViewToggleProps) {
   const views: Array<{ mode: ViewMode; icon: typeof ListBulletIcon; label: string }> = [
-    { mode: "list", icon: ListBulletIcon, label: "List View" },
-    { mode: "grid", icon: Squares2X2Icon, label: "Grid View" },
-    { mode: "compact", icon: ViewColumnsIcon, label: "Compact View" },
+    { mode: "list", icon: ListBulletIcon, label: "List" },
+    { mode: "grid", icon: Squares2X2Icon, label: "Grid" },
+    { mode: "compact", icon: ViewColumnsIcon, label: "Compact" },
   ];
 
   return (
     <div
-      className={cn("inline-flex rounded-lg border border-gray-200 bg-white p-1", className)}
+      className={cn("inline-flex items-center gap-1 rounded-full bg-gray-100 p-1", className)}
       role="group"
       aria-label="View mode selection"
     >
@@ -32,18 +32,17 @@ export function ViewToggle({ currentView, onViewChange, className }: ViewToggleP
           key={mode}
           onClick={() => onViewChange(mode)}
           className={cn(
-            "flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium transition-all duration-200",
-            "hover:bg-gray-100",
+            "flex items-center gap-1.5 rounded-full px-3 py-1.5 text-sm font-medium transition-all duration-200",
             currentView === mode
-              ? "bg-blue-50 text-blue-600 shadow-sm"
-              : "text-gray-600"
+              ? "bg-white text-gray-900 shadow-sm"
+              : "text-gray-600 hover:text-gray-900"
           )}
-          aria-label={label}
+          aria-label={`${label} View`}
           aria-pressed={currentView === mode}
-          title={label}
+          title={`${label} View`}
         >
-          <Icon className="h-5 w-5" />
-          <span className="hidden sm:inline">{label.replace(" View", "")}</span>
+          <Icon className="h-4 w-4" />
+          <span className="hidden sm:inline">{label}</span>
         </button>
       ))}
     </div>
