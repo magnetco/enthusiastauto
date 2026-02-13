@@ -489,11 +489,49 @@ export function SellRequestWizard() {
                   );
                 })}
               </div>
-            </div>
-          )}
+            ) : (
+              <div className="rounded-xl border border-[#DFE5EA] bg-white p-6">
+                {selectedOption ? (
+                  <div className="flex items-center gap-3">
+                    <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-[#005A90]/10 text-[#005A90]">
+                      {sellOptions.find((o) => o.id === selectedOption)?.icon}
+                    </div>
+                    <div>
+                      <p className="font-medium text-[#282a30]">
+                        {getOptionLabel(selectedOption)}
+                      </p>
+                      <p className="text-sm text-[#6f6e77]">
+                        {sellOptions.find((o) => o.id === selectedOption)?.tagline}
+                      </p>
+                    </div>
+                  </div>
+                ) : (
+                  <p className="text-sm text-[#6f6e77]">No option selected yet</p>
+                )}
+              </div>
+            )}
+          </div>
 
           {/* Step 2: Contact Information */}
-          {currentStep === 2 && (
+          <div className={cn(
+            "mb-12 transition-all duration-300",
+            currentStep !== 2 && "pointer-events-none opacity-40"
+          )}>
+            {currentStep !== 2 && (
+              <div className="mb-4 flex items-center justify-between">
+                <h3 className="font-headline text-xl tracking-wide text-[#282a30]">
+                  STEP 2: CONTACT INFORMATION
+                </h3>
+                <button
+                  type="button"
+                  onClick={() => goToStep(2)}
+                  className="text-sm text-[#005A90] hover:underline"
+                >
+                  Edit
+                </button>
+              </div>
+            )}
+            {currentStep === 2 ? (
             <div className="animate-in fade-in duration-300">
               <div className="mb-12">
                 <TitleBlock
@@ -571,11 +609,52 @@ export function SellRequestWizard() {
                   )}
                 </div>
               </div>
-            </div>
-          )}
+            ) : (
+              <div className="rounded-xl border border-[#DFE5EA] bg-white p-6">
+                {formData.firstName || formData.lastName || formData.email || formData.phone ? (
+                  <div className="grid gap-3 sm:grid-cols-2">
+                    <div>
+                      <p className="text-xs text-[#6f6e77]">Name</p>
+                      <p className="font-medium text-[#282a30]">
+                        {formData.firstName || "—"} {formData.lastName || "—"}
+                      </p>
+                    </div>
+                    <div>
+                      <p className="text-xs text-[#6f6e77]">Phone</p>
+                      <p className="font-medium text-[#282a30]">{formData.phone || "—"}</p>
+                    </div>
+                    <div className="sm:col-span-2">
+                      <p className="text-xs text-[#6f6e77]">Email</p>
+                      <p className="font-medium text-[#282a30]">{formData.email || "—"}</p>
+                    </div>
+                  </div>
+                ) : (
+                  <p className="text-sm text-[#6f6e77]">No contact information entered yet</p>
+                )}
+              </div>
+            )}
+          </div>
 
           {/* Step 3: Vehicle Information */}
-          {currentStep === 3 && (
+          <div className={cn(
+            "mb-12 transition-all duration-300",
+            currentStep !== 3 && "pointer-events-none opacity-40"
+          )}>
+            {currentStep !== 3 && (
+              <div className="mb-4 flex items-center justify-between">
+                <h3 className="font-headline text-xl tracking-wide text-[#282a30]">
+                  STEP 3: VEHICLE INFORMATION
+                </h3>
+                <button
+                  type="button"
+                  onClick={() => goToStep(3)}
+                  className="text-sm text-[#005A90] hover:underline"
+                >
+                  Edit
+                </button>
+              </div>
+            )}
+            {currentStep === 3 ? (
             <div className="animate-in fade-in duration-300">
               <div className="mb-12">
                 <TitleBlock
@@ -671,11 +750,54 @@ export function SellRequestWizard() {
                   </div>
                 </div>
               </div>
-            </div>
-          )}
+            ) : (
+              <div className="rounded-xl border border-[#DFE5EA] bg-white p-6">
+                {formData.year || formData.make || formData.model || formData.mileage || formData.vin ? (
+                  <div className="space-y-3">
+                    <div>
+                      <p className="text-xs text-[#6f6e77]">Vehicle</p>
+                      <p className="font-medium text-[#282a30]">
+                        {formData.year || "—"} {formData.make || "—"} {formData.model || "—"}
+                      </p>
+                    </div>
+                    <div className="grid gap-3 sm:grid-cols-2">
+                      <div>
+                        <p className="text-xs text-[#6f6e77]">Mileage</p>
+                        <p className="font-medium text-[#282a30]">{formData.mileage || "—"}</p>
+                      </div>
+                      <div>
+                        <p className="text-xs text-[#6f6e77]">VIN</p>
+                        <p className="font-mono text-sm text-[#282a30]">{formData.vin?.toUpperCase() || "—"}</p>
+                      </div>
+                    </div>
+                  </div>
+                ) : (
+                  <p className="text-sm text-[#6f6e77]">No vehicle information entered yet</p>
+                )}
+              </div>
+            )}
+          </div>
 
           {/* Step 4: Additional Details */}
-          {currentStep === 4 && (
+          <div className={cn(
+            "mb-12 transition-all duration-300",
+            currentStep !== 4 && "pointer-events-none opacity-40"
+          )}>
+            {currentStep !== 4 && (
+              <div className="mb-4 flex items-center justify-between">
+                <h3 className="font-headline text-xl tracking-wide text-[#282a30]">
+                  STEP 4: ADDITIONAL DETAILS
+                </h3>
+                <button
+                  type="button"
+                  onClick={() => goToStep(4)}
+                  className="text-sm text-[#005A90] hover:underline"
+                >
+                  Edit
+                </button>
+              </div>
+            )}
+            {currentStep === 4 ? (
             <div className="animate-in fade-in duration-300">
               <div className="mb-12">
                 <TitleBlock

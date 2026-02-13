@@ -113,6 +113,7 @@ export interface CompatiblePartsResult {
 
 /**
  * Search for vehicles in inventory or sold vehicles
+ * Uses both fuzzy search and direct filtering for better results
  */
 export async function searchVehicles(
   query: string,
@@ -120,41 +121,105 @@ export async function searchVehicles(
   limit: number = 5,
 ): Promise<VehicleSearchResult> {
   try {
-    // Search all vehicles
-    const results = await searchAll(query, "vehicles", limit * 2); // Fetch more to account for filtering
-
-    // Filter by status
-    const filteredResults = results.filter((result) => {
-      if (status === "all") return true;
-      const vehicle = result.item as VehicleListItem;
-      return vehicle.status === status;
+    const normalizedQuery = query.toLowerCase().trim();
+    
+    // Get all vehicles from Sanity for more reliable searching
+    const allVehicles = await getVehicles(
+      status === "all" ? {} : { status },
+      { field: "_createdAt", direction: "desc" }
+    );
+    
+    // Also run fuzzy search for additional matches
+    const fuzzyResults = await searchAll(query, "vehicles", limit * 3);
+    
+    // Direct text matching on vehicles (more reliable than fuzzy for exact terms)
+    const directMatches = allVehicles.filter((vehicle) => {
+      const searchableText = [
+        vehicle.listingTitle,
+        vehicle.chassis,
+        vehicle.vin || "",
+        vehicle.status,
+      ].join(" ").toLowerCase();
+      
+      // Check if query terms are in the searchable text
+      const queryTerms = normalizedQuery.split(/\s+/);
+      return queryTerms.every(term => searchableText.includes(term));
     });
+    
+    // Combine results, prioritizing direct matches
+    const directMatchSlugs = new Set(directMatches.map(v => v.slug.current));
+    const fuzzyMatchVehicles = fuzzyResults
+      .filter(r => {
+        const vehicle = r.item as VehicleListItem;
+        // Filter by status if needed
+        if (status !== "all" && vehicle.status !== status) return false;
+        // Exclude already matched vehicles
+        return !directMatchSlugs.has(vehicle.slug.current);
+      })
+      .map(r => r.item as VehicleListItem);
+    
+    // Merge: direct matches first, then fuzzy matches
+    const combinedVehicles = [...directMatches, ...fuzzyMatchVehicles].slice(0, limit);
 
-    // Limit results
-    const limitedResults = filteredResults.slice(0, limit);
-
-    // Format results
-    const formattedResults = limitedResults.map((result) => {
-      const vehicle = result.item as VehicleListItem;
-      return {
-        title: vehicle.listingTitle,
-        slug: vehicle.slug.current,
-        chassis: vehicle.chassis,
-        price: vehicle.showCallForPrice
-          ? "Call for price"
-          : `$${vehicle.listingPrice?.toLocaleString()}`,
-        status: vehicle.status,
-        url: `/vehicles/${vehicle.slug.current}`,
-        mileage: vehicle.mileage,
-      };
-    });
+    // Format results with full URLs
+    const formattedResults = combinedVehicles.map((vehicle) => ({
+      title: vehicle.listingTitle,
+      slug: vehicle.slug.current,
+      chassis: vehicle.chassis,
+      price: vehicle.showCallForPrice
+        ? "Call for price"
+        : `$${vehicle.listingPrice?.toLocaleString()}`,
+      status: vehicle.status,
+      url: `https://enthusiastauto.com/vehicles/${vehicle.slug.current}`,
+      mileage: vehicle.mileage,
+    }));
 
     return {
       results: formattedResults,
       count: formattedResults.length,
+      totalAvailable: allVehicles.filter(v => v.status === "current").length,
     };
   } catch (error) {
     console.error("Error searching vehicles:", error);
+    return { results: [], count: 0 };
+  }
+}
+
+/**
+ * List all vehicles in inventory with optional filtering
+ */
+export async function listAllVehicles(
+  status: "current" | "sold" | "all" = "current",
+  chassis?: string,
+  limit: number = 10,
+): Promise<VehicleSearchResult> {
+  try {
+    const filters: any = {};
+    if (status !== "all") filters.status = status;
+    if (chassis) filters.chassis = chassis.toUpperCase();
+    
+    const vehicles = await getVehicles(filters, { field: "_createdAt", direction: "desc" });
+    const limitedVehicles = vehicles.slice(0, limit);
+    
+    const formattedResults = limitedVehicles.map((vehicle) => ({
+      title: vehicle.listingTitle,
+      slug: vehicle.slug.current,
+      chassis: vehicle.chassis,
+      price: vehicle.showCallForPrice
+        ? "Call for price"
+        : `$${vehicle.listingPrice?.toLocaleString()}`,
+      status: vehicle.status,
+      url: `https://enthusiastauto.com/vehicles/${vehicle.slug.current}`,
+      mileage: vehicle.mileage,
+    }));
+
+    return {
+      results: formattedResults,
+      count: formattedResults.length,
+      totalAvailable: vehicles.length,
+    };
+  } catch (error) {
+    console.error("Error listing vehicles:", error);
     return { results: [], count: 0 };
   }
 }
