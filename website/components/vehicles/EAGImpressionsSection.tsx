@@ -1,5 +1,6 @@
 import type { VehicleDetail } from "@/lib/sanity/queries/vehicles";
 import { TitleBlock } from "@/components/shared/TitleBlock";
+import { sanitizeHtml } from "@/lib/utils/sanitize";
 
 interface EAGImpressionsSectionProps {
   vehicle: VehicleDetail;
@@ -16,9 +17,10 @@ export function EAGImpressionsSection({ vehicle }: EAGImpressionsSectionProps) {
         <TitleBlock title="EAG Impressions" id="eag-impressions-title" className="mb-12" />
 
         <div className="mx-auto max-w-4xl">
-          <div className="whitespace-pre-wrap text-base leading-relaxed text-gray-700">
-            {vehicle.history}
-          </div>
+          <div 
+            className="prose prose-gray max-w-none text-base leading-relaxed"
+            dangerouslySetInnerHTML={{ __html: sanitizeHtml(vehicle.history) }}
+          />
         </div>
       </div>
     </section>

@@ -40,8 +40,13 @@ export function DesktopNavbar() {
               {/* Brand Icon placeholder - would contain the complex SVG from Figma */}
               <div className="w-8 h-8 bg-foreground rounded-sm opacity-20" />
             </div>
-            <span className="text-xl font-bold text-foreground tracking-wider uppercase">
-              ENTHUSIAST AUTO
+            <span className="flex flex-col leading-none">
+              <span className="text-base font-bold text-foreground tracking-wider uppercase">
+                ENTHUSIAST AUTO GROUP
+              </span>
+              <span className="text-[0.6rem] font-bold text-[#7AC0EA] tracking-wider uppercase">
+                SINCE 2015
+              </span>
             </span>
           </Link>
         </div>

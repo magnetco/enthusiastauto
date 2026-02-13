@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -9,102 +6,55 @@ datasource db {
   provider = "postgresql"
 }
 
-// NextAuth.js Models
-// Ref: https://authjs.dev/getting-started/adapters/prisma
-
-model User {
-  id                String              @id @default(cuid())
-  name              String?
-  email             String              @unique
-  emailVerified     DateTime?
-  password          String?             // For credentials login
-  image             String?
-  addresses         Json?               @db.JsonB
-  accounts          Account[]
-  sessions          Session[]
-  favorites         UserFavorite[]
-  chatConversations ChatConversation[]
-  createdAt         DateTime            @default(now())
-  updatedAt         DateTime            @updatedAt
-
-  @@index([email])
-}
-
 model Account {
-  id                String  @id @default(cuid())
+  id                String  @id
   userId            String
   type              String
   provider          String
   providerAccountId String
-  refresh_token     String? @db.Text
-  access_token      String? @db.Text
+  refresh_token     String?
+  access_token      String?
   expires_at        Int?
   token_type        String?
   scope             String?
-  id_token          String? @db.Text
+  id_token          String?
   session_state     String?
-  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  User              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
 }
 
-model Session {
-  id           String   @id @default(cuid())
-  sessionToken String   @unique
-  userId       String
-  expires      DateTime
-  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+model ChatConversation {
+  id          String        @id
+  userId      String?
+  sessionId   String?
+  title       String?
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime
+  User        User?         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  ChatMessage ChatMessage[]
 
-  @@index([sessionToken])
-}
-
-model VerificationToken {
-  identifier String
-  token      String   @unique
-  expires    DateTime
-
-  @@unique([identifier, token])
-}
-
-// User Favorites (Garage)
-model UserFavorite {
-  id         String   @id @default(cuid())
-  userId     String
-  itemId     String   // Vehicle slug or Product ID
-  itemType   String   // "vehicle" or "product"
-  itemHandle String?  // Slug/handle for the item
-  createdAt  DateTime @default(now())
-  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  @@unique([userId, itemId, itemType])
+  @@index([sessionId])
+  @@index([updatedAt])
   @@index([userId])
 }
 
-// Service Requests
-model ServiceRequest {
-  id              String   @id @default(cuid())
-  serviceType     String
-  name            String
-  email           String
-  phone           String
-  vehicleYear     String
-  vehicleMake     String
-  vehicleModel    String
-  vin             String?
-  description     String
-  existingCustomer Boolean  @default(false)
-  status          String   @default("pending")
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
+model ChatMessage {
+  id               String           @id
+  conversationId   String
+  role             String
+  content          String
+  toolCalls        Json?
+  metadata         Json?
+  createdAt        DateTime         @default(now())
+  ChatConversation ChatConversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
 
-  @@index([email])
-  @@index([status])
+  @@index([conversationId])
   @@index([createdAt])
 }
 
-// Sell Submissions (Sell/Consign/Auction inquiries)
 model SellSubmission {
-  id               String   @id @default(cuid())
+  id               String   @id
   firstName        String
   lastName         String
   phone            String
@@ -115,47 +65,98 @@ model SellSubmission {
   mileage          String
   vin              String
   notes            String?
-  sellOption       String   @default("sell") // "sell", "consign", or "auction"
+  sellOption       String   @default("sell")
   existingCustomer Boolean  @default(false)
   newsletter       Boolean  @default(false)
-  status           String   @default("pending") // "pending", "contacted", "completed", "cancelled"
+  status           String   @default("pending")
   createdAt        DateTime @default(now())
-  updatedAt        DateTime @updatedAt
+  updatedAt        DateTime
 
+  @@index([createdAt])
+  @@index([email])
+  @@index([sellOption])
+  @@index([status])
+}
+
+model ServiceRequest {
+  id               String   @id
+  serviceType      String
+  name             String
+  email            String
+  phone            String
+  vehicleYear      String
+  vehicleMake      String
+  vehicleModel     String
+  vin              String?
+  description      String
+  existingCustomer Boolean  @default(false)
+  status           String   @default("pending")
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime
+
+  @@index([createdAt])
   @@index([email])
   @@index([status])
-  @@index([createdAt])
-  @@index([sellOption])
 }
 
-// Chat Conversations
-model ChatConversation {
-  id        String        @id @default(cuid())
-  userId    String?       // Nullable for guest sessions
-  sessionId String?       // For guest users (IP-based or cookie)
-  title     String?       // Auto-generated from first message
-  messages  ChatMessage[]
-  createdAt DateTime      @default(now())
-  updatedAt DateTime      @updatedAt
+model Session {
+  id           String   @id
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  User         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  user User? @relation(fields: [userId], references: [id], onDelete: Cascade)
+  @@index([sessionToken])
+}
 
+model User {
+  id               String             @id
+  name             String?
+  email            String             @unique
+  emailVerified    DateTime?
+  password         String?
+  image            String?
+  createdAt        DateTime           @default(now())
+  updatedAt        DateTime
+  addresses        Json?
+  Account          Account[]
+  ChatConversation ChatConversation[]
+  Session          Session[]
+  UserFavorite     UserFavorite[]
+
+  @@index([email])
+}
+
+model UserFavorite {
+  id         String   @id
+  userId     String
+  itemType   String
+  itemId     String
+  createdAt  DateTime @default(now())
+  itemHandle String?
+  User       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, itemId, itemType])
   @@index([userId])
-  @@index([sessionId])
-  @@index([updatedAt])
 }
 
-model ChatMessage {
-  id             String           @id @default(cuid())
-  conversationId String
-  role           String           // "user" | "assistant" | "system"
-  content        String           @db.Text
-  toolCalls      Json?            @db.JsonB // Store tool calls/results
-  metadata       Json?            @db.JsonB // Model, tokens, latency
-  createdAt      DateTime         @default(now())
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
 
-  conversation ChatConversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  @@unique([identifier, token])
+}
 
-  @@index([conversationId])
-  @@index([createdAt])
+model DataVersions {
+  id         Int       @id @default(autoincrement())
+  table_name String
+  record_id  String
+  field_name String
+  old_value  String?
+  new_value  String?
+  changed_at DateTime? @default(now()) @db.Timestamp(6)
+  changed_by String?   @default("admin")
+
+  @@map("_DataVersions")
 }

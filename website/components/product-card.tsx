@@ -81,21 +81,21 @@ export function ProductCard({ product, vehicle = null }: ProductCardProps) {
       className="group block h-full"
       aria-label={`View details for ${product.title}`}
     >
-      <article className="h-full flex flex-col bg-white rounded-2xl overflow-hidden transition-all duration-300 ease-out hover:shadow-[0_8px_30px_rgba(0,0,0,0.08)] border border-[#DFE5EA] hover:border-[#CCCCCC]">
+      <article className="h-full flex flex-col bg-white rounded-lg overflow-hidden transition-all duration-200 border border-gray-200 hover:shadow-lg hover:border-gray-300">
         {/* Image Container */}
-        <div className="relative aspect-[4/3] overflow-hidden bg-gradient-to-br from-[#f8f8f8] to-[#f0f0f0]">
+        <div className="relative aspect-[4/3] overflow-hidden bg-gray-100">
           {imageUrl ? (
             <Image
               src={imageUrl}
               alt={imageAlt}
               fill
               sizes="(min-width: 1024px) 25vw, (min-width: 768px) 33vw, (min-width: 640px) 50vw, 100vw"
-              className="object-cover transition-transform duration-500 ease-out group-hover:scale-[1.03]"
+              className="object-cover transition-transform duration-300 group-hover:scale-105"
               loading="lazy"
             />
           ) : (
             <div className="flex h-full w-full items-center justify-center">
-              <div className="text-[#CCCCCC]">
+              <div className="text-gray-300">
                 <svg className="w-12 h-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                 </svg>
@@ -103,13 +103,10 @@ export function ProductCard({ product, vehicle = null }: ProductCardProps) {
             </div>
           )}
 
-          {/* Gradient overlay for text readability on hover */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-
           {/* Stock status badge */}
           {!isInStock && (
             <div className="absolute top-3 left-3">
-              <span className="inline-flex items-center px-2.5 py-1 rounded-full text-[10px] font-semibold uppercase tracking-wide bg-[#141721]/90 text-white backdrop-blur-sm">
+              <span className="inline-flex items-center px-3 py-1.5 rounded-md text-xs font-semibold uppercase tracking-wide bg-gray-900/90 text-white backdrop-blur-sm">
                 Sold Out
               </span>
             </div>
@@ -122,58 +119,65 @@ export function ProductCard({ product, vehicle = null }: ProductCardProps) {
               e.stopPropagation();
               toast("Added to wishlist", { duration: 2000 });
             }}
-            className="absolute top-3 right-3 w-8 h-8 rounded-full bg-white/90 backdrop-blur-sm flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-200 hover:bg-white hover:scale-110 shadow-sm"
+            className="absolute top-3 right-3 w-9 h-9 rounded-full bg-white/95 backdrop-blur-sm flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-200 hover:bg-white hover:scale-105 shadow-sm"
             aria-label="Add to wishlist"
           >
-            <HeartIcon className="w-4 h-4 text-[#6f6e77]" />
+            <HeartIcon className="w-5 h-5 text-gray-600" />
           </button>
-
-          {/* Add to Cart - slides up on hover */}
-          {isInStock && (
-            <button
-              onClick={handleAddToCart}
-              aria-label={`Add ${product.title} to cart`}
-              className="absolute bottom-0 left-0 right-0 py-3 px-4 bg-[#141721] text-white text-sm font-medium flex items-center justify-center gap-2 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out hover:bg-[#1f2233]"
-            >
-              <ShoppingCartIcon className="w-4 h-4" aria-hidden="true" />
-              Add to Cart
-            </button>
-          )}
         </div>
 
         {/* Content */}
-        <div className="flex-1 p-4 flex flex-col">
-          {/* Vendor */}
-          <span className="text-[11px] font-semibold uppercase tracking-wider text-[#005A90] mb-1.5">
-            {product.vendor}
-          </span>
+        <div className="flex-1 p-6 flex flex-col">
+          {/* Vendor Badge */}
+          <div className="mb-3">
+            <span className="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-semibold uppercase tracking-wide bg-blue-50 text-blue-600 border border-blue-100">
+              {product.vendor}
+            </span>
+          </div>
 
           {/* Title */}
-          <h3 className="text-[15px] font-medium leading-snug text-[#1f2233] line-clamp-2 mb-auto group-hover:text-[#141721] transition-colors duration-200">
+          <h3 className="text-base font-bold text-gray-900 line-clamp-2 mb-4 group-hover:text-blue-600 transition-colors duration-200">
             {product.title}
           </h3>
 
-          {/* Price & Fitment */}
-          <div className="mt-3 pt-3 border-t border-[#DFE5EA] flex items-center justify-between gap-2">
-            <Price
-              amount={product.priceRange.minVariantPrice.amount}
-              currencyCode={product.priceRange.minVariantPrice.currencyCode}
-              className="text-lg font-bold text-[#1f2233] tabular-nums"
-            />
+          {/* Divider */}
+          <div className="border-t border-gray-200 mb-4" />
 
-            {showFitmentBadge && (
-              <div className="shrink-0">
-                {fitmentStatus === "compatible" && (
-                  <FitmentBadge
-                    variant="compatible"
-                    modelName={filters.vehicle?.model}
-                    year={filters.vehicle?.year}
-                  />
-                )}
-                {fitmentStatus === "universal" && (
-                  <FitmentBadge variant="check-fitment" />
-                )}
-              </div>
+          {/* Price & Actions */}
+          <div className="mt-auto space-y-3">
+            <div className="flex items-center justify-between gap-2">
+              <Price
+                amount={product.priceRange.minVariantPrice.amount}
+                currencyCode={product.priceRange.minVariantPrice.currencyCode}
+                className="text-lg font-bold text-blue-600 tabular-nums"
+              />
+
+              {showFitmentBadge && (
+                <div className="shrink-0">
+                  {fitmentStatus === "compatible" && (
+                    <FitmentBadge
+                      variant="compatible"
+                      modelName={filters.vehicle?.model}
+                      year={filters.vehicle?.year}
+                    />
+                  )}
+                  {fitmentStatus === "universal" && (
+                    <FitmentBadge variant="check-fitment" />
+                  )}
+                </div>
+              )}
+            </div>
+
+            {/* Add to Cart Button */}
+            {isInStock && (
+              <button
+                onClick={handleAddToCart}
+                aria-label={`Add ${product.title} to cart`}
+                className="w-full py-2.5 px-4 bg-gray-900 text-white text-sm font-semibold rounded-md flex items-center justify-center gap-2 hover:bg-gray-800 transition-colors duration-200"
+              >
+                <ShoppingCartIcon className="w-4 h-4" aria-hidden="true" />
+                Add to Cart
+              </button>
             )}
           </div>
         </div>

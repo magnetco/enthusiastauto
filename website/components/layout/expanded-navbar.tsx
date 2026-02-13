@@ -54,9 +54,14 @@ export function ExpandedNavbar() {
 
       {/* Logo Section */}
       <div className="absolute h-[40px] left-[174px] top-[35px] w-[358px]">
-        <p className="absolute font-['Chromatic_Trial:Gothic_Medium',_sans-serif] inset-[22.5%_-26.82%_15%_24.3%] leading-[1.2] not-italic text-[#ebf1f5] text-[23px] tracking-[0.92px] uppercase">
-          ENTHUSIAST AUTO
-        </p>
+        <div className="absolute inset-[22.5%_-26.82%_15%_24.3%] flex flex-col leading-none">
+          <p className="font-['Chromatic_Trial:Gothic_Medium',_sans-serif] not-italic text-[#ebf1f5] text-[18px] tracking-[0.72px] uppercase">
+            ENTHUSIAST AUTO GROUP
+          </p>
+          <p className="font-['Chromatic_Trial:Gothic_Medium',_sans-serif] not-italic text-[#7AC0EA] text-[11px] tracking-[0.44px] uppercase">
+            SINCE 2015
+          </p>
+        </div>
         {/* Brand Icon - Complex SVG structure would go here */}
         <div className="absolute bottom-[0.7%] left-0 right-[79.16%] top-0">
           {/* This would contain the complex brand icon from Figma */}

@@ -19,6 +19,7 @@ import {
   BookOpen,
   Mail,
   ChevronDown,
+  Layers,
 } from "lucide-react";
 
 interface ServiceStatus {
@@ -158,6 +159,7 @@ export function DevModePopout() {
   const [isOpen, setIsOpen] = useState(false);
   const [status, setStatus] = useState<ServiceStatus | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [hierarchyVisualizerEnabled, setHierarchyVisualizerEnabled] = useState(false);
 
   const fetchStatus = useCallback(async () => {
     setIsLoading(true);
@@ -189,12 +191,12 @@ export function DevModePopout() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 10, scale: 0.95 }}
             transition={{ duration: 0.2 }}
-            className="absolute bottom-16 right-0 w-80 rounded-xl border border-white/10 bg-[#141721] shadow-high"
+            className="absolute bottom-16 right-0 w-80 rounded-xl border border-white/10 bg-bg-primary shadow-high"
           >
             {/* Header */}
             <div className="flex items-center justify-between border-b border-white/10 px-4 py-3">
               <div className="flex items-center gap-2">
-                <div className="flex h-6 w-6 items-center justify-center rounded-lg bg-gradient-to-br from-blue-500 to-purple-600">
+                <div className="flex h-6 w-6 items-center justify-center rounded-lg bg-linear-to-br from-blue-500 to-purple-600">
                   <Code2 className="h-3.5 w-3.5 text-white" />
                 </div>
                 <span className="text-sm font-semibold text-white">Dev Tools</span>
@@ -286,6 +288,53 @@ export function DevModePopout() {
                 </div>
               </div>
 
+              {/* Debug Tools */}
+              <div className="border-b border-white/5 p-4">
+                <div className="mb-3 text-xs font-medium uppercase tracking-wider text-white/50">
+                  Debug Tools
+                </div>
+                <div className="space-y-2">
+                  {/* Component Hierarchy Visualizer */}
+                  <button
+                    onClick={() => {
+                      setHierarchyVisualizerEnabled(!hierarchyVisualizerEnabled);
+                      // Trigger the keyboard shortcut to toggle the visualizer
+                      window.dispatchEvent(
+                        new KeyboardEvent("keydown", {
+                          key: "h",
+                          metaKey: true,
+                          bubbles: true,
+                        })
+                      );
+                    }}
+                    className={`flex w-full items-center justify-between rounded-lg px-3 py-2 transition-colors ${
+                      hierarchyVisualizerEnabled
+                        ? "bg-blue-500/20 text-blue-400"
+                        : "bg-white/5 text-white/80 hover:bg-white/10"
+                    }`}
+                  >
+                    <div className="flex items-center gap-2">
+                      <div
+                        className={`flex h-5 w-5 items-center justify-center rounded ${
+                          hierarchyVisualizerEnabled ? "bg-blue-500/30" : "bg-white/10"
+                        }`}
+                      >
+                        <Layers className="h-3 w-3" />
+                      </div>
+                      <span className="text-xs">Component Hierarchy</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <span className="text-[10px] opacity-60">⌘H</span>
+                      <div
+                        className={`h-2 w-2 rounded-full ${
+                          hierarchyVisualizerEnabled ? "bg-blue-400" : "bg-white/20"
+                        }`}
+                      />
+                    </div>
+                  </button>
+                </div>
+              </div>
+
               {/* Sitemap */}
               <div className="p-4">
                 <div className="mb-2 text-xs font-medium uppercase tracking-wider text-white/50">
@@ -310,13 +359,13 @@ export function DevModePopout() {
       {!isOpen && (
         <button
           onClick={() => setIsOpen(true)}
-          className="group flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-blue-500 to-purple-600 text-white shadow-high transition-all duration-200 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-[#0a0c10]"
+          className="group flex h-14 w-14 items-center justify-center rounded-full bg-linear-to-br from-blue-500 to-purple-600 text-white shadow-high transition-all duration-200 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-bg-dark-blue-primary"
           aria-label="Open dev tools"
         >
           <Code2 className="h-6 w-6" />
 
           {/* Tooltip */}
-          <span className="absolute bottom-full right-0 mb-2 hidden whitespace-nowrap rounded-lg bg-[#141721] px-3 py-2 text-sm text-white shadow-medium group-hover:block">
+          <span className="absolute bottom-full right-0 mb-2 hidden whitespace-nowrap rounded-lg bg-bg-primary px-3 py-2 text-sm text-white shadow-medium group-hover:block">
             Dev Tools
           </span>
         </button>

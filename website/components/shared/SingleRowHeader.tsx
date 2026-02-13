@@ -37,13 +37,18 @@ export function SingleRowHeader() {
             isScrolled ? "text-white" : "text-white"
           )}
         />
-        <span
-          className={cn(
-            "hidden font-headline text-xl font-semibold transition-colors duration-300 sm:inline",
-            isScrolled ? "text-white" : "text-white"
-          )}
-        >
-          ENTHUSIAST AUTO
+        <span className="hidden flex-col leading-none sm:flex">
+          <span
+            className={cn(
+              "font-headline text-base font-semibold transition-colors duration-300",
+              isScrolled ? "text-white" : "text-white"
+            )}
+          >
+            ENTHUSIAST AUTO GROUP
+          </span>
+          <span className="font-headline text-[0.6rem] font-semibold text-[#7AC0EA]">
+            SINCE 2015
+          </span>
         </span>
       </Link>
 

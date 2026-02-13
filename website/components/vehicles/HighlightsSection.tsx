@@ -31,7 +31,7 @@ export function HighlightsSection({ vehicle }: HighlightsSectionProps) {
                 components={{
                   block: {
                     normal: ({ children }) => (
-                      <p className="text-sm leading-relaxed text-gray-700">
+                      <p className="text-base leading-relaxed text-gray-700">
                         {children}
                       </p>
                     ),
@@ -55,12 +55,12 @@ export function HighlightsSection({ vehicle }: HighlightsSectionProps) {
                   },
                   list: {
                     bullet: ({ children }) => (
-                      <ul className="list-disc space-y-2 pl-5 text-sm text-gray-700">
+                      <ul className="list-disc space-y-2 pl-5 text-base text-gray-700">
                         {children}
                       </ul>
                     ),
                     number: ({ children }) => (
-                      <ol className="list-decimal space-y-2 pl-5 text-sm text-gray-700">
+                      <ol className="list-decimal space-y-2 pl-5 text-base text-gray-700">
                         {children}
                       </ol>
                     ),
@@ -72,7 +72,7 @@ export function HighlightsSection({ vehicle }: HighlightsSectionProps) {
 
           {/* Image Column */}
           {highlightImage && (
-            <div className="relative aspect-[4/3] overflow-hidden rounded-lg bg-gray-200">
+            <div className="relative aspect-4/3 overflow-hidden rounded-lg bg-gray-200">
               <Image
                 src={highlightImage}
                 alt={`${vehicle.listingTitle} - Highlights`}

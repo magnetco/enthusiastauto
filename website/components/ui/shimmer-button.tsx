@@ -108,6 +108,8 @@ export function ShimmerButton({
         "inline-flex items-center justify-center gap-2 whitespace-nowrap font-headline text-[11px] transition-all outline-none focus-visible:ring-2 focus-visible:ring-[#5e6ad2] focus-visible:ring-offset-2 shrink-0",
         "h-12 font-semibold",
         "group relative overflow-hidden rounded-full",
+        // Add backdrop blur for secondary variant
+        isSecondary && "backdrop-blur-md",
         className
       )}
       style={{
@@ -116,13 +118,12 @@ export function ShimmerButton({
             ? "conic-gradient(from var(--gradient-angle, 0deg), #026AA2 0%, #529BCA 33%, #F90020 66%, #026AA2 100%)"
             : "#0a0c10"
           : showBorder
-            ? isHeroHovered 
-              ? "conic-gradient(from var(--gradient-angle, 0deg), #026AA2 0%, #529BCA 33%, #F90020 66%, #026AA2 100%)"
-              : "#ffffff"
+            ? "conic-gradient(from var(--gradient-angle, 0deg), #026AA2 0%, #529BCA 33%, #F90020 66%, #026AA2 100%)"
             : shimmerStyle.background 
-              ? `${shimmerStyle.background}, #141721`
-              : "#141721",
+              ? `${shimmerStyle.background}, rgba(255, 255, 255, 0.1)`
+              : "rgba(255, 255, 255, 0.1)",
         padding: "2px",
+        border: isSecondary ? "2px solid rgba(255, 255, 255, 0.2)" : undefined,
       }}
       {...props}
     >
@@ -148,7 +149,14 @@ export function ShimmerButton({
           {children}
         </span>
       ) : (
-        <span className="relative z-10 flex h-full w-full items-center justify-center gap-2 rounded-full px-8 text-white">
+        <span 
+          className="relative z-10 flex h-full w-full items-center justify-center gap-2 rounded-full px-8 text-white backdrop-blur-md"
+          style={{
+            background: shimmerStyle.background 
+              ? `${shimmerStyle.background}, rgba(255, 255, 255, 0.3)`
+              : "rgba(255, 255, 255, 0.3)",
+          }}
+        >
           {children}
         </span>
       )}
@@ -171,7 +179,7 @@ export function ShimmerButton({
         }
 
         a {
-          animation: ${isHeroHovered ? "shimmer-rotate 3.5s linear infinite" : "none"};
+          animation: ${showBorder || isHeroHovered || isSecondary ? "shimmer-rotate 3.5s linear infinite" : "none"};
           will-change: auto;
         }
 

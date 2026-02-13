@@ -18,6 +18,7 @@ import { getVehiclesWithPart } from "@/lib/shared/recommendations";
 import { Badge } from "@/components/ui/badge";
 import Price from "@/components/price";
 import { TitleBlock } from "@/components/shared/TitleBlock";
+import { sanitizeHtml } from "@/lib/utils/sanitize";
 
 export async function generateMetadata(props: {
   params: Promise<{ handle: string }>;
@@ -217,7 +218,7 @@ function ProductDetails({ product }: { product: Product }) {
       </h2>
       <div
         className="prose prose-neutral max-w-none prose-headings:font-semibold prose-p:text-neutral-600 prose-li:text-neutral-600"
-        dangerouslySetInnerHTML={{ __html: product.descriptionHtml }}
+        dangerouslySetInnerHTML={{ __html: sanitizeHtml(product.descriptionHtml) }}
       />
     </div>
   );

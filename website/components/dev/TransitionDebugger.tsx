@@ -42,7 +42,7 @@ export function TransitionDebugger() {
 	}
 
 	return (
-		<div className="fixed bottom-4 right-4 z-9999 pointer-events-none">
+		<div className="fixed bottom-4 right-4 z-50 pointer-events-none">
 			<div
 				className={`
 					rounded-lg border-2 px-3 py-2 text-xs font-mono shadow-lg transition-all duration-300

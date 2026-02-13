@@ -14,6 +14,7 @@ import { ClientProviders } from "components/layout/ClientProviders";
 import { DevModePopout } from "components/dev/DevModePopout";
 import { GridOverlay } from "components/dev/GridOverlay";
 import { TransitionDebugger } from "components/dev/TransitionDebugger";
+import { ComponentHierarchyVisualizer } from "components/dev/ComponentHierarchyVisualizer";
 import { ChatWidget } from "components/chat/ChatWidget";
 import Footer from "components/layout/footer";
 import "./globals.css";
@@ -87,6 +88,7 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
 									{isDev && <DevModePopout />}
 									{isDev && <GridOverlay />}
 									{isDev && <TransitionDebugger />}
+									{isDev && <ComponentHierarchyVisualizer />}
 								</MobileMenuProvider>
 							</ClientProviders>
 						</Suspense>

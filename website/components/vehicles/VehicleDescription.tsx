@@ -1,5 +1,6 @@
 import { PortableText, type PortableTextComponents } from "@portabletext/react";
 import type { VehicleDetail } from "@/lib/sanity/queries/vehicles";
+import { sanitizeHtml } from "@/lib/utils/sanitize";
 
 interface VehicleDescriptionProps {
   vehicle: VehicleDetail;
@@ -74,7 +75,10 @@ export function VehicleDescription({ vehicle }: VehicleDescriptionProps) {
       {vehicle.history && (
         <div className="rounded-lg border border-gray-800 bg-gray-900 p-6">
           <h2 className="mb-4 text-xl font-semibold text-white">History</h2>
-          <p className="whitespace-pre-wrap text-gray-300">{vehicle.history}</p>
+          <div 
+            className="prose prose-invert max-w-none text-gray-300"
+            dangerouslySetInnerHTML={{ __html: sanitizeHtml(vehicle.history) }}
+          />
         </div>
       )}
     </div>

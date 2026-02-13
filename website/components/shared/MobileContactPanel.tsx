@@ -43,8 +43,13 @@ export function MobileContactPanel() {
                 className="flex items-center gap-2"
               >
                 <FlagIcon className="h-8 w-auto" />
-                <span className="text-base font-semibold tracking-wide text-white">
-                  ENTHUSIAST AUTO
+                <span className="flex flex-col leading-none">
+                  <span className="font-headline text-sm font-semibold tracking-wide text-white">
+                    ENTHUSIAST AUTO GROUP
+                  </span>
+                  <span className="font-headline text-[0.5rem] font-semibold text-[#7AC0EA]">
+                    SINCE 2015
+                  </span>
                 </span>
               </Link>
               <button

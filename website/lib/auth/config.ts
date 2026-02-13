@@ -20,6 +20,7 @@ export const authConfig: NextAuthConfig = {
           scope: "openid email profile",
         },
       },
+      allowDangerousEmailAccountLinking: true,
     }),
     // Optional: Add Facebook OAuth later if needed
     // FacebookProvider({
@@ -69,7 +70,7 @@ export const authConfig: NextAuthConfig = {
     }),
   ],
   session: {
-    strategy: "jwt",
+    strategy: "database",
     maxAge: 30 * 24 * 60 * 60, // 30 days
   },
   pages: {
@@ -103,27 +104,13 @@ export const authConfig: NextAuthConfig = {
       }
       return true;
     },
-    async jwt({ token, user, account, profile }) {
-      if (user) {
-        token.id = user.id;
-      }
-      // Include OAuth provider info in JWT
-      if (account && profile) {
-        token.provider = account.provider;
-        token.picture = profile.image || (profile as any).picture;
-      }
-      return token;
-    },
-    async session({ session, token }) {
-      if (session.user) {
-        session.user.id = token.id as string;
-        // Pass provider and profile image to client session
-        if (token.provider) {
-          (session.user as any).provider = token.provider;
-        }
-        if (token.picture) {
-          session.user.image = token.picture as string;
-        }
+    async session({ session, user }) {
+      // With database sessions, user comes from the database
+      if (session.user && user) {
+        session.user.id = user.id;
+        session.user.email = user.email!;
+        session.user.name = user.name;
+        session.user.image = user.image;
       }
       return session;
     },

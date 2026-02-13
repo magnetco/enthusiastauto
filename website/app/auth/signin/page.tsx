@@ -115,127 +115,144 @@ export default function SigninPage() {
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center px-4 py-12">
-      <div className="w-full max-w-md space-y-8">
-        <div className="text-center">
-          <h1 className="text-3xl font-bold tracking-tight">Sign in</h1>
-          <p className="mt-2 text-sm text-muted-foreground">
-            Welcome back to Enthusiast Auto
-          </p>
-        </div>
-
-        <div className="mt-8 space-y-6">
-          {error && (
-            <Alert variant="destructive" aria-live="polite">
-              {error}
-            </Alert>
-          )}
-
-          {success && (
-            <Alert variant="default" aria-live="polite">
-              {success}
-            </Alert>
-          )}
-
-          {/* Social Login Buttons */}
-          <div className="space-y-3">
-            <Button
-              type="button"
-              variant="outline"
-              className="w-full"
-              onClick={() => handleSocialLogin("google")}
-              disabled={isLoading}
-              aria-label="Sign in with Google"
-            >
-              {isLoading && socialProvider === "google" ? (
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-              ) : (
-                <Chrome className="mr-2 h-4 w-4" />
-              )}
-              Sign in with Google
-            </Button>
+    <div className="flex min-h-screen">
+      {/* Left side - Form */}
+      <div className="flex w-full items-center justify-center px-4 py-12 lg:w-1/2 lg:px-8">
+        <div className="w-full max-w-md space-y-8">
+          <div className="text-center">
+            <h1 className="text-3xl font-bold tracking-tight">Sign in</h1>
+            <p className="mt-2 text-sm text-muted-foreground">
+              Welcome back to Enthusiast Auto
+            </p>
           </div>
 
-          {/* Divider */}
-          <div className="relative">
-            <div className="absolute inset-0 flex items-center">
-              <span className="w-full border-t" />
-            </div>
-            <div className="relative flex justify-center text-xs uppercase">
-              <span className="bg-background px-2 text-muted-foreground">
-                Or continue with email
-              </span>
-            </div>
-          </div>
+          <div className="mt-8 space-y-6">
+            {error && (
+              <Alert variant="destructive" aria-live="polite">
+                {error}
+              </Alert>
+            )}
 
-          {/* Email/Password Form */}
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-            <div>
-              <Label htmlFor="email">
-                Email <span className="text-destructive">*</span>
-              </Label>
-              <Input
-                id="email"
-                type="email"
-                autoComplete="email"
-                aria-required="true"
-                aria-invalid={!!errors.email}
-                aria-describedby={errors.email ? "email-error" : undefined}
-                {...register("email")}
-              />
-              {errors.email && (
-                <p id="email-error" className="mt-1 text-sm text-destructive">
-                  {errors.email.message}
-                </p>
-              )}
+            {success && (
+              <Alert variant="default" aria-live="polite">
+                {success}
+              </Alert>
+            )}
+
+            {/* Social Login Buttons */}
+            <div className="space-y-3">
+              <Button
+                type="button"
+                variant="outline"
+                className="w-full"
+                onClick={() => handleSocialLogin("google")}
+                disabled={isLoading}
+                aria-label="Sign in with Google"
+              >
+                {isLoading && socialProvider === "google" ? (
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                ) : (
+                  <Chrome className="mr-2 h-4 w-4" />
+                )}
+                Sign in with Google
+              </Button>
             </div>
 
-            <div>
-              <div className="flex items-center justify-between">
-                <Label htmlFor="password">
-                  Password <span className="text-destructive">*</span>
-                </Label>
-                <Link
-                  href="/auth/reset-password"
-                  className="text-sm font-medium text-primary hover:underline focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
-                >
-                  Forgot password?
-                </Link>
+            {/* Divider */}
+            <div className="relative">
+              <div className="absolute inset-0 flex items-center">
+                <span className="w-full border-t" />
               </div>
-              <Input
-                id="password"
-                type="password"
-                autoComplete="current-password"
-                aria-required="true"
-                aria-invalid={!!errors.password}
-                aria-describedby={errors.password ? "password-error" : undefined}
-                {...register("password")}
-              />
-              {errors.password && (
-                <p id="password-error" className="mt-1 text-sm text-destructive">
-                  {errors.password.message}
-                </p>
-              )}
+              <div className="relative flex justify-center text-xs uppercase">
+                <span className="bg-background px-2 text-muted-foreground">
+                  Or continue with email
+                </span>
+              </div>
             </div>
 
-            <Button
-              type="submit"
-              className="w-full"
-              disabled={isLoading}
-              aria-busy={isLoading}
-            >
-              {isLoading ? "Signing in..." : "Sign in"}
-            </Button>
-          </form>
+            {/* Email/Password Form */}
+            <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+              <div>
+                <Label htmlFor="email">
+                  Email <span className="text-destructive">*</span>
+                </Label>
+                <Input
+                  id="email"
+                  type="email"
+                  autoComplete="email"
+                  aria-required="true"
+                  aria-invalid={!!errors.email}
+                  aria-describedby={errors.email ? "email-error" : undefined}
+                  {...register("email")}
+                />
+                {errors.email && (
+                  <p id="email-error" className="mt-1 text-sm text-destructive">
+                    {errors.email.message}
+                  </p>
+                )}
+              </div>
 
-          <p className="text-center text-sm text-muted-foreground">
-            Don't have an account?{" "}
-            <Link
-              href="/auth/signup"
-              className="font-medium text-primary hover:underline focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
-            >
-              Create account
-            </Link>
+              <div>
+                <div className="flex items-center justify-between">
+                  <Label htmlFor="password">
+                    Password <span className="text-destructive">*</span>
+                  </Label>
+                  <Link
+                    href="/auth/reset-password"
+                    className="text-sm font-medium text-primary hover:underline focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
+                  >
+                    Forgot password?
+                  </Link>
+                </div>
+                <Input
+                  id="password"
+                  type="password"
+                  autoComplete="current-password"
+                  aria-required="true"
+                  aria-invalid={!!errors.password}
+                  aria-describedby={errors.password ? "password-error" : undefined}
+                  {...register("password")}
+                />
+                {errors.password && (
+                  <p id="password-error" className="mt-1 text-sm text-destructive">
+                    {errors.password.message}
+                  </p>
+                )}
+              </div>
+
+              <Button
+                type="submit"
+                className="w-full"
+                disabled={isLoading}
+                aria-busy={isLoading}
+              >
+                {isLoading ? "Signing in..." : "Sign in"}
+              </Button>
+            </form>
+
+            <p className="text-center text-sm text-muted-foreground">
+              Don't have an account?{" "}
+              <Link
+                href="/auth/signup"
+                className="font-medium text-primary hover:underline focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
+              >
+                Create account
+              </Link>
+            </p>
+          </div>
+        </div>
+      </div>
+
+      {/* Right side - Image */}
+      <div className="relative hidden lg:block lg:w-1/2">
+        <div className="absolute inset-0 bg-gradient-to-br from-[#0a0c10] to-[#141721]">
+          <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1555215695-3004980ad54e?q=80&w=2070')] bg-cover bg-center opacity-40" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+        </div>
+        <div className="relative flex h-full flex-col items-center justify-center p-12 text-white">
+          <h2 className="mb-4 text-4xl font-bold">The Leading BMW Preservation Facility</h2>
+          <p className="max-w-md text-center text-lg text-gray-200">
+            Access your garage, track your favorite vehicles, and manage your BMW collection.
           </p>
         </div>
       </div>

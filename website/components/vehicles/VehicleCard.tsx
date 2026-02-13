@@ -33,9 +33,9 @@ export function VehicleCard({ vehicle, priority = false }: VehicleCardProps) {
         isSold ? "opacity-70" : ""
       }`}
     >
-      <Card className="h-full overflow-hidden rounded-lg border border-gray-200 bg-white hover:shadow-lg transition-shadow">
+      <Card className="h-full overflow-hidden rounded-lg border border-gray-200 bg-white hover:shadow-lg hover:border-gray-300 transition-all">
         {/* Image Section */}
-        <div className="relative aspect-4/3 w-full overflow-hidden bg-gray-100">
+        <div className="relative aspect-[4/3] w-full overflow-hidden bg-gray-100">
           <Image
             src={imageUrl}
             alt={vehicle.listingTitle}
@@ -57,17 +57,17 @@ export function VehicleCard({ vehicle, priority = false }: VehicleCardProps) {
           {/* Status Badges - Top Left */}
           <div className="absolute left-3 top-3 flex flex-wrap gap-2">
             {vehicle.statusTag === "SALE PENDING" && (
-              <Badge className="bg-red-600 text-white hover:bg-red-700">
+              <Badge className="bg-red-600 text-white hover:bg-red-700 rounded-md">
                 SALE PENDING
               </Badge>
             )}
             {vehicle.featuredVehicle && (
-              <Badge className="bg-blue-600 text-white hover:bg-blue-700">
+              <Badge className="bg-blue-600 text-white hover:bg-blue-700 rounded-md">
                 FEATURED
               </Badge>
             )}
             {vehicle.statusTag === "EAG SIGNATURE" && (
-              <Badge variant="outline" className="border-blue-500 bg-blue-50 text-blue-600">
+              <Badge variant="outline" className="border-blue-500 bg-blue-50 text-blue-600 rounded-md">
                 EAG SIGNATURE
               </Badge>
             )}
@@ -76,79 +76,74 @@ export function VehicleCard({ vehicle, priority = false }: VehicleCardProps) {
 
         {/* Card Content */}
         <CardContent className="p-6">
-          <div className="space-y-4">
-            {/* Vehicle Title and Price */}
-            <div className="flex items-start justify-between gap-4">
-              <h3 className="text-lg font-bold text-gray-900 group-hover:text-blue-600">
-                {vehicle.listingTitle}
-              </h3>
-              <p className="whitespace-nowrap text-lg font-bold text-blue-600">
-                {formatCurrency(vehicle.listingPrice, vehicle.showCallForPrice)}
-              </p>
+          <div className="space-y-3">
+            {/* Chassis Badge */}
+            <div>
+              <span className="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-semibold uppercase tracking-wide bg-gray-100 text-gray-700">
+                {vehicle.chassis}
+              </span>
             </div>
 
-            {/* Color Information */}
-            {colorInfo && (
-              <p className="text-sm text-gray-600">{colorInfo}</p>
-            )}
+            {/* Vehicle Title */}
+            <h3 className="text-base font-bold text-gray-900 group-hover:text-blue-600 transition-colors line-clamp-2 min-h-[3rem]">
+              {vehicle.listingTitle}
+            </h3>
+
+            {/* Price */}
+            <p className="text-lg font-bold text-blue-600">
+              {formatCurrency(vehicle.listingPrice, vehicle.showCallForPrice)}
+            </p>
+
+            {/* Mileage */}
+            <p className="text-sm text-gray-600">{formatMileage(vehicle.mileage)}</p>
 
             {/* Divider */}
             <div className="border-t border-gray-200" />
 
-            {/* Vehicle Details Grid */}
-            <div className="space-y-2 text-sm">
+            {/* Vehicle Details */}
+            <div className="space-y-1.5 text-sm text-gray-600">
               {/* VIN */}
               {vehicle.vin && (
                 <div className="flex items-start gap-2">
-                  <span className="font-medium text-gray-900">VIN</span>
-                  <span className="text-gray-600">{vehicle.vin}</span>
+                  <span className="font-medium text-gray-900 min-w-[80px]">VIN:</span>
+                  <span className="break-all">{vehicle.vin}</span>
                 </div>
               )}
 
               {/* Transmission */}
               {vehicle.transmission && (
                 <div className="flex items-start gap-2">
-                  <svg className="mt-0.5 h-4 w-4 shrink-0 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
-                  </svg>
-                  <span className="text-gray-600">{vehicle.transmission}</span>
+                  <span className="font-medium text-gray-900 min-w-[80px]">Trans:</span>
+                  <span>{vehicle.transmission}</span>
                 </div>
               )}
 
-              {/* Mileage */}
-              <div className="flex items-start gap-2">
-                <svg className="mt-0.5 h-4 w-4 shrink-0 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-                </svg>
-                <span className="text-gray-600">{formatMileage(vehicle.mileage)}</span>
-              </div>
+              {/* Colors */}
+              {colorInfo && (
+                <div className="flex items-start gap-2">
+                  <span className="font-medium text-gray-900 min-w-[80px]">Color:</span>
+                  <span>{colorInfo}</span>
+                </div>
+              )}
             </div>
 
-            {/* Divider */}
-            <div className="border-t border-gray-200" />
-
-            {/* Key Features - Bullet Points */}
+            {/* Key Features */}
             {vehicle.listingThumbnailFeatures && vehicle.listingThumbnailFeatures.length > 0 && (
-              <ul className="space-y-1 text-sm text-gray-600">
-                {vehicle.listingThumbnailFeatures.slice(0, 3).map((feature, index) => (
-                  <li key={index} className="flex items-start gap-2">
-                    <span className="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-gray-400" />
-                    <span>{feature}</span>
-                  </li>
-                ))}
-              </ul>
+              <>
+                <div className="border-t border-gray-200" />
+                <ul className="space-y-1 text-sm text-gray-600">
+                  {vehicle.listingThumbnailFeatures.slice(0, 3).map((feature, index) => (
+                    <li key={index} className="flex items-start gap-2">
+                      <span className="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-gray-400" />
+                      <span className="line-clamp-1">{feature}</span>
+                    </li>
+                  ))}
+                </ul>
+              </>
             )}
 
-            {/* Bottom: Status Tag and Listed Date */}
-            <div className="flex items-center gap-2 pt-2">
-              {vehicle.statusTag && vehicle.statusTag !== "SALE PENDING" && vehicle.statusTag !== "EAG SIGNATURE" && (
-                <Badge
-                  variant="secondary"
-                  className="rounded bg-gray-100 px-2 py-1 text-xs font-medium text-gray-700"
-                >
-                  {vehicle.statusTag}
-                </Badge>
-              )}
+            {/* Listed Date */}
+            <div className="pt-2">
               <span className="text-xs text-gray-500">
                 Listed {(() => {
                   const days = Math.floor(

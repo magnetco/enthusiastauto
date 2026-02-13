@@ -1,6 +1,7 @@
 import Image from "next/image";
 import type { VehicleDetail } from "@/lib/sanity/queries/vehicles";
 import { TitleBlock } from "@/components/shared/TitleBlock";
+import { sanitizeHtml } from "@/lib/utils/sanitize";
 
 interface HistorySectionProps {
   vehicle: VehicleDetail;
@@ -31,9 +32,10 @@ export function HistorySection({ vehicle }: HistorySectionProps) {
 
         <div className="grid gap-8 lg:grid-cols-[60%_40%]">
           {/* Text Column */}
-          <div className="whitespace-pre-wrap text-base leading-relaxed text-gray-700">
-            {vehicle.history}
-          </div>
+          <div 
+            className="prose prose-gray max-w-none text-base leading-relaxed"
+            dangerouslySetInnerHTML={{ __html: sanitizeHtml(vehicle.history) }}
+          />
 
           {/* Image Column */}
           {historyImage && (

@@ -36,13 +36,23 @@ export function HeaderContent() {
                 isScrolled ? "text-gray-900" : "text-white"
               )}
             />
-            <span
-              className={cn(
-                "font-headline text-lg font-semibold transition-colors duration-300 lg:text-xl",
-                isScrolled ? "text-gray-900" : "text-white"
-              )}
-            >
-              ENTHUSIAST AUTO
+            <span className="flex flex-col leading-none">
+              <span
+                className={cn(
+                  "font-headline text-sm font-semibold transition-colors duration-300 lg:text-base",
+                  isScrolled ? "text-gray-900" : "text-white"
+                )}
+              >
+                ENTHUSIAST AUTO GROUP
+              </span>
+              <span
+                className={cn(
+                  "font-headline text-[0.5rem] font-semibold transition-colors duration-300 lg:text-[0.6rem]",
+                  isScrolled ? "text-[#005A90]" : "text-[#7AC0EA]"
+                )}
+              >
+                SINCE 2015
+              </span>
             </span>
           </Link>
 
@@ -90,7 +100,7 @@ export function HeaderContent() {
             {/* Vertical divider */}
             <div
               className={cn(
-                "mx-6 h-8 w-px transition-colors duration-300",
+                "mx-6 h-full w-px transition-colors duration-300",
                 isScrolled ? "bg-gray-200" : "bg-white/10"
               )}
             />

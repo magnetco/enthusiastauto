@@ -186,7 +186,7 @@ export function PageHero({
                   );
                 }
 
-                // Use ShimmerButton for outline variant (no border, shimmer only)
+                // Use ShimmerButton for outline variant (transparent bg with border)
                 if (cta.variant === "outline") {
                   return (
                     <ShimmerButton
@@ -197,6 +197,7 @@ export function PageHero({
                       isHeroHovered={isHeroHovered}
                       aria-label={cta.ariaLabel || cta.label}
                       className="font-semibold"
+                      variant="secondary"
                       showBorder={false}
                     >
                       {cta.label}
