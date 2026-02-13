@@ -8,6 +8,18 @@ import type { VehicleListItem } from "@/lib/sanity/queries/vehicles";
 import type { Product } from "@/lib/shopify/types";
 import type { SearchResult } from "@/types/search";
 
+/**
+ * Helper to safely parse numeric arguments that may come as strings from LLM
+ */
+function parseNumber(value: unknown, defaultValue: number): number {
+  if (typeof value === "number") return value;
+  if (typeof value === "string") {
+    const parsed = parseInt(value, 10);
+    return isNaN(parsed) ? defaultValue : parsed;
+  }
+  return defaultValue;
+}
+
 // Tool result types
 export interface VehicleSearchResult {
   results: Array<{
@@ -417,7 +429,7 @@ export async function getVehicleDetails(
       status: vehicle.status,
       mileage: vehicle.mileage,
       vin: vehicle.vin,
-      url: `/vehicles/${vehicle.slug.current}`,
+      url: `https://enthusiastauto.com/vehicles/${vehicle.slug.current}`,
       specs: {
         engine: `${vehicle.engineType} ${vehicle.engineSize}`,
         transmission: vehicle.transmission,
@@ -513,6 +525,10 @@ export async function getPartsForChassis(
     
     // Use the first vehicle to find compatible parts
     const vehicle = vehicles[0];
+    if (!vehicle || !vehicle.slug?.current) {
+      return null;
+    }
+    
     const vehicleDetail = await getVehicleDetail(vehicle.slug.current);
     
     if (!vehicleDetail) {
@@ -667,7 +683,7 @@ export async function executeTool(
         const result = await searchVehicles(
           args.query as string,
           (args.status as "current" | "sold" | "all") || "current",
-          (args.limit as number) || 5,
+          parseNumber(args.limit, 5),
         );
         
         if (result.count === 0) {
@@ -685,7 +701,7 @@ export async function executeTool(
         const result = await listAllVehicles(
           (args.status as "current" | "sold" | "all") || "current",
           args.chassis as string | undefined,
-          (args.limit as number) || 10,
+          parseNumber(args.limit, 10),
         );
         
         if (result.count === 0) {
@@ -702,8 +718,8 @@ export async function executeTool(
         const result = await searchParts(
           args.query as string,
           args.chassis as string | undefined,
-          args.year as number | undefined,
-          (args.limit as number) || 8,
+          parseNumber(args.year, 0) || undefined,
+          parseNumber(args.limit, 8),
         );
         
         if (result.count === 0) {
@@ -720,7 +736,7 @@ export async function executeTool(
       case "list_parts": {
         const result = await listAllParts(
           args.category as string | undefined,
-          (args.limit as number) || 10,
+          parseNumber(args.limit, 10),
         );
         
         if (result.count === 0) {
@@ -749,7 +765,7 @@ export async function executeTool(
       case "get_compatible_parts": {
         const result = await getVehicleCompatibleParts(
           args.vehicleSlug as string,
-          (args.limit as number) || 6,
+          parseNumber(args.limit, 6),
         );
         
         if (!result) {
@@ -765,7 +781,7 @@ export async function executeTool(
       case "get_parts_for_chassis": {
         const result = await getPartsForChassis(
           args.chassis as string,
-          (args.limit as number) || 8,
+          parseNumber(args.limit, 8),
         );
         
         if (!result) {
@@ -793,7 +809,7 @@ export async function executeTool(
       case "add_to_cart": {
         const result = await addProductToCart(
           args.productHandle as string,
-          (args.quantity as number) || 1,
+          parseNumber(args.quantity, 1),
         );
         
         return JSON.stringify(result, null, 2);

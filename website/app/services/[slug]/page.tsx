@@ -264,11 +264,12 @@ export default async function ServiceDetailPage(props: {
       </PageHero>
 
       {/* Service Overview Section */}
-      <Section className="bg-white py-12 sm:py-16 lg:py-20">
+      <Section className={slug === "rejuvenation" ? "bg-bg-primary py-12 sm:py-16 lg:py-20" : "bg-white py-12 sm:py-16 lg:py-20"}>
         <TitleBlock
           title={service.tagline ?? service.title}
           description={service.description}
           className="mb-10 sm:mb-12"
+          variant={slug === "rejuvenation" ? "dark" : "light"}
         />
 
         {/* Feature Grid */}
@@ -276,15 +277,16 @@ export default async function ServiceDetailPage(props: {
           sections={service.sections}
           layout={service.layout}
           images={service.sectionImages}
+          variant={slug === "rejuvenation" ? "dark" : "default"}
         />
       </Section>
 
       {/* Extended Description Section (for rejuvenation) */}
       {"extendedDescription" in service && service.extendedDescription && (
-        <Section className="bg-[#141721] py-12 sm:py-16 lg:py-20">
+        <Section className="bg-bg-primary py-12 sm:py-16 lg:py-20">
           <div className="grid gap-8 lg:grid-cols-2 lg:gap-12">
             {/* Left: Image */}
-            <div className="relative aspect-[4/3] overflow-hidden rounded-xl">
+            <div className="relative aspect-4/3 overflow-hidden rounded-xl">
               <img
                 src={service.sectionImages?.[1] || service.heroImage}
                 alt="Rejuvenation Service"

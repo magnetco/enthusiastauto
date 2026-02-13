@@ -51,8 +51,8 @@ export function FeaturedCarousel({ posts }: FeaturedCarouselProps) {
   );
 
   // Use urlFor only for valid Sanity assets, otherwise use the direct URL
-  const imageUrl = currentPost.mainImage?.asset?.url
-    ? isSanityAsset(currentPost.mainImage?.asset)
+  const imageUrl = currentPost.mainImage?.asset
+    ? isSanityAsset(currentPost.mainImage.asset)
       ? urlFor(currentPost.mainImage).width(1200).height(600).url()
       : currentPost.mainImage.asset.url
     : null;
@@ -65,18 +65,21 @@ export function FeaturedCarousel({ posts }: FeaturedCarouselProps) {
           {/* Image */}
           <div className="relative aspect-[16/9] sm:aspect-[21/9]">
             {imageUrl ? (
-              <Image
-                src={imageUrl}
-                alt={currentPost.mainImage?.alt || currentPost.title}
-                fill
-                className="object-cover transition-transform duration-500 group-hover:scale-105"
-                priority
-              />
+              <>
+                <Image
+                  src={imageUrl}
+                  alt={currentPost.mainImage?.alt || currentPost.title}
+                  fill
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 100vw, 1200px"
+                  className="object-cover transition-transform duration-500 group-hover:scale-105"
+                  priority
+                />
+                {/* Gradient Overlay */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
+              </>
             ) : (
               <div className="absolute inset-0 bg-neutral-800" />
             )}
-            {/* Gradient Overlay */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
           </div>
 
           {/* Content Overlay */}
@@ -120,16 +123,24 @@ export function FeaturedCarousel({ posts }: FeaturedCarouselProps) {
       {posts.length > 1 && (
         <>
           {/* Arrows */}
-          <div className="absolute right-4 top-4 flex items-center gap-2 sm:right-6 sm:top-6">
+          <div className="absolute right-4 top-4 z-10 flex items-center gap-2 sm:right-6 sm:top-6">
             <button
-              onClick={goToPrevious}
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                goToPrevious();
+              }}
               className="flex h-10 w-10 items-center justify-center rounded-full bg-white/10 text-white backdrop-blur-sm transition-colors hover:bg-white/20"
               aria-label="Previous slide"
             >
               <ChevronLeftIcon className="h-5 w-5" />
             </button>
             <button
-              onClick={goToNext}
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                goToNext();
+              }}
               className="flex h-10 w-10 items-center justify-center rounded-full bg-white/10 text-white backdrop-blur-sm transition-colors hover:bg-white/20"
               aria-label="Next slide"
             >
@@ -138,14 +149,18 @@ export function FeaturedCarousel({ posts }: FeaturedCarouselProps) {
           </div>
 
           {/* Indicators */}
-          <div className="absolute bottom-4 right-4 flex items-center gap-1.5 sm:bottom-6 sm:right-6">
+          <div className="absolute bottom-4 right-4 z-10 flex items-center gap-1.5 sm:bottom-6 sm:right-6">
             <span className="mr-2 text-sm font-medium text-white/70">
               {currentIndex + 1} / {posts.length}
             </span>
             {posts.map((_, index) => (
               <button
                 key={index}
-                onClick={() => setCurrentIndex(index)}
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  setCurrentIndex(index);
+                }}
                 className={cn(
                   "h-2 rounded-full transition-all",
                   index === currentIndex

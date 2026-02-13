@@ -1,4 +1,5 @@
 import { BMWMStripesStacked } from "@/components/icons/bmw-m-stripes";
+import { cn } from "@/lib/utils";
 
 interface TitleBlockProps {
   /** The section title - will be displayed uppercase in Chromatic Gothic */
@@ -11,6 +12,8 @@ interface TitleBlockProps {
   action?: React.ReactNode;
   /** Optional className for the container */
   className?: string;
+  /** Visual variant - light (default) or dark */
+  variant?: "light" | "dark";
 }
 
 /**
@@ -24,22 +27,29 @@ export function TitleBlock({
   id,
   action,
   className,
+  variant = "light",
 }: TitleBlockProps) {
   return (
     <div className={className}>
       <div className="flex flex-col items-start justify-between gap-6 sm:flex-row sm:items-start">
         <div>
-          <div className="mb-4 flex max-w-[40rem] items-center gap-6 sm:mb-6 sm:gap-8">
+          <div className="mb-4 flex max-w-160 items-center gap-6 sm:mb-6 sm:gap-8">
             <BMWMStripesStacked />
             <h2
               id={id}
-              className="font-headline text-title-2 tracking-wide text-neutral-900 sm:text-title-1"
+              className={cn(
+                "font-headline text-title-2 tracking-wide sm:text-title-1",
+                variant === "dark" ? "text-white" : "text-neutral-900"
+              )}
             >
               {title}
             </h2>
           </div>
           {description && (
-            <p className="max-w-md text-body-xl leading-[1.5] text-neutral-600">
+            <p className={cn(
+              "max-w-md text-body-xl leading-normal",
+              variant === "dark" ? "text-white/80" : "text-neutral-600"
+            )}>
               {description}
             </p>
           )}

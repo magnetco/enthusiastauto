@@ -18,8 +18,8 @@ export interface PostListItem {
   publishedAt: string;
   location?: string;
   featured: boolean;
-  mainImage: {
-    asset: {
+  mainImage?: {
+    asset?: {
       _ref: string;
       url: string;
     };
@@ -62,9 +62,9 @@ export async function getPosts(category?: PostCategory): Promise<PostListItem[]>
       location,
       featured,
       mainImage {
-        asset-> {
-          _ref,
-          url
+        "asset": {
+          "_ref": asset._ref,
+          "url": asset->url
         },
         alt
       }
@@ -97,9 +97,9 @@ export async function getFeaturedPosts(limit = 5): Promise<PostListItem[]> {
       location,
       featured,
       mainImage {
-        asset-> {
-          _ref,
-          url
+        "asset": {
+          "_ref": asset._ref,
+          "url": asset->url
         },
         alt
       }
@@ -132,9 +132,9 @@ export async function getPostBySlug(slug: string): Promise<PostDetail | null> {
       location,
       featured,
       mainImage {
-        asset-> {
-          _ref,
-          url
+        "asset": {
+          "_ref": asset._ref,
+          "url": asset->url
         },
         alt
       },
@@ -194,9 +194,9 @@ export async function getRelatedPosts(
       location,
       featured,
       mainImage {
-        asset-> {
-          _ref,
-          url
+        "asset": {
+          "_ref": asset._ref,
+          "url": asset->url
         },
         alt
       }

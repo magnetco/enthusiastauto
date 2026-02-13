@@ -5,6 +5,7 @@ import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { ChevronLeft, ChevronRight, X } from "lucide-react";
+import { TitleBlock } from "@/components/shared/TitleBlock";
 
 interface GalleryImage {
   asset: {
@@ -70,13 +71,11 @@ export function VehicleGallerySection({
     <>
       <section id="gallery" className="bg-gray-50 py-16 sm:py-20">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="mb-8 flex items-center gap-3">
-            <div className="h-px flex-1 bg-gradient-to-r from-transparent via-[#F90020] to-transparent" />
-            <h2 className="font-chromatic text-2xl uppercase tracking-tight text-foreground sm:text-3xl">
-              Gallery
-            </h2>
-            <div className="h-px flex-1 bg-gradient-to-r from-transparent via-[#F90020] to-transparent" />
-          </div>
+          <TitleBlock 
+            title="View Images of Vehicle" 
+            id="gallery-title" 
+            className="mb-12" 
+          />
 
           <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
             {visibleImages.map((image, index) => (

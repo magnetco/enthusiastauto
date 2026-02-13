@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { TitleBlock } from "@/components/shared/TitleBlock";
 
 interface FAQ {
   question: string;
@@ -29,13 +30,7 @@ export function VehicleFAQs({
   return (
     <section id="faqs" className="bg-white py-16 sm:py-20">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="mb-8 flex items-center gap-3">
-          <div className="h-px flex-1 bg-gradient-to-r from-transparent via-[#F90020] to-transparent" />
-          <h2 className="font-chromatic text-2xl uppercase tracking-tight text-foreground sm:text-3xl">
-            FAQs
-          </h2>
-          <div className="h-px flex-1 bg-gradient-to-r from-transparent via-[#F90020] to-transparent" />
-        </div>
+        <TitleBlock title="FAQs" id="faqs-title" className="mb-12" />
 
         <div className="mx-auto max-w-4xl">
           {/* FAQ List */}

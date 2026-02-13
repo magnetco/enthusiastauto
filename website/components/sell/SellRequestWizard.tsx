@@ -490,7 +490,7 @@ export function SellRequestWizard() {
                 })}
               </div>
             </div>
-            ) : (
+          ) : (
               <div className="rounded-xl border border-[#DFE5EA] bg-white p-6">
                 {selectedOption ? (
                   <div className="flex items-center gap-3">
@@ -510,7 +510,7 @@ export function SellRequestWizard() {
                   <p className="text-sm text-[#6f6e77]">No option selected yet</p>
                 )}
               </div>
-            )}
+          )}
           </div>
 
           {/* Step 2: Contact Information */}
@@ -611,7 +611,7 @@ export function SellRequestWizard() {
                 </div>
               </div>
             </div>
-            ) : (
+          ) : (
               <div className="rounded-xl border border-[#DFE5EA] bg-white p-6">
                 {formData.firstName || formData.lastName || formData.email || formData.phone ? (
                   <div className="grid gap-3 sm:grid-cols-2">
@@ -634,7 +634,7 @@ export function SellRequestWizard() {
                   <p className="text-sm text-[#6f6e77]">No contact information entered yet</p>
                 )}
               </div>
-            )}
+          )}
           </div>
 
           {/* Step 3: Vehicle Information */}
@@ -753,7 +753,7 @@ export function SellRequestWizard() {
                 </div>
               </div>
             </div>
-            ) : (
+          ) : (
               <div className="rounded-xl border border-[#DFE5EA] bg-white p-6">
                 {formData.year || formData.make || formData.model || formData.mileage || formData.vin ? (
                   <div className="space-y-3">
@@ -778,7 +778,7 @@ export function SellRequestWizard() {
                   <p className="text-sm text-[#6f6e77]">No vehicle information entered yet</p>
                 )}
               </div>
-            )}
+          )}
           </div>
 
           {/* Step 4: Additional Details */}
@@ -877,7 +877,7 @@ export function SellRequestWizard() {
                 </div>
               </div>
             </div>
-            ) : (
+          ) : (
               <div className="rounded-xl border border-[#DFE5EA] bg-white p-6">
                 {formData.notes || formData.existingCustomer || formData.newsletter || formData.privacyPolicy ? (
                   <div className="space-y-3">
@@ -909,7 +909,7 @@ export function SellRequestWizard() {
                   <p className="text-sm text-[#6f6e77]">No additional details entered yet</p>
                 )}
               </div>
-            )}
+          )}
           </div>
 
           {/* Step 5: Review */}
@@ -1057,11 +1057,11 @@ export function SellRequestWizard() {
                 </p>
               </div>
             </div>
-            ) : (
+          ) : (
               <div className="rounded-xl border border-[#DFE5EA] bg-white p-6">
                 <p className="text-sm text-[#6f6e77]">Complete all steps to review your submission</p>
               </div>
-            )}
+          )}
           </div>
         </div>
 

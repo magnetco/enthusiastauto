@@ -96,7 +96,7 @@ export const CHAT_TOOLS: any[] = [
               "Filter by vehicle status: 'current' for available inventory, 'sold' for past sales, 'all' for both",
           },
           limit: {
-            type: "number",
+            type: ["number", "string"],
             description: "Maximum number of results to return (default: 5, max: 20)",
           },
         },
@@ -123,7 +123,7 @@ export const CHAT_TOOLS: any[] = [
             description: "Filter by chassis code (e.g., 'E46', 'E92', 'F80')",
           },
           limit: {
-            type: "number",
+            type: ["number", "string"],
             description: "Maximum number of results to return (default: 10, max: 50)",
           },
         },
@@ -151,11 +151,11 @@ export const CHAT_TOOLS: any[] = [
               "BMW chassis code for fitment filtering (e.g., 'E46', 'E92', 'F80')",
           },
           year: {
-            type: "number",
+            type: ["number", "string"],
             description: "Vehicle year for fitment filtering (e.g., 2011)",
           },
           limit: {
-            type: "number",
+            type: ["number", "string"],
             description: "Maximum number of results to return (default: 8, max: 20)",
           },
         },
@@ -177,7 +177,7 @@ export const CHAT_TOOLS: any[] = [
             description: "Filter by product category/type",
           },
           limit: {
-            type: "number",
+            type: ["number", "string"],
             description: "Maximum number of results to return (default: 10, max: 50)",
           },
         },
@@ -219,7 +219,7 @@ export const CHAT_TOOLS: any[] = [
               "Vehicle slug to find compatible parts for (e.g., '2013-bmw-e92-m3-zcp')",
           },
           limit: {
-            type: "number",
+            type: ["number", "string"],
             description: "Maximum number of parts to return (default: 6)",
           },
         },
@@ -241,7 +241,7 @@ export const CHAT_TOOLS: any[] = [
             description: "BMW chassis code (e.g., 'E46', 'E92', 'F80', 'G80')",
           },
           limit: {
-            type: "number",
+            type: ["number", "string"],
             description: "Maximum number of parts to return (default: 8)",
           },
         },
@@ -281,7 +281,7 @@ export const CHAT_TOOLS: any[] = [
             description: "Product handle/slug of the part to add (from search results)",
           },
           quantity: {
-            type: "number",
+            type: ["number", "string"],
             description: "Quantity to add (default: 1)",
           },
         },

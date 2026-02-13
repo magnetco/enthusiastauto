@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { FileText, Download } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { TitleBlock } from "@/components/shared/TitleBlock";
 
 interface DocumentationItem {
   type: string;
@@ -49,13 +50,7 @@ export function VehicleDocumentation({
   return (
     <section id="docs" className="bg-white py-16 sm:py-20">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="mb-8 flex items-center gap-3">
-          <div className="h-px flex-1 bg-gradient-to-r from-transparent via-[#F90020] to-transparent" />
-          <h2 className="font-chromatic text-2xl uppercase tracking-tight text-foreground sm:text-3xl">
-            Documentation
-          </h2>
-          <div className="h-px flex-1 bg-gradient-to-r from-transparent via-[#F90020] to-transparent" />
-        </div>
+        <TitleBlock title="Documentation" id="docs-title" className="mb-12" />
 
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {DOC_TYPES.map((type) => {
