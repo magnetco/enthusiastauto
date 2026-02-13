@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { MessageCircle, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { TitleBlock } from "@/components/shared/TitleBlock";
 
 export interface FAQItem {
   question: string;
@@ -36,18 +37,11 @@ export function FAQSection({
     <div className="w-full">
       {/* Header */}
       {(title || description) && (
-        <div className="mb-12 text-center">
-          {title && (
-            <h2 className="mb-4 font-headline text-3xl tracking-wider text-[#282a30] sm:text-4xl">
-              {title}
-            </h2>
-          )}
-          {description && (
-            <p className="mx-auto max-w-2xl text-lg text-[#6f6e77]">
-              {description}
-            </p>
-          )}
-        </div>
+        <TitleBlock
+          title={title}
+          description={description}
+          className="mb-12"
+        />
       )}
 
       {/* FAQ Grid */}
@@ -87,7 +81,7 @@ export function FAQSection({
               <h3
                 className={cn(
                   "mb-2 text-base font-semibold transition-colors",
-                  hoveredIndex === index ? "text-[#005A90]" : "text-[#282a30]"
+                  hoveredIndex === index ? "text-brand-deep-blue" : "text-[#282a30]"
                 )}
               >
                 {faq.question}
@@ -116,7 +110,7 @@ export function FAQSection({
           Have a different question?{" "}
           <button
             onClick={() => onQuestionClick("I have a question about selling my BMW")}
-            className="font-medium text-[#005A90] hover:underline"
+            className="font-medium text-brand-deep-blue hover:underline"
           >
             Start a conversation
           </button>

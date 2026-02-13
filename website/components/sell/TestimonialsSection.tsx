@@ -1,6 +1,7 @@
 "use client";
 
 import { Star } from "lucide-react";
+import { TitleBlock } from "@/components/shared/TitleBlock";
 
 interface Testimonial {
   name: string;
@@ -40,16 +41,13 @@ const testimonials: Testimonial[] = [
 export function TestimonialsSection() {
   return (
     <section className="light-section w-full">
-      <div className="mx-auto max-w-[var(--container-max)] px-page-x py-16 sm:py-24">
+      <div className="mx-auto max-w-max px-page-x py-16 sm:py-24">
         {/* Header */}
-        <div className="mb-16 text-center">
-          <h2 className="mb-4 font-headline text-3xl tracking-wider text-[#282a30] sm:text-4xl">
-            WHAT OUR SELLERS SAY
-          </h2>
-          <p className="mx-auto max-w-2xl text-lg text-[#6f6e77]">
-            Real experiences from BMW enthusiasts who trusted us with their vehicles.
-          </p>
-        </div>
+        <TitleBlock
+          title="WHAT OUR SELLERS SAY"
+          description="Real experiences from BMW enthusiasts who trusted us with their vehicles."
+          className="mb-16"
+        />
 
         {/* Testimonials Grid */}
         <div className="grid gap-8 lg:grid-cols-3">
@@ -63,7 +61,7 @@ export function TestimonialsSection() {
                 {Array.from({ length: testimonial.rating }).map((_, i) => (
                   <Star
                     key={i}
-                    className="h-5 w-5 fill-[#F90020] text-[#F90020]"
+                    className="h-5 w-5 fill-brand-red text-brand-red"
                   />
                 ))}
               </div>
@@ -77,7 +75,7 @@ export function TestimonialsSection() {
               <div className="border-t border-gray-200 pt-4">
                 <p className="font-semibold text-[#282a30]">{testimonial.name}</p>
                 <p className="text-sm text-[#6f6e77]">{testimonial.location}</p>
-                <p className="mt-1 text-sm font-medium text-[#005A90]">
+                <p className="mt-1 text-sm font-medium text-brand-deep-blue">
                   {testimonial.vehicle}
                 </p>
               </div>

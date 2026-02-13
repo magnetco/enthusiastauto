@@ -87,22 +87,22 @@ const services: Record<string, Service> = {
       {
         title: "Complete Assessment",
         content:
-          "Every rejuvenation begins with a comprehensive evaluation of your vehicle's mechanical, cosmetic, and structural condition. We document everything and develop a detailed restoration plan tailored to your car's needs and your goals.",
+          "Every rejuvenation begins with a comprehensive evaluation of your vehicle's mechanical, cosmetic, and structural condition. We document everything and develop a detailed restoration plan tailored to your car's needs and your goals. Our specialists inspect each system, photograph the current state, and create a prioritized roadmap for the work ahead. This thorough assessment ensures no detail is overlooked and provides you with complete transparency throughout the process.",
       },
       {
         title: "Engine & Drivetrain",
         content:
-          "Our specialists restore engines and drivetrains to factory specifications or beyond, replacing worn components with genuine BMW parts and addressing any hidden issues. From rebuilds to reconditioning, we ensure optimal performance.",
+          "Our specialists restore engines and drivetrains to factory specifications or beyond, replacing worn components with genuine BMW parts and addressing any hidden issues. From complete rebuilds to targeted reconditioning, we ensure optimal performance and reliability. We replace timing components, refresh seals and gaskets, address oil consumption issues, and restore proper compression. Every engine receives proper break-in procedures and comprehensive dyno testing to verify performance meets or exceeds factory specifications.",
       },
       {
-        title: "Suspension Overhaul",
+        title: "Suspension & Chassis",
         content:
-          "Complete suspension restoration including bushings, bearings, dampers, and alignment to restore the precise handling your BMW was designed to deliver. We source OE parts or fabricate custom components when originals are unavailable.",
+          "Complete suspension restoration including bushings, bearings, dampers, subframe reinforcement, and precision alignment to restore the exact handling characteristics your BMW was designed to deliver. We source OE parts or fabricate custom components when originals are unavailable. Every suspension component is inspected, measured, and replaced as needed. The result is a chassis that drives like new, with the precise feedback and control that makes BMW special.",
       },
       {
-        title: "Interior Restoration",
+        title: "Interior & Finishing",
         content:
-          "From leather reconditioning to electronics refurbishment, we restore interiors to factory-new condition while preserving the authentic character of your BMW. Correct materials and techniques ensure lasting quality.",
+          "From leather reconditioning and seat restoration to electronics refurbishment and trim refinishing, we restore interiors to factory-new condition while preserving the authentic character of your BMW. We use correct materials, proper dye techniques, and period-appropriate methods to ensure lasting quality. Climate control systems are rebuilt, audio systems are restored or tastefully upgraded, and every switch and button functions as it should. The final result is an interior that looks, feels, and smells like the day it left Munich.",
       },
     ],
     extendedDescription: `EAG's Rejuvenation service goes far beyond traditional restoration. We breathe new life into your classic BMW M car, preserving its heritage while ensuring it performs and looks better than the day it left the factory. Our approach combines painstaking attention to detail with deep expertise in BMW M series history, engineering, and parts.

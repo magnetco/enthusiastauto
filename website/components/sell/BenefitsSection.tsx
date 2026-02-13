@@ -1,7 +1,7 @@
 "use client";
 
 import { Shield, TrendingUp, Users, Clock, Award, FileCheck } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { TitleBlock } from "@/components/shared/TitleBlock";
 
 interface Benefit {
   icon: React.ReactNode;
@@ -51,17 +51,13 @@ const benefits: Benefit[] = [
 export function BenefitsSection() {
   return (
     <section className="light-section w-full">
-      <div className="mx-auto max-w-[var(--container-max)] px-page-x py-16 sm:py-24">
+      <div className="mx-auto max-w-max px-page-x py-16 sm:py-24">
         {/* Header */}
-        <div className="mb-16 text-center">
-          <h2 className="mb-4 font-headline text-3xl tracking-wider text-[#282a30] sm:text-4xl">
-            WHY SELL WITH EAG?
-          </h2>
-          <p className="mx-auto max-w-2xl text-lg text-[#6f6e77]">
-            We're not just another car dealer. We're BMW enthusiasts who understand
-            what makes your vehicle special and how to connect it with the right buyer.
-          </p>
-        </div>
+        <TitleBlock
+          title="WHY SELL WITH EAG?"
+          description="We're not just another car dealer. We're BMW enthusiasts who understand what makes your vehicle special and how to connect it with the right buyer."
+          className="mb-16"
+        />
 
         {/* Benefits Grid */}
         <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
@@ -71,7 +67,7 @@ export function BenefitsSection() {
               className="group relative rounded-xl border border-gray-200 bg-white p-8 transition-all duration-200 hover:border-[#2E90FA] hover:shadow-lg"
             >
               {/* Icon */}
-              <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-[#005A90]/10 text-[#005A90] transition-colors group-hover:bg-[#005A90] group-hover:text-white">
+              <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-brand-deep-blue/10 text-brand-deep-blue transition-colors group-hover:bg-brand-deep-blue group-hover:text-white">
                 {benefit.icon}
               </div>
 
@@ -93,7 +89,7 @@ export function BenefitsSection() {
           </p>
           <a
             href="#sell-form"
-            className="inline-flex items-center justify-center rounded-lg bg-[#005A90] px-8 py-4 text-base font-semibold text-white transition-colors hover:bg-[#005A90]/90"
+            className="inline-flex items-center justify-center rounded-lg bg-brand-deep-blue px-8 py-4 text-base font-semibold text-white transition-colors hover:bg-brand-deep-blue/90"
           >
             Get Your Free Evaluation
           </a>

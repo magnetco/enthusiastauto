@@ -36,7 +36,7 @@ export function HeaderSearch() {
           "h-10 pr-10 transition-colors duration-300",
           isScrolled
             ? "bg-gray-100 text-gray-900 placeholder:text-gray-500 hover:bg-gray-200 focus:bg-gray-200"
-            : "bg-white/5 text-white/70 placeholder:text-white/50 hover:bg-white/10 focus:bg-white/10"
+            : "border-white/10 bg-white/5 text-white/70 placeholder:text-white/50 hover:bg-white/10 focus:bg-white/10"
         )}
       />
       <button

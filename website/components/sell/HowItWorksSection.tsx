@@ -1,7 +1,7 @@
 "use client";
 
 import { FileText, Search, Camera, Handshake } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { TitleBlock } from "@/components/shared/TitleBlock";
 
 interface Step {
   number: number;
@@ -43,37 +43,41 @@ const steps: Step[] = [
 
 export function HowItWorksSection() {
   return (
-    <section className="w-full bg-[#141721]">
-      <div className="mx-auto max-w-[var(--container-max)] px-page-x py-16 sm:py-24">
+    <section className="relative w-full overflow-hidden bg-bg-primary">
+      {/* Background Image with Overlay */}
+      <div className="absolute inset-0">
+        <div
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+          style={{ backgroundImage: "url(/bg-hero-home.jpg)" }}
+        />
+        <div className="absolute inset-0 bg-bg-primary/90" />
+      </div>
+
+      {/* Content */}
+      <div className="relative mx-auto max-w-max px-page-x py-16 sm:py-24">
         {/* Header */}
-        <div className="mb-16 text-center">
-          <h2 className="mb-4 font-headline text-3xl tracking-wider text-white sm:text-4xl">
-            HOW IT WORKS
-          </h2>
-          <p className="mx-auto max-w-2xl text-lg text-gray-300">
-            Our streamlined process makes selling your BMW simple and stress-free.
-          </p>
-        </div>
+        <TitleBlock
+          title="HOW IT WORKS"
+          description="Our streamlined process makes selling your BMW simple and stress-free."
+          className="mb-16 [&_h2]:text-white [&_p]:text-gray-300"
+        />
 
         {/* Steps */}
         <div className="relative">
-          {/* Connection Line (hidden on mobile) */}
-          <div className="absolute left-0 right-0 top-8 hidden h-0.5 bg-gradient-to-r from-transparent via-[#2E90FA]/30 to-transparent lg:block" />
-
           {/* Steps Grid */}
-          <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {steps.map((step, index) => (
-              <div key={index} className="relative">
+              <div key={index} className="relative flex flex-col">
                 {/* Step Card */}
-                <div className="relative rounded-xl border border-gray-700 bg-[#1f2233] p-6 transition-all duration-200 hover:border-[#2E90FA] hover:shadow-lg hover:shadow-[#2E90FA]/20">
-                  {/* Number Badge */}
-                  <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-[#005A90] text-2xl font-bold text-white">
-                    {step.number}
-                  </div>
-
-                  {/* Icon */}
-                  <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-[#2E90FA]/10 text-[#2E90FA]">
-                    {step.icon}
+                <div className="relative flex h-full flex-col rounded-xl border border-gray-700 bg-bg-secondary p-6 transition-all duration-200 hover:border-[#2E90FA] hover:shadow-lg hover:shadow-[#2E90FA]/20">
+                  {/* Number Badge with Icon */}
+                  <div className="mb-6 flex items-center gap-4">
+                    <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-brand-deep-blue text-xl font-bold text-white">
+                      {step.number}
+                    </div>
+                    <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg bg-[#2E90FA]/10 text-[#2E90FA]">
+                      {step.icon}
+                    </div>
                   </div>
 
                   {/* Content */}
@@ -87,9 +91,9 @@ export function HowItWorksSection() {
 
                 {/* Arrow (desktop only, not after last item) */}
                 {index < steps.length - 1 && (
-                  <div className="absolute -right-4 top-8 hidden text-[#2E90FA]/50 lg:block">
+                  <div className="absolute -right-3 top-1/2 z-10 hidden -translate-y-1/2 text-[#2E90FA]/60 lg:block">
                     <svg
-                      className="h-8 w-8"
+                      className="h-6 w-6"
                       fill="none"
                       viewBox="0 0 24 24"
                       stroke="currentColor"
@@ -97,7 +101,7 @@ export function HowItWorksSection() {
                       <path
                         strokeLinecap="round"
                         strokeLinejoin="round"
-                        strokeWidth={2}
+                        strokeWidth={2.5}
                         d="M9 5l7 7-7 7"
                       />
                     </svg>
@@ -115,7 +119,7 @@ export function HowItWorksSection() {
           </p>
           <a
             href="#sell-form"
-            className="inline-flex items-center justify-center rounded-lg bg-[#F90020] px-8 py-4 text-base font-semibold text-white transition-all duration-200 hover:scale-105 hover:shadow-lg"
+            className="inline-flex items-center justify-center rounded-lg bg-brand-red px-8 py-4 text-base font-semibold text-white transition-all duration-200 hover:scale-105 hover:shadow-lg"
           >
             Submit Your BMW
           </a>

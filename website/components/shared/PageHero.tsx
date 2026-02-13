@@ -100,11 +100,11 @@ export function PageHero({
             className="h-full w-full bg-cover bg-center bg-no-repeat opacity-40"
             style={{ backgroundImage: `url('${backgroundImage}')` }}
           />
-          {/* Dark gradient overlay for dramatic effect - using navy primary */}
+          {/* Dark gradient overlay for dramatic effect - using blue-tinted gradient */}
           <div 
             className="absolute inset-0" 
             style={{ 
-              background: 'linear-gradient(27deg, rgba(45, 50, 67, 1) 0%, rgba(0, 0, 0, 0.4) 50%, rgba(0, 0, 0, 0) 100%)' 
+              background: 'linear-gradient(27deg, rgba(46, 144, 250, 0.4) 0%, rgba(22, 25, 34, 0.4) 50%, rgba(49, 63, 109, 0) 100%)' 
             }} 
           />
         </div>

@@ -13,6 +13,7 @@ import { MobileMenu } from "components/shared/MobileMenu";
 import { ClientProviders } from "components/layout/ClientProviders";
 import { DevModePopout } from "components/dev/DevModePopout";
 import { GridOverlay } from "components/dev/GridOverlay";
+import { TransitionDebugger } from "components/dev/TransitionDebugger";
 import { ChatWidget } from "components/chat/ChatWidget";
 import Footer from "components/layout/footer";
 import "./globals.css";
@@ -85,6 +86,7 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
 									<ChatWidget />
 									{isDev && <DevModePopout />}
 									{isDev && <GridOverlay />}
+									{isDev && <TransitionDebugger />}
 								</MobileMenuProvider>
 							</ClientProviders>
 						</Suspense>

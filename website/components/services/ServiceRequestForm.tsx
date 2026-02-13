@@ -150,271 +150,294 @@ export function ServiceRequestForm() {
   }
 
   return (
-    <Card className="mx-auto max-w-3xl border-0 bg-neutral-50">
-      <CardContent className="p-6 sm:p-8">
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
-          {/* Selected Services Display */}
-          <div className="space-y-4">
-            <div className="flex items-center justify-between">
-              <Label className="text-base font-semibold">
-                Selected Services <span className="text-red-500">*</span>
-              </Label>
-              {selectedServices.length > 0 && (
-                <button
-                  type="button"
-                  onClick={clearServices}
-                  className="text-xs text-muted-foreground hover:text-foreground"
-                >
-                  Clear all
-                </button>
-              )}
+    <div className="mx-auto max-w-5xl">
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+        {/* Step 1: Select Services */}
+        <Card className="border-2 border-neutral-200 bg-white shadow-sm">
+          <CardContent className="p-8">
+            <div className="mb-6 flex items-center gap-4">
+              <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary text-lg font-bold text-white">
+                1
+              </div>
+              <h3 className="text-xl font-semibold">Select Services</h3>
             </div>
 
-            {/* Service selection chips */}
-            <div className="flex flex-wrap gap-2">
-              {services.map((service) => {
-                const isSelected = selectedServices.includes(service.id);
-                return (
+            <div className="space-y-4">
+              <div className="flex items-center justify-between">
+                <Label className="text-base">
+                  Choose the services you need <span className="text-red-500">*</span>
+                </Label>
+                {selectedServices.length > 0 && (
                   <button
-                    key={service.id}
                     type="button"
-                    onClick={() => handleToggleService(service.id)}
-                    disabled={needsAdvice}
-                    className={cn(
-                      "inline-flex items-center gap-1.5 rounded-full border px-4 py-2 text-sm font-medium transition-all",
-                      isSelected
-                        ? "border-primary bg-primary text-white"
-                        : "border-neutral-300 bg-white text-neutral-700 hover:border-neutral-400 hover:bg-neutral-50",
-                      needsAdvice && "cursor-not-allowed opacity-50"
-                    )}
+                    onClick={clearServices}
+                    className="text-sm text-muted-foreground hover:text-foreground"
                   >
-                    {service.title}
-                    {isSelected && <X className="h-3.5 w-3.5" />}
+                    Clear all
                   </button>
-                );
-              })}
+                )}
+              </div>
+
+              {/* Service selection chips */}
+              <div className="flex flex-wrap gap-3">
+                {services.map((service) => {
+                  const isSelected = selectedServices.includes(service.id);
+                  return (
+                    <button
+                      key={service.id}
+                      type="button"
+                      onClick={() => handleToggleService(service.id)}
+                      disabled={needsAdvice}
+                      className={cn(
+                        "inline-flex items-center gap-2 rounded-lg border-2 px-5 py-3 text-base font-medium transition-all",
+                        isSelected
+                          ? "border-primary bg-primary text-white"
+                          : "border-neutral-300 bg-white text-neutral-700 hover:border-neutral-400 hover:bg-neutral-50",
+                        needsAdvice && "cursor-not-allowed opacity-50"
+                      )}
+                    >
+                      {service.title}
+                      {isSelected && <X className="h-4 w-4" />}
+                    </button>
+                  );
+                })}
+              </div>
+
+              {/* Not sure option */}
+              <div className="flex items-center gap-3 rounded-lg border border-neutral-200 bg-neutral-50 p-4">
+                <Checkbox
+                  id="needsAdvice"
+                  checked={needsAdvice}
+                  onCheckedChange={(checked) => {
+                    setValue("needsAdvice", checked === true);
+                    if (checked) {
+                      clearServices();
+                    }
+                  }}
+                />
+                <Label htmlFor="needsAdvice" className="cursor-pointer text-base">
+                  I'm not sure what I need — please advise me
+                </Label>
+              </div>
+
+              {errors.serviceTypes && !needsAdvice && (
+                <p className="text-sm text-red-600">{errors.serviceTypes.message}</p>
+              )}
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Step 2: Contact Information */}
+        <Card className="border-2 border-neutral-200 bg-white shadow-sm">
+          <CardContent className="p-8">
+            <div className="mb-6 flex items-center gap-4">
+              <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary text-lg font-bold text-white">
+                2
+              </div>
+              <h3 className="text-xl font-semibold">Contact Information</h3>
             </div>
 
-            {/* Not sure option */}
-            <div className="flex items-center gap-2 pt-2">
-              <Checkbox
-                id="needsAdvice"
-                checked={needsAdvice}
-                onCheckedChange={(checked) => {
-                  setValue("needsAdvice", checked === true);
-                  if (checked) {
-                    clearServices();
+            <div className="space-y-6">
+              <div className="grid gap-6 md:grid-cols-2">
+                <div className="space-y-2">
+                  <Label htmlFor="name" className="text-base">
+                    Name <span className="text-red-500">*</span>
+                  </Label>
+                  <Input
+                    id="name"
+                    {...register("name")}
+                    placeholder="John Doe"
+                    disabled={isLoading}
+                    className="h-12 text-base"
+                  />
+                  {errors.name && (
+                    <p className="text-sm text-red-600">{errors.name.message}</p>
+                  )}
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="phone" className="text-base">
+                    Phone <span className="text-red-500">*</span>
+                  </Label>
+                  <Input
+                    id="phone"
+                    {...register("phone")}
+                    placeholder="(513) 555-1234"
+                    disabled={isLoading}
+                    className="h-12 text-base"
+                  />
+                  {errors.phone && (
+                    <p className="text-sm text-red-600">{errors.phone.message}</p>
+                  )}
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="email" className="text-base">
+                  Email <span className="text-red-500">*</span>
+                </Label>
+                <Input
+                  id="email"
+                  type="email"
+                  {...register("email")}
+                  placeholder="john@example.com"
+                  disabled={isLoading}
+                  className="h-12 text-base"
+                />
+                {errors.email && (
+                  <p className="text-sm text-red-600">{errors.email.message}</p>
+                )}
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Step 3: Vehicle Information & Details */}
+        <Card className="border-2 border-neutral-200 bg-white shadow-sm">
+          <CardContent className="p-8">
+            <div className="mb-6 flex items-center gap-4">
+              <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary text-lg font-bold text-white">
+                3
+              </div>
+              <h3 className="text-xl font-semibold">Vehicle Information & Requirements</h3>
+            </div>
+
+            <div className="space-y-6">
+              {/* Vehicle Info */}
+              <div className="grid gap-6 md:grid-cols-3">
+                <div className="space-y-2">
+                  <Label htmlFor="vehicleYear" className="text-base">
+                    Year <span className="text-red-500">*</span>
+                  </Label>
+                  <Input
+                    id="vehicleYear"
+                    {...register("vehicleYear")}
+                    placeholder="2020"
+                    disabled={isLoading}
+                    className="h-12 text-base"
+                  />
+                  {errors.vehicleYear && (
+                    <p className="text-sm text-red-600">{errors.vehicleYear.message}</p>
+                  )}
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="vehicleMake" className="text-base">
+                    Make <span className="text-red-500">*</span>
+                  </Label>
+                  <Input
+                    id="vehicleMake"
+                    {...register("vehicleMake")}
+                    placeholder="BMW"
+                    disabled={isLoading}
+                    className="h-12 text-base"
+                  />
+                  {errors.vehicleMake && (
+                    <p className="text-sm text-red-600">{errors.vehicleMake.message}</p>
+                  )}
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="vehicleModel" className="text-base">
+                    Model <span className="text-red-500">*</span>
+                  </Label>
+                  <Input
+                    id="vehicleModel"
+                    {...register("vehicleModel")}
+                    placeholder="M3"
+                    disabled={isLoading}
+                    className="h-12 text-base"
+                  />
+                  {errors.vehicleModel && (
+                    <p className="text-sm text-red-600">{errors.vehicleModel.message}</p>
+                  )}
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="vin" className="text-base">VIN (Optional)</Label>
+                <Input
+                  id="vin"
+                  {...register("vin")}
+                  placeholder="WBSWD93508PX12345"
+                  disabled={isLoading}
+                  className="h-12 text-base"
+                />
+              </div>
+
+              {/* Service Details */}
+              <div className="space-y-2">
+                <Label htmlFor="description" className="text-base">
+                  Describe Your Needs <span className="text-red-500">*</span>
+                </Label>
+                <Textarea
+                  id="description"
+                  {...register("description")}
+                  placeholder={
+                    needsAdvice
+                      ? "Tell us about your BMW and what you're hoping to achieve. We'll help determine the best services for your needs..."
+                      : selectedServices.length > 1
+                        ? "Tell us about your BMW and what you need help with across the selected services..."
+                        : selectedServices.includes("conditioning")
+                          ? "Tell us about your vehicle's current condition and protection goals..."
+                          : selectedServices.includes("rejuvenation")
+                            ? "Share your restoration goals and vehicle history..."
+                            : selectedServices.includes("mechanical")
+                              ? "Describe the maintenance or repairs needed, any symptoms, or performance concerns..."
+                              : selectedServices.includes("cosmetic")
+                                ? "Describe any damage, dings, chips, or repairs needed..."
+                                : "Tell us what you're looking to achieve with your BMW..."
                   }
-                }}
-              />
-              <Label htmlFor="needsAdvice" className="cursor-pointer text-sm text-muted-foreground">
-                I'm not sure what I need — please advise me
-              </Label>
-            </div>
-
-            {errors.serviceTypes && !needsAdvice && (
-              <p className="text-sm text-red-600">{errors.serviceTypes.message}</p>
-            )}
-          </div>
-
-          {/* Contact Information */}
-          <div className="space-y-4">
-            <h3 className="text-base font-semibold">Contact Information</h3>
-            <div className="grid gap-4 sm:grid-cols-2">
-              <div className="space-y-2">
-                <Label htmlFor="name">
-                  Name <span className="text-red-500">*</span>
-                </Label>
-                <Input
-                  id="name"
-                  {...register("name")}
-                  placeholder="John Doe"
+                  rows={6}
                   disabled={isLoading}
-                  className="bg-white"
+                  className="text-base"
                 />
-                {errors.name && (
-                  <p className="text-sm text-red-600">{errors.name.message}</p>
+                {errors.description && (
+                  <p className="text-sm text-red-600">{errors.description.message}</p>
                 )}
+                <p className="text-sm text-muted-foreground">
+                  Include any relevant details about condition, goals, timeline, etc.
+                </p>
               </div>
 
+              {/* Existing Customer */}
               <div className="space-y-2">
-                <Label htmlFor="phone">
-                  Phone <span className="text-red-500">*</span>
-                </Label>
-                <Input
-                  id="phone"
-                  {...register("phone")}
-                  placeholder="(513) 555-1234"
+                <Label htmlFor="existingCustomer" className="text-base">Are you an existing customer?</Label>
+                <Select
+                  value={watch("existingCustomer")}
+                  onValueChange={(value) =>
+                    setValue("existingCustomer", value as "yes" | "no")
+                  }
                   disabled={isLoading}
-                  className="bg-white"
-                />
-                {errors.phone && (
-                  <p className="text-sm text-red-600">{errors.phone.message}</p>
-                )}
+                >
+                  <SelectTrigger id="existingCustomer" className="h-12 text-base">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="no">No</SelectItem>
+                    <SelectItem value="yes">Yes</SelectItem>
+                  </SelectContent>
+                </Select>
               </div>
             </div>
+          </CardContent>
+        </Card>
 
-            <div className="space-y-2">
-              <Label htmlFor="email">
-                Email <span className="text-red-500">*</span>
-              </Label>
-              <Input
-                id="email"
-                type="email"
-                {...register("email")}
-                placeholder="john@example.com"
-                disabled={isLoading}
-                className="bg-white"
-              />
-              {errors.email && (
-                <p className="text-sm text-red-600">{errors.email.message}</p>
-              )}
-            </div>
-          </div>
-
-          {/* Vehicle Information */}
-          <div className="space-y-4">
-            <h3 className="text-base font-semibold">Vehicle Information</h3>
-            <div className="grid gap-4 sm:grid-cols-3">
-              <div className="space-y-2">
-                <Label htmlFor="vehicleYear">
-                  Year <span className="text-red-500">*</span>
-                </Label>
-                <Input
-                  id="vehicleYear"
-                  {...register("vehicleYear")}
-                  placeholder="2020"
-                  disabled={isLoading}
-                  className="bg-white"
-                />
-                {errors.vehicleYear && (
-                  <p className="text-sm text-red-600">{errors.vehicleYear.message}</p>
-                )}
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="vehicleMake">
-                  Make <span className="text-red-500">*</span>
-                </Label>
-                <Input
-                  id="vehicleMake"
-                  {...register("vehicleMake")}
-                  placeholder="BMW"
-                  disabled={isLoading}
-                  className="bg-white"
-                />
-                {errors.vehicleMake && (
-                  <p className="text-sm text-red-600">{errors.vehicleMake.message}</p>
-                )}
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="vehicleModel">
-                  Model <span className="text-red-500">*</span>
-                </Label>
-                <Input
-                  id="vehicleModel"
-                  {...register("vehicleModel")}
-                  placeholder="M3"
-                  disabled={isLoading}
-                  className="bg-white"
-                />
-                {errors.vehicleModel && (
-                  <p className="text-sm text-red-600">{errors.vehicleModel.message}</p>
-                )}
-              </div>
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="vin">VIN (Optional)</Label>
-              <Input
-                id="vin"
-                {...register("vin")}
-                placeholder="WBSWD93508PX12345"
-                disabled={isLoading}
-                className="bg-white"
-              />
-              {errors.vin && (
-                <p className="text-sm text-red-600">{errors.vin.message}</p>
-              )}
-            </div>
-          </div>
-
-          {/* Service Details */}
-          <div className="space-y-4">
-            <h3 className="text-base font-semibold">Service Details</h3>
-            <div className="space-y-2">
-              <Label htmlFor="description">
-                Describe Your Needs <span className="text-red-500">*</span>
-              </Label>
-              <Textarea
-                id="description"
-                {...register("description")}
-                placeholder={
-                  needsAdvice
-                    ? "Tell us about your BMW and what you're hoping to achieve. We'll help determine the best services for your needs..."
-                    : selectedServices.length > 1
-                      ? "Tell us about your BMW and what you need help with across the selected services..."
-                      : selectedServices.includes("conditioning")
-                        ? "Tell us about your vehicle's current condition and protection goals..."
-                        : selectedServices.includes("rejuvenation")
-                          ? "Share your restoration goals and vehicle history..."
-                          : selectedServices.includes("mechanical")
-                            ? "Describe the maintenance or repairs needed, any symptoms, or performance concerns..."
-                            : selectedServices.includes("cosmetic")
-                              ? "Describe any damage, dings, chips, or repairs needed..."
-                              : "Tell us what you're looking to achieve with your BMW..."
-                }
-                rows={5}
-                disabled={isLoading}
-                className="bg-white"
-              />
-              {errors.description && (
-                <p className="text-sm text-red-600">{errors.description.message}</p>
-              )}
-              <p className="text-xs text-muted-foreground">
-                Include any relevant details about condition, goals, timeline, etc.
-              </p>
-            </div>
-          </div>
-
-          {/* Existing Customer */}
-          <div className="space-y-2">
-            <Label htmlFor="existingCustomer">Are you an existing customer?</Label>
-            <Select
-              value={watch("existingCustomer")}
-              onValueChange={(value) =>
-                setValue("existingCustomer", value as "yes" | "no")
-              }
-              disabled={isLoading}
-            >
-              <SelectTrigger id="existingCustomer" className="bg-white">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="no">No</SelectItem>
-                <SelectItem value="yes">Yes</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-
-          {/* Submit Button */}
-          <div className="flex flex-col gap-4 pt-2">
-            <Button
-              type="submit"
-              size="lg"
-              disabled={isLoading || (selectedServices.length === 0 && !needsAdvice)}
-              className="w-full text-base"
-            >
-              {isLoading ? "Submitting..." : "Submit Service Request"}
-            </Button>
-            <p className="text-center text-xs text-muted-foreground">
-              By submitting this form, you agree to be contacted by Enthusiast Auto
-              regarding your service request.
-            </p>
-          </div>
-        </form>
-      </CardContent>
-    </Card>
+        {/* Submit Button */}
+        <div className="flex flex-col items-center gap-4 pt-4">
+          <Button
+            type="submit"
+            size="lg"
+            disabled={isLoading || (selectedServices.length === 0 && !needsAdvice)}
+            className="h-14 w-full max-w-md text-lg"
+          >
+            {isLoading ? "Submitting..." : "Submit Service Request"}
+          </Button>
+          <p className="text-center text-sm text-muted-foreground">
+            By submitting this form, you agree to be contacted by Enthusiast Auto regarding your service request.
+          </p>
+        </div>
+      </form>
+    </div>
   );
 }

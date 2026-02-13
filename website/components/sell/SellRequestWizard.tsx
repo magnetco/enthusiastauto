@@ -158,6 +158,21 @@ export function SellRequestWizard() {
     }
   };
 
+  const isStepComplete = (step: number): boolean => {
+    switch (step) {
+      case 1:
+        return selectedOption !== null;
+      case 2:
+        return !!(formData.firstName && formData.lastName && formData.email && formData.phone);
+      case 3:
+        return !!(formData.year && formData.make && formData.model && formData.mileage && formData.vin);
+      case 4:
+        return formData.privacyPolicy;
+      default:
+        return false;
+    }
+  };
+
   const nextStep = async () => {
     const isValid = await validateStep(currentStep);
     if (isValid && currentStep < 5) {
@@ -171,6 +186,10 @@ export function SellRequestWizard() {
     if (currentStep > 1) {
       setCurrentStep(currentStep - 1);
     }
+  };
+
+  const goToStep = (step: number) => {
+    setCurrentStep(step);
   };
 
   const onSubmit = async (data: SellFormData) => {
@@ -273,34 +292,31 @@ export function SellRequestWizard() {
             <div className="flex min-w-max items-center gap-4 md:min-w-0 md:justify-between">
               {STEPS.map((step, index) => {
                 const isActive = currentStep === step.id;
-                const isCompleted = currentStep > step.id;
+                const isCompleted = isStepComplete(step.id);
                 const StepIcon = step.icon;
 
                 return (
                   <div key={step.id} className="flex flex-1 items-center">
                     <button
                       type="button"
-                      onClick={() => {
-                        if (isCompleted) setCurrentStep(step.id);
-                      }}
-                      disabled={!isCompleted && !isActive}
+                      onClick={() => goToStep(step.id)}
                       className={cn(
-                        "flex min-w-[200px] items-center gap-4 rounded-lg border-2 px-4 py-3 text-left transition-all md:min-w-0",
+                        "flex min-w-[200px] cursor-pointer items-center gap-4 rounded-lg border-2 px-4 py-3 text-left transition-all md:min-w-0",
                         isActive && "border-[#005A90] bg-[#005A90]/5 shadow-md",
-                        isCompleted &&
+                        isCompleted && !isActive &&
                           "border-[#005A90]/30 bg-white hover:border-[#005A90]/50 hover:bg-[#005A90]/5",
-                        !isActive && !isCompleted && "border-[#DFE5EA] bg-white"
+                        !isActive && !isCompleted && "border-[#DFE5EA] bg-white hover:border-[#DFE5EA] hover:bg-[#f8f8f8]"
                       )}
                     >
                       <div
                         className={cn(
                           "flex h-10 w-10 shrink-0 items-center justify-center rounded-full transition-all",
                           isActive && "bg-[#005A90] text-white",
-                          isCompleted && "bg-[#005A90] text-white",
+                          isCompleted && !isActive && "bg-[#005A90] text-white",
                           !isActive && !isCompleted && "bg-[#f4f4f4] text-[#CCCCCC]"
                         )}
                       >
-                        {isCompleted ? (
+                        {isCompleted && !isActive ? (
                           <Check className="h-5 w-5" strokeWidth={3} />
                         ) : (
                           <StepIcon className="h-5 w-5" />
@@ -311,7 +327,7 @@ export function SellRequestWizard() {
                           className={cn(
                             "text-sm font-semibold",
                             isActive && "text-[#005A90]",
-                            isCompleted && "text-[#005A90]",
+                            isCompleted && !isActive && "text-[#005A90]",
                             !isActive && !isCompleted && "text-[#CCCCCC]"
                           )}
                         >
@@ -321,7 +337,7 @@ export function SellRequestWizard() {
                           className={cn(
                             "text-xs",
                             isActive && "text-[#6f6e77]",
-                            isCompleted && "text-[#6f6e77]",
+                            isCompleted && !isActive && "text-[#6f6e77]",
                             !isActive && !isCompleted && "text-[#CCCCCC]"
                           )}
                         >
@@ -349,13 +365,33 @@ export function SellRequestWizard() {
       <form onSubmit={handleSubmit(onSubmit)} className="min-h-[50vh]">
         <div className="mx-auto max-w-[var(--container-max)] px-page-x py-12">
           {/* Step 1: Sell Option */}
-          {currentStep === 1 && (
+          <div className={cn(
+            "mb-12 transition-all duration-300",
+            currentStep !== 1 && "pointer-events-none opacity-40"
+          )}>
+            {currentStep !== 1 && (
+              <div className="mb-4 flex items-center justify-between">
+                <h3 className="font-headline text-xl tracking-wide text-[#282a30]">
+                  STEP 1: HOW TO SELL
+                </h3>
+                <button
+                  type="button"
+                  onClick={() => goToStep(1)}
+                  className="text-sm text-[#005A90] hover:underline"
+                >
+                  Edit
+                </button>
+              </div>
+            )}
+            {currentStep === 1 ? (
             <div className="animate-in fade-in duration-300">
-              <div className="mb-12">
-                <TitleBlock
-                  title="HOW WOULD YOU LIKE TO SELL?"
-                  description="Choose the option that best fits your timeline and goals"
-                />
+              <div className="mb-12 text-center">
+                <h2 className="mb-4 font-headline text-3xl tracking-wider text-[#282a30] sm:text-4xl lg:text-5xl">
+                  HOW WOULD YOU LIKE TO SELL?
+                </h2>
+                <p className="mx-auto max-w-2xl text-base text-[#6f6e77] sm:text-lg">
+                  Choose the option that best fits your timeline and goals
+                </p>
               </div>
 
               <div className="space-y-6">
@@ -368,22 +404,32 @@ export function SellRequestWizard() {
                         "relative flex w-full flex-col rounded-xl border p-8 text-left transition-all md:flex-row md:items-start md:gap-8",
                         isSelected
                           ? "border-[#2E90FA] border-4 bg-white shadow-lg"
-                          : "border-gray-200 bg-white"
+                          : "border-gray-200 bg-white hover:border-gray-300 hover:shadow-md"
                       )}
                     >
-                      {/* Toggle button */}
+                      {/* Select Button */}
                       <button
                         type="button"
                         onClick={() => handleSelectOption(option.id)}
                         className={cn(
-                          "absolute right-6 top-6 flex h-10 w-10 items-center justify-center rounded-full border-2 transition-all hover:scale-110",
+                          "absolute right-6 top-6 flex items-center gap-2 rounded-lg px-6 py-3 text-sm font-semibold transition-all hover:scale-105",
                           isSelected
-                            ? "border-[#2E90FA] bg-[#2E90FA] text-white"
-                            : "border-gray-300 bg-white hover:border-[#2E90FA]"
+                            ? "bg-[#2E90FA] text-white shadow-md"
+                            : "border-2 border-[#2E90FA] bg-white text-[#2E90FA] hover:bg-[#2E90FA]/5"
                         )}
                         aria-label={`Select ${option.title}`}
                       >
-                        {isSelected && <Check className="h-5 w-5" strokeWidth={3} />}
+                        <div
+                          className={cn(
+                            "flex h-6 w-6 items-center justify-center rounded-full border-2 transition-all",
+                            isSelected
+                              ? "border-white bg-white text-[#2E90FA]"
+                              : "border-[#2E90FA] bg-transparent"
+                          )}
+                        >
+                          {isSelected && <Check className="h-4 w-4" strokeWidth={3} />}
+                        </div>
+                        <span>{isSelected ? "Selected" : "Select"}</span>
                       </button>
 
                       {/* Icon */}
@@ -399,7 +445,7 @@ export function SellRequestWizard() {
                       </div>
 
                       {/* Content */}
-                      <div className="flex-1 pr-12">
+                      <div className="flex-1 pr-32">
                         <div className="mb-3 flex items-center gap-3">
                           <h3 className="font-headline text-xl tracking-wide text-[#282a30] sm:text-2xl">
                             {option.title}

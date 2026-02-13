@@ -29,7 +29,7 @@ export function TitleBlock({
     <div className={className}>
       <div className="flex flex-col items-start justify-between gap-6 sm:flex-row sm:items-start">
         <div>
-          <div className="mb-4 flex items-center gap-6 sm:mb-6 sm:gap-8">
+          <div className="mb-4 flex max-w-[40rem] items-center gap-6 sm:mb-6 sm:gap-8">
             <BMWMStripesStacked />
             <h2
               id={id}

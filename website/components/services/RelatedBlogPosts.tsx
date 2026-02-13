@@ -18,7 +18,7 @@ export async function RelatedBlogPosts({ limit = 3 }: RelatedBlogPostsProps) {
   }
 
   return (
-    <Section className="border-t border-neutral-200 bg-white py-12 sm:py-16 lg:py-20">
+    <Section className="bg-neutral-50 py-12 sm:py-16 lg:py-20">
       <TitleBlock
         title="UNDER THE HOOD"
         description="News and updates, articles from events, around the shop and more."

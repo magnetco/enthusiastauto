@@ -62,7 +62,7 @@ export interface ContactMenuConfig {
  * Main navigation items for the header with dropdown menus
  */
 export const NAV_ITEMS: NavItem[] = [
-  { title: "About EAG", href: "/about", hasSubmenu: true, submenuType: "about" },
+  { title: "About EAG", href: "/about" },
   { title: "Inventory", href: "/vehicles", hasSubmenu: true, submenuType: "inventory" },
   { title: "Parts", href: "/parts" },
   { title: "Services", href: "/services", hasSubmenu: true, submenuType: "services" },

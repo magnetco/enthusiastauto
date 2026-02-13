@@ -72,11 +72,11 @@ export function VehicleDocumentation({
                     ? "border-gray-200 hover:border-[#F90020] hover:shadow-md cursor-pointer"
                     : "border-gray-200 bg-gray-50"
                 )}
-                onClick={() => hasFile && handleDownload(doc.file.asset.url)}
+                onClick={() => hasFile && doc.file?.asset?.url && handleDownload(doc.file.asset.url)}
               >
                 {/* Image/Icon Area */}
                 <div className="relative aspect-[4/3] overflow-hidden bg-gray-100">
-                  {hasImage ? (
+                  {hasImage && doc.image?.asset?.url ? (
                     <Image
                       src={doc.image.asset.url}
                       alt={`${vehicleTitle} - ${type}`}

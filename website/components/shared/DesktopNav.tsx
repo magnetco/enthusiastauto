@@ -8,7 +8,6 @@ import { NavItem } from "@/lib/config/navigation";
 import { AboutMegaMenu } from "./AboutMegaMenu";
 import { InventoryMegaMenu } from "./InventoryMegaMenu";
 import { ServicesMegaMenu } from "./ServicesMegaMenu";
-import { ContactMegaMenu } from "./ContactMegaMenu";
 import { useHeaderScroll } from "./StickyHeader";
 
 interface DesktopNavProps {
@@ -24,13 +23,11 @@ export function DesktopNav({ items }: DesktopNavProps) {
   const [aboutOpen, setAboutOpen] = useState(false);
   const [inventoryOpen, setInventoryOpen] = useState(false);
   const [servicesOpen, setServicesOpen] = useState(false);
-  const [contactOpen, setContactOpen] = useState(false);
 
   const closeAllMenus = () => {
     setAboutOpen(false);
     setInventoryOpen(false);
     setServicesOpen(false);
-    setContactOpen(false);
   };
 
   return (
@@ -177,23 +174,17 @@ export function DesktopNav({ items }: DesktopNavProps) {
 
           if (item.hasSubmenu && item.submenuType === "contact") {
             return (
-              <li key={item.title} className="relative">
-                <button
-                  onClick={() => {
-                    closeAllMenus();
-                    setContactOpen(!contactOpen);
-                  }}
-                  onMouseEnter={() => {
-                    closeAllMenus();
-                    setContactOpen(true);
-                  }}
+              <li key={item.title}>
+                <Link
+                  href={item.href}
+                  prefetch={true}
                   className={cn(
                     "font-headline inline-flex items-baseline px-4 py-2 text-[11px] font-semibold transition-colors duration-200",
                     isScrolled
-                      ? isActive || contactOpen
+                      ? isActive
                         ? "text-gray-900"
                         : "text-gray-600 hover:text-gray-900"
-                      : isActive || contactOpen
+                      : isActive
                       ? "text-white"
                       : "text-white/70 hover:text-white"
                   )}
@@ -201,20 +192,14 @@ export function DesktopNav({ items }: DesktopNavProps) {
                   <span
                     className={cn(
                       "inline-block border-b-2 pb-1 transition-colors duration-200",
-                      isActive || contactOpen
+                      isActive
                         ? "border-blue-500"
                         : "border-transparent"
                     )}
                   >
                     {item.title}
                   </span>
-                </button>
-
-                {/* Contact Mega Menu */}
-                <ContactMegaMenu
-                  isOpen={contactOpen}
-                  onClose={() => setContactOpen(false)}
-                />
+                </Link>
               </li>
             );
           }

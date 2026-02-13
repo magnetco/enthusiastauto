@@ -308,10 +308,12 @@ export function PartsFilters({ products }: PartsFiltersProps) {
                 }}
                 onValueCommit={(values) => {
                   const [min, max] = values;
-                  updateFilters({
-                    priceMin: min === priceRange.min ? null : min.toString(),
-                    priceMax: max === priceRange.max ? null : max.toString(),
-                  });
+                  if (min !== undefined && max !== undefined) {
+                    updateFilters({
+                      priceMin: min === priceRange.min ? null : min.toString(),
+                      priceMax: max === priceRange.max ? null : max.toString(),
+                    });
+                  }
                 }}
                 className="w-full"
               />

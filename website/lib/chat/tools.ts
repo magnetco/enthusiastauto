@@ -1,7 +1,9 @@
 import { searchAll } from "@/lib/search/unified";
-import { getVehicleDetail } from "@/lib/sanity/queries/vehicles";
-import { getCompatibleParts } from "@/lib/shared/recommendations";
+import { getVehicleDetail, getVehicles } from "@/lib/sanity/queries/vehicles";
+import { getCompatibleParts, getVehiclesWithPart } from "@/lib/shared/recommendations";
 import { parseFitmentTag } from "@/lib/shared/recommendations";
+import { getProduct, getProducts, addToCart, createCart } from "@/lib/shopify";
+import { cookies } from "next/headers";
 import type { VehicleListItem } from "@/lib/sanity/queries/vehicles";
 import type { Product } from "@/lib/shopify/types";
 import type { SearchResult } from "@/types/search";
@@ -18,6 +20,7 @@ export interface VehicleSearchResult {
     mileage?: number;
   }>;
   count: number;
+  totalAvailable?: number;
 }
 
 export interface PartsSearchResult {
@@ -28,6 +31,50 @@ export interface PartsSearchResult {
     fitment: string[];
     url: string;
     vendor?: string;
+    variantId?: string; // For add-to-cart functionality
+    availableForSale?: boolean;
+  }>;
+  count: number;
+  totalAvailable?: number;
+}
+
+export interface AddToCartResult {
+  success: boolean;
+  message: string;
+  productTitle?: string;
+  cartUrl?: string;
+}
+
+export interface VehiclePartsMatchResult {
+  vehicle: {
+    title: string;
+    slug: string;
+    chassis: string;
+    url: string;
+  };
+  compatibleParts: Array<{
+    title: string;
+    handle: string;
+    price: string;
+    url: string;
+    variantId?: string;
+  }>;
+  count: number;
+}
+
+export interface PartsVehicleMatchResult {
+  part: {
+    title: string;
+    handle: string;
+    price: string;
+    url: string;
+  };
+  compatibleVehicles: Array<{
+    title: string;
+    slug: string;
+    chassis: string;
+    price: string;
+    url: string;
   }>;
   count: number;
 }
