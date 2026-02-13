@@ -489,6 +489,7 @@ export function SellRequestWizard() {
                   );
                 })}
               </div>
+            </div>
             ) : (
               <div className="rounded-xl border border-[#DFE5EA] bg-white p-6">
                 {selectedOption ? (
@@ -609,6 +610,7 @@ export function SellRequestWizard() {
                   )}
                 </div>
               </div>
+            </div>
             ) : (
               <div className="rounded-xl border border-[#DFE5EA] bg-white p-6">
                 {formData.firstName || formData.lastName || formData.email || formData.phone ? (
@@ -750,6 +752,7 @@ export function SellRequestWizard() {
                   </div>
                 </div>
               </div>
+            </div>
             ) : (
               <div className="rounded-xl border border-[#DFE5EA] bg-white p-6">
                 {formData.year || formData.make || formData.model || formData.mileage || formData.vin ? (
@@ -874,10 +877,61 @@ export function SellRequestWizard() {
                 </div>
               </div>
             </div>
-          )}
+            ) : (
+              <div className="rounded-xl border border-[#DFE5EA] bg-white p-6">
+                {formData.notes || formData.existingCustomer || formData.newsletter || formData.privacyPolicy ? (
+                  <div className="space-y-3">
+                    {formData.notes && (
+                      <div>
+                        <p className="text-xs text-[#6f6e77]">Notes</p>
+                        <p className="line-clamp-2 text-sm text-[#282a30]">{formData.notes}</p>
+                      </div>
+                    )}
+                    <div className="flex flex-wrap gap-2">
+                      {formData.existingCustomer && (
+                        <span className="rounded-full bg-[#005A90]/10 px-3 py-1 text-xs text-[#005A90]">
+                          Existing Customer
+                        </span>
+                      )}
+                      {formData.newsletter && (
+                        <span className="rounded-full bg-[#005A90]/10 px-3 py-1 text-xs text-[#005A90]">
+                          Newsletter
+                        </span>
+                      )}
+                      {formData.privacyPolicy && (
+                        <span className="rounded-full bg-[#005A90]/10 px-3 py-1 text-xs text-[#005A90]">
+                          Privacy Policy Agreed
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                ) : (
+                  <p className="text-sm text-[#6f6e77]">No additional details entered yet</p>
+                )}
+              </div>
+            )}
+          </div>
 
           {/* Step 5: Review */}
-          {currentStep === 5 && (
+          <div className={cn(
+            "transition-all duration-300",
+            currentStep !== 5 && "pointer-events-none opacity-40"
+          )}>
+            {currentStep !== 5 && (
+              <div className="mb-4 flex items-center justify-between">
+                <h3 className="font-headline text-xl tracking-wide text-[#282a30]">
+                  STEP 5: REVIEW & SUBMIT
+                </h3>
+                <button
+                  type="button"
+                  onClick={() => goToStep(5)}
+                  className="text-sm text-[#005A90] hover:underline"
+                >
+                  View
+                </button>
+              </div>
+            )}
+            {currentStep === 5 ? (
             <div className="animate-in fade-in duration-300">
               <div className="mb-12">
                 <TitleBlock
@@ -1002,8 +1056,12 @@ export function SellRequestWizard() {
                   your vehicle.
                 </p>
               </div>
-            </div>
-          )}
+            ) : (
+              <div className="rounded-xl border border-[#DFE5EA] bg-white p-6">
+                <p className="text-sm text-[#6f6e77]">Complete all steps to review your submission</p>
+              </div>
+            )}
+          </div>
         </div>
 
         {/* Navigation */}
@@ -1020,15 +1078,22 @@ export function SellRequestWizard() {
               Back
             </Button>
 
-            <div className="text-sm text-[#6f6e77]">
-              Step {currentStep} of {STEPS.length}
+            <div className="flex items-center gap-4">
+              <div className="text-sm text-[#6f6e77]">
+                Step {currentStep} of {STEPS.length}
+              </div>
+              {currentStep === 5 && (
+                <div className="text-xs text-[#6f6e77]">
+                  {[1, 2, 3, 4].filter(step => isStepComplete(step)).length} of 4 steps complete
+                </div>
+              )}
             </div>
 
             {currentStep < 5 ? (
               <Button
                 type="button"
                 onClick={nextStep}
-                disabled={isLoading || (currentStep === 1 && !selectedOption)}
+                disabled={isLoading}
                 className="gap-2 bg-[#005A90] text-white hover:bg-[#005A90]/90"
               >
                 Continue
@@ -1037,8 +1102,8 @@ export function SellRequestWizard() {
             ) : (
               <Button
                 type="submit"
-                disabled={isLoading}
-                className="gap-2 bg-[#005A90] px-8 text-white hover:bg-[#005A90]/90"
+                disabled={isLoading || !isStepComplete(1) || !isStepComplete(2) || !isStepComplete(3) || !isStepComplete(4)}
+                className="gap-2 bg-[#005A90] px-8 text-white hover:bg-[#005A90]/90 disabled:cursor-not-allowed disabled:opacity-50"
               >
                 {isLoading ? (
                   <>

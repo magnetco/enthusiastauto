@@ -226,6 +226,7 @@ export async function listAllVehicles(
 
 /**
  * Search for parts with optional fitment filtering
+ * Returns variant IDs for add-to-cart functionality
  */
 export async function searchParts(
   query: string,
@@ -234,15 +235,25 @@ export async function searchParts(
   limit: number = 8,
 ): Promise<PartsSearchResult> {
   try {
-    // Search all parts
-    const results = await searchAll(query, "parts", limit * 2); // Fetch more to account for filtering
-
+    const normalizedQuery = query.toLowerCase().trim();
+    
+    // Get all products from Shopify for more reliable searching
+    const allProducts = await getProducts({ query: normalizedQuery });
+    
+    // Also run fuzzy search for additional matches
+    const fuzzyResults = await searchAll(query, "parts", limit * 3);
+    
+    // Combine direct Shopify results with fuzzy results
+    const directMatchHandles = new Set(allProducts.map(p => p.handle));
+    const fuzzyMatchProducts = fuzzyResults
+      .filter(r => !directMatchHandles.has((r.item as Product).handle))
+      .map(r => r.item as Product);
+    
+    let combinedProducts = [...allProducts, ...fuzzyMatchProducts];
+    
     // Filter by fitment if chassis or year provided
-    let filteredResults = results;
     if (chassis || year) {
-      filteredResults = results.filter((result) => {
-        const product = result.item as Product;
-        
+      combinedProducts = combinedProducts.filter((product) => {
         // Check if any tag matches the fitment
         return product.tags.some((tag) => {
           const fitment = parseFitmentTag(tag);
@@ -274,12 +285,10 @@ export async function searchParts(
     }
 
     // Limit results
-    const limitedResults = filteredResults.slice(0, limit);
+    const limitedProducts = combinedProducts.slice(0, limit);
 
-    // Format results
-    const formattedResults = limitedResults.map((result) => {
-      const product = result.item as Product;
-      
+    // Format results with variant IDs for add-to-cart
+    const formattedResults = limitedProducts.map((product) => {
       // Extract fitment info from tags
       const fitmentTags = product.tags
         .filter((tag) => /bmw|e\d{2}|f\d{2}|g\d{2}/i.test(tag))
@@ -287,24 +296,76 @@ export async function searchParts(
           const fitment = parseFitmentTag(tag);
           return fitment.model || tag;
         })
-        .filter((tag, index, self) => self.indexOf(tag) === index); // Remove duplicates
+        .filter((tag, index, self) => self.indexOf(tag) === index);
+
+      // Get the first available variant for add-to-cart
+      const defaultVariant = product.variants?.find(v => v.availableForSale) || product.variants?.[0];
 
       return {
         title: product.title,
         handle: product.handle,
-        price: `$${product.priceRange.minVariantPrice.amount}`,
+        price: `$${parseFloat(product.priceRange.minVariantPrice.amount).toFixed(2)}`,
         fitment: fitmentTags,
-        url: `/product/${product.handle}`,
+        url: `https://enthusiastauto.com/product/${product.handle}`,
         vendor: product.vendor,
+        variantId: defaultVariant?.id,
+        availableForSale: product.availableForSale,
       };
     });
 
     return {
       results: formattedResults,
       count: formattedResults.length,
+      totalAvailable: combinedProducts.filter(p => p.availableForSale).length,
     };
   } catch (error) {
     console.error("Error searching parts:", error);
+    return { results: [], count: 0 };
+  }
+}
+
+/**
+ * List all parts/products with optional category filtering
+ */
+export async function listAllParts(
+  category?: string,
+  limit: number = 10,
+): Promise<PartsSearchResult> {
+  try {
+    const query = category ? `product_type:${category}` : undefined;
+    const products = await getProducts({ query });
+    const limitedProducts = products.slice(0, limit);
+    
+    const formattedResults = limitedProducts.map((product) => {
+      const fitmentTags = product.tags
+        .filter((tag) => /bmw|e\d{2}|f\d{2}|g\d{2}/i.test(tag))
+        .map((tag) => {
+          const fitment = parseFitmentTag(tag);
+          return fitment.model || tag;
+        })
+        .filter((tag, index, self) => self.indexOf(tag) === index);
+
+      const defaultVariant = product.variants?.find(v => v.availableForSale) || product.variants?.[0];
+
+      return {
+        title: product.title,
+        handle: product.handle,
+        price: `$${parseFloat(product.priceRange.minVariantPrice.amount).toFixed(2)}`,
+        fitment: fitmentTags,
+        url: `https://enthusiastauto.com/product/${product.handle}`,
+        vendor: product.vendor,
+        variantId: defaultVariant?.id,
+        availableForSale: product.availableForSale,
+      };
+    });
+
+    return {
+      results: formattedResults,
+      count: formattedResults.length,
+      totalAvailable: products.filter(p => p.availableForSale).length,
+    };
+  } catch (error) {
+    console.error("Error listing parts:", error);
     return { results: [], count: 0 };
   }
 }
@@ -370,14 +431,18 @@ export async function getVehicleCompatibleParts(
     // Limit results
     const limitedParts = parts.slice(0, limit);
 
-    // Format results
-    const formattedParts = limitedParts.map((part) => ({
-      title: part.title,
-      handle: part.handle,
-      price: `$${part.priceRange.minVariantPrice.amount}`,
-      url: `/product/${part.handle}`,
-      vendor: part.vendor,
-    }));
+    // Format results with variant IDs
+    const formattedParts = limitedParts.map((part) => {
+      const defaultVariant = part.variants?.find(v => v.availableForSale) || part.variants?.[0];
+      return {
+        title: part.title,
+        handle: part.handle,
+        price: `$${parseFloat(part.priceRange.minVariantPrice.amount).toFixed(2)}`,
+        url: `https://enthusiastauto.com/product/${part.handle}`,
+        vendor: part.vendor,
+        variantId: defaultVariant?.id,
+      };
+    });
 
     return {
       vehicleTitle: vehicle.listingTitle,
@@ -387,6 +452,181 @@ export async function getVehicleCompatibleParts(
   } catch (error) {
     console.error("Error getting compatible parts:", error);
     return null;
+  }
+}
+
+/**
+ * Find parts compatible with a vehicle by chassis code
+ */
+export async function getPartsForChassis(
+  chassis: string,
+  limit: number = 8,
+): Promise<VehiclePartsMatchResult | null> {
+  try {
+    // Get a vehicle with this chassis to use for matching
+    const vehicles = await getVehicles({ chassis: chassis.toUpperCase(), status: "current" }, { field: "_createdAt", direction: "desc" });
+    
+    if (vehicles.length === 0) {
+      // No vehicle found, search parts directly by chassis tag
+      const partsResult = await searchParts(chassis, chassis, undefined, limit);
+      return {
+        vehicle: {
+          title: `${chassis.toUpperCase()} BMW`,
+          slug: "",
+          chassis: chassis.toUpperCase(),
+          url: `https://enthusiastauto.com/vehicles?chassis=${chassis.toUpperCase()}`,
+        },
+        compatibleParts: partsResult.results.map(p => ({
+          title: p.title,
+          handle: p.handle,
+          price: p.price,
+          url: p.url,
+          variantId: p.variantId,
+        })),
+        count: partsResult.count,
+      };
+    }
+    
+    // Use the first vehicle to find compatible parts
+    const vehicle = vehicles[0];
+    const vehicleDetail = await getVehicleDetail(vehicle.slug.current);
+    
+    if (!vehicleDetail) {
+      return null;
+    }
+    
+    const parts = await getCompatibleParts(vehicleDetail);
+    const limitedParts = parts.slice(0, limit);
+    
+    return {
+      vehicle: {
+        title: vehicle.listingTitle,
+        slug: vehicle.slug.current,
+        chassis: vehicle.chassis,
+        url: `https://enthusiastauto.com/vehicles/${vehicle.slug.current}`,
+      },
+      compatibleParts: limitedParts.map((part) => {
+        const defaultVariant = part.variants?.find(v => v.availableForSale) || part.variants?.[0];
+        return {
+          title: part.title,
+          handle: part.handle,
+          price: `$${parseFloat(part.priceRange.minVariantPrice.amount).toFixed(2)}`,
+          url: `https://enthusiastauto.com/product/${part.handle}`,
+          variantId: defaultVariant?.id,
+        };
+      }),
+      count: limitedParts.length,
+    };
+  } catch (error) {
+    console.error("Error getting parts for chassis:", error);
+    return null;
+  }
+}
+
+/**
+ * Find vehicles compatible with a specific part
+ */
+export async function getVehiclesForPart(
+  productHandle: string,
+): Promise<PartsVehicleMatchResult | null> {
+  try {
+    // Get the product details
+    const product = await getProduct(productHandle);
+    
+    if (!product) {
+      return null;
+    }
+    
+    // Find vehicles that match this part's fitment tags
+    const compatibleVehicles = await getVehiclesWithPart(productHandle, product.tags);
+    
+    return {
+      part: {
+        title: product.title,
+        handle: product.handle,
+        price: `$${parseFloat(product.priceRange.minVariantPrice.amount).toFixed(2)}`,
+        url: `https://enthusiastauto.com/product/${product.handle}`,
+      },
+      compatibleVehicles: compatibleVehicles.map((vehicle) => ({
+        title: vehicle.listingTitle,
+        slug: vehicle.slug.current,
+        chassis: vehicle.chassis,
+        price: vehicle.showCallForPrice
+          ? "Call for price"
+          : `$${vehicle.listingPrice?.toLocaleString()}`,
+        url: `https://enthusiastauto.com/vehicles/${vehicle.slug.current}`,
+      })),
+      count: compatibleVehicles.length,
+    };
+  } catch (error) {
+    console.error("Error getting vehicles for part:", error);
+    return null;
+  }
+}
+
+/**
+ * Add a product to the shopping cart
+ * Note: This creates a cart if one doesn't exist
+ */
+export async function addProductToCart(
+  productHandle: string,
+  quantity: number = 1,
+): Promise<AddToCartResult> {
+  try {
+    // Get the product to find its variant ID
+    const product = await getProduct(productHandle);
+    
+    if (!product) {
+      return {
+        success: false,
+        message: `Product "${productHandle}" not found.`,
+      };
+    }
+    
+    if (!product.availableForSale) {
+      return {
+        success: false,
+        message: `"${product.title}" is currently out of stock.`,
+      };
+    }
+    
+    // Get the first available variant
+    const variant = product.variants?.find(v => v.availableForSale) || product.variants?.[0];
+    
+    if (!variant) {
+      return {
+        success: false,
+        message: `No available variants for "${product.title}".`,
+      };
+    }
+    
+    // Check if cart exists, create if not
+    const cookieStore = await cookies();
+    let cartId = cookieStore.get("cartId")?.value;
+    
+    if (!cartId) {
+      const newCart = await createCart();
+      cartId = newCart.id;
+      if (cartId) {
+        cookieStore.set("cartId", cartId);
+      }
+    }
+    
+    // Add to cart
+    await addToCart([{ merchandiseId: variant.id, quantity }]);
+    
+    return {
+      success: true,
+      message: `Added ${quantity}x "${product.title}" to your cart.`,
+      productTitle: product.title,
+      cartUrl: "https://enthusiastauto.com/cart",
+    };
+  } catch (error) {
+    console.error("Error adding to cart:", error);
+    return {
+      success: false,
+      message: `Failed to add item to cart: ${error instanceof Error ? error.message : "Unknown error"}`,
+    };
   }
 }
 
@@ -407,7 +647,28 @@ export async function executeTool(
         );
         
         if (result.count === 0) {
-          return "No vehicles found matching your search criteria.";
+          return JSON.stringify({
+            message: "No vehicles found matching your search criteria.",
+            suggestion: "Try searching with different terms like chassis code (E46, E92, F80) or model name (M3, M5).",
+            browseUrl: "https://enthusiastauto.com/vehicles",
+          });
+        }
+        
+        return JSON.stringify(result, null, 2);
+      }
+
+      case "list_vehicles": {
+        const result = await listAllVehicles(
+          (args.status as "current" | "sold" | "all") || "current",
+          args.chassis as string | undefined,
+          (args.limit as number) || 10,
+        );
+        
+        if (result.count === 0) {
+          return JSON.stringify({
+            message: "No vehicles currently in inventory.",
+            browseUrl: "https://enthusiastauto.com/vehicles",
+          });
         }
         
         return JSON.stringify(result, null, 2);
@@ -422,7 +683,27 @@ export async function executeTool(
         );
         
         if (result.count === 0) {
-          return "No parts found matching your search criteria.";
+          return JSON.stringify({
+            message: "No parts found matching your search criteria.",
+            suggestion: "Try searching with different terms or browse all parts.",
+            browseUrl: "https://enthusiastauto.com/parts",
+          });
+        }
+        
+        return JSON.stringify(result, null, 2);
+      }
+
+      case "list_parts": {
+        const result = await listAllParts(
+          args.category as string | undefined,
+          (args.limit as number) || 10,
+        );
+        
+        if (result.count === 0) {
+          return JSON.stringify({
+            message: "No parts currently available.",
+            browseUrl: "https://enthusiastauto.com/parts",
+          });
         }
         
         return JSON.stringify(result, null, 2);
@@ -432,7 +713,10 @@ export async function executeTool(
         const result = await getVehicleDetails(args.slug as string);
         
         if (!result) {
-          return "Vehicle not found.";
+          return JSON.stringify({
+            message: "Vehicle not found.",
+            browseUrl: "https://enthusiastauto.com/vehicles",
+          });
         }
         
         return JSON.stringify(result, null, 2);
@@ -445,8 +729,48 @@ export async function executeTool(
         );
         
         if (!result) {
-          return "Vehicle not found or no compatible parts available.";
+          return JSON.stringify({
+            message: "Vehicle not found or no compatible parts available.",
+            browseUrl: "https://enthusiastauto.com/parts",
+          });
         }
+        
+        return JSON.stringify(result, null, 2);
+      }
+
+      case "get_parts_for_chassis": {
+        const result = await getPartsForChassis(
+          args.chassis as string,
+          (args.limit as number) || 8,
+        );
+        
+        if (!result) {
+          return JSON.stringify({
+            message: "No parts found for this chassis code.",
+            browseUrl: "https://enthusiastauto.com/parts",
+          });
+        }
+        
+        return JSON.stringify(result, null, 2);
+      }
+
+      case "get_vehicles_for_part": {
+        const result = await getVehiclesForPart(args.productHandle as string);
+        
+        if (!result) {
+          return JSON.stringify({
+            message: "Part not found or no compatible vehicles in inventory.",
+          });
+        }
+        
+        return JSON.stringify(result, null, 2);
+      }
+
+      case "add_to_cart": {
+        const result = await addProductToCart(
+          args.productHandle as string,
+          (args.quantity as number) || 1,
+        );
         
         return JSON.stringify(result, null, 2);
       }
