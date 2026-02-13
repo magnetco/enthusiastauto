@@ -71,7 +71,7 @@ const services: Record<string, Service> = {
   rejuvenation: {
     title: "Full Rejuvenation",
     heroTitle: "REJUVENATION",
-    tagline: "Preserving the Passion | Embracing the Experience",
+    tagline: "PRESERVING THE PASSION | EMBRACING THE EXPERIENCE",
     description:
       "Experience the ultimate in BMW M series preservation with EAG's bespoke rejuvenation service, combining restoration expertise with unparalleled marque knowledge.",
     heroImage:
@@ -245,14 +245,8 @@ export default async function ServiceDetailPage(props: {
       {/* Hero Section */}
       <PageHero
         size="medium"
-        eyebrow={service.title}
-        title={
-          <>
-            {service.heroTitle}
-            <br />
-            <span className="text-blue-400">{service.tagline}</span>
-          </>
-        }
+        eyebrow="ENTHUSIAST AUTO GROUP"
+        title={service.heroTitle}
         subtitle={service.description}
         backgroundImage={service.heroImage}
         ctas={[
@@ -262,10 +256,15 @@ export default async function ServiceDetailPage(props: {
             variant: "primary",
           },
         ]}
-      />
+      >
+        {/* Tagline below title */}
+        <p className="mb-10 text-xl font-medium tracking-wide text-[#2E90FA] sm:text-2xl">
+          {service.tagline}
+        </p>
+      </PageHero>
 
       {/* Service Overview Section */}
-      <Section className="py-12 sm:py-16 lg:py-20">
+      <Section className="bg-white py-12 sm:py-16 lg:py-20">
         <TitleBlock
           title={service.tagline ?? service.title}
           description={service.description}
@@ -278,51 +277,79 @@ export default async function ServiceDetailPage(props: {
           layout={service.layout}
           images={service.sectionImages}
         />
+      </Section>
 
-        {/* Extended Description (for rejuvenation) */}
-        {"extendedDescription" in service && service.extendedDescription && (
-          <div className="mt-12 rounded-xl border border-neutral-200 bg-neutral-50 p-6 sm:p-8">
-            <div className="prose prose-neutral max-w-none">
-              {service.extendedDescription.split("\n\n").map((paragraph, idx) => (
-                <p key={idx} className="text-neutral-700">
-                  {paragraph.startsWith("•") ? (
-                    <span className="whitespace-pre-wrap">{paragraph}</span>
-                  ) : (
-                    paragraph
-                  )}
+      {/* Extended Description Section (for rejuvenation) */}
+      {"extendedDescription" in service && service.extendedDescription && (
+        <Section className="bg-[#141721] py-12 sm:py-16 lg:py-20">
+          <div className="grid gap-8 lg:grid-cols-2 lg:gap-12">
+            {/* Left: Image */}
+            <div className="relative aspect-[4/3] overflow-hidden rounded-xl">
+              <img
+                src={service.sectionImages?.[1] || service.heroImage}
+                alt="Rejuvenation Service"
+                className="h-full w-full object-cover"
+              />
+            </div>
+
+            {/* Right: Content */}
+            <div className="flex flex-col justify-center">
+              <h2 className="mb-6 font-headline text-2xl font-bold uppercase tracking-wide text-white sm:text-3xl">
+                EAG'S REJUVENATION SERVICE GOES FAR BEYOND TRADITIONAL RESTORATION.
+              </h2>
+              
+              <div className="space-y-4 text-white/80">
+                {service.extendedDescription.split("\n\n").map((paragraph, idx) => {
+                  if (paragraph.startsWith("•")) {
+                    // Render bullet points
+                    const bullets = paragraph.split("\n").filter(line => line.trim().startsWith("•"));
+                    return (
+                      <ul key={idx} className="space-y-2">
+                        {bullets.map((bullet, bulletIdx) => (
+                          <li key={bulletIdx} className="flex gap-3">
+                            <span className="text-[#2E90FA]">•</span>
+                            <span>{bullet.replace("•", "").trim()}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    );
+                  }
+                  return (
+                    <p key={idx} className="leading-relaxed">
+                      {paragraph}
+                    </p>
+                  );
+                })}
+              </div>
+
+              {/* Conclusion */}
+              {service.conclusion && (
+                <p className="mt-8 text-lg font-medium text-white">
+                  {service.conclusion}
                 </p>
-              ))}
+              )}
             </div>
           </div>
-        )}
-
-        {/* Conclusion */}
-        {service.conclusion && (
-          <div className="mt-12 border-t border-neutral-200 pt-8">
-            <p className="mx-auto max-w-3xl text-center text-lg text-neutral-700">
-              {service.conclusion}
-            </p>
-          </div>
-        )}
-      </Section>
+        </Section>
+      )}
 
       {/* Service Request Form with Contact Sidebar */}
       <Section
         id="request-form"
         className="border-t border-neutral-200 bg-neutral-50 py-12 sm:py-16 lg:py-20"
       >
-        <div className="mb-10 text-center">
-          <h2 className="mb-4 text-2xl font-bold text-neutral-900 sm:text-3xl">
-            {service.formTitle || `Schedule Your ${service.title}`}
-          </h2>
-          <p className="mx-auto max-w-2xl text-neutral-600">
-            {service.formDescription ||
-              "Fill out the form below and we'll get back to you within 1 business day to discuss your needs."}
-          </p>
-          <p className="mt-2 text-sm text-neutral-500">
-            Fields marked with (*) are required.
-          </p>
-        </div>
+        <TitleBlock
+          title={service.formTitle || `${service.title}`}
+          description={
+            service.formDescription ||
+            "Fill out the form below and we'll get back to you within 1 business day to discuss your needs."
+          }
+          className="mb-10 sm:mb-12"
+        />
+        
+        <p className="mb-8 text-center text-sm text-neutral-500">
+          Fields marked with (*) are required.
+        </p>
 
         <div className="grid gap-8 lg:grid-cols-3 lg:gap-12">
           {/* Form - takes 2 columns on large screens */}

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import { ChevronLeft, ChevronRight, Heart, Share2, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
+import { gsap } from "gsap";
 
 interface GalleryImage {
   asset: {
@@ -65,10 +66,15 @@ export function VehicleHero({
   onFavoriteToggle,
 }: VehicleHeroProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [nextIndex, setNextIndex] = useState(0);
   const [activeTab, setActiveTab] = useState("specifications");
   const [isSticky, setIsSticky] = useState(false);
   const [favoriteLoading, setFavoriteLoading] = useState(false);
   const [localIsFavorited, setLocalIsFavorited] = useState(isFavorited);
+  const [isTransitioning, setIsTransitioning] = useState(false);
+  
+  const imageContainerRef = useRef<HTMLDivElement>(null);
+  const blocksRef = useRef<HTMLDivElement>(null);
 
   const isSold = status === "sold";
   const isNew = !isSold && isWithin21Days(createdAt);
@@ -125,12 +131,55 @@ export function VehicleHero({
     };
   }, []);
 
+  const transitionToImage = (newIndex: number) => {
+    if (isTransitioning || newIndex === currentIndex) return;
+    
+    setIsTransitioning(true);
+    setNextIndex(newIndex);
+
+    const blocks = blocksRef.current?.children;
+    if (!blocks) return;
+
+    // Animate blocks in a checkered pattern
+    const timeline = gsap.timeline({
+      onComplete: () => {
+        setCurrentIndex(newIndex);
+        setIsTransitioning(false);
+      },
+    });
+
+    // Stagger animation for checkered effect
+    timeline.to(blocks, {
+      scaleY: 1,
+      duration: 0.5,
+      stagger: {
+        amount: 0.4,
+        from: "random",
+        grid: "auto",
+      },
+      ease: "power2.inOut",
+    });
+
+    timeline.to(blocks, {
+      scaleY: 0,
+      duration: 0.5,
+      stagger: {
+        amount: 0.4,
+        from: "random",
+        grid: "auto",
+      },
+      ease: "power2.inOut",
+    }, "+=0.1");
+  };
+
   const handlePrevious = () => {
-    setCurrentIndex((prev) => (prev === 0 ? images.length - 1 : prev - 1));
+    const newIndex = currentIndex === 0 ? images.length - 1 : currentIndex - 1;
+    transitionToImage(newIndex);
   };
 
   const handleNext = () => {
-    setCurrentIndex((prev) => (prev === images.length - 1 ? 0 : prev + 1));
+    const newIndex = currentIndex === images.length - 1 ? 0 : currentIndex + 1;
+    transitionToImage(newIndex);
   };
 
   const handleTabClick = (tabId: string) => {
@@ -202,21 +251,51 @@ export function VehicleHero({
 
   return (
     <div className="bg-white">
-      {/* Hero Image Section */}
-      <div className="relative mx-auto max-w-7xl px-4 pt-8 sm:px-6 lg:px-8">
-        <div className="relative aspect-video overflow-hidden rounded-lg bg-gray-900">
+      {/* Hero Image Section - Full Width */}
+      <div className="relative w-full">
+        <div 
+          ref={imageContainerRef}
+          className="relative aspect-video w-full overflow-hidden bg-gray-900"
+        >
+          {/* Current Image */}
           {currentImage && (
             <Image
               src={currentImage.asset.url}
               alt={currentImage.alt || `${title} - Image ${currentIndex + 1}`}
               fill
               className="object-cover"
-              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 90vw, 1280px"
+              sizes="100vw"
               priority
               placeholder={currentImage.asset.metadata?.lqip ? "blur" : "empty"}
               blurDataURL={currentImage.asset.metadata?.lqip}
             />
           )}
+
+          {/* Next Image (hidden behind blocks during transition) */}
+          {isTransitioning && images[nextIndex] && (
+            <Image
+              src={images[nextIndex].asset.url}
+              alt={images[nextIndex].alt || `${title} - Image ${nextIndex + 1}`}
+              fill
+              className="object-cover"
+              sizes="100vw"
+              priority
+            />
+          )}
+
+          {/* Checkered Flag Blocks Overlay */}
+          <div 
+            ref={blocksRef}
+            className="pointer-events-none absolute inset-0 z-10 grid grid-cols-8 grid-rows-6"
+          >
+            {Array.from({ length: 48 }).map((_, i) => (
+              <div
+                key={i}
+                className="origin-top bg-black"
+                style={{ transform: "scaleY(0)" }}
+              />
+            ))}
+          </div>
 
           {/* Navigation Arrows */}
           {images.length > 1 && (
@@ -224,8 +303,9 @@ export function VehicleHero({
               <Button
                 variant="ghost"
                 size="icon"
-                className="absolute left-4 top-1/2 -translate-y-1/2 bg-black/50 text-white hover:bg-black/70"
+                className="absolute left-4 top-1/2 z-20 -translate-y-1/2 bg-black/50 text-white hover:bg-black/70 disabled:opacity-50"
                 onClick={handlePrevious}
+                disabled={isTransitioning}
                 aria-label="Previous image"
               >
                 <ChevronLeft className="h-6 w-6" />
@@ -234,8 +314,9 @@ export function VehicleHero({
               <Button
                 variant="ghost"
                 size="icon"
-                className="absolute right-4 top-1/2 -translate-y-1/2 bg-black/50 text-white hover:bg-black/70"
+                className="absolute right-4 top-1/2 z-20 -translate-y-1/2 bg-black/50 text-white hover:bg-black/70 disabled:opacity-50"
                 onClick={handleNext}
+                disabled={isTransitioning}
                 aria-label="Next image"
               >
                 <ChevronRight className="h-6 w-6" />
@@ -244,12 +325,14 @@ export function VehicleHero({
           )}
 
           {/* Image Counter */}
-          <div className="absolute bottom-4 right-4 rounded-md bg-black/70 px-3 py-1 text-sm text-white">
+          <div className="absolute bottom-4 right-4 z-20 rounded-md bg-black/70 px-3 py-1 text-sm text-white">
             {currentIndex + 1} / {images.length}
           </div>
         </div>
+      </div>
 
-        {/* Title, Price, and Actions */}
+      {/* Title, Price, and Actions - Contained */}
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="mt-6 flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
           <div className="flex-1">
             <div className="mb-2 flex flex-wrap items-center gap-3">

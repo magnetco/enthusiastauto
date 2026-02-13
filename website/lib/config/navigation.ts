@@ -59,15 +59,16 @@ export interface ContactMenuConfig {
 }
 
 /**
- * Main navigation items for the header (simple links, no dropdowns)
+ * Main navigation items for the header with dropdown menus
  */
 export const NAV_ITEMS: NavItem[] = [
-  { title: "About EAG", href: "/about" },
-  { title: "Inventory", href: "/vehicles" },
+  { title: "About EAG", href: "/about", hasSubmenu: true, submenuType: "about" },
+  { title: "Inventory", href: "/vehicles", hasSubmenu: true, submenuType: "inventory" },
   { title: "Parts", href: "/parts" },
-  { title: "Services", href: "/services" },
+  { title: "Services", href: "/services", hasSubmenu: true, submenuType: "services" },
+  { title: "Under The Hood", href: "/blog" },
   { title: "Sell Your Car", href: "/sell" },
-  { title: "Contact", href: "/contact" },
+  { title: "Contact", href: "/contact", hasSubmenu: true, submenuType: "contact" },
 ];
 
 /**

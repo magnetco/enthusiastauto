@@ -234,7 +234,16 @@ export function DesktopNav({ items }: DesktopNavProps) {
                     : "text-white/70 hover:text-white"
                 )}
               >
-                {item.title}
+                <span
+                  className={cn(
+                    "border-b-2 pb-1 transition-colors duration-200",
+                    isActive
+                      ? "border-blue-500"
+                      : "border-transparent"
+                  )}
+                >
+                  {item.title}
+                </span>
               </Link>
             </li>
           );

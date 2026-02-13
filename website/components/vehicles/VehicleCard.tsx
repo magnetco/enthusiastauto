@@ -33,51 +33,50 @@ export function VehicleCard({ vehicle, priority = false }: VehicleCardProps) {
         isSold ? "opacity-70" : ""
       }`}
     >
-      <Card className="h-full overflow-hidden rounded-lg border border-gray-200 bg-white">
-        {/* Card Content - No image, content only */}
+      <Card className="h-full overflow-hidden rounded-lg border border-gray-200 bg-white hover:shadow-lg transition-shadow">
+        {/* Image Section */}
+        <div className="relative aspect-4/3 w-full overflow-hidden bg-gray-100">
+          <Image
+            src={imageUrl}
+            alt={vehicle.listingTitle}
+            fill
+            className="object-cover transition-transform duration-300 group-hover:scale-105"
+            loading={priority ? "eager" : "lazy"}
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+          />
+
+          {/* SOLD Overlay */}
+          {isSold && (
+            <div className="absolute inset-0 flex items-center justify-center bg-black/30">
+              <div className="rounded-md bg-white/90 px-6 py-3">
+                <span className="text-xl font-bold text-gray-900">SOLD</span>
+              </div>
+            </div>
+          )}
+
+          {/* Status Badges - Top Left */}
+          <div className="absolute left-3 top-3 flex flex-wrap gap-2">
+            {vehicle.statusTag === "SALE PENDING" && (
+              <Badge className="bg-red-600 text-white hover:bg-red-700">
+                SALE PENDING
+              </Badge>
+            )}
+            {vehicle.featuredVehicle && (
+              <Badge className="bg-blue-600 text-white hover:bg-blue-700">
+                FEATURED
+              </Badge>
+            )}
+            {vehicle.statusTag === "EAG SIGNATURE" && (
+              <Badge variant="outline" className="border-blue-500 bg-blue-50 text-blue-600">
+                EAG SIGNATURE
+              </Badge>
+            )}
+          </div>
+        </div>
+
+        {/* Card Content */}
         <CardContent className="p-6">
           <div className="space-y-4">
-            {/* Header: EAG Signature Badge */}
-            {vehicle.featuredVehicle && (
-              <div className="flex items-start justify-between">
-                <span className="text-xs font-semibold uppercase tracking-wider text-blue-600">
-                  EAG SIGNATURE
-                </span>
-                <div className="flex items-center gap-2">
-                  <button
-                    onClick={(e) => {
-                      e.preventDefault();
-                      // TODO: Implement favorite functionality
-                    }}
-                    className="text-gray-400 transition-colors hover:text-gray-600"
-                    aria-label="Add to favorites"
-                  >
-                    <HeartIcon className="h-5 w-5" />
-                  </button>
-                  <button
-                    onClick={(e) => {
-                      e.preventDefault();
-                      // TODO: Implement filter functionality
-                    }}
-                    className="text-gray-400 transition-colors hover:text-gray-600"
-                    aria-label="Filter"
-                  >
-                    <FunnelIcon className="h-5 w-5" />
-                  </button>
-                  <button
-                    onClick={(e) => {
-                      e.preventDefault();
-                      // TODO: Implement share functionality
-                    }}
-                    className="text-gray-400 transition-colors hover:text-gray-600"
-                    aria-label="Share"
-                  >
-                    <ShareIcon className="h-5 w-5" />
-                  </button>
-                </div>
-              </div>
-            )}
-
             {/* Vehicle Title and Price */}
             <div className="flex items-start justify-between gap-4">
               <h3 className="text-lg font-bold text-gray-900 group-hover:text-blue-600">
@@ -109,7 +108,7 @@ export function VehicleCard({ vehicle, priority = false }: VehicleCardProps) {
               {/* Transmission */}
               {vehicle.transmission && (
                 <div className="flex items-start gap-2">
-                  <svg className="mt-0.5 h-4 w-4 flex-shrink-0 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <svg className="mt-0.5 h-4 w-4 shrink-0 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
                   </svg>
                   <span className="text-gray-600">{vehicle.transmission}</span>
@@ -118,7 +117,7 @@ export function VehicleCard({ vehicle, priority = false }: VehicleCardProps) {
 
               {/* Mileage */}
               <div className="flex items-start gap-2">
-                <svg className="mt-0.5 h-4 w-4 flex-shrink-0 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <svg className="mt-0.5 h-4 w-4 shrink-0 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
                 </svg>
                 <span className="text-gray-600">{formatMileage(vehicle.mileage)}</span>
@@ -133,7 +132,7 @@ export function VehicleCard({ vehicle, priority = false }: VehicleCardProps) {
               <ul className="space-y-1 text-sm text-gray-600">
                 {vehicle.listingThumbnailFeatures.slice(0, 3).map((feature, index) => (
                   <li key={index} className="flex items-start gap-2">
-                    <span className="mt-1.5 h-1 w-1 flex-shrink-0 rounded-full bg-gray-400" />
+                    <span className="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-gray-400" />
                     <span>{feature}</span>
                   </li>
                 ))}
@@ -142,7 +141,7 @@ export function VehicleCard({ vehicle, priority = false }: VehicleCardProps) {
 
             {/* Bottom: Status Tag and Listed Date */}
             <div className="flex items-center gap-2 pt-2">
-              {vehicle.statusTag && (
+              {vehicle.statusTag && vehicle.statusTag !== "SALE PENDING" && vehicle.statusTag !== "EAG SIGNATURE" && (
                 <Badge
                   variant="secondary"
                   className="rounded bg-gray-100 px-2 py-1 text-xs font-medium text-gray-700"
@@ -161,15 +160,6 @@ export function VehicleCard({ vehicle, priority = false }: VehicleCardProps) {
             </div>
           </div>
         </CardContent>
-
-        {/* SOLD Overlay (if sold) */}
-        {isSold && (
-          <div className="absolute inset-0 flex items-center justify-center bg-black/30">
-            <div className="rounded-md bg-white/90 px-6 py-3">
-              <span className="text-xl font-bold text-gray-900">SOLD</span>
-            </div>
-          </div>
-        )}
       </Card>
     </Link>
   );

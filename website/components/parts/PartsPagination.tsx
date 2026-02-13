@@ -21,9 +21,6 @@ export function PartsPagination({
 
   const totalPages = Math.ceil(totalResults / resultsPerPage);
 
-  // Don't show pagination if only one page
-  if (totalPages <= 1) return null;
-
   const handlePageChange = useCallback(
     (newPage: number) => {
       // Scroll to top of results
@@ -40,6 +37,9 @@ export function PartsPagination({
     },
     [router, searchParams]
   );
+
+  // Don't show pagination if only one page
+  if (totalPages <= 1) return null;
 
   // Generate page numbers to display
   const getPageNumbers = () => {

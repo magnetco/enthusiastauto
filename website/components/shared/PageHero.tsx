@@ -5,6 +5,7 @@ import { buttonVariants } from "@/components/ui/button";
 import { ShimmerButton } from "@/components/ui/shimmer-button";
 import { cn } from "@/lib/utils";
 import { ReactNode, useState, useRef } from "react";
+import { ArrowRight } from "lucide-react";
 
 interface HeroCTA {
   label: string;
@@ -35,13 +36,13 @@ interface PageHeroProps {
 const sizeClasses = {
   full: "min-h-[80vh] lg:min-h-[85vh]",
   medium: "min-h-[50vh] lg:min-h-[55vh]",
-  compact: "min-h-[35vh] lg:min-h-[40vh]",
+  compact: "min-h-[30vh] lg:min-h-[35vh]",
 };
 
 const paddingClasses = {
   full: "py-20 lg:py-24",
   medium: "py-16 lg:py-20",
-  compact: "py-12 lg:py-16",
+  compact: "py-10 lg:py-12",
 };
 
 export function PageHero({
@@ -113,26 +114,51 @@ export function PageHero({
         )}
       >
         <div className="max-w-4xl">
-          {/* Main Heading */}
-          {typeof title === "string" ? (
-            <h1 className="font-headline mb-6 text-[2.5rem] leading-[1.05] tracking-wide text-white sm:text-[3rem] md:text-[3.5rem] lg:text-[4rem]">
-              {title}
-            </h1>
-          ) : (
-            <h1 className="font-headline mb-6 text-[2.5rem] leading-[1.05] tracking-wide text-white sm:text-[3rem] md:text-[3.5rem] lg:text-[4rem]">
-              {title}
-            </h1>
-          )}
-
-          {/* Subtitle */}
-          {subtitle && (
-            <p className="mb-10 max-w-2xl text-lg leading-relaxed text-white/90 sm:text-xl">
-              {subtitle}
+          {/* Eyebrow */}
+          {eyebrow && (
+            <p className={cn(
+              "font-medium uppercase tracking-wider text-white/70",
+              size === "compact" ? "mb-3 text-xs" : "mb-4 text-sm"
+            )}>
+              {eyebrow}
             </p>
           )}
 
-          {/* Additional content (e.g., feature badges) */}
+          {/* Main Heading */}
+          {typeof title === "string" ? (
+            <h1 className={cn(
+              "font-headline mb-6 leading-[1.05] tracking-wide text-white",
+              size === "compact" 
+                ? "text-[2rem] sm:text-[2.5rem] md:text-[3rem]" 
+                : "text-[2.5rem] sm:text-[3rem] md:text-[3.5rem] lg:text-[4rem]"
+            )}>
+              {title}
+            </h1>
+          ) : (
+            <h1 className={cn(
+              "font-headline mb-6 leading-[1.05] tracking-wide text-white",
+              size === "compact" 
+                ? "text-[2rem] sm:text-[2.5rem] md:text-[3rem]" 
+                : "text-[2.5rem] sm:text-[3rem] md:text-[3.5rem] lg:text-[4rem]"
+            )}>
+              {title}
+            </h1>
+          )}
+
+          {/* Additional content (e.g., tagline) - placed between title and subtitle */}
           {children}
+
+          {/* Subtitle */}
+          {subtitle && (
+            <p className={cn(
+              "max-w-2xl leading-relaxed text-white/90",
+              size === "compact" 
+                ? "mb-6 text-base sm:text-lg" 
+                : "mb-10 text-lg sm:text-xl"
+            )}>
+              {subtitle}
+            </p>
+          )}
 
           {/* CTAs */}
           {ctas && ctas.length > 0 && (
@@ -189,6 +215,7 @@ export function PageHero({
                     )}
                   >
                     {cta.label}
+                    <ArrowRight className="h-4 w-4" />
                   </Link>
                 );
               })}

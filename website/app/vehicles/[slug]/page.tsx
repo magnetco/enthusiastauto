@@ -9,6 +9,8 @@ import {
 } from "@/lib/sanity/queries/vehicles";
 import { VehicleHeroClient } from "@/components/vehicles/VehicleHeroClient";
 import { VehicleSpecsSection } from "@/components/vehicles/VehicleSpecsSection";
+import { EAGImpressionsSection } from "@/components/vehicles/EAGImpressionsSection";
+import { HighlightsSection } from "@/components/vehicles/HighlightsSection";
 import { OverviewSection } from "@/components/vehicles/OverviewSection";
 import { VehicleGallerySection } from "@/components/vehicles/VehicleGallerySection";
 import { HistorySection } from "@/components/vehicles/HistorySection";
@@ -188,6 +190,12 @@ export default async function VehicleDetailPage({
       {/* Specifications Section */}
       <VehicleSpecsSection vehicle={vehicle} />
 
+      {/* EAG Impressions Section */}
+      <EAGImpressionsSection vehicle={vehicle} />
+
+      {/* Highlights Section */}
+      <HighlightsSection vehicle={vehicle} />
+
       {/* Overview Section */}
       <OverviewSection vehicle={vehicle} />
 
@@ -210,11 +218,9 @@ export default async function VehicleDetailPage({
 
       {/* Inquiry Section */}
       <VehicleInquirySection
+        vehicle={vehicle}
         vehicleSlug={slug}
-        vehicleTitle={vehicle.listingTitle}
         vehicleYear={vehicleYear}
-        vehiclePrice={vehicle.listingPrice || 0}
-        vehicleStatus={vehicle.status}
       />
 
       {/* FAQs Section */}
