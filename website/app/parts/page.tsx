@@ -80,10 +80,12 @@ function filterProducts(products: Product[], params: SearchParams): Product[] {
     filtered = filtered.filter((p) => vendors.includes(p.vendor));
   }
 
-  // Filter by categories
+  // Filter by categories (tags)
   if (params.category) {
     const categories = params.category.split(",");
-    filtered = filtered.filter((p) => categories.includes(p.productType));
+    filtered = filtered.filter((p) =>
+      p.tags?.some((tag) => categories.includes(tag))
+    );
   }
 
   // Filter by price range

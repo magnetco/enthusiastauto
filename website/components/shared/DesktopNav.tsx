@@ -35,7 +35,7 @@ export function DesktopNav({ items }: DesktopNavProps) {
 
   return (
     <nav className="flex items-center">
-      <ul className="flex w-full items-center justify-between">
+      <ul className="flex w-full items-baseline justify-between pt-1">
         {items.map((item) => {
           const isActive =
             item.href === "/"
@@ -55,7 +55,7 @@ export function DesktopNav({ items }: DesktopNavProps) {
                     setAboutOpen(true);
                   }}
                   className={cn(
-                    "font-headline px-4 py-2 text-[11px] font-semibold transition-colors duration-200",
+                    "font-headline inline-flex items-baseline px-4 py-2 text-[11px] font-semibold transition-colors duration-200",
                     isScrolled
                       ? isActive || aboutOpen
                         ? "text-gray-900"
@@ -67,7 +67,7 @@ export function DesktopNav({ items }: DesktopNavProps) {
                 >
                   <span
                     className={cn(
-                      "border-b-2 pb-1 transition-colors duration-200",
+                      "inline-block border-b-2 pb-1 transition-colors duration-200",
                       isActive || aboutOpen
                         ? "border-blue-500"
                         : "border-transparent"
@@ -89,17 +89,18 @@ export function DesktopNav({ items }: DesktopNavProps) {
           if (item.hasSubmenu && item.submenuType === "inventory") {
             return (
               <li key={item.title} className="relative">
-                <button
+                <Link
+                  href={item.href}
+                  prefetch={true}
                   onClick={() => {
                     closeAllMenus();
-                    setInventoryOpen(!inventoryOpen);
                   }}
                   onMouseEnter={() => {
                     closeAllMenus();
                     setInventoryOpen(true);
                   }}
                   className={cn(
-                    "font-headline px-4 py-2 text-[11px] font-semibold transition-colors duration-200",
+                    "font-headline inline-flex items-baseline px-4 py-2 text-[11px] font-semibold transition-colors duration-200",
                     isScrolled
                       ? isActive || inventoryOpen
                         ? "text-gray-900"
@@ -111,7 +112,7 @@ export function DesktopNav({ items }: DesktopNavProps) {
                 >
                   <span
                     className={cn(
-                      "border-b-2 pb-1 transition-colors duration-200",
+                      "inline-block border-b-2 pb-1 transition-colors duration-200",
                       isActive || inventoryOpen
                         ? "border-blue-500"
                         : "border-transparent"
@@ -119,7 +120,7 @@ export function DesktopNav({ items }: DesktopNavProps) {
                   >
                     {item.title}
                   </span>
-                </button>
+                </Link>
 
                 {/* Inventory Mega Menu */}
                 <InventoryMegaMenu
@@ -143,7 +144,7 @@ export function DesktopNav({ items }: DesktopNavProps) {
                     setServicesOpen(true);
                   }}
                   className={cn(
-                    "font-headline px-4 py-2 text-[11px] font-semibold transition-colors duration-200",
+                    "font-headline inline-flex items-baseline px-4 py-2 text-[11px] font-semibold transition-colors duration-200",
                     isScrolled
                       ? isActive || servicesOpen
                         ? "text-gray-900"
@@ -155,7 +156,7 @@ export function DesktopNav({ items }: DesktopNavProps) {
                 >
                   <span
                     className={cn(
-                      "border-b-2 pb-1 transition-colors duration-200",
+                      "inline-block border-b-2 pb-1 transition-colors duration-200",
                       isActive || servicesOpen
                         ? "border-blue-500"
                         : "border-transparent"
@@ -187,7 +188,7 @@ export function DesktopNav({ items }: DesktopNavProps) {
                     setContactOpen(true);
                   }}
                   className={cn(
-                    "font-headline px-4 py-2 text-[11px] font-semibold transition-colors duration-200",
+                    "font-headline inline-flex items-baseline px-4 py-2 text-[11px] font-semibold transition-colors duration-200",
                     isScrolled
                       ? isActive || contactOpen
                         ? "text-gray-900"
@@ -199,7 +200,7 @@ export function DesktopNav({ items }: DesktopNavProps) {
                 >
                   <span
                     className={cn(
-                      "border-b-2 pb-1 transition-colors duration-200",
+                      "inline-block border-b-2 pb-1 transition-colors duration-200",
                       isActive || contactOpen
                         ? "border-blue-500"
                         : "border-transparent"
@@ -224,7 +225,7 @@ export function DesktopNav({ items }: DesktopNavProps) {
                 href={item.href}
                 prefetch={true}
                 className={cn(
-                  "font-headline px-4 py-2 text-[11px] font-semibold transition-colors duration-200",
+                  "font-headline inline-flex items-baseline px-4 py-2 text-[11px] font-semibold transition-colors duration-200",
                   isScrolled
                     ? isActive
                       ? "text-gray-900"
@@ -236,7 +237,7 @@ export function DesktopNav({ items }: DesktopNavProps) {
               >
                 <span
                   className={cn(
-                    "border-b-2 pb-1 transition-colors duration-200",
+                    "inline-block border-b-2 pb-1 transition-colors duration-200",
                     isActive
                       ? "border-blue-500"
                       : "border-transparent"

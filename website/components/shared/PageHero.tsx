@@ -40,9 +40,9 @@ const sizeClasses = {
 };
 
 const paddingClasses = {
-  full: "py-20 lg:py-24",
-  medium: "py-16 lg:py-20",
-  compact: "py-10 lg:py-12",
+  full: "py-12 lg:py-16",
+  medium: "py-10 lg:py-14",
+  compact: "py-8 lg:py-10",
 };
 
 export function PageHero({
@@ -101,8 +101,12 @@ export function PageHero({
             style={{ backgroundImage: `url('${backgroundImage}')` }}
           />
           {/* Dark gradient overlay for dramatic effect - using navy primary */}
-          <div className="absolute inset-0 bg-gradient-to-r from-[#141721] via-[#141721]/95 to-[#141721]/70" />
-          <div className="absolute inset-0 bg-gradient-to-t from-[#141721] via-transparent to-[#141721]/50" />
+          <div 
+            className="absolute inset-0" 
+            style={{ 
+              background: 'linear-gradient(27deg, rgba(45, 50, 67, 1) 0%, rgba(0, 0, 0, 0.4) 50%, rgba(0, 0, 0, 0) 100%)' 
+            }} 
+          />
         </div>
       )}
 
@@ -118,7 +122,7 @@ export function PageHero({
           {eyebrow && (
             <p className={cn(
               "font-medium uppercase tracking-wider text-white/70",
-              size === "compact" ? "mb-3 text-xs" : "mb-4 text-sm"
+              size === "compact" ? "mb-2 text-xs" : "mb-3 text-sm"
             )}>
               {eyebrow}
             </p>
@@ -127,7 +131,7 @@ export function PageHero({
           {/* Main Heading */}
           {typeof title === "string" ? (
             <h1 className={cn(
-              "font-headline mb-6 leading-[1.05] tracking-wide text-white",
+              "font-headline mb-4 leading-[1.05] tracking-wide text-white",
               size === "compact" 
                 ? "text-[2rem] sm:text-[2.5rem] md:text-[3rem]" 
                 : "text-[2.5rem] sm:text-[3rem] md:text-[3.5rem] lg:text-[4rem]"
@@ -136,7 +140,7 @@ export function PageHero({
             </h1>
           ) : (
             <h1 className={cn(
-              "font-headline mb-6 leading-[1.05] tracking-wide text-white",
+              "font-headline mb-4 leading-[1.05] tracking-wide text-white",
               size === "compact" 
                 ? "text-[2rem] sm:text-[2.5rem] md:text-[3rem]" 
                 : "text-[2.5rem] sm:text-[3rem] md:text-[3.5rem] lg:text-[4rem]"
@@ -153,8 +157,8 @@ export function PageHero({
             <p className={cn(
               "max-w-2xl leading-relaxed text-white/90",
               size === "compact" 
-                ? "mb-6 text-base sm:text-lg" 
-                : "mb-10 text-lg sm:text-xl"
+                ? "mb-5 text-base sm:text-lg" 
+                : "mb-7 text-lg sm:text-xl"
             )}>
               {subtitle}
             </p>

@@ -7,11 +7,10 @@ import { PageHero } from "./PageHero";
 export function HeroSection() {
   return (
     <PageHero
-      size="full"
-      eyebrow="Enthusiast Auto Group"
+      size="medium"
       title="The Leading BMW Preservation Facility"
       subtitle="Specializing in the acquisition, restoration, and preservation of iconic BMW automobiles. Where passion meets precision."
-      backgroundImage="https://images.unsplash.com/photo-1555215695-3004980ad54e?q=80&w=2070&auto=format&fit=crop"
+      backgroundImage="/bg-hero-home.jpg"
       ctas={[
         {
           label: "View Inventory",

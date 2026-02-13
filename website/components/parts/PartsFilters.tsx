@@ -1,5 +1,6 @@
 "use client";
 
+import * as React from "react";
 import { useState, useMemo } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Dialog, DialogPanel, DialogTitle } from "@headlessui/react";
@@ -18,6 +19,7 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { Slider } from "@/components/ui/slider";
 import type { Product } from "@/lib/shopify/types";
 
 interface PartsFiltersProps {
@@ -28,6 +30,19 @@ export function PartsFilters({ products }: PartsFiltersProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+
+  // Calculate price range from products
+  const priceRange = useMemo(() => {
+    if (products.length === 0) return { min: 0, max: 1000 };
+    
+    const prices = products.map((p) =>
+      parseFloat(p.priceRange.minVariantPrice.amount)
+    );
+    const min = Math.floor(Math.min(...prices));
+    const max = Math.ceil(Math.max(...prices));
+    
+    return { min, max };
+  }, [products]);
 
   // Extract unique vendors and categories from products
   const vendorOptions = useMemo(() => {
@@ -45,11 +60,17 @@ export function PartsFilters({ products }: PartsFiltersProps) {
   const categoryOptions = useMemo(() => {
     const categoryMap = new Map<string, number>();
     products.forEach((product) => {
-      if (product.productType) {
-        categoryMap.set(
-          product.productType,
-          (categoryMap.get(product.productType) || 0) + 1
-        );
+      // Extract tags, excluding hidden/system tags
+      if (product.tags && Array.isArray(product.tags)) {
+        product.tags.forEach((tag) => {
+          if (
+            tag &&
+            !tag.toLowerCase().startsWith("hidden") &&
+            !tag.toLowerCase().startsWith("nextjs-frontend")
+          ) {
+            categoryMap.set(tag, (categoryMap.get(tag) || 0) + 1);
+          }
+        });
       }
     });
     return Array.from(categoryMap.entries())
@@ -63,6 +84,20 @@ export function PartsFilters({ products }: PartsFiltersProps) {
   const priceMin = searchParams.get("priceMin") || "";
   const priceMax = searchParams.get("priceMax") || "";
   const searchQuery = searchParams.get("q") || "";
+
+  // Slider state
+  const [sliderValues, setSliderValues] = useState<[number, number]>([
+    priceMin ? parseFloat(priceMin) : priceRange.min,
+    priceMax ? parseFloat(priceMax) : priceRange.max,
+  ]);
+
+  // Update slider values when URL params change
+  React.useEffect(() => {
+    setSliderValues([
+      priceMin ? parseFloat(priceMin) : priceRange.min,
+      priceMax ? parseFloat(priceMax) : priceRange.max,
+    ]);
+  }, [priceMin, priceMax, priceRange]);
 
   const updateFilters = (updates: Record<string, string | null>) => {
     const params = new URLSearchParams(searchParams);
@@ -221,10 +256,10 @@ export function PartsFilters({ products }: PartsFiltersProps) {
           </AccordionItem>
         )}
 
-        {/* Category Filter */}
+        {/* Category Filter (Tags) */}
         {categoryOptions.length > 0 && (
           <AccordionItem value="category">
-            <AccordionTrigger>Category</AccordionTrigger>
+            <AccordionTrigger>Categories</AccordionTrigger>
             <AccordionContent>
               <div className="space-y-2 max-h-48 overflow-y-auto">
                 {categoryOptions.map((category) => (
@@ -254,34 +289,35 @@ export function PartsFilters({ products }: PartsFiltersProps) {
         <AccordionItem value="price">
           <AccordionTrigger>Price Range</AccordionTrigger>
           <AccordionContent>
-            <div className="space-y-2">
-              <div>
-                <Label htmlFor="price-min" className="text-sm">
-                  Min Price
-                </Label>
-                <Input
-                  id="price-min"
-                  type="number"
-                  placeholder="e.g., 50"
-                  value={priceMin}
-                  onChange={(e) => updateFilters({ priceMin: e.target.value })}
-                  min="0"
-                  step="10"
-                />
+            <div className="space-y-4">
+              <div className="flex items-center justify-between text-sm">
+                <span className="text-muted-foreground">
+                  ${sliderValues[0].toLocaleString()}
+                </span>
+                <span className="text-muted-foreground">
+                  ${sliderValues[1].toLocaleString()}
+                </span>
               </div>
-              <div>
-                <Label htmlFor="price-max" className="text-sm">
-                  Max Price
-                </Label>
-                <Input
-                  id="price-max"
-                  type="number"
-                  placeholder="e.g., 500"
-                  value={priceMax}
-                  onChange={(e) => updateFilters({ priceMax: e.target.value })}
-                  min="0"
-                  step="10"
-                />
+              <Slider
+                min={priceRange.min}
+                max={priceRange.max}
+                step={10}
+                value={sliderValues}
+                onValueChange={(values) => {
+                  setSliderValues(values as [number, number]);
+                }}
+                onValueCommit={(values) => {
+                  const [min, max] = values;
+                  updateFilters({
+                    priceMin: min === priceRange.min ? null : min.toString(),
+                    priceMax: max === priceRange.max ? null : max.toString(),
+                  });
+                }}
+                className="w-full"
+              />
+              <div className="flex items-center justify-between text-xs text-muted-foreground">
+                <span>${priceRange.min.toLocaleString()}</span>
+                <span>${priceRange.max.toLocaleString()}</span>
               </div>
             </div>
           </AccordionContent>
