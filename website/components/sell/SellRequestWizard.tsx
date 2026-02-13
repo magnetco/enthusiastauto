@@ -1056,6 +1056,7 @@ export function SellRequestWizard() {
                   your vehicle.
                 </p>
               </div>
+            </div>
             ) : (
               <div className="rounded-xl border border-[#DFE5EA] bg-white p-6">
                 <p className="text-sm text-[#6f6e77]">Complete all steps to review your submission</p>

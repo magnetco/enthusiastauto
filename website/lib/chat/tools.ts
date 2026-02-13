@@ -124,9 +124,10 @@ export async function searchVehicles(
     const normalizedQuery = query.toLowerCase().trim();
     
     // Get all vehicles from Sanity for more reliable searching
+    // currentOnly: false means include sold vehicles too
     const allVehicles = await getVehicles(
-      status === "all" ? {} : { status },
-      { field: "_createdAt", direction: "desc" }
+      { currentOnly: status === "all" ? false : status === "current" },
+      "recent"
     );
     
     // Also run fuzzy search for additional matches
@@ -134,6 +135,9 @@ export async function searchVehicles(
     
     // Direct text matching on vehicles (more reliable than fuzzy for exact terms)
     const directMatches = allVehicles.filter((vehicle) => {
+      // Filter by status first
+      if (status !== "all" && vehicle.status !== status) return false;
+      
       const searchableText = [
         vehicle.listingTitle,
         vehicle.chassis,
@@ -174,10 +178,13 @@ export async function searchVehicles(
       mileage: vehicle.mileage,
     }));
 
+    // Count total current vehicles
+    const totalCurrent = allVehicles.filter(v => v.status === "current" || !v.status).length;
+
     return {
       results: formattedResults,
       count: formattedResults.length,
-      totalAvailable: allVehicles.filter(v => v.status === "current").length,
+      totalAvailable: totalCurrent,
     };
   } catch (error) {
     console.error("Error searching vehicles:", error);
@@ -194,11 +201,28 @@ export async function listAllVehicles(
   limit: number = 10,
 ): Promise<VehicleSearchResult> {
   try {
-    const filters: any = {};
-    if (status !== "all") filters.status = status;
-    if (chassis) filters.chassis = chassis.toUpperCase();
+    // Build filters for getVehicles
+    const filters: { currentOnly?: boolean; chassis?: string[] } = {};
     
-    const vehicles = await getVehicles(filters, { field: "_createdAt", direction: "desc" });
+    // currentOnly: false includes sold vehicles
+    if (status === "all") {
+      filters.currentOnly = false;
+    } else if (status === "sold") {
+      filters.currentOnly = false; // Need to get all, then filter
+    }
+    // status === "current" uses default (currentOnly: true)
+    
+    if (chassis) {
+      filters.chassis = [chassis.toUpperCase()];
+    }
+    
+    let vehicles = await getVehicles(filters, "recent");
+    
+    // If status is "sold", filter to only sold vehicles
+    if (status === "sold") {
+      vehicles = vehicles.filter(v => v.status === "sold");
+    }
+    
     const limitedVehicles = vehicles.slice(0, limit);
     
     const formattedResults = limitedVehicles.map((vehicle) => ({
@@ -464,7 +488,7 @@ export async function getPartsForChassis(
 ): Promise<VehiclePartsMatchResult | null> {
   try {
     // Get a vehicle with this chassis to use for matching
-    const vehicles = await getVehicles({ chassis: chassis.toUpperCase(), status: "current" }, { field: "_createdAt", direction: "desc" });
+    const vehicles = await getVehicles({ chassis: [chassis.toUpperCase()] }, "recent");
     
     if (vehicles.length === 0) {
       // No vehicle found, search parts directly by chassis tag
