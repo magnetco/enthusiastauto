@@ -45,7 +45,6 @@ export default async function AccountLayout({
       {/* Hero Section */}
       <PageHero
         size="compact"
-        eyebrow="Enthusiast Auto Group"
         title={
           <>
             My Account

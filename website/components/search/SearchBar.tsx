@@ -1,7 +1,7 @@
 'use client';
 
 import { Search, X, Loader2 } from 'lucide-react';
-import { Input } from '@/components/ui/input';
+import { Input, type InputProps } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { useCallback } from 'react';
 
@@ -14,6 +14,7 @@ export interface SearchBarProps {
   isLoading?: boolean;
   className?: string;
   autoFocus?: boolean;
+  variant?: InputProps['variant'];
 }
 
 export function SearchBar({
@@ -25,6 +26,7 @@ export function SearchBar({
   isLoading = false,
   className = '',
   autoFocus = false,
+  variant = 'light',
 }: SearchBarProps) {
   const handleKeyDown = useCallback(
     (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -55,6 +57,7 @@ export function SearchBar({
         />
         <Input
           type="search"
+          variant={variant}
           value={value}
           onChange={handleChange}
           onKeyDown={handleKeyDown}

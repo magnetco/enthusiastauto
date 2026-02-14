@@ -39,7 +39,7 @@ const services: Record<string, Service> = {
     description:
       "Conditioning your vehicle is a level above getting a quick detail. It's a whole process that individually inspects each vehicle and through the best products as well as the latest procedures ensures a final product of the highest quality.",
     heroImage:
-      "https://images.unsplash.com/photo-1619642751034-765dfdf7c58e?q=80&w=2074&auto=format&fit=crop",
+      "/images/services/conditioning-hero.avif",
     sections: [
       {
         title: "Evaluation",
@@ -169,7 +169,7 @@ Our goal is not just to make your BMW look new, but to preserve its character an
     description:
       "Professional repair of damage, dings, chips, and scratches using genuine BMW parts and factory-level painting techniques. We restore your BMW's appearance to better-than-new condition.",
     heroImage:
-      "https://images.unsplash.com/photo-1580273916550-e323be2ae537?q=80&w=2070&auto=format&fit=crop",
+      "/images/services/cosmetic-hero.avif",
     sections: [
       {
         title: "Collision Repair",
@@ -245,7 +245,7 @@ export default async function ServiceDetailPage(props: {
       {/* Hero Section */}
       <PageHero
         size="medium"
-        eyebrow="ENTHUSIAST AUTO GROUP"
+        eyebrow="SERVICES"
         title={service.heroTitle}
         subtitle={service.description}
         backgroundImage={service.heroImage}
@@ -264,12 +264,13 @@ export default async function ServiceDetailPage(props: {
       </PageHero>
 
       {/* Service Overview Section */}
-      <Section className={slug === "rejuvenation" ? "bg-bg-primary py-12 sm:py-16 lg:py-20" : "bg-white py-12 sm:py-16 lg:py-20"}>
+      <Section className="bg-white py-12 sm:py-16 lg:py-20">
         <TitleBlock
           title={service.tagline ?? service.title}
           description={service.description}
           className="mb-10 sm:mb-12"
-          variant={slug === "rejuvenation" ? "dark" : "light"}
+          variant="light"
+          layout="columns"
         />
 
         {/* Feature Grid */}
@@ -277,13 +278,13 @@ export default async function ServiceDetailPage(props: {
           sections={service.sections}
           layout={service.layout}
           images={service.sectionImages}
-          variant={slug === "rejuvenation" ? "dark" : "default"}
+          variant="default"
         />
       </Section>
 
       {/* Extended Description Section (for rejuvenation) */}
       {"extendedDescription" in service && service.extendedDescription && (
-        <Section className="bg-bg-primary py-12 sm:py-16 lg:py-20">
+        <Section className="bg-neutral-50 py-12 sm:py-16 lg:py-20">
           <div className="grid gap-8 lg:grid-cols-2 lg:gap-12">
             {/* Left: Image */}
             <div className="relative aspect-4/3 overflow-hidden rounded-xl">
@@ -296,11 +297,11 @@ export default async function ServiceDetailPage(props: {
 
             {/* Right: Content */}
             <div className="flex flex-col justify-center">
-              <h2 className="mb-6 font-headline text-2xl font-bold uppercase tracking-wide text-white sm:text-3xl">
+              <h2 className="mb-6 font-headline text-2xl font-bold uppercase tracking-wide text-neutral-900 sm:text-3xl">
                 EAG'S REJUVENATION SERVICE GOES FAR BEYOND TRADITIONAL RESTORATION.
               </h2>
               
-              <div className="space-y-4 text-white/80">
+              <div className="space-y-4 text-neutral-700">
                 {service.extendedDescription.split("\n\n").map((paragraph, idx) => {
                   if (paragraph.startsWith("•")) {
                     // Render bullet points
@@ -309,8 +310,8 @@ export default async function ServiceDetailPage(props: {
                       <ul key={idx} className="space-y-2">
                         {bullets.map((bullet, bulletIdx) => (
                           <li key={bulletIdx} className="flex gap-3">
-                            <span className="text-[#2E90FA]">•</span>
-                            <span>{bullet.replace("•", "").trim()}</span>
+                            <span className="text-primary">•</span>
+                            <span className="text-neutral-700">{bullet.replace("•", "").trim()}</span>
                           </li>
                         ))}
                       </ul>
@@ -326,7 +327,7 @@ export default async function ServiceDetailPage(props: {
 
               {/* Conclusion */}
               {service.conclusion && (
-                <p className="mt-8 text-lg font-medium text-white">
+                <p className="mt-8 text-lg font-medium text-neutral-900">
                   {service.conclusion}
                 </p>
               )}

@@ -95,19 +95,18 @@ const differentiators = [
 export default function AboutPage() {
 	return (
 		<>
-			{/* Hero */}
-			<PageHero
-				size="medium"
-				eyebrow="Enthusiast Auto Group"
-				title={
-					<>
-						Built by Enthusiasts
-						<br />
-						<span className="text-blue-400">For Enthusiasts</span>
-					</>
-				}
-				subtitle="Cincinnati's premier destination for BMW M-Series vehicles, expert service, and a passionate community."
-				backgroundImage="https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?q=80&w=2083&auto=format&fit=crop"
+		{/* Hero */}
+		<PageHero
+			size="medium"
+			title={
+				<>
+					Built by Enthusiasts
+					<br />
+					<span className="text-blue-400">For Enthusiasts</span>
+				</>
+			}
+			subtitle="Cincinnati's premier destination for BMW M-Series vehicles, expert service, and a passionate community."
+				backgroundImage="/images/about-hero-bg.avif"
 				ctas={[
 					{ label: "View Inventory", href: "/vehicles", variant: "primary" },
 					{ label: "Our Services", href: "/services", variant: "outline" },

@@ -208,7 +208,6 @@ export default async function PartsPage({ searchParams }: PartsPageProps) {
       {/* Hero - Static content, no data dependency */}
       <PageHero
         size="compact"
-        eyebrow="Enthusiast Auto Group"
         title="Parts & Accessories"
         subtitle="Quality OEM and aftermarket parts for your BMW"
         backgroundImage="https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?q=80&w=2070&auto=format&fit=crop"

@@ -87,19 +87,18 @@ const quickContactCards: QuickContactCard[] = [
 export default function ContactPage() {
 	return (
 		<>
-			{/* Hero Section */}
-			<PageHero
-				size="medium"
-				eyebrow="Contact Us"
-				title={
-					<>
-						We're Here to Help
-						<br />
-						<span className="text-blue-400">Let's Connect</span>
-					</>
-				}
-				subtitle="Whether you're shopping for your next BMW, need expert service, or have questions about parts – our team is ready to assist."
-				backgroundImage="https://images.unsplash.com/photo-1621839673705-6617adf9e890?q=80&w=2070&auto=format&fit=crop"
+		{/* Hero Section */}
+		<PageHero
+			size="medium"
+			title={
+				<>
+					We're Here to Help
+					<br />
+					<span className="text-blue-400">Let's Connect</span>
+				</>
+			}
+			subtitle="Whether you're shopping for your next BMW, need expert service, or have questions about parts – our team is ready to assist."
+			backgroundImage="/images/contact-bg.avif"
 			>
 				{/* Quick contact info badges */}
 				<div className="mb-8 flex flex-wrap gap-6 text-sm font-medium text-white/80">

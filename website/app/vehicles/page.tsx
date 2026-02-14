@@ -109,14 +109,13 @@ async function VehicleResults({ searchParams }: VehiclesPageProps) {
 export default async function VehiclesPage({ searchParams }: VehiclesPageProps) {
 	return (
 		<>
-			{/* Hero - Static content, no data dependency */}
-			<PageHero
-				size="compact"
-				eyebrow="Enthusiast Auto Group"
-				title="Vehicle Inventory"
-				subtitle="Browse our curated selection of premium BMW vehicles"
-				backgroundImage="https://images.unsplash.com/photo-1580273916550-e323be2ae537?q=80&w=2070&auto=format&fit=crop"
-			/>
+	{/* Hero - Static content, no data dependency */}
+	<PageHero
+		size="compact"
+		title="Vehicle Inventory"
+		subtitle="Browse our curated selection of premium BMW vehicles"
+		backgroundImage="/images/inventory-hero-bg.jpg"
+	/>
 
 		{/* Content */}
 		<Section className="py-8 lg:py-12">

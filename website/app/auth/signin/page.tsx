@@ -115,7 +115,7 @@ export default function SigninPage() {
   }
 
   return (
-    <div className="flex min-h-screen">
+    <div className="flex">
       {/* Left side - Form */}
       <div className="flex w-full items-center justify-center px-4 py-12 lg:w-1/2 lg:px-8">
         <div className="w-full max-w-md space-y-8">
@@ -244,9 +244,9 @@ export default function SigninPage() {
       </div>
 
       {/* Right side - Image */}
-      <div className="relative hidden lg:block lg:w-1/2">
+      <div className="relative hidden lg:block lg:w-1/2 lg:min-h-screen">
         <div className="absolute inset-0 bg-gradient-to-br from-[#0a0c10] to-[#141721]">
-          <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1555215695-3004980ad54e?q=80&w=2070')] bg-cover bg-center opacity-40" />
+          <div className="absolute inset-0 bg-[url('/images/auth-bg-e34-m5-touring.avif')] bg-cover bg-center opacity-40" />
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
         </div>
         <div className="relative flex h-full flex-col items-center justify-center p-12 text-white">

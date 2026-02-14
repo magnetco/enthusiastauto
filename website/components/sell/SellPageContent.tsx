@@ -66,7 +66,7 @@ export function SellPageContent() {
           </>
         }
         subtitle="At Enthusiast Auto Group, we understand that for many enthusiasts, their cars are more than just vehicles—they're family members. Parting with them can be a challenging decision, and we're here to make that process as smooth as possible."
-        backgroundImage="https://images.unsplash.com/photo-1555215695-3004980ad54e?q=80&w=2070&auto=format&fit=crop"
+        backgroundImage="/images/sell-hero-bg.avif"
         ctas={[
           {
             label: "Start Your Submission",

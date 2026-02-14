@@ -104,7 +104,7 @@ export function PageHero({
           <div 
             className="absolute inset-0" 
             style={{ 
-              background: 'linear-gradient(27deg, rgba(46, 144, 250, 0.4) 0%, rgba(22, 25, 34, 0.4) 50%, rgba(49, 63, 109, 0) 100%)' 
+              background: 'linear-gradient(150deg, rgba(17, 15, 21, 0.9) 0%, rgba(18, 54, 89, 0.8) 50%, rgba(82, 163, 203, 0.2) 100%)' 
             }} 
           />
         </div>

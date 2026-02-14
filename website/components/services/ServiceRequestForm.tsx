@@ -22,7 +22,7 @@ import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 import { useServiceSelection, type ServiceType } from "./ServiceSelectionContext";
 import { services } from "./ServiceCards";
-import { X } from "lucide-react";
+import { Check } from "lucide-react";
 
 // Form validation schema - now supports multiple services
 const serviceRequestSchema = z.object({
@@ -178,8 +178,8 @@ export function ServiceRequestForm() {
                 )}
               </div>
 
-              {/* Service selection chips */}
-              <div className="flex flex-wrap gap-3">
+              {/* Service selection cards */}
+              <div className="grid gap-4 sm:grid-cols-2">
                 {services.map((service) => {
                   const isSelected = selectedServices.includes(service.id);
                   return (
@@ -189,15 +189,46 @@ export function ServiceRequestForm() {
                       onClick={() => handleToggleService(service.id)}
                       disabled={needsAdvice}
                       className={cn(
-                        "inline-flex items-center gap-2 rounded-lg border-2 px-5 py-3 text-base font-medium transition-all",
+                        "group relative flex flex-col items-start gap-3 rounded-lg border-2 p-4 text-left transition-all",
                         isSelected
-                          ? "border-primary bg-primary text-white"
-                          : "border-neutral-300 bg-white text-neutral-700 hover:border-neutral-400 hover:bg-neutral-50",
+                          ? "border-primary bg-primary/[0.03]"
+                          : "border-neutral-200 bg-white hover:border-neutral-300 hover:shadow-sm",
                         needsAdvice && "cursor-not-allowed opacity-50"
                       )}
                     >
-                      {service.title}
-                      {isSelected && <X className="h-4 w-4" />}
+                      {/* Selection indicator */}
+                      <div
+                        className={cn(
+                          "absolute right-3 top-3 flex h-5 w-5 items-center justify-center rounded-full border-2 transition-all",
+                          isSelected
+                            ? "border-primary bg-primary text-white"
+                            : "border-neutral-300 bg-white"
+                        )}
+                      >
+                        {isSelected && <Check className="h-3 w-3" strokeWidth={3} />}
+                      </div>
+
+                      {/* Icon and title */}
+                      <div className="flex items-start gap-3 pr-8">
+                        <div
+                          className={cn(
+                            "rounded-lg p-2 transition-colors",
+                            isSelected
+                              ? "bg-primary/15 text-primary"
+                              : "bg-neutral-100 text-neutral-600"
+                          )}
+                        >
+                          {service.icon}
+                        </div>
+                        <div className="flex-1">
+                          <h4 className="font-semibold text-neutral-900">{service.title}</h4>
+                        </div>
+                      </div>
+
+                      {/* Description */}
+                      <p className="text-sm leading-relaxed text-neutral-600">
+                        {service.description}
+                      </p>
                     </button>
                   );
                 })}
@@ -248,7 +279,6 @@ export function ServiceRequestForm() {
                     {...register("name")}
                     placeholder="John Doe"
                     disabled={isLoading}
-                    className="h-12 text-base"
                   />
                   {errors.name && (
                     <p className="text-sm text-red-600">{errors.name.message}</p>
@@ -264,7 +294,6 @@ export function ServiceRequestForm() {
                     {...register("phone")}
                     placeholder="(513) 555-1234"
                     disabled={isLoading}
-                    className="h-12 text-base"
                   />
                   {errors.phone && (
                     <p className="text-sm text-red-600">{errors.phone.message}</p>
@@ -282,7 +311,6 @@ export function ServiceRequestForm() {
                   {...register("email")}
                   placeholder="john@example.com"
                   disabled={isLoading}
-                  className="h-12 text-base"
                 />
                 {errors.email && (
                   <p className="text-sm text-red-600">{errors.email.message}</p>
@@ -314,7 +342,6 @@ export function ServiceRequestForm() {
                     {...register("vehicleYear")}
                     placeholder="2020"
                     disabled={isLoading}
-                    className="h-12 text-base"
                   />
                   {errors.vehicleYear && (
                     <p className="text-sm text-red-600">{errors.vehicleYear.message}</p>
@@ -330,7 +357,6 @@ export function ServiceRequestForm() {
                     {...register("vehicleMake")}
                     placeholder="BMW"
                     disabled={isLoading}
-                    className="h-12 text-base"
                   />
                   {errors.vehicleMake && (
                     <p className="text-sm text-red-600">{errors.vehicleMake.message}</p>
@@ -346,7 +372,6 @@ export function ServiceRequestForm() {
                     {...register("vehicleModel")}
                     placeholder="M3"
                     disabled={isLoading}
-                    className="h-12 text-base"
                   />
                   {errors.vehicleModel && (
                     <p className="text-sm text-red-600">{errors.vehicleModel.message}</p>
@@ -361,7 +386,6 @@ export function ServiceRequestForm() {
                   {...register("vin")}
                   placeholder="WBSWD93508PX12345"
                   disabled={isLoading}
-                  className="h-12 text-base"
                 />
               </div>
 
@@ -390,7 +414,6 @@ export function ServiceRequestForm() {
                   }
                   rows={6}
                   disabled={isLoading}
-                  className="text-base"
                 />
                 {errors.description && (
                   <p className="text-sm text-red-600">{errors.description.message}</p>
@@ -410,7 +433,7 @@ export function ServiceRequestForm() {
                   }
                   disabled={isLoading}
                 >
-                  <SelectTrigger id="existingCustomer" className="h-12 text-base">
+                  <SelectTrigger id="existingCustomer">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>

@@ -8,7 +8,7 @@ export function ServiceHero() {
   return (
     <PageHero
       size="medium"
-      eyebrow="BMW Services"
+      eyebrow="SERVICES"
       title={
         <>
           Expert BMW Care

@@ -272,6 +272,78 @@ components/
 - Override styles with inline props — use CSS variables
 - Duplicate primitives — compose existing components
 
+### Input Component Variants
+
+The `Input` component supports two standardized variants for consistent styling across the application:
+
+#### Light Variant (Default)
+
+For use on light backgrounds (forms, light sections, account pages):
+
+```tsx
+<Input
+  type="text"
+  placeholder="Enter text"
+  // variant="light" is default, no need to specify
+/>
+```
+
+**Styling:**
+- Background: `bg-background` (semantic token)
+- Text: `text-foreground` (semantic token)
+- Border: `border-input` (semantic token)
+- Placeholder: `placeholder:text-muted-foreground`
+- Height: `h-11` (44px) - good for accessibility
+
+#### Dark Variant
+
+For use on dark backgrounds (header, dark hero sections, dark modals):
+
+```tsx
+<Input
+  type="text"
+  variant="dark"
+  placeholder="Search cars or parts"
+/>
+```
+
+**Styling:**
+- Background: `bg-white/5` with hover/focus states
+- Text: `text-white/70`
+- Border: `border-white/10`
+- Placeholder: `text-white/50`
+- Height: `h-11` (44px)
+
+#### Usage Guidelines
+
+**DO:**
+- Use `variant="light"` (or default) for all forms on light backgrounds
+- Use `variant="dark"` for inputs on dark backgrounds (header, dark sections)
+- Keep standard height of `h-11` unless there's a specific reason to override
+- Use semantic tokens for consistency
+
+**DON'T:**
+- Add custom `className` overrides for colors/backgrounds (use variants instead)
+- Use hardcoded color values like `border-[#DFE5EA]` or `bg-white`
+- Override height to `h-12` without justification
+- Mix variant systems — stick to the defined variants
+
+**Examples:**
+
+```tsx
+// Header search (dark background)
+<Input variant="dark" placeholder="Search..." className="h-10" />
+
+// Form input (light background)
+<Input type="email" placeholder="john@example.com" />
+
+// Disabled input with custom background (intentional override)
+<Input value={user.email} disabled className="bg-muted" />
+
+// VIN input with monospace font (preserve semantic styling)
+<Input placeholder="WBSWD93508PX12345" className="font-mono" />
+```
+
 ### Props & Types
 
 ```typescript

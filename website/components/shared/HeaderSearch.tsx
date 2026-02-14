@@ -9,7 +9,7 @@ import { cn } from "@/lib/utils";
 
 /**
  * Header search bar component
- * Styled as a rounded pill input matching the design mockups
+ * Uses dark variant for the dark header background
  */
 export function HeaderSearch() {
   const router = useRouter();
@@ -29,15 +29,11 @@ export function HeaderSearch() {
     <form onSubmit={handleSubmit} className="relative w-80">
       <Input
         type="text"
+        variant="dark"
         placeholder="Search cars or parts"
         value={searchValue}
         onChange={(e) => setSearchValue(e.target.value)}
-        className={cn(
-          "h-10 pr-10 transition-colors duration-300",
-          isScrolled
-            ? "bg-gray-100 text-gray-900 placeholder:text-gray-500 hover:bg-gray-200 focus:bg-gray-200"
-            : "border-white/10 bg-white/5 text-white/70 placeholder:text-white/50 hover:bg-white/10 focus:bg-white/10"
-        )}
+        className="h-10 pr-10"
       />
       <button
         type="submit"

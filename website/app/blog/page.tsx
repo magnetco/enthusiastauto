@@ -180,7 +180,6 @@ export default async function BlogPage() {
       {/* Hero */}
       <PageHero
         size="compact"
-        eyebrow="Enthusiast Auto Group"
         title="Under the Hood"
         subtitle="Take a look under the hood and see what we do."
         backgroundImage="https://images.unsplash.com/photo-1619642751034-765dfdf7c58e?q=80&w=2074&auto=format&fit=crop"

@@ -465,7 +465,6 @@ export function ServiceRequestWizard() {
                     {...register("name")}
                     placeholder="John Smith"
                     disabled={isLoading}
-                    className="h-11 border-[#DFE5EA]/50 bg-white text-sm focus:border-[#005A90] focus:ring-1 focus:ring-[#005A90]"
                   />
                   {errors.name && (
                     <p className="text-xs text-[#F90020]">{errors.name.message}</p>
@@ -482,7 +481,6 @@ export function ServiceRequestWizard() {
                     {...register("email")}
                     placeholder="john@example.com"
                     disabled={isLoading}
-                    className="h-11 border-[#DFE5EA]/50 bg-white text-sm focus:border-[#005A90] focus:ring-1 focus:ring-[#005A90]"
                   />
                   {errors.email && (
                     <p className="text-xs text-[#F90020]">{errors.email.message}</p>
@@ -499,7 +497,6 @@ export function ServiceRequestWizard() {
                     {...register("phone")}
                     placeholder="(513) 555-1234"
                     disabled={isLoading}
-                    className="h-11 border-[#DFE5EA]/50 bg-white text-sm focus:border-[#005A90] focus:ring-1 focus:ring-[#005A90]"
                   />
                   {errors.phone && (
                     <p className="text-xs text-[#F90020]">{errors.phone.message}</p>
@@ -517,7 +514,7 @@ export function ServiceRequestWizard() {
                     }
                     disabled={isLoading}
                   >
-                    <SelectTrigger className="h-11 border-[#DFE5EA]/50 bg-white text-sm focus:border-[#005A90] focus:ring-1 focus:ring-[#005A90]">
+                    <SelectTrigger>
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
@@ -551,7 +548,6 @@ export function ServiceRequestWizard() {
                       {...register("vehicleYear")}
                       placeholder="2020"
                       disabled={isLoading}
-                      className="h-11 border-[#DFE5EA]/50 bg-white text-sm focus:border-[#005A90] focus:ring-1 focus:ring-[#005A90]"
                     />
                     {errors.vehicleYear && (
                       <p className="text-xs text-[#F90020]">
@@ -569,7 +565,6 @@ export function ServiceRequestWizard() {
                       {...register("vehicleMake")}
                       placeholder="BMW"
                       disabled={isLoading}
-                      className="h-11 border-[#DFE5EA]/50 bg-white text-sm focus:border-[#005A90] focus:ring-1 focus:ring-[#005A90]"
                     />
                     {errors.vehicleMake && (
                       <p className="text-xs text-[#F90020]">
@@ -587,7 +582,6 @@ export function ServiceRequestWizard() {
                       {...register("vehicleModel")}
                       placeholder="M3"
                       disabled={isLoading}
-                      className="h-11 border-[#DFE5EA]/50 bg-white text-sm focus:border-[#005A90] focus:ring-1 focus:ring-[#005A90]"
                     />
                     {errors.vehicleModel && (
                       <p className="text-xs text-[#F90020]">
@@ -606,7 +600,7 @@ export function ServiceRequestWizard() {
                     {...register("vin")}
                     placeholder="WBSWD93508PX12345"
                     disabled={isLoading}
-                    className="h-11 border-[#DFE5EA]/50 bg-white font-mono text-sm focus:border-[#005A90] focus:ring-1 focus:ring-[#005A90]"
+                    className="font-mono"
                   />
                   <p className="text-xs text-[#6f6e77]">
                     Providing your VIN helps us identify your exact vehicle specifications

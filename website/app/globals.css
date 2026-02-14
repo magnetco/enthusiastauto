@@ -542,6 +542,14 @@ button {
     padding-left: var(--page-x);
     padding-right: var(--page-x);
   }
+
+  /* Apply larger padding on desktop and above (lg breakpoint: 1024px) */
+  @media (min-width: 1024px) {
+    .px-page-x {
+      padding-left: var(--page-x-lg);
+      padding-right: var(--page-x-lg);
+    }
+  }
 }
 
 /* ===== Animated Loader Keyframes ===== */
