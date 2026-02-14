@@ -52,6 +52,7 @@ export async function POST(request: NextRequest) {
     // Create service request in database
     const serviceRequest = await prisma.serviceRequest.create({
       data: {
+        id: crypto.randomUUID(),
         serviceType: data.serviceType,
         name: data.name,
         email: data.email,
@@ -63,6 +64,7 @@ export async function POST(request: NextRequest) {
         description: data.description,
         existingCustomer: data.existingCustomer === "yes",
         status: "pending",
+        updatedAt: new Date(),
       },
     });
 

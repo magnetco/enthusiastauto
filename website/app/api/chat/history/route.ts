@@ -21,7 +21,7 @@ export async function GET(request: NextRequest) {
         userId: session.user.id,
       },
       include: {
-        messages: {
+        ChatMessage: {
           orderBy: { createdAt: "desc" },
           take: 1, // Get only the last message
         },
@@ -36,8 +36,8 @@ export async function GET(request: NextRequest) {
     const formattedConversations = conversations.map((conv: any) => ({
       id: conv.id,
       title: conv.title || "New conversation",
-      lastMessage: conv.messages[0]?.content || "",
-      lastMessageAt: conv.messages[0]?.createdAt || conv.createdAt,
+      lastMessage: conv.ChatMessage[0]?.content || "",
+      lastMessageAt: conv.ChatMessage[0]?.createdAt || conv.createdAt,
       createdAt: conv.createdAt,
       updatedAt: conv.updatedAt,
     }));

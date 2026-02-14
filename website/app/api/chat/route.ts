@@ -48,7 +48,7 @@ export async function POST(request: NextRequest) {
       conversation = await prisma.chatConversation.findUnique({
         where: { id: conversationId },
         include: {
-          messages: {
+          ChatMessage: {
             orderBy: { createdAt: "asc" },
             take: 20, // Limit context to last 20 messages
           },
@@ -73,18 +73,21 @@ export async function POST(request: NextRequest) {
       // Create new conversation
       conversation = await prisma.chatConversation.create({
         data: {
+          id: crypto.randomUUID(),
           userId: userId || null,
           sessionId: userId ? null : (sessionId || getIdentifier(request)),
           title: message.slice(0, 50), // Use first message as title
-          messages: {
+          updatedAt: new Date(),
+          ChatMessage: {
             create: {
+              id: crypto.randomUUID(),
               role: "user",
               content: message,
             },
           },
         },
         include: {
-          messages: {
+          ChatMessage: {
             orderBy: { createdAt: "asc" },
           },
         },
@@ -95,6 +98,7 @@ export async function POST(request: NextRequest) {
     if (conversationId) {
       await prisma.chatMessage.create({
         data: {
+          id: crypto.randomUUID(),
           conversationId: conversation.id,
           role: "user",
           content: message,
@@ -120,8 +124,8 @@ export async function POST(request: NextRequest) {
     }
 
     // Add conversation history
-    if (conversationId && conversation.messages) {
-      conversation.messages.forEach((msg: any) => {
+    if (conversationId && conversation.ChatMessage) {
+      conversation.ChatMessage.forEach((msg: any) => {
         messageHistory.push({
           role: msg.role as "user" | "assistant" | "system",
           content: msg.content,
@@ -256,6 +260,7 @@ export async function POST(request: NextRequest) {
           // Save assistant message to database
           await prisma.chatMessage.create({
             data: {
+              id: crypto.randomUUID(),
               conversationId: conversation.id,
               role: "assistant",
               content: fullResponse,

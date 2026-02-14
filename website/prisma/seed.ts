@@ -13,10 +13,12 @@ async function main() {
     where: { email: "test@enthusiastauto.com" },
     update: {},
     create: {
+      id: crypto.randomUUID(),
       email: "test@enthusiastauto.com",
       name: "Test User",
       password: hashedPassword,
       emailVerified: new Date(), // Pre-verified for testing
+      updatedAt: new Date(),
     },
   });
 

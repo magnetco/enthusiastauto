@@ -46,6 +46,7 @@ export async function POST(request: NextRequest) {
 		// Create sell submission in database
 		const sellSubmission = await prisma.sellSubmission.create({
 			data: {
+				id: crypto.randomUUID(),
 				firstName: data.firstName,
 				lastName: data.lastName,
 				phone: data.phone,
@@ -60,6 +61,7 @@ export async function POST(request: NextRequest) {
 				existingCustomer: data.existingCustomer,
 				newsletter: data.newsletter,
 				status: "pending",
+				updatedAt: new Date(),
 			},
 		});
 

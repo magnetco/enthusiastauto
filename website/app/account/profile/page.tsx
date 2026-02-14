@@ -27,7 +27,7 @@ export default async function ProfilePage() {
   const user = await prisma.user.findUnique({
     where: { id: session.user.id },
     include: {
-      accounts: true,
+      Account: true,
     },
   });
 
@@ -42,7 +42,7 @@ export default async function ProfilePage() {
     },
   }));
 
-  const authMethods = user.accounts.map((account) => {
+  const authMethods = user.Account.map((account) => {
     switch (account.provider) {
       case "google":
         return "Google";
@@ -87,7 +87,7 @@ export default async function ProfilePage() {
         <TitleBlock title="Security" className="mb-6" />
         <div className="space-y-6">
           <ChangePassword hasPassword={hasPassword} />
-          <ConnectedAccounts accounts={user.accounts} hasPassword={hasPassword} />
+          <ConnectedAccounts accounts={user.Account} hasPassword={hasPassword} />
         </div>
       </section>
 

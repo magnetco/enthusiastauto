@@ -27,7 +27,7 @@ export async function DELETE(
       select: {
         id: true,
         password: true,
-        accounts: true,
+        Account: true,
       },
     });
 
@@ -37,7 +37,7 @@ export async function DELETE(
 
     // Check if user has password or multiple accounts
     const hasPassword = !!user.password;
-    const accountCount = user.accounts.length;
+    const accountCount = user.Account.length;
 
     // Prevent account lockout - user must have at least one auth method
     if (!hasPassword && accountCount === 1) {
@@ -51,7 +51,7 @@ export async function DELETE(
     }
 
     // Find the account to unlink
-    const accountToUnlink = user.accounts.find(
+    const accountToUnlink = user.Account.find(
       (account) => account.provider === provider
     );
 
